@@ -49,7 +49,8 @@ edict_t *Bot_FindBestItem(edict_t *ent)
 	{
 		nprintf(PRINT_HIGH,"%s needs some health!\n", ent->client->pers.netname);
 
-		if ((best = Bot_FindBestHealth(ent)))
+		best = Bot_FindBestHealth(ent);
+		if (best)
 			goto found;
 
 		did_health = 1;
@@ -64,7 +65,8 @@ edict_t *Bot_FindBestItem(edict_t *ent)
 	{
 		nprintf(PRINT_HIGH,"%s needs a better weapon!\n", ent->client->pers.netname);
 
-		if ((best = Bot_FindBestWeapon(ent)))
+		best = Bot_FindBestWeapon(ent);
+		if (best)
 			goto found;
 
 		did_weapons = 1;
@@ -75,21 +77,24 @@ edict_t *Bot_FindBestItem(edict_t *ent)
 	if (random() > 0.3) // OPTIMZE: We do not ALWAYS search for POWER-UPS
 	{
 		// POWER-UPS
-		if ((best = Bot_FindBestPowerup(ent)))
+		best = Bot_FindBestPowerup(ent);
+		if (best)
 			goto found;
 	}
 
 	// WEAPONS
 	if (!did_weapons)
 	{
-		if ((best = Bot_FindBestWeapon(ent)))
+		best = Bot_FindBestWeapon(ent);
+		if (best)
 			goto found;
 	}
 
 	// HEALTH
 	if ((ent->health < (ent->max_health - 20)) && !did_health)
 	{
-		if ((best = Bot_FindBestHealth(ent)))
+		best = Bot_FindBestHealth(ent);
+		if (best)
 			goto found;
 	}
 
@@ -374,8 +379,6 @@ void Bot_Think(edict_t *ent)
 						}
 						else
 						{
-							trace_t	tr;
-
 							AngleVectors (ent->client->v_angle, forward, NULL, NULL);
 							VectorMA(ent->s.origin, -30, forward, forward);
 
@@ -1457,14 +1460,14 @@ void Bot_Attack(edict_t *ent, usercmd_t *cmd, vec3_t angles, vec3_t target)
 			else if (Q_stricmp(weapon->classname, "weapon_rocketlauncher") == 0
 				|| Q_stricmp(weapon->classname, "weapon_hominglauncher") == 0)
 			{
-				angles[YAW] += crandom() * (6 - ent->client->b_botlevel) * 0.2;
-				angles[PITCH] += crandom() * (6 - ent->client->b_botlevel) * 0.2;
+				angles[YAW] += crandom() * (6.0 - ent->client->b_botlevel) * 0.2;
+				angles[PITCH] += crandom() * (6.0 - ent->client->b_botlevel) * 0.2;
 
 			}
 			else
 			{
-				angles[YAW] += crandom() * (6 - ent->client->b_botlevel) * 0.2;
-				angles[PITCH] += crandom() * (6 - ent->client->b_botlevel) * 0.2;
+				angles[YAW] += crandom() * (6.0 - ent->client->b_botlevel) * 0.2;
+				angles[PITCH] += crandom() * (6.0 - ent->client->b_botlevel) * 0.2;
 			}
 
 			cmd->buttons = BUTTON_ATTACK;
@@ -2014,7 +2017,7 @@ void Bot_Wave (edict_t *ent, int i, float time)
 void Bot_Say (edict_t *ent, qboolean team, char *fmt, ...)
 {
 	int i;
-	char	bigbuffer[0x10000];
+	char	bigbuffer[0x1000];
 	int		len;
 	va_list		argptr;
 	edict_t	*cl_ent;

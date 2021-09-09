@@ -65,6 +65,7 @@
     <None Include="game.def">
       <Filter>Resource Files</Filter>
     </None>
+    <None Include="Makefile" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="c_base.c">

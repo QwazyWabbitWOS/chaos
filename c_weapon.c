@@ -4,9 +4,9 @@
 #include "m_player.h"
 #include "c_botai.h"
 
-#define GRENADE_TIMER				3.0
-#define GRENADE_MINSPEED			400
-#define GRENADE_MAXSPEED			800
+#define GRENADE_TIMER				3.0f
+#define GRENADE_MINSPEED			400.0f
+#define GRENADE_MAXSPEED			800.0f
 
 void FakeDeath(edict_t *self);
 void fire_lead (edict_t *self, vec3_t start, vec3_t aimdir, int damage, int kick, int te_impact, int hspread, int vspread, int mod);
@@ -1438,7 +1438,7 @@ void fire_air (edict_t *self, vec3_t start, vec3_t dir)
 			VectorCopy(blipdir,addvect);
 			VectorNormalize(addvect);
 
-			VectorScale(addvect, 1.8 * (600 - dist),addvect);
+			VectorScale(addvect, 1.8f * (600.0f - dist), addvect);
 			addvect[2] = 700 - dist;
 
 			if (dist < 400 && blip->takedamage)
@@ -2485,7 +2485,7 @@ void FlashGrenade_Explode (edict_t *ent)
 		if ( Distance < FLASH_RADIUS/10 )
 			BlindTimeAdd = blindtime->value;
 		else
-			BlindTimeAdd = 1.5 * blindtime->value * ( 1 / ( ( Distance - FLASH_RADIUS*2 ) / (FLASH_RADIUS*2) - 2 ) + 1 ); // Blind partially
+			BlindTimeAdd = 1.5f * blindtime->value * ( 1 / ( ( Distance - FLASH_RADIUS*2 ) / (FLASH_RADIUS*2) - 2 ) + 1 ); // Blind partially
 		
 		if ( BlindTimeAdd < 0 )
 			BlindTimeAdd = 0;
@@ -3137,7 +3137,7 @@ void PoisonGrenade_Explode (edict_t *ent)
 		if ( Distance < POISON_RADIUS/10 )
 			PoisonTimeAdd = poisontime->value;
 		else
-			PoisonTimeAdd = 1.5 * poisontime->value * ( 1 / ( ( Distance - POISON_RADIUS*2 ) / (POISON_RADIUS*2) - 2 ) + 1 ); // Blind partially
+			PoisonTimeAdd = 1.5f * poisontime->value * ( 1 / ( ( Distance - POISON_RADIUS*2 ) / (POISON_RADIUS*2) - 2 ) + 1 ); // Blind partially
 		
 		if ( PoisonTimeAdd < 0 )
 			PoisonTimeAdd = 0;
@@ -4351,7 +4351,7 @@ void Vortex_Think (edict_t *ent)
 					}
 				}
 			}
-			VectorMA(blip->velocity, -1.4 *(600 - dist), blipdir, blip->velocity);
+			VectorMA(blip->velocity, -1.4f *(600 - dist), blipdir, blip->velocity);
 			blip->velocity[0] += crandom() * 60;
 			blip->velocity[1] += crandom() * 60;
 			blip->velocity[2] += random() * 60;

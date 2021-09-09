@@ -183,24 +183,16 @@ void LoadMaplist(char	*filename)
 	FILE	*fp = NULL;
 	cvar_t	*game_dir;
 	int		i = 0;
-	char	file[256];
+	char	file[_MAX_PATH];
 	char	line[MAX_MAPNAME_LEN + 3];
 
 	game_dir = gi.cvar ("game", "", 0);
 
-#ifdef	_WIN32
-	i =  sprintf(file, ".\\");
-	i += sprintf(file + i, game_dir->string);
-	i += sprintf(file + i, "\\maplists\\");
-	i += sprintf(file + i, filename);
-	i += sprintf(file + i, ".txt");
-#else
-      strcpy(file, "./");
-      strcat(file, game_dir->string);
-      strcat(file, "/maplists/");
-	  strcat(file, filename);
-	  strcat(file, ".txt");
-#endif
+      Com_strcpy(file, sizeof file, "./");
+      Com_strcat(file, sizeof file, game_dir->string);
+      Com_strcat(file, sizeof file, "/maplists/");
+	  Com_strcat(file, sizeof file, filename);
+	  Com_strcat(file, sizeof file, ".txt");
 
 	//open the maplist file
 	if ((fp = fopen(file, "r")) == NULL)
@@ -218,7 +210,7 @@ void LoadMaplist(char	*filename)
 		{ 
 			int		len;
 
-			fgets (line, 256, fp);
+			fgets (line, sizeof line, fp);
 			len=strlen(line);
 
 			if (len < 5) //invalid
@@ -274,7 +266,6 @@ void GetSettings()
 	ex_arrow_radius = gi.cvar("ex_arrow_radius", "200", CVAR_LATCH);
 
 	dntg = gi.cvar("dntg", "1", CVAR_SERVERINFO);
-	cosg = gi.cvar("cosg", "0", CVAR_SERVERINFO);
 	start_invulnerable_time = gi.cvar("start_invulnerable_time", "3", CVAR_SERVERINFO);
 	lightsoff = gi.cvar("lightsoff", "0", CVAR_SERVERINFO);
 	botchat = gi.cvar("botchat", "1", CVAR_SERVERINFO);
@@ -640,7 +631,7 @@ qboolean TeamMembers(edict_t *p1, edict_t *p2)
 	}
 }
 
-void LoadMOTD()
+void LoadMOTD(void)
 {
 	FILE *fp;
 	char file[256];
@@ -650,15 +641,9 @@ void LoadMOTD()
 
 	game_dir = gi.cvar ("game", "", 0);
 
-#ifdef	_WIN32
-	i =  sprintf(file, ".\\");
+	i =  sprintf(file, "./");
 	i += sprintf(file + i, game_dir->string);
-	i += sprintf(file + i, "\\motd.txt");
-#else
-    strcpy(file, "./");
-    strcat(file, game_dir->string);
-    strcat(file, "/motd.txt");
-#endif
+	i += sprintf(file + i, "/motd.txt");
 
     /* 	if ((fp = fopen(file, "r")) != NULL)
 	{
@@ -688,20 +673,20 @@ void LoadMOTD()
 	{ 
 		i = 0;
 
-		while ((!feof(fp)) && (i < 560)) 
+		while ((!feof(fp)) && (i < sizeof motd)) 
 		{ 
 			int		len;
 
-			fgets (line, 256, fp);
+			fgets (line, sizeof line, fp);
 			len=strlen(line);
 
 			while(line[len] == '\n'||line[len] == '\r')
 			  len--;
 
-			if ((i+len) < 560)
+			if ((i+len) < sizeof motd)
 			  strncpy(motd+i, line, len);
 			else
-			  gi.dprintf("MOTD is too long (> 560 chars), truncated\n");
+			  gi.dprintf("MOTD is too long (> %u chars), truncated\n", sizeof motd);
 
 			i+=len; 
 		} 
@@ -709,8 +694,6 @@ void LoadMOTD()
 	//close file
 	if (fp)
 		fclose(fp); 
-
-
 }
 
 void FakeDeath(edict_t *self)
@@ -944,7 +927,7 @@ edict_t *findradius2 (edict_t *from, vec3_t org, float rad)	//find all entities
 		//if (from->solid != SOLID_NOT)
 		//	continue;
 		for (j=0 ; j<3 ; j++)
-			eorg[j] = org[j] - (from->s.origin[j] + (from->mins[j] + from->maxs[j])*0.5);
+			eorg[j] = org[j] - (from->s.origin[j] + (from->mins[j] + from->maxs[j])*0.5f);
 		if (VectorLength(eorg) > rad)
 			continue;
 		return from;
@@ -956,7 +939,7 @@ edict_t *findradius2 (edict_t *from, vec3_t org, float rad)	//find all entities
 void bprintf2 (int printlevel, char *fmt, ...)
 {
 	int i;
-	char	bigbuffer[0x10000];
+	char	bigbuffer[0x1000];
 	int		len;
 	va_list		argptr;
 	edict_t	*cl_ent;
@@ -980,7 +963,7 @@ void bprintf2 (int printlevel, char *fmt, ...)
 
 void cprintf2 (edict_t *ent, int printlevel, char *fmt, ...)
 {
-	char	bigbuffer[0x10000];
+	char	bigbuffer[0x1000];
 	int		len;
 	va_list		argptr;
 
@@ -1000,7 +983,7 @@ void cprintf2 (edict_t *ent, int printlevel, char *fmt, ...)
 void nprintf (int printlevel, char *fmt, ...)
 {
 	int i;
-	char	bigbuffer[0x10000];
+	char	bigbuffer[0x1000];
 	int		len;
 	va_list		argptr;
 	edict_t	*cl_ent;
@@ -1111,7 +1094,10 @@ void Teleport (edict_t *ent)
 	edict_t *telep = NULL;
 	vec3_t spawn_origin;
 	
-	if (ent->client && ent->client->teleporter)	//teleport
+	if (!ent || !ent->client)
+		return;
+
+	if (ent->client->teleporter)	//teleport
 	{
 		if (ctf->value)
 			CTFDeadDropFlag(ent);

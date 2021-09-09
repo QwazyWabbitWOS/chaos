@@ -72,7 +72,7 @@ edict_t *findradius (edict_t *from, vec3_t org, float rad)
 		if (from->solid == SOLID_NOT)
 			continue;
 		for (j=0 ; j<3 ; j++)
-			eorg[j] = org[j] - (from->s.origin[j] + (from->mins[j] + from->maxs[j])*0.5);
+			eorg[j] = org[j] - (from->s.origin[j] + (from->mins[j] + from->maxs[j])*0.5f);
 		if (VectorLength(eorg) > rad)
 			continue;
 		return from;
@@ -194,7 +194,7 @@ void G_UseTargets (edict_t *ent, edict_t *activator)
 	if (ent->killtarget)
 	{
 		t = NULL;
-		while ((t = G_Find (t, FOFS(targetname), ent->killtarget)))
+		while ((t = G_Find (t, FOFS(targetname), ent->killtarget)) != NULL)
 		{
 			G_FreeEdict (t);
 			if (!ent->inuse)
@@ -213,7 +213,7 @@ void G_UseTargets (edict_t *ent, edict_t *activator)
 	if (ent->target)
 	{
 		t = NULL;
-		while ((t = G_Find (t, FOFS(targetname), ent->target)))
+		while ((t = G_Find (t, FOFS(targetname), ent->target)) != NULL)
 		{
 			// doors fire area portals in a specific way
 			if (!Q_stricmp(t->classname, "func_areaportal") &&
@@ -350,7 +350,7 @@ void vectoangles (vec3_t value1, vec3_t angles)
 		if (yaw < 0)
 			yaw += 360;
 
-		forward = sqrt (value1[0]*value1[0] + value1[1]*value1[1]);
+		forward = sqrtf (value1[0]*value1[0] + value1[1]*value1[1]);
 		pitch = (int) (atan2(value1[2], forward) * 180 / M_PI);
 		if (pitch < 0)
 			pitch += 360;
@@ -400,16 +400,17 @@ edict_t *G_Spawn (void)
 	{
 		// the first couple seconds of server time can involve a lot of
 		// freeing and allocating, so relax the replacement policy
-		if (!e->inuse && ( e->freetime < 2 || level.time - e->freetime > 0.5 ) )
+		if (!e->inuse && ( e->freetime < 2 || level.time - e->freetime > 0.5f ) )
 		{
 			G_InitEdict (e);
 			return e;
 		}
 	}
 	
-	if (i == game.maxentities)
-		gi.error ("ED_Alloc: no free edicts");
-		
+	if (i == game.maxentities) {
+		gi.error("ED_Alloc: no free edicts");
+		exit(EXIT_FAILURE); // never happens
+	}
 	globals.num_edicts++;
 	G_InitEdict (e);
 	return e;

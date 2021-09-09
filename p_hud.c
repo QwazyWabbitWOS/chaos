@@ -117,7 +117,7 @@ void BeginIntermission (edict_t *targ)
 			for (i=0 ; i<maxclients->value ; i++)
 			{
 				client = g_edicts + 1 + i;
-				if (!client->inuse)
+				if (!client->inuse || !client->client)
 					continue;
 				// strip players of all keys between units
 				for (n = 0; n < MAX_ITEMS; n++)
@@ -438,7 +438,8 @@ G_SetStats
 void G_SetStats (edict_t *ent)
 {
 	gitem_t		*item;
-	int			index, cells;
+	int			index;
+	int			cells = 0;
 	int			power_armor_type;
 
 	//

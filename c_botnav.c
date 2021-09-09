@@ -412,33 +412,22 @@ int Bot_ShortestPath (int source, int target)
 qboolean Bot_SaveNodes(void)
 {
 	int		i, j;
-#ifdef  _WIN32
-	int l;
-#endif
 	float	dist;
 	FILE	*output;
 	char	file[256];
 	cvar_t	*game_dir;
-	const char	nodetable_version[4]	= "v02\0";
-	const char	nodetable_id[19]		= "CHAOSDM NODE TABLE\0";
+	const char	nodetable_version[]	= "v02\0";
+	const char	nodetable_id[]		= "CHAOSDM NODE TABLE\0";
 	int		dntgvalue = dntg->value;
 
 
 	game_dir = gi.cvar ("game", "", 0);
 
-#ifdef	_WIN32
-	l =  sprintf(file, ".\\");
-	l += sprintf(file + l, game_dir->string);
-	l += sprintf(file + l, "\\nodes\\");
-	l += sprintf(file + l, level.mapname);
-	l += sprintf(file + l, ".ntb");
-#else
-	strcpy(file, "./");
-	strcat(file, game_dir->string);
-	strcat(file, "/nodes/");
-	strcat(file, level.mapname);
-	strcat(file, ".ntb");
-#endif
+	Com_strcpy(file, sizeof file, "./");
+	Com_strcat(file, sizeof file, game_dir->string);
+	Com_strcat(file, sizeof file, "/nodes/");
+	Com_strcat(file, sizeof file, level.mapname);
+	Com_strcat(file, sizeof file, ".ntb");
 
 	output = fopen (file, "wb");
 
@@ -479,33 +468,23 @@ qboolean Bot_SaveNodes(void)
 qboolean Bot_LoadNodes(void)
 {
 	int		i, j;
-#ifdef  _WIN32
-	int l;
-#endif
 	float	dist;
 	FILE	*input;
 	char	file[256];
 	cvar_t	*game_dir;
-	const char	nodetable_version[4]	= "v02\0";
-	const char	nodetable_id[19]		= "CHAOSDM NODE TABLE\0";
-	char	id_buffer[28], version_buffer[5];
+	const char	nodetable_version[]	= "v02";
+	const char	nodetable_id[]		= "CHAOSDM NODE TABLE";
+	char	id_buffer[28] = { 0 };
+	char	version_buffer[5] = { 0 };
 	int		dntgvalue;
 
 	game_dir = gi.cvar ("game", "", 0);
 
-#ifdef	_WIN32
-	l =  sprintf(file, ".\\");
-	l += sprintf(file + l, game_dir->string);
-	l += sprintf(file + l, "\\nodes\\");
-	l += sprintf(file + l, level.mapname);
-	l += sprintf(file + l, ".ntb");
-#else
-	strcpy(file, "./");
-	strcat(file, game_dir->string);
-	strcat(file, "/nodes/");
-	strcat(file, level.mapname);
-	strcat(file, ".ntb");
-#endif
+	Com_strcpy(file, sizeof file, "./");
+	Com_strcat(file, sizeof file, game_dir->string);
+	Com_strcat(file, sizeof file, "/nodes/");
+	Com_strcat(file, sizeof file, level.mapname);
+	Com_strcat(file, sizeof file, ".ntb");
 
 	input = fopen (file, "rb");
 
@@ -513,8 +492,8 @@ qboolean Bot_LoadNodes(void)
 		return false;
 
 	//check 1
-	fread (id_buffer, sizeof(const char), 19, input);
-	fread (version_buffer, sizeof(const char), 4, input);
+	fread (id_buffer, sizeof(const char), sizeof id_buffer, input);
+	fread (version_buffer, sizeof(const char), sizeof version_buffer - 1, input);
 	fread (&numnodes, sizeof(int), 1, input);
 
 	//dynamic node table generation on/off

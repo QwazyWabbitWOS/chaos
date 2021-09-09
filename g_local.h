@@ -1,4 +1,5 @@
 // g_local.h -- local definitions for game module
+#pragma once
 
 #include "q_shared.h"
 
@@ -13,7 +14,7 @@
 //ZOID
 
 // the "gameversion" client command will print this plus compile date
-#define	GAMEVERSION	"Chaos Deathmatch v1.1"
+#define	GAMEVERSION	"Chaos Deathmatch v1.14 beta 4"
 
 // protocol bytes that can be directly added to messages
 #define	svc_muzzleflash		1
@@ -25,8 +26,8 @@
 //==================================================================
 
 // view pitching times
-#define DAMAGE_TIME		0.5
-#define	FALL_TIME		0.3
+#define DAMAGE_TIME		0.5f
+#define	FALL_TIME		0.3f
 
 
 // edict->spawnflags
@@ -54,7 +55,7 @@
 #define FL_RESPAWN				0x80000000	// used for item respawning
 
 
-#define	FRAMETIME		0.1
+#define	FRAMETIME		0.1f
 
 // memory tags to allow dynamic memory to be cleaned up
 #define	TAG_GAME	765		// clear when unloading the dll
@@ -1168,7 +1169,6 @@ cvar_t	*dntg;
 cvar_t	*lasermine_health;
 cvar_t	*ex_arrow_damage;
 cvar_t	*ex_arrow_radius;
-cvar_t	*cosg; // FWP Debugging var, core on shutdown game
 
 cvar_t	*start_invulnerable_time;
 int		red_base, blue_base;	//node at red/blue flag

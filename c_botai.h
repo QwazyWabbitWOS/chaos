@@ -68,7 +68,7 @@ qboolean visible_node (vec3_t spot1, vec3_t spot2);
 int Bot_CalcPath (edict_t *ent, vec3_t target, vec3_t source);
 int Bot_FindPath (edict_t *ent, vec3_t target, vec3_t source);
 void CTFBotJoinTeam(edict_t *ent, int desired_team);
-void Bot_Create(int level, int team, char *name, char *skin);
+void Bot_Create(int bot_skill, int team, char *name, char *skin);
 void Bot_Spawn(edict_t *ent);
 void Bot_Respawn(edict_t *ent);
 void Bot_Wave (edict_t *ent, int i, float time);

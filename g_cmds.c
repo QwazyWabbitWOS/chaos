@@ -14,7 +14,7 @@ char *ClientTeam (edict_t *ent)
 	if (!ent->client)
 		return value;
 
-	strcpy(value, Info_ValueForKey (ent->client->pers.userinfo, "skin"));
+	Com_strcpy(value, sizeof value, Info_ValueForKey (ent->client->pers.userinfo, "skin"));
 	p = strchr(value, '/');
 	if (!p)
 		return value;

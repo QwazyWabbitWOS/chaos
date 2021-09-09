@@ -1,7 +1,7 @@
 #include "g_local.h"
 #include "c_botai.h"
 
-void LoadMaplist();
+void LoadMaplist(char* filename);
 
 void	Svcmd_Test_f (void)
 {

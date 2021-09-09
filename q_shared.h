@@ -4,7 +4,7 @@
 
 #ifdef _WIN32
 #pragma warning(disable : 4018) // signed/unsigned mismatch
-#pragma warning(disable : 4305) // truncation from const double to float
+#pragma warning(disable : 4305) // truncation from double to float
 #pragma warning(disable : 4244)	// C4244 conversion from 'type1' to 'type2', possible loss of data
 #pragma warning(disable : 4100)	// C4100 unreferenced formal parameter
 #if _MSC_VER > 1500
@@ -19,6 +19,8 @@
 #include <string.h>
 #include <stdlib.h>
 #include <time.h>
+#include <math.h>
+#include <ctype.h>
 
 #if defined _M_IX86 && !defined C_ONLY
 #define id386	1
@@ -201,9 +203,11 @@ void Com_PageInMemory (byte *buffer, int size);
 //=============================================
 
 // portable case insensitive compare
-int Q_stricmp (char *s1, char *s2);
+int	Q_stricmp(const char* s1, const char* s2);
 int Q_strcasecmp (char *s1, char *s2);
 int Q_strncasecmp (char *s1, char *s2, int n);
+size_t Com_strcpy(char* dest, size_t destSize, const char* src);
+size_t Com_strcat(char* dest, size_t destSize, const char* src);
 
 //=============================================
 

@@ -52,7 +52,7 @@ qboolean Jet_AvoidGround(edict_t *ent)
 	new_origin[2] = ent->s.origin[2] + 0.5;
 	trace = gi.trace( ent->s.origin, ent->mins, ent->maxs, new_origin, ent, MASK_MONSTERSOLID );
 
-	if ((success=((trace.plane.normal[2])==0)))
+	if ((success=((trace.plane.normal[2]))) == 0)
 		ent->s.origin[2] += 0.5;
 
 	return success;
@@ -207,7 +207,7 @@ void ShowScanner(edict_t *ent,char *layout)
 {
 	edict_t *player = g_edicts;
 	int     i;
-	char    stats[64];
+	char    stats[64] = { 0 };
 	vec3_t  v;
 
 	if (ent->client->scanneractive == 1) 

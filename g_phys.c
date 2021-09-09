@@ -78,6 +78,9 @@ qboolean SV_RunThink (edict_t *ent)
 {
 	float	thinktime;
 
+	if (!ent)
+		return false;
+
 	thinktime = ent->nextthink;
 	if (thinktime <= 0)
 		return true;
@@ -85,8 +88,10 @@ qboolean SV_RunThink (edict_t *ent)
 		return true;
 	
 	ent->nextthink = 0;
-	if (!ent->think)
-		gi.error ("NULL ent->think");
+	if (!ent->think) {
+		gi.error("NULL ent->think");
+		exit(EXIT_FAILURE);
+	}
 	ent->think (ent);
 
 	return false;
@@ -388,6 +393,9 @@ qboolean SV_Push (edict_t *pusher, vec3_t move, vec3_t amove)
 	vec3_t		mins, maxs;
 	pushed_t	*p;
 	vec3_t		org, org2, move2, forward, right, up;
+
+	if (!pusher)
+		return false;
 
 	// clamp the move to 1/8 units, so the position will
 	// be accurate for client side prediction
@@ -879,7 +887,7 @@ void SV_Physics_Step (edict_t *ent)
 			if (!(ent->health <= 0.0))
 			{
 				vel = ent->velocity;
-				speed = sqrt(vel[0]*vel[0] +vel[1]*vel[1]);
+				speed = sqrtf(vel[0]*vel[0] +vel[1]*vel[1]);
 				if (speed)
 				{
 					friction = sv_friction;

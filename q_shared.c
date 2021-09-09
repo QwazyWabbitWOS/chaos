@@ -283,9 +283,6 @@ float	anglemod(float a)
 	return a;
 }
 
-	int		i;
-	vec3_t	corners[2];
-
 
 // this is the slow, general version
 int BoxOnPlaneSide2 (vec3_t emins, vec3_t emaxs, struct cplane_s *p)
@@ -738,8 +735,6 @@ void CrossProduct (vec3_t v1, vec3_t v2, vec3_t cross)
 	cross[2] = v1[0]*v2[1] - v1[1]*v2[0];
 }
 
-double sqrt(double x);
-
 vec_t VectorLength(vec3_t v)
 {
 	int		i;
@@ -1158,16 +1153,21 @@ void Com_PageInMemory (byte *buffer, int size)
 ============================================================================
 */
 
-// FIXME: replace all Q_stricmp with Q_strcasecmp
-int Q_stricmp (char *s1, char *s2)
+/** Case independent string compare (strcasecmp)
+ if s1 is contained within s2 then return 0, they are "equal".
+ else return the lexicographic difference between them.
+*/
+int	Q_stricmp(const char* s1, const char* s2)
 {
-#if defined(WIN32)
-	return _stricmp (s1, s2);
-#else
-	return strcasecmp (s1, s2);
-#endif
-}
+	const unsigned char
+		* uc1 = (const unsigned char*)s1,
+		* uc2 = (const unsigned char*)s2;
 
+	while (tolower(*uc1) == tolower(*uc2++))
+		if (*uc1++ == '\0')
+			return (0);
+	return (tolower(*uc1) - tolower(*--uc2));
+}
 
 int Q_strncasecmp (char *s1, char *s2, int n)
 {
@@ -1206,7 +1206,7 @@ void Com_sprintf (char *dest, int size, char *fmt, ...)
 {
 	int		len;
 	va_list		argptr;
-	char	bigbuffer[0x10000];
+	char	bigbuffer[0x1000];
 
 	va_start (argptr,fmt);
 	len = vsprintf (bigbuffer,fmt,argptr);
@@ -1214,6 +1214,68 @@ void Com_sprintf (char *dest, int size, char *fmt, ...)
 	if (len >= size)
 		Com_Printf ("Com_sprintf: overflow of %i in %i\n", len, size);
 	strncpy (dest, bigbuffer, size-1);
+}
+
+size_t Com_strcpy(char* dest, size_t destSize, const char* src)
+{
+	char* d = dest;
+	const char* s = src;
+	size_t		decSize = destSize;
+
+	if (!dest) {
+		return 0;
+	}
+	if (!src) {
+		return 0;
+	}
+	if (destSize < 1) {
+		return 0;
+	}
+
+	while (--decSize && *s)
+		*d++ = *s++;
+	*d = 0;
+	dest[destSize - 1] = 0;
+
+	if (decSize == 0)	// Insufficent room in dst, return count + length of remaining src
+		return (s - src - 1 + strlen(s));
+	else
+		return (s - src - 1);	// returned count excludes NULL terminator
+}
+
+size_t Com_strcat(char* dest, size_t destSize, const char* src)
+{
+	char* d = dest;
+	const char* s = src;
+	size_t		decSize = destSize;
+	size_t		dLen;
+
+	if (!dest) {
+		return 0;
+	}
+	if (!src) {
+		return 0;
+	}
+	if (destSize < 1) {
+		return 0;
+	}
+
+	while (--decSize && *d)
+		d++;
+	dLen = d - dest;
+
+	if (decSize == 0)
+		return (dLen + strlen(s));
+
+	if (decSize > 0) {
+		while (--decSize && *s)
+			*d++ = *s++;
+
+		*d = 0;
+	}
+	dest[destSize - 1] = 0;
+
+	return (dLen + (s - src));	// returned count excludes NULL terminator
 }
 
 /*

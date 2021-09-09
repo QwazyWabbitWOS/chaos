@@ -55,7 +55,6 @@ void ClientUserinfoChanged (edict_t *ent, char *userinfo);
 void ClientDisconnect (edict_t *ent);
 void ClientBegin (edict_t *ent);
 void ClientCommand (edict_t *ent);
-void RunEntity (edict_t *ent);
 void ReadGame (char *filename);
 void WriteGame (char *filename, qboolean autosave);
 void ReadLevel (char *filename);
@@ -67,20 +66,13 @@ void G_RunFrame (void);
 //===================================================================
 
 
-void ShutdownGame (void)
+void ShutdownGame(void)
 {
-  int *ptr;
+	gi.dprintf("==== Shutdown Chaos Deathmatch ====\n");
 
-	gi.dprintf ("==== Shutdown Chaos Deathmatch ====\n");
-
-	sl_GameEnd( &gi, level );	// StdLog - Mark Davies
-	gi.FreeTags (TAG_LEVEL);
-	gi.FreeTags (TAG_GAME);
-
-        if (cosg->value > 0) {
-           ptr = 0;
-           *ptr = 0;
-        }          
+	sl_GameEnd(&gi, level);	// StdLog - Mark Davies
+	gi.FreeTags(TAG_LEVEL);
+	gi.FreeTags(TAG_GAME);
 }
 
 

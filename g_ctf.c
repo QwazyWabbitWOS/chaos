@@ -174,7 +174,7 @@ static edict_t *loc_findradius (edict_t *from, vec3_t org, float rad)
 			continue;
 #endif
 		for (j=0 ; j<3 ; j++)
-			eorg[j] = org[j] - (from->s.origin[j] + (from->mins[j] + from->maxs[j])*0.5);
+			eorg[j] = org[j] - (from->s.origin[j] + (from->mins[j] + from->maxs[j])*0.5f);
 		if (VectorLength(eorg) > rad)
 			continue;
 		return from;
@@ -1075,7 +1075,6 @@ void SetCTFStats(edict_t *ent)
 	e = G_Find(NULL, FOFS(classname), "item_flag_team1");
 	if (e != NULL) {
 		if (e->solid == SOLID_NOT) {
-			int i;
 
 			// not at base
 			// check if on player
@@ -1094,7 +1093,6 @@ void SetCTFStats(edict_t *ent)
 	e = G_Find(NULL, FOFS(classname), "item_flag_team2");
 	if (e != NULL) {
 		if (e->solid == SOLID_NOT) {
-			int i;
 
 			// not at base
 			// check if on player
@@ -2048,40 +2046,35 @@ void CTFSay_Team(edict_t *who, char *msg)
 
 	for (p = outmsg; *msg && (p - outmsg) < sizeof(outmsg) - 1; msg++) {
 		if (*msg == '%') {
-			switch (*++msg) {
+			switch (tolower(*++msg))
+			{
 				case 'l' :
-				case 'L' :
 					CTFSay_Team_Location(who, buf);
 					strcpy(p, buf);
 					p += strlen(buf);
 					break;
 				case 'a' :
-				case 'A' :
 					CTFSay_Team_Armor(who, buf);
 					strcpy(p, buf);
 					p += strlen(buf);
 					break;
 				case 'h' :
-				case 'H' :
 					CTFSay_Team_Health(who, buf);
 					strcpy(p, buf);
 					p += strlen(buf);
 					break;
 				case 't' :
-				case 'T' :
 					CTFSay_Team_Tech(who, buf);
 					strcpy(p, buf);
 					p += strlen(buf);
 					break;
 				case 'w' :
-				case 'W' :
 					CTFSay_Team_Weapon(who, buf);
 					strcpy(p, buf);
 					p += strlen(buf);
 					break;
 
 				case 'n' :
-				case 'N' :
 					CTFSay_Team_Sight(who, buf);
 					strcpy(p, buf);
 					p += strlen(buf);

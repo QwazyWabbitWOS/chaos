@@ -609,11 +609,11 @@ void ClientObituary (edict_t *self, edict_t *inflictor, edict_t *attacker)
 
 void Touch_Item (edict_t *ent, edict_t *other, cplane_t *plane, csurface_t *surf);
 
-void TossClientWeapon (edict_t *self)
+void TossClientWeapon(edict_t* self)
 {
-	gitem_t		*item;
-        gitem_t         *ammo;   //FWP Fakedeath ammo cheat fix
-	edict_t		*drop;
+	gitem_t* item;
+	gitem_t* ammo;   //FWP Fakedeath ammo cheat fix
+	edict_t* drop;
 	qboolean	quad;
 	float		spread;
 
@@ -621,26 +621,26 @@ void TossClientWeapon (edict_t *self)
 		return;
 
 	item = self->client->pers.weapon;
-	if (! self->client->pers.inventory[self->client->ammo_index] )
+	if (!self->client->pers.inventory[self->client->ammo_index])
 		item = NULL;
-	if (item && (strcmp (item->pickup_name, "AK42 Assault Pistol") == 0))
+	if (item && (strcmp(item->pickup_name, "AK42 Assault Pistol") == 0))
 		item = NULL;
 
 	// FWP Fix for fakedeath ammo cheat...if fakedeath, and ammo > default ammo for weapon, toss and
-        //     subtract default ammo, else dont toss
+	// subtract default ammo, else don't toss
 	if ((item) && (self->health > 0))
-	  {
-	    // FWP decrease ammo unless weapon doesnt use ammo 
+	{
+		// FWP decrease ammo unless weapon doesn't use ammo 
 
-	    if (item->ammo)
-	      {
-		ammo = FindItem (item->ammo);
-		if (self->client->pers.inventory[self->client->ammo_index] >  ammo->quantity)
-		  self->client->pers.inventory[self->client->ammo_index]-= ammo->quantity;
-		else
-		  item = NULL;
-	      }
-}
+		if (item->ammo)
+		{
+			ammo = FindItem(item->ammo);
+			if (self->client->pers.inventory[self->client->ammo_index] > ammo->quantity)
+				self->client->pers.inventory[self->client->ammo_index] -= ammo->quantity;
+			else
+				item = NULL;
+		}
+	}
 
 
 	if (!((int)(dmflags->value) & DF_QUAD_DROP))
@@ -656,7 +656,7 @@ void TossClientWeapon (edict_t *self)
 	if (item)
 	{
 		self->client->v_angle[YAW] -= spread;
-		drop = Drop_Item (self, item);
+		drop = Drop_Item(self, item);
 		self->client->v_angle[YAW] += spread;
 		drop->spawnflags = DROPPED_PLAYER_ITEM;
 	}
@@ -664,7 +664,7 @@ void TossClientWeapon (edict_t *self)
 	if (quad)
 	{
 		self->client->v_angle[YAW] += spread;
-		drop = Drop_Item (self, FindItemByClassname ("item_quad"));
+		drop = Drop_Item(self, FindItemByClassname("item_quad"));
 		self->client->v_angle[YAW] -= spread;
 		drop->spawnflags |= DROPPED_PLAYER_ITEM;
 
@@ -733,8 +733,8 @@ void player_die (edict_t *self, edict_t *inflictor, edict_t *attacker, int damag
 
 	if (!self->deadflag || self->client->fakedeath)
 	{
-	  // FWP Fix for neg frags on fakedeath in lava, once real death pccurs, unset fakedeath flag
-	        self->client->fakedeath = 0;
+		// FWP Fix for neg frags on fakedeath in lava, once real death pccurs, unset fakedeath flag
+		self->client->fakedeath = 0;
 
 		self->client->respawn_time = level.time + 1.0;
 		LookAtKiller (self, inflictor, attacker);
@@ -1344,8 +1344,10 @@ void	SelectSpawnPoint (edict_t *ent, vec3_t origin, vec3_t angles)
 			{	// there wasn't a spawnpoint without a target, so use any
 				spot = G_Find (spot, FOFS(classname), "info_player_start");
 			}
-			if (!spot)
-				gi.error ("Couldn't find spawn point %s\n", game.spawnpoint);
+			if (!spot) {
+				gi.error("Couldn't find spawn point %s\n", game.spawnpoint);
+				exit(EXIT_FAILURE);
+			}
 		}
 	}
 

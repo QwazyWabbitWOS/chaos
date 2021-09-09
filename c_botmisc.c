@@ -11,20 +11,20 @@
 /// Command handling
 ///------------------------------------------------------------------------------------------
 
-void Svcmd_addbots_f()	// adds "num" bots.
+void Svcmd_addbots_f(void)	// adds "num" bots.
 {
-	int		i, num, skill, team;
+	int		i, num, bot_skill, team;
 	char	name[64], model[128];
 
 	// sv addbots <amount> <skill> <team> <name> <model/skin>
 
 	num = atoi(gi.argv(2));
-	skill = atoi(gi.argv(3));
+	bot_skill = atoi(gi.argv(3));
 	team = atoi(gi.argv(4));
-	strcpy (name, gi.argv(5));
+	Com_strcpy (name, sizeof name, gi.argv(5));
 
-	if(skill == 0)
-		skill = 3;
+	if(bot_skill == 0)
+		bot_skill = 3;
 
 	if (num == 0)	// spawn 0 bots ???
 		return;
@@ -48,10 +48,10 @@ void Svcmd_addbots_f()	// adds "num" bots.
 		if(Q_stricmp(name,"") == 0
 			|| Q_stricmp(name," ") == 0)
 		{
-			strcpy(name,(strchr(model, '/')+1));
+			Com_strcpy(name,sizeof name, (strchr(model, '/')+1));
 		}
 
-		Bot_Create(skill, team, name, model);
+		Bot_Create(bot_skill, team, name, model);
 	}
 	else
 	{
@@ -72,11 +72,11 @@ void Svcmd_addbots_f()	// adds "num" bots.
 				sprintf(model, gi.argv(6));
 
 			// set the name
-			strcpy(name,(strchr(model, '/')+1));
+			Com_strcpy(name, sizeof name, (strchr(model, '/')+1));
 
 			//char *_strupr( char *string );
 
-			Bot_Create(skill, team, name, model);
+			Bot_Create(bot_skill, team, name, model);
 		}
 	}
 }
@@ -128,7 +128,7 @@ void Svcmd_killbot_f(char *name)
 /// bot create/spawn/respawn/die
 ///------------------------------------------------------------------------------------------
 
-void Bot_Create(int level, int team, char *name, char *skin)
+void Bot_Create(int bot_skill, int team, char *name, char *skin)
 {
 	int       i;
 	char      userinfo[MAX_INFO_STRING];
@@ -162,12 +162,12 @@ void Bot_Create(int level, int team, char *name, char *skin)
 
 	Bot_Spawn(bot);
 
-	if (level > 5)
-		level = 5;
-	if (level < 1)
-		level = 1;
+	if (bot_skill > 5)
+		bot_skill = 5;
+	if (bot_skill < 1)
+		bot_skill = 1;
 
-	bot->client->b_botlevel = level;
+	bot->client->b_botlevel = bot_skill;
 
 	gi.WriteByte(svc_muzzleflash);
 	gi.WriteShort(bot - g_edicts);
@@ -1298,8 +1298,6 @@ int Bot_CanPickupArmor (edict_t *self, edict_t *ent)
 			return 1;
 		}
 	}
-
-	return 0;
 }
 
 qboolean Bot_CanReachSpotDirectly(edict_t *ent, vec3_t target)
@@ -1565,24 +1563,19 @@ void RemoveFromList(edict_t *ent)
 
 void Load_BotChat(void)
 {
-	FILE	*fp;
-	int		section, line, i;
+	/* FILE* fp; MrG{DRGN} moved below */
+	int		section, line = 0, i; /* MrG{DRGN} initialized 09/23/2020 */
 	char	filename[256], buffer;
-	cvar_t	*game_dir;
+	cvar_t* game_dir;
 
-	game_dir = gi.cvar ("game", "", 0);
+	game_dir = gi.cvar("game", "", 0);
 
-#ifdef	_WIN32
-	i =  sprintf(filename, ".\\");
-	i += sprintf(filename + i, game_dir->string);
-	i += sprintf(filename + i, "\\botchat.txt");
-#else
-      strcpy(filename, "./");
-      strcat(filename, game_dir->string);
-      strcat(filename, "/botchat.txt");
-#endif
+	Com_strcpy(filename, sizeof filename, "./");
+	Com_strcat(filename, sizeof filename, game_dir->string);
+	Com_strcat(filename, sizeof filename, "/botchat.txt");
 
-	fp = fopen (filename, "r");
+	FILE* fp = fopen(filename, "r");
+
 	if (!fp)
 	{
 		gi.error("Can't open botchat.txt!\n");
@@ -1595,14 +1588,14 @@ void Load_BotChat(void)
 
 	while (!feof(fp))
 	{
-		fscanf(fp, "%c", &buffer);
+		if (fscanf(fp, "%c", &buffer)); /* MrG{DRGN check return */
 
 		if (buffer == ';')	//comment, strip the rest of the line
 		{
 			while (!feof(fp) && (buffer != '\n'))
-				fscanf(fp, "%c", &buffer);
+				if (fscanf(fp, "%c", &buffer)); /* MrG{DRGN check return */
 		}
-		else if (section > NUM_CHATSECTIONS -1)
+		else if (section > NUM_CHATSECTIONS - 1)
 		{
 			fclose(fp);
 			return;
@@ -1612,11 +1605,11 @@ void Load_BotChat(void)
 			section++; line = -1;
 
 			while (!feof(fp) && (buffer != '\n'))	// read the end of the line
-				fscanf(fp, "%c", &buffer);
+				if (fscanf(fp, "%c", &buffer)); /* MrG{DRGN check return */
 		}
-		else if (((buffer >= 'a') && (buffer <= 'z')) ||	// a chat line...read it
-				 ((buffer >= 'A') && (buffer <= 'Z')) ||
-				 (buffer == '%'))
+		else if ((((buffer >= 'a') && (buffer <= 'z')) ||	// a chat line...read it
+			((buffer >= 'A') && (buffer <= 'Z')) ||
+			(buffer == '%')) && (section >= 0))/* MrG{DRGN} added section >= 0 check to avoid array overrun*/
 		{
 			i = 0;
 			line++;
@@ -1630,7 +1623,7 @@ void Load_BotChat(void)
 			{
 				chat_text[section][line][i++] = buffer;
 
-				fscanf(fp, "%c", &buffer);
+				if (fscanf(fp, "%c", &buffer)); /* MrG{DRGN check return */
 			}
 
 			if (i > 0)
@@ -1639,6 +1632,7 @@ void Load_BotChat(void)
 			}
 			else	//empty line ?
 				line--;
+
 
 			chat_linecount[section] = line;
 		}

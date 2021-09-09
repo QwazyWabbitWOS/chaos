@@ -4,6 +4,12 @@
 
 #define	STEPSIZE	18
 
+// stubbed
+qboolean M_CheckBottom(edict_t* ent)
+{
+	return true;
+}
+
 /*
 =============
 SV_movestep
@@ -14,7 +20,6 @@ possible, no move is done, false is returned, and
 pr_global_struct->trace_normal is set to the normal of the blocking wall
 =============
 */
-
 qboolean SV_movestep (edict_t *ent, vec3_t move, qboolean relink)
 {
 	vec3_t		oldorg, neworg, end;
@@ -67,33 +72,36 @@ qboolean SV_movestep (edict_t *ent, vec3_t move, qboolean relink)
 // check point traces down for dangling corners
 	VectorCopy (trace.endpos, ent->s.origin);
 	
-	if ( ent->flags & FL_PARTIALGROUND )
-	{	// entity had floor mostly pulled out from underneath it
-		// and is trying to correct
+	if (!M_CheckBottom(ent)) 
+	{
+		if (ent->flags & FL_PARTIALGROUND)
+		{	// entity had floor mostly pulled out from underneath it
+			// and is trying to correct
+			if (relink)
+			{
+				gi.linkentity(ent);
+				G_TouchTriggers(ent);
+			}
+			return true;
+		}
+		VectorCopy(oldorg, ent->s.origin);
+		return false;
+	}
+
+	if (ent->flags & FL_PARTIALGROUND)
+		{
+			ent->flags &= ~FL_PARTIALGROUND;
+		}
+		ent->groundentity = trace.ent;
+		ent->groundentity_linkcount = trace.ent->linkcount;
+
+	// the move is ok
 		if (relink)
 		{
 			gi.linkentity (ent);
 			G_TouchTriggers (ent);
 		}
 		return true;
-	}
-	VectorCopy (oldorg, ent->s.origin);
-	return false;
-
-	if ( ent->flags & FL_PARTIALGROUND )
-	{
-		ent->flags &= ~FL_PARTIALGROUND;
-	}
-	ent->groundentity = trace.ent;
-	ent->groundentity_linkcount = trace.ent->linkcount;
-
-// the move is ok
-	if (relink)
-	{
-		gi.linkentity (ent);
-		G_TouchTriggers (ent);
-	}
-	return true;
 }
 
 
