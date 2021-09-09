@@ -576,6 +576,7 @@ void Cmd_Score_f (edict_t *ent);
 //
 // g_items.c
 //
+void DoRespawn(edict_t* ent);
 void PrecacheItem (gitem_t *it);
 void InitItems (void);
 void SetItemNames (void);

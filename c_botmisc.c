@@ -132,7 +132,7 @@ void Bot_Create(int level, int team, char *name, char *skin)
 {
 	int       i;
 	char      userinfo[MAX_INFO_STRING];
-	edict_t   *bot;
+	edict_t   *bot = NULL;
 
 	for (i = maxclients->value; i > 0; i--)
 	{
@@ -141,7 +141,7 @@ void Bot_Create(int level, int team, char *name, char *skin)
 		break;
 	}
 
-	if (bot->inuse)
+	if (bot && bot->inuse)
 		bot = NULL;
 
 	if (!bot)

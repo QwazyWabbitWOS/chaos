@@ -648,10 +648,6 @@ void LoadMOTD()
 	cvar_t	*game_dir;
 	int i;
 
-#ifdef _WIN32
-	int i;
-#endif
-
 	game_dir = gi.cvar ("game", "", 0);
 
 #ifdef	_WIN32

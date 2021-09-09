@@ -1,16 +1,16 @@
 
 // q_shared.h -- included first by ALL program modules
+#pragma once
 
 #ifdef _WIN32
-// unknown pragmas are SUPPOSED to be ignored, but....
-#pragma warning(disable : 4244)     // MIPS
-#pragma warning(disable : 4136)     // X86
-#pragma warning(disable : 4051)     // ALPHA
-
-#pragma warning(disable : 4018)     // signed/unsigned mismatch
-#pragma warning(disable : 4305)		// truncation from const double to float
-
-#endif
+#pragma warning(disable : 4018) // signed/unsigned mismatch
+#pragma warning(disable : 4305) // truncation from const double to float
+#pragma warning(disable : 4244)	// C4244 conversion from 'type1' to 'type2', possible loss of data
+#pragma warning(disable : 4100)	// C4100 unreferenced formal parameter
+#if _MSC_VER > 1500
+#pragma warning(disable : 4996)	// disable warnings from VS 2010 about deprecated CRT functions (_CRT_SECURE_NO_WARNINGS).
+#endif /*_MSC_VER */
+#endif /* _WIN32 */
 
 #include <assert.h>
 #include <math.h>
