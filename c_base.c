@@ -181,12 +181,9 @@ void ClearMaplist(void)
 void LoadMaplist(char	*filename) 
 { 
 	FILE	*fp = NULL;
-	cvar_t	*game_dir;
 	int		i = 0;
 	char	file[MAX_QPATH];
 	char	line[MAX_MAPNAME_LEN + 3];
-
-	game_dir = gi.cvar ("game", "", 0);
 
       Com_strcpy(file, sizeof file, "./");
       Com_strcat(file, sizeof file, game_dir->string);
@@ -637,10 +634,7 @@ void LoadMOTD(void)
 	FILE *fp;
 	char file[256];
 	char line[80];
-	cvar_t	*game_dir;
 	int i;
-
-	game_dir = gi.cvar ("game", "", 0);
 
 	Com_strcpy(file, sizeof file, "./");
 	Com_strcat(file, sizeof file, game_dir->string);
