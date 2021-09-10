@@ -416,8 +416,8 @@ qboolean Bot_SaveNodes(void)
 	FILE	*output;
 	char	file[256];
 	cvar_t	*game_dir;
-	const char	nodetable_version[]	= "v02\0";
-	const char	nodetable_id[]		= "CHAOSDM NODE TABLE\0";
+	const char	nodetable_version[]	= "v02";
+	const char	nodetable_id[]		= "CHAOSDM NODE TABLE";
 	int		dntgvalue = dntg->value;
 
 
@@ -477,6 +477,7 @@ qboolean Bot_LoadNodes(void)
 	char	id_buffer[28] = { 0 };
 	char	version_buffer[5] = { 0 };
 	int		dntgvalue;
+	size_t	numread;
 
 	game_dir = gi.cvar ("game", "", 0);
 
@@ -486,18 +487,36 @@ qboolean Bot_LoadNodes(void)
 	Com_strcat(file, sizeof file, level.mapname);
 	Com_strcat(file, sizeof file, ".ntb");
 
+	//gi.dprintf("Reading bot node table: %s\n", file);
+
 	input = fopen (file, "rb");
 
 	if(!input)
 		return false;
 
 	//check 1
-	fread (id_buffer, sizeof(const char), sizeof id_buffer, input);
-	fread (version_buffer, sizeof(const char), sizeof version_buffer - 1, input);
-	fread (&numnodes, sizeof(int), 1, input);
+	numread = fread(id_buffer, sizeof(const char), sizeof id_buffer, input);
+	if (numread == 0) {
+		gi.dprintf("Chaos: error reading id_buffer in %s\n", file);
+		return false;
+	}
+	numread = fread(version_buffer, sizeof(const char), sizeof version_buffer - 1, input);
+	if (numread == 0) {
+		gi.dprintf("Chaos: error reading version_buffer in %s\n", file);
+		return false;
+	}
+	numread = fread(&numnodes, sizeof(int), 1, input);
+	if (numread == 0) {
+		gi.dprintf("Chaos: error reading numnodes in %s\n", file);
+		return false;
+	}
 
 	//dynamic node table generation on/off
-	fread (&dntgvalue, sizeof(int), 1, input);
+	numread = fread (&dntgvalue, sizeof(int), 1, input);
+	if (numread == 0) {
+		gi.dprintf("Chaos: error reading dynamic setting in %s\n", file);
+		return false;
+	}
 
 	if (dntgvalue == 1)
 	{
@@ -523,21 +542,45 @@ qboolean Bot_LoadNodes(void)
 
 	for (i = 0; i < numnodes; i++)
 	{
-		fread (&nodes[i].flag, sizeof(int), 1, input);
-		fread (&nodes[i].duckflag, sizeof(int), 1, input);
-		fread (&nodes[i].origin, sizeof(vec3_t), 1, input);
+		numread = fread (&nodes[i].flag, sizeof(int), 1, input);
+		if (numread == 0) {
+			gi.dprintf("Chaos: error reading node flag in %s\n", file);
+			return false;
+		}
+		numread = fread (&nodes[i].duckflag, sizeof(int), 1, input);
+		if (numread == 0) {
+			gi.dprintf("Chaos: error reading duck flag in %s\n", file);
+			return false;
+		}
+		numread = fread (&nodes[i].origin, sizeof(vec3_t), 1, input);
+		if (numread == 0) {
+			gi.dprintf("Chaos: error reading origin in %s\n", file);
+			return false;
+		}
 
 		for (j = 0; j < numnodes; j++)
 		{
-			fread(&dist, sizeof(float), 1, input);
-			nodes[i].dist[j] = (double) dist;
+			numread = fread(&dist, sizeof(float), 1, input);
+			if (numread == 0) {
+				gi.dprintf("Chaos: error reading distances in %s\n", file);
+				return false;
+			}
+				nodes[i].dist[j] = (double) dist;
 		}
 	}
 
 	//check 2
-	fread (id_buffer, sizeof(const char), 19, input);
-	fread (version_buffer, sizeof(const char), 4, input);
-	
+	numread = fread (id_buffer, sizeof(const char), 19, input);
+	if (numread == 0) {
+		gi.dprintf("Chaos: error reading id_buffer in %s\n", file);
+		return false;
+	}
+	numread = fread (version_buffer, sizeof(const char), 4, input);
+	if (numread == 0) {
+		gi.dprintf("Chaos: error reading version_buffer in %s\n", file);
+		return false;
+	}
+
 	if (!(strcmp(id_buffer, nodetable_id) == 0))
 		return false;
 	if (!(strcmp(version_buffer, nodetable_version) == 0))
