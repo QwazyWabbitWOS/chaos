@@ -498,24 +498,20 @@ qboolean Bot_LoadNodes(void)
 	numread = fread(id_buffer, sizeof(const char), sizeof id_buffer, input);
 	if (numread == 0) {
 		gi.dprintf("Chaos: error reading id_buffer in %s\n", file);
-		return false;
 	}
 	numread = fread(version_buffer, sizeof(const char), sizeof version_buffer - 1, input);
 	if (numread == 0) {
 		gi.dprintf("Chaos: error reading version_buffer in %s\n", file);
-		return false;
 	}
 	numread = fread(&numnodes, sizeof(int), 1, input);
 	if (numread == 0) {
 		gi.dprintf("Chaos: error reading numnodes in %s\n", file);
-		return false;
 	}
 
 	//dynamic node table generation on/off
 	numread = fread (&dntgvalue, sizeof(int), 1, input);
 	if (numread == 0) {
 		gi.dprintf("Chaos: error reading dynamic setting in %s\n", file);
-		return false;
 	}
 
 	if (dntgvalue == 1)
@@ -545,17 +541,14 @@ qboolean Bot_LoadNodes(void)
 		numread = fread (&nodes[i].flag, sizeof(int), 1, input);
 		if (numread == 0) {
 			gi.dprintf("Chaos: error reading node flag in %s\n", file);
-			return false;
 		}
 		numread = fread (&nodes[i].duckflag, sizeof(int), 1, input);
 		if (numread == 0) {
 			gi.dprintf("Chaos: error reading duck flag in %s\n", file);
-			return false;
 		}
 		numread = fread (&nodes[i].origin, sizeof(vec3_t), 1, input);
 		if (numread == 0) {
 			gi.dprintf("Chaos: error reading origin in %s\n", file);
-			return false;
 		}
 
 		for (j = 0; j < numnodes; j++)
@@ -563,7 +556,6 @@ qboolean Bot_LoadNodes(void)
 			numread = fread(&dist, sizeof(float), 1, input);
 			if (numread == 0) {
 				gi.dprintf("Chaos: error reading distances in %s\n", file);
-				return false;
 			}
 				nodes[i].dist[j] = (double) dist;
 		}
@@ -573,12 +565,10 @@ qboolean Bot_LoadNodes(void)
 	numread = fread (id_buffer, sizeof(const char), 19, input);
 	if (numread == 0) {
 		gi.dprintf("Chaos: error reading id_buffer in %s\n", file);
-		return false;
 	}
 	numread = fread (version_buffer, sizeof(const char), 4, input);
 	if (numread == 0) {
 		gi.dprintf("Chaos: error reading version_buffer in %s\n", file);
-		return false;
 	}
 
 	if (!(strcmp(id_buffer, nodetable_id) == 0))
