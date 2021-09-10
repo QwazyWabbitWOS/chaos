@@ -221,7 +221,7 @@ void Bot_Spawn(edict_t *ent)
 
 	if (!deathmatch->value)
 	{
-		gi.dprintf("Must be in Deathmatch to spawn as Bot!\n");
+		Com_Printf("Must be in Deathmatch to spawn as Bot!\n");
 		return;
 	}
 

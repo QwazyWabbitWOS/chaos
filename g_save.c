@@ -96,8 +96,8 @@ void InitGame (void)
 
 	sl_Logging( &gi, "chaos" );	// StdLog - Mark Davies (Only required to set patch name)
 
-	gi.dprintf("\n====               InitGame               ====\n");
-	gi.dprintf("==== %s built on %s, at %s ====\n\n", GAMEVERSION, __DATE__, __TIME__);
+	Com_Printf("\n====               InitGame               ====\n");
+	Com_Printf("==== %s built on %s, at %s ====\n\n", GAMEVERSION, __DATE__, __TIME__);
 
 	gun_x = gi.cvar ("gun_x", "0", 0);
 	gun_y = gi.cvar ("gun_y", "0", 0);
@@ -145,7 +145,7 @@ void InitGame (void)
 
 	//This game.dll only supports deathmatch
 	if (!deathmatch->value) {
-		gi.dprintf("Forcing deathmatch.");
+		Com_Printf("Forcing deathmatch.");
 		gi.cvar_set("deathmatch", "1");
 	}
 	//force coop off
