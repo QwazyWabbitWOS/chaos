@@ -210,7 +210,8 @@ void LoadMaplist(char	*filename)
 		{ 
 			int		len;
 
-			fgets (line, sizeof line, fp);
+			if (fgets(line, sizeof line, fp) == NULL)
+				gi.dprintf("%s file read error %s\n", __func__, file);
 			len=strlen(line);
 
 			if (len < 5) //invalid
@@ -677,7 +678,8 @@ void LoadMOTD(void)
 		{ 
 			int		len;
 
-			fgets (line, sizeof line, fp);
+			if (fgets(line, sizeof line, fp) == NULL)
+				gi.dprintf("%s file read error %s\n", __func__, file);
 			len=strlen(line);
 
 			while(line[len] == '\n'||line[len] == '\r')

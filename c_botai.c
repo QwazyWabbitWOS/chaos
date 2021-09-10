@@ -619,10 +619,10 @@ void Bot_Think(edict_t *ent)
 		}
 		else
 		{
-			int	lastnodeflag = NORMAL_NODE;
+			//int	lastnodeflag = NORMAL_NODE;
 
-			if (n > 0)
-				lastnodeflag = nodes[ent->client->b_path[n-1]].flag;
+			//if (n > 0)
+			//	lastnodeflag = nodes[ent->client->b_path[n-1]].flag;
 
 			VectorSubtract(nodes[ent->client->b_path[n]].origin, ent->s.origin, dvec);
 			dist = VectorLength(dvec);
@@ -835,7 +835,7 @@ void Bot_Think(edict_t *ent)
 	else
 	{
 		vec3_t	forward, dir, oorigin, wallangles;
-		vec_t	dist;
+		//vec_t	dist;
 		trace_t	tr;
 
 		it_lturret = FindItem("automatic defence turret");	//bugfix
@@ -904,7 +904,7 @@ void Bot_Think(edict_t *ent)
 			{
 				ent->client->b_waittime = 0;
 				VectorSubtract(ent->client->b_nopathitem->s.origin, ent->s.origin, dir);
-				dist = VectorLength(dir);
+				//dist = VectorLength(dir);
 				Bot_Aim(ent, ent->client->b_nopathitem->s.origin, angles);
 
 				if(SaveMoveDir(ent, RUN_SPEED, 0, angles))
