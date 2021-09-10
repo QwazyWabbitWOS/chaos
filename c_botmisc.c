@@ -1565,9 +1565,11 @@ void Load_BotChat(void)
 {
 	/* FILE* fp; MrG{DRGN} moved below */
 	int		section, line = 0, i; /* MrG{DRGN} initialized 09/23/2020 */
-	char	filename[256], buffer;
+	char	filename[MAX_QPATH];
+	char	buffer;
 	cvar_t* game_dir;
 
+	memset(chat_text, 0, sizeof(chat_text));
 	game_dir = gi.cvar("game", "", 0);
 
 	Com_strcpy(filename, sizeof filename, "./");
@@ -1578,17 +1580,26 @@ void Load_BotChat(void)
 
 	if (!fp)
 	{
-		gi.error("Can't open botchat.txt!\n");
+		//QwazyWabbit gracefully fail if file doesn't exist.
+		Com_Printf("Can't open %s!\n", filename);
+		Com_Printf("Forcing botchat OFF\n");
+		gi.cvar_set("botchat", "0");
 		return;
 	}
-
-	memset(chat_text, 0, sizeof(chat_text));
 
 	section = -1;
 
 	while (!feof(fp))
 	{
-		if (fscanf(fp, "%c", &buffer)); /* MrG{DRGN check return */
+		// QwazyWabbit if file exists but doesn't parse, fall out and disable bot chat.
+		if (fscanf(fp, "%c", &buffer) == EOF && section == -1) /* MrG{DRGN check return */
+		{
+			Com_Printf("Chaos: ERROR reading %s\n", filename);
+			Com_Printf("Forcing botchat OFF and aborting file load.\n\n");
+			gi.cvar_set("botchat", "0");
+			fclose(fp);
+			return;
+		}
 
 		if (buffer == ';')	//comment, strip the rest of the line
 		{
@@ -1602,7 +1613,8 @@ void Load_BotChat(void)
 		}
 		else if (buffer == '[')	//section
 		{
-			section++; line = -1;
+			section++;
+			line = -1;
 
 			while (!feof(fp) && (buffer != '\n'))	// read the end of the line
 				if (fscanf(fp, "%c", &buffer)); /* MrG{DRGN check return */
@@ -1638,6 +1650,7 @@ void Load_BotChat(void)
 		}
 	}
 
+	Com_Printf("%s successfully loaded %u sections.\n", filename, section + 1);
 	fclose(fp);
 }
 
