@@ -39,10 +39,10 @@ void Svcmd_addbots_f(void)	// adds "num" bots.
 		// set the model
 		if (Q_stricmp(gi.argv(6), "") == 0)
 		{
-			sprintf(model, Get_RandomBotSkin());
+			Com_sprintf(model, sizeof model, Get_RandomBotSkin());
 		}
 		else
-			sprintf(model, gi.argv(6));
+			Com_sprintf(model, sizeof model, gi.argv(6));
 
 		// set the name
 		if(Q_stricmp(name,"") == 0
@@ -66,10 +66,10 @@ void Svcmd_addbots_f(void)	// adds "num" bots.
 			// set the model
 			if (Q_stricmp(gi.argv(6), "") == 0)
 			{
-				sprintf(model, Get_RandomBotSkin());
+				Com_sprintf(model, sizeof model, Get_RandomBotSkin());
 			}
 			else
-				sprintf(model, gi.argv(6));
+				Com_sprintf(model, sizeof model, gi.argv(6));
 
 			// set the name
 			Com_strcpy(name, sizeof name, (strchr(model, '/')+1));
@@ -146,7 +146,7 @@ void Bot_Create(int bot_skill, int team, char *name, char *skin)
 
 	if (!bot)
 	{
-		bprintf2 (PRINT_HIGH, "%s cant connect, server is full!\n", name);
+		bprintf2 (PRINT_HIGH, "%s can't connect, server is full!\n", name);
 		return;
 	}
 
@@ -1188,45 +1188,45 @@ qboolean Bot_CanPickupAmmo(edict_t *ent, edict_t *eitem)
 	return 1;
 }
 
-qboolean Bot_CanPickupItem(edict_t *ent, edict_t *eitem)
+qboolean Bot_CanPickupItem(edict_t* ent, edict_t* eitem)
 {
-	gitem_t	*item;
-	
+	gitem_t* item;
+
 	it_lturret = FindItem("automatic defence turret");	//bugfix
 
 	item = eitem->item;
 
-		if (item == FindItem("Red Flag")
-			|| item == FindItem("Blue Flag"))
+	if (item == FindItem("Red Flag")
+		|| item == FindItem("Blue Flag"))
+		return 0;
+
+	if (item == FindItem("Health") && ent->health >= ent->max_health)
+		return 0;
+
+	if (item == FindItem("Power Amplifier")
+		|| item == FindItem("Time Accel")
+		|| item == FindItem("Autodoc")
+		|| item == FindItem("Disruptor Shield"))
+	{
+		if (ent->client->pers.inventory[ITEM_INDEX(FindItem("Power Amplifier"))]
+			|| ent->client->pers.inventory[ITEM_INDEX(FindItem("Time Accel"))]
+			|| ent->client->pers.inventory[ITEM_INDEX(FindItem("Autodoc"))]
+			|| ent->client->pers.inventory[ITEM_INDEX(FindItem("Disruptor Shield"))])
 			return 0;
+	}
 
-		if (item == FindItem("Health") && ent->health >= ent->max_health)
-			return 0;
+	if (!Bot_CanPickupAmmo(ent, eitem))
+		return 0;
 
-		if (item == FindItem("Power Amplifier")
-			|| item == FindItem("Time Accel")
-			|| item == FindItem("Autodoc")
-			|| item == FindItem("Disruptor Shield"))
-		{
-			if ( ent->client->pers.inventory[ITEM_INDEX(FindItem("Power Amplifier"))]
-				|| ent->client->pers.inventory[ITEM_INDEX(FindItem("Time Accel"))]
-				|| ent->client->pers.inventory[ITEM_INDEX(FindItem("Autodoc"))]
-				|| ent->client->pers.inventory[ITEM_INDEX(FindItem("Disruptor Shield"))])
-				return 0;
-		}
+	if (Q_stricmp(eitem->classname, "item_armor_body") == 0
+		|| Q_stricmp(eitem->classname, "item_armor_jacket") == 0
+		|| Q_stricmp(eitem->classname, "item_armor_combat") == 0)
+	{
+		if (!Bot_CanPickupArmor(ent, eitem));
+		return 0;
+	}
 
-		if (!Bot_CanPickupAmmo(ent, eitem))
-			return 0;
-
-		if (Q_stricmp(eitem->classname, "item_armor_body") == 0
-			|| Q_stricmp(eitem->classname, "item_armor_jacket") == 0
-			|| Q_stricmp(eitem->classname, "item_armor_combat") == 0)
-		{
-			if (!Bot_CanPickupArmor (ent, eitem));
-				return 0;
-		}
-
-		return 1;
+	return 1;
 }
 
 extern gitem_armor_t jacketarmor_info;

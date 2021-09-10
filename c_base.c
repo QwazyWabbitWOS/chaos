@@ -183,7 +183,7 @@ void LoadMaplist(char	*filename)
 	FILE	*fp = NULL;
 	cvar_t	*game_dir;
 	int		i = 0;
-	char	file[_MAX_PATH];
+	char	file[MAX_QPATH];
 	char	line[MAX_MAPNAME_LEN + 3];
 
 	game_dir = gi.cvar ("game", "", 0);
@@ -641,9 +641,9 @@ void LoadMOTD(void)
 
 	game_dir = gi.cvar ("game", "", 0);
 
-	i =  sprintf(file, "./");
-	i += sprintf(file + i, game_dir->string);
-	i += sprintf(file + i, "/motd.txt");
+	Com_strcpy(file, sizeof file, "./");
+	Com_strcat(file, sizeof file, game_dir->string);
+	Com_strcat(file, sizeof file, "/motd.txt");
 
     /* 	if ((fp = fopen(file, "r")) != NULL)
 	{
@@ -936,22 +936,21 @@ edict_t *findradius2 (edict_t *from, vec3_t org, float rad)	//find all entities
 	return NULL;
 }
 
-void bprintf2 (int printlevel, char *fmt, ...)
+void bprintf2(int printlevel, char* fmt, ...)
 {
 	int i;
 	char	bigbuffer[0x1000];
-	int		len;
 	va_list		argptr;
-	edict_t	*cl_ent;
+	edict_t* cl_ent;
 
-	va_start (argptr,fmt);
-	len = vsprintf (bigbuffer,fmt,argptr);
-	va_end (argptr);
+	va_start(argptr, fmt);
+	(void)vsprintf(bigbuffer, fmt, argptr);
+	va_end(argptr);
 
 	if (dedicated->value)
 		gi.cprintf(NULL, printlevel, bigbuffer);
 
-	for (i=0 ; i<maxclients->value ; i++)
+	for (i = 0; i < maxclients->value; i++)
 	{
 		cl_ent = g_edicts + 1 + i;
 		if (!cl_ent->inuse || (Q_stricmp(cl_ent->classname, "bot") == 0))
@@ -961,18 +960,17 @@ void bprintf2 (int printlevel, char *fmt, ...)
 	}
 }
 
-void cprintf2 (edict_t *ent, int printlevel, char *fmt, ...)
+void cprintf2(edict_t* ent, int printlevel, char* fmt, ...)
 {
 	char	bigbuffer[0x1000];
-	int		len;
 	va_list		argptr;
 
 	if (!ent)
 		return;
 
-	va_start (argptr,fmt);
-	len = vsprintf (bigbuffer,fmt,argptr);
-	va_end (argptr);
+	va_start(argptr, fmt);
+	(void)vsprintf(bigbuffer, fmt, argptr);
+	va_end(argptr);
 
 	if (ent->inuse && (Q_stricmp(ent->classname, "bot") != 0))
 	{
@@ -984,7 +982,6 @@ void nprintf (int printlevel, char *fmt, ...)
 {
 	int i;
 	char	bigbuffer[0x1000];
-	int		len;
 	va_list		argptr;
 	edict_t	*cl_ent;
 
@@ -992,7 +989,7 @@ void nprintf (int printlevel, char *fmt, ...)
 		return;
 
 	va_start (argptr,fmt);
-	len = vsprintf (bigbuffer,fmt,argptr);
+	(void) vsprintf (bigbuffer,fmt,argptr);
 	va_end (argptr);
 
 	for (i=0 ; i<maxclients->value ; i++)
@@ -1046,9 +1043,9 @@ void ThrowUpNow(edict_t *self)
 	rn = random();
 	if (rn < 0.25)
 		gi.sound (self, CHAN_VOICE, gi.soundindex("misc/vomit1.wav"), 1, ATTN_NORM, 0);
-	else if (0.25 <= rn < 0.5)
+	else if (0.25 <= rn || rn < 0.5)
 		gi.sound (self, CHAN_VOICE, gi.soundindex("misc/vomit2.wav"), 1, ATTN_NORM, 0);
-	else if (0.5 <= rn < 0.75)
+	else if (0.5 <= rn || rn < 0.75)
 		gi.sound (self, CHAN_VOICE, gi.soundindex("misc/vomit3.wav"), 1, ATTN_NORM, 0);
 	else
 		gi.sound (self, CHAN_VOICE, gi.soundindex("misc/vomit4.wav"), 1, ATTN_NORM, 0);
@@ -1635,9 +1632,9 @@ void ClientCommand2 (edict_t *ent)
 			{
 				char name[MAX_INFO_KEY], skin[MAX_INFO_KEY], hand[MAX_INFO_KEY];
 
-				sprintf(name,Info_ValueForKey (ent->client->pers.userinfo, "name"));
-				sprintf(skin,Info_ValueForKey (ent->client->pers.userinfo, "skin"));
-				sprintf(hand,Info_ValueForKey (ent->client->pers.userinfo, "hand"));
+				Com_sprintf(name, sizeof name, Info_ValueForKey (ent->client->pers.userinfo, "name"));
+				Com_sprintf(skin, sizeof skin, Info_ValueForKey (ent->client->pers.userinfo, "skin"));
+				Com_sprintf(hand, sizeof hand, Info_ValueForKey (ent->client->pers.userinfo, "hand"));
 				
 				ClientDisconnect (ent);
 				ClientConnect (ent, ent->client->pers.userinfo);

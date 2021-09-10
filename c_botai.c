@@ -148,8 +148,10 @@ qboolean Bot_StandingUnderPlat(edict_t *ent)
 
 void Bot_Think(edict_t *ent)
 {
-	usercmd_t   cmd;
-	vec3_t      angles = {0,0,0}, mins = {-16,-16,0},maxs = {16,16,10};
+	usercmd_t	cmd;
+	vec3_t		angles = { 0,0,0 };
+	vec3_t		mins = { -16,-16,0 };
+	vec3_t		maxs = { 16,16,10 };
 
 	// init usercmd variable
 	VectorCopy(ent->client->v_angle, angles);
@@ -1034,7 +1036,7 @@ edict_t *Bot_FindBestWeapon(edict_t *ent)
 		if (current->avoidtime > level.time)
 			goto next;
 
-		if (!current->solid == SOLID_TRIGGER)	// is it currently there
+		if (!(current->solid == SOLID_TRIGGER))	// is it currently there
 			goto next;
 
 		if (!current->item)
@@ -1970,7 +1972,7 @@ void Bot_Wave (edict_t *ent, int i, float time)
 	if (ent->client->fakedeath > 0)
 		return;
 
-	if (!ent->health > 0)
+	if (!(ent->health > 0))
 		return;
 
 	// can't wave when ducked
@@ -2014,25 +2016,24 @@ void Bot_Wave (edict_t *ent, int i, float time)
 	ent->client->b_pausetime = level.time + time;
 }
 
-void Bot_Say (edict_t *ent, qboolean team, char *fmt, ...)
+void Bot_Say(edict_t* ent, qboolean team, char* fmt, ...)
 {
 	int i;
 	char	bigbuffer[0x1000];
-	int		len;
 	va_list		argptr;
-	edict_t	*cl_ent;
+	edict_t* cl_ent;
 
 	if (!botchat->value)
 		return;
 
-	va_start (argptr,fmt);
-	len = vsprintf (bigbuffer,fmt,argptr);
-	va_end (argptr);
+	va_start(argptr, fmt);
+	(void)vsprintf(bigbuffer, fmt, argptr);
+	va_end(argptr);
 
 	if (dedicated->value)
 		gi.cprintf(NULL, PRINT_CHAT, bigbuffer);
 
-	for (i=0 ; i<maxclients->value ; i++)
+	for (i = 0; i < maxclients->value; i++)
 	{
 		cl_ent = g_edicts + 1 + i;
 		if (!cl_ent->inuse || (Q_stricmp(cl_ent->classname, "bot") == 0))

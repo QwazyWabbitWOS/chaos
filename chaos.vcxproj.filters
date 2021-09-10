@@ -66,6 +66,7 @@
       <Filter>Resource Files</Filter>
     </None>
     <None Include="Makefile" />
+    <None Include="GNUmakefile" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="c_base.c">
