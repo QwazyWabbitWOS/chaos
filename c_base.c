@@ -678,8 +678,10 @@ void LoadMOTD(void)
 		{ 
 			int		len;
 
-			if (fgets(line, sizeof line, fp) == NULL)
-				gi.dprintf("%s file read error %s\n", __func__, file);
+			if (fgets(line, sizeof line, fp) == NULL) {
+				if (!feof(fp))
+					gi.dprintf("%s problem reading %s\n", __func__, file);
+			}
 			len=strlen(line);
 
 			while(line[len] == '\n'||line[len] == '\r')
