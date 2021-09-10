@@ -2031,13 +2031,11 @@ static void CTFSay_Team_Sight(edict_t *who, char *buf)
 
 void CTFSay_Team(edict_t *who, char *msg)
 {
-	char outmsg[1024];
-	char buf[1024];
+	char outmsg[1024] = { 0 };
+	char buf[1024] = { 0 };
 	int i;
 	char *p;
 	edict_t *cl_ent;
-
-	outmsg[0] = 0;
 
 	if (*msg == '\"') {
 		msg[strlen(msg) - 1] = 0;
@@ -2046,35 +2044,35 @@ void CTFSay_Team(edict_t *who, char *msg)
 
 	for (p = outmsg; *msg && (p - outmsg) < sizeof(outmsg) - 1; msg++) {
 		if (*msg == '%') {
-			switch (tolower(*++msg))
+			switch (toupper(*++msg))
 			{
-				case 'l' :
+				case 'L' :
 					CTFSay_Team_Location(who, buf);
 					strcpy(p, buf);
 					p += strlen(buf);
 					break;
-				case 'a' :
+				case 'A' :
 					CTFSay_Team_Armor(who, buf);
 					strcpy(p, buf);
 					p += strlen(buf);
 					break;
-				case 'h' :
+				case 'H' :
 					CTFSay_Team_Health(who, buf);
 					strcpy(p, buf);
 					p += strlen(buf);
 					break;
-				case 't' :
+				case 'T' :
 					CTFSay_Team_Tech(who, buf);
 					strcpy(p, buf);
 					p += strlen(buf);
 					break;
-				case 'w' :
+				case 'W' :
 					CTFSay_Team_Weapon(who, buf);
 					strcpy(p, buf);
 					p += strlen(buf);
 					break;
 
-				case 'n' :
+				case 'N' :
 					CTFSay_Team_Sight(who, buf);
 					strcpy(p, buf);
 					p += strlen(buf);
