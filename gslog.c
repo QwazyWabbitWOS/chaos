@@ -290,7 +290,7 @@ void sl_WriteStdLogDeath( game_import_t     *gi,
                 else {
                       if (attacker && attacker->owner && attacker->owner->client)
 			  {
-                             if (Q_strncasecmp(attacker->classname, "rocket_turret", 13) == 0)
+                             if (Q_stricmp(attacker->classname, "rocket_turret") == 0)
 			       {
 				 if (attacker->owner == self) {
 				   pKillerName = self->client->pers.netname;

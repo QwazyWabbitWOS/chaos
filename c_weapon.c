@@ -3987,28 +3987,27 @@ void BlackHole_Think (edict_t *ent)
  * This is a general ussage function that validates if the
  * target "blip" is a valid target for the hunter "ent"
  */
-int Valid_Target( edict_t *ent, edict_t *blip )
+int Valid_Target(edict_t* ent, edict_t* blip)
 {
-int dummy;
 
-  	/*
+	/*
 	 * For every item we never allow it to legally target itself
 	 */
 	if (blip == ent)
-	  return false;
+		return false;
 
-	/* 
+	/*
 	 * The Vortex doesn't care who launched it or who is one what team,
 	 * it just eats everything in it's path
 	 */
-	if(Q_stricmp(ent->classname, "vortex") /*== 0)*/)
-	  /*
-	{
-	  if (blip->item || blip->client)
-	  	  return true;
-	}
-	else // These are the quick rules for Turret's, Proxies, ect...
-	*/
+	if (Q_stricmp(ent->classname, "vortex") /*== 0)*/)
+		/*
+	  {
+		if (blip->item || blip->client)
+			return true;
+	  }
+	  else // These are the quick rules for Turret's, Proxies, ect...
+	  */
 	{
 		/*
 		 * Can See
@@ -4019,36 +4018,36 @@ int dummy;
 		 * havok bot's should likely use the same function to decide
 		 * if a target is visible.
 		 */
-	  /*		if( !visible(ent,blip) ||
-		    !infront(ent,blip) ||
-		    blip->health <= 0 )
-		  return false;
- 
-	  */
-	          if (blip->health <= 0)
-                      return false;
+		 /*		if( !visible(ent,blip) ||
+			   !infront(ent,blip) ||
+			   blip->health <= 0 )
+			 return false;
+
+		 */
+		if (blip->health <= 0)
+			return false;
 
 		/*
 		 * Turret's and Proxies should only be attacking other
 		 * Turrets, proxies, and other players, i.e. items that take
 		 * damage.
 		 */
-		if( !blip->takedamage )
-		  return false;
+		if (!blip->takedamage)
+			return false;
 
 
 		/* Check for invisible?  */
-		if( blip->client && blip->health > 0 && 
-		    blip->client->invisible)
-		  return false;
+		if (blip->client && blip->health > 0 &&
+			blip->client->invisible)
+			return false;
 
 
 		/*		if( blip == ent->owner ||
-		    blip->owner == ent->owner ||
-		    TeamMembers(ent->owner, blip) ||
-		    TeamMembers(ent->owner, blip->owner) ) 
+			blip->owner == ent->owner ||
+			TeamMembers(ent->owner, blip) ||
+			TeamMembers(ent->owner, blip->owner) )
 		  return false;
-		  
+
 		*/
 
 
@@ -4059,149 +4058,149 @@ int dummy;
 		 * rules, else we are an evil proxy and that's life. */
 
 
-		if( Q_stricmp(ent->classname, "proxymine") == 0 )
+		if (Q_stricmp(ent->classname, "proxymine") == 0)
 		{
 
 
-                  dummy = 0;
 
-		  if(( Q_stricmp(blip->classname, "rocket_turret") == 0 ) &&
-                              (blip->owner != ent->owner))   
-		  return true; 
-                  
-
-		if (( Q_stricmp(blip->classname, "laser_turret") == 0 ) &&
-                             (blip->owner != ent->owner))
-		  return true;
+			if ((Q_stricmp(blip->classname, "rocket_turret") == 0) &&
+				(blip->owner != ent->owner))
+				return true;
 
 
-                if ((Q_stricmp(blip->classname, "player") == 0) &&
-                     (blip != ent->owner) && !TeamMembers(ent->owner, blip->owner))
-                   return true;
+			if ((Q_stricmp(blip->classname, "laser_turret") == 0) &&
+				(blip->owner != ent->owner))
+				return true;
 
 
-                if ((Q_stricmp(blip->classname, "bot") == 0) &&
-                     (blip != ent->owner) && !TeamMembers(ent->owner, blip->owner))
-                   return true;
+			if ((Q_stricmp(blip->classname, "player") == 0) &&
+				(blip != ent->owner) && !TeamMembers(ent->owner, blip->owner))
+				return true;
 
-                if (Q_stricmp(blip->classname, "proxymine") == 0) 
-		{
-                    if (blip->owner == ent->owner)
-		    { 
-			 return (false);
-		    }
-		    else
-		    {
-			return (true);
-                    }
-		}
 
-		  /* Roll for an EvilProxy */
-                	if ( random() < 0.05 && 
-			     ent->owner && 
-			     (Q_stricmp(ent->owner->classname, "bot") != 0) )
+			if ((Q_stricmp(blip->classname, "bot") == 0) &&
+				(blip != ent->owner) && !TeamMembers(ent->owner, blip->owner))
+				return true;
+
+			if (Q_stricmp(blip->classname, "proxymine") == 0)
 			{
-			  	if( blip == ent->owner ||
-			       	    blip->owner == ent->owner ||
-			       	    TeamMembers(ent->owner, blip) ||
-			       	    TeamMembers(ent->owner, blip->owner) ) 
-				  return true;
+				if (blip->owner == ent->owner)
+				{
+					return (false);
+				}
+				else
+				{
+					return (true);
+				}
+			}
+
+			/* Roll for an EvilProxy */
+			if (random() < 0.05 &&
+				ent->owner &&
+				(Q_stricmp(ent->owner->classname, "bot") != 0))
+			{
+				if (blip == ent->owner ||
+					blip->owner == ent->owner ||
+					TeamMembers(ent->owner, blip) ||
+					TeamMembers(ent->owner, blip->owner))
+					return true;
 			}
 
 		}
 
 		//		else	// Something other then Evil Proxies, at the time of
 		//{ 	// this writting this was only Proxies and Turrets
-		
+
 		// }
-		if(blip->client && blip->client->camera)
+		if (blip->client && blip->client->camera)
 			return false;
- 
+
 		return false;
-	} else {
+	}
+	else {
 
-	  if(blip->client) {
-	    return true;
-	  }
+		if (blip->client) {
+			return true;
+		}
 
-	/*
-	 * This part of the search takes up alot of CPU time
-	 * so we use a switch statement to make a general match w/
-	 * as little CPU overhead as possible and then get into the
-	 * fun stuff.
-	 *
-	 * Note:  This currently has no support for Proxies and Turrets
-	 * 	  and I dobt it will ever really be needed for them.
-	 */
-	switch(blip->classname[0])
-	{
-	  	case 'a':
-			if( Q_stricmp(blip->classname, "arrow") == 0 )
-			  return true;
+		/*
+		 * This part of the search takes up alot of CPU time
+		 * so we use a switch statement to make a general match w/
+		 * as little CPU overhead as possible and then get into the
+		 * fun stuff.
+		 *
+		 * Note:  This currently has no support for Proxies and Turrets
+		 * 	  and I dobt it will ever really be needed for them.
+		 */
+		switch (blip->classname[0])
+		{
+		case 'a':
+			if (Q_stricmp(blip->classname, "arrow") == 0)
+				return true;
 			break;
-	  	case 'b':
-			if( Q_stricmp(blip->classname, "bolt") == 0
-			 || Q_stricmp(blip->classname, "buzz") == 0
-			 || Q_stricmp(blip->classname, "bfg blast") == 0
-			 || Q_stricmp(blip->classname, "blackholestuff") == 0 )
-			  return true;
+		case 'b':
+			if (Q_stricmp(blip->classname, "bolt") == 0
+				|| Q_stricmp(blip->classname, "buzz") == 0
+				|| Q_stricmp(blip->classname, "bfg blast") == 0
+				|| Q_stricmp(blip->classname, "blackholestuff") == 0)
+				return true;
 			break;
 
 		case 'e':
-			if( Q_stricmp(blip->classname, "explosive_arrow") == 0 )
-			  return true;
+			if (Q_stricmp(blip->classname, "explosive_arrow") == 0)
+				return true;
 			break;
 
 		case 'f':
-			if( Q_stricmp(blip->classname, "flashgrenade") == 0 )
-			  return true;
+			if (Q_stricmp(blip->classname, "flashgrenade") == 0)
+				return true;
 			break;
 
 		case 'g':
-			if( Q_stricmp(blip->classname, "grenade") == 0 
-			 || Q_stricmp(blip->classname, "gib") == 0 )
-			  return true;
+			if (Q_stricmp(blip->classname, "grenade") == 0
+				|| Q_stricmp(blip->classname, "gib") == 0)
+				return true;
 			break;
 
 		case 'h':
-			if( Q_stricmp(blip->classname, "hgrenade") == 0 
-			 || Q_stricmp(blip->classname, "homing") == 0 )
-			  return true;
+			if (Q_stricmp(blip->classname, "hgrenade") == 0
+				|| Q_stricmp(blip->classname, "homing") == 0)
+				return true;
 			break;
 		case 'i':
-			if( Q_stricmp(blip->classname, "item_flag_team1") == 0
- 			 || Q_stricmp(blip->classname, "item_flag_team2") == 0
- 			 || Q_stricmp(blip->classname, "item_tech1") == 0
- 			 || Q_stricmp(blip->classname, "item_tech2") == 0
- 			 || Q_stricmp(blip->classname, "item_tech3") == 0
- 			 || Q_stricmp(blip->classname, "item_tech4") == 0)
-  			return false;
+			if (Q_stricmp(blip->classname, "item_flag_team1") == 0
+				|| Q_stricmp(blip->classname, "item_flag_team2") == 0
+				|| Q_stricmp(blip->classname, "item_tech1") == 0
+				|| Q_stricmp(blip->classname, "item_tech2") == 0
+				|| Q_stricmp(blip->classname, "item_tech3") == 0
+				|| Q_stricmp(blip->classname, "item_tech4") == 0)
+				return false;
 
 		case 'l':
-			if( Q_stricmp(blip->classname, "lasermine") == 0 
-			 || Q_stricmp(blip->classname, "laser_turret") == 0 )
-			  return true;
+			if (Q_stricmp(blip->classname, "lasermine") == 0
+				|| Q_stricmp(blip->classname, "laser_turret") == 0)
+				return true;
 			break;
 
 		case 'p':
-			if( Q_stricmp(blip->classname, "poisongrenade") == 0 
-			 || Q_stricmp(blip->classname, "poison_arrow") == 0 
-			 || Q_stricmp(blip->classname, "proxymine") == 0 )
-			  return true;
+			if (Q_stricmp(blip->classname, "poisongrenade") == 0
+				|| Q_stricmp(blip->classname, "poison_arrow") == 0
+				|| Q_stricmp(blip->classname, "proxymine") == 0)
+				return true;
 			break;
-		case 'r': 
-			if( Q_stricmp(blip->classname, "rocket") == 0 
-			 || Q_stricmp(blip->classname, "rocket_turret") == 0 )
-			  return true;
+		case 'r':
+			if (Q_stricmp(blip->classname, "rocket") == 0
+				|| Q_stricmp(blip->classname, "rocket_turret") == 0)
+				return true;
 			break;
-		case 't': 
-			if( Q_stricmp(blip->classname, "turret_rocket") == 0 )
-			  return true;
+		case 't':
+			if (Q_stricmp(blip->classname, "turret_rocket") == 0)
+				return true;
 			break;
 		default:
 			return false;
 			break;
-	}
+		}
 	}
 
 	/*
