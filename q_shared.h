@@ -199,7 +199,6 @@ void Com_PageInMemory (byte *buffer, int size);
 
 // portable case insensitive compare
 int	Q_stricmp(const char* s1, const char* s2);
-int Q_strcasecmp (char *s1, char *s2);
 int Q_strncasecmp (char *s1, char *s2, int n);
 size_t Com_strcpy(char* dest, size_t destSize, const char* src);
 size_t Com_strcat(char* dest, size_t destSize, const char* src);
