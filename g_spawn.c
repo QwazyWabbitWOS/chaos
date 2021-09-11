@@ -764,7 +764,7 @@ void SP_worldspawn (edict_t *ent)
 		strncpy (level.level_name, ent->message, sizeof level.level_name - 1);
 	}
 	else
-		strncpy (level.level_name, level.mapname, sizeof level.level_name - 1);
+		strncpy (level.level_name, level.mapname, sizeof level.level_name);
 
 	if (st.sky && st.sky[0])
 		gi.configstring (CS_SKY, st.sky);
