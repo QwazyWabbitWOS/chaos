@@ -237,7 +237,7 @@ void LoadMaplist(char* filename)
 		}
 		maplist.nummaps = i;
 		if (maplist.nummaps > 0)
-			maplist.mlflag = 1; // set sequential mode
+			maplist.mlflag = g_maplistmode->value; //set per configured mode.
 		fclose(fp);
 	}
 

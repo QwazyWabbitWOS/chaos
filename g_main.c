@@ -32,6 +32,7 @@ cvar_t	*g_select_empty;
 cvar_t	*dedicated;
 cvar_t	*game_dir;
 cvar_t	*g_maplistfile;
+cvar_t	*g_maplistmode;
 
 cvar_t	*sv_maxvelocity;
 cvar_t	*sv_gravity;

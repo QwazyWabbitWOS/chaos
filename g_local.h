@@ -508,6 +508,7 @@ extern	cvar_t	*g_select_empty;
 extern	cvar_t	*dedicated;
 extern	cvar_t	*game_dir;
 extern	cvar_t	*g_maplistfile;
+extern	cvar_t	*g_maplistmode;
 extern	cvar_t	*sv_gravity;
 extern	cvar_t	*sv_maxvelocity;
 
