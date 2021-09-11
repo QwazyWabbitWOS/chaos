@@ -574,8 +574,31 @@ extern	gitem_t	itemlist[];
 //
 // g_cmds.c
 //
-void Cmd_Help_f (edict_t *ent);
-void Cmd_Score_f (edict_t *ent);
+char* ClientTeam(edict_t* ent);
+qboolean OnSameTeam(edict_t* ent1, edict_t* ent2);
+void SelectNextItem(edict_t* ent, int itflags);
+void SelectPrevItem(edict_t* ent, int itflags);
+void ValidateSelectedItem(edict_t* ent);
+void Cmd_Give_f(edict_t* ent);
+void Cmd_God_f(edict_t* ent);
+void Cmd_Notarget_f(edict_t* ent);
+void Cmd_Noclip_f(edict_t* ent);
+void Cmd_Use_f(edict_t* ent);
+void Cmd_Drop_f(edict_t* ent);
+void Cmd_Inven_f(edict_t* ent);
+void Cmd_InvUse_f(edict_t* ent);
+void Cmd_LastWeap_f(edict_t* ent);
+void Cmd_WeapPrev_f(edict_t* ent);
+void Cmd_WeapNext_f(edict_t* ent);
+void Cmd_WeapLast_f(edict_t* ent);
+void Cmd_InvDrop_f(edict_t* ent);
+void Cmd_Kill_f(edict_t* ent);
+void Cmd_PutAway_f(edict_t* ent);
+int PlayerSort(void const* a, void const* b);
+void Cmd_Players_f(edict_t* ent);
+void Cmd_Wave_f(edict_t* ent);
+void Cmd_Say_f(edict_t* ent, qboolean team, qboolean arg0);
+void ClientCommand(edict_t* ent);
 
 //
 // g_items.c
@@ -628,7 +651,6 @@ void vectoangles (vec3_t vec, vec3_t angles);
 //
 // g_combat.c
 //
-qboolean OnSameTeam (edict_t *ent1, edict_t *ent2);
 qboolean CanDamage (edict_t *targ, edict_t *inflictor);
 qboolean CheckTeamDamage (edict_t *targ, edict_t *attacker);
 void T_Damage (edict_t *targ, edict_t *inflictor, edict_t *attacker, vec3_t dir, vec3_t point, vec3_t normal, int damage, int knockback, int dflags, int mod);
@@ -709,8 +731,9 @@ void ClientEndServerFrame (edict_t *ent);
 //
 void MoveClientToIntermission (edict_t *client);
 void G_SetStats (edict_t *ent);
-void ValidateSelectedItem (edict_t *ent);
 void DeathmatchScoreboardMessage (edict_t *client, edict_t *killer);
+void Cmd_Help_f(edict_t* ent);
+void Cmd_Score_f(edict_t* ent);
 
 //
 // g_pweapon.c
@@ -723,7 +746,6 @@ void Weapon_Generic (edict_t *ent, int FRAME_ACTIVATE_LAST, int FRAME_FIRE_LAST,
 // m_move.c
 //
 qboolean M_walkmove (edict_t *ent, float yaw, float dist);
-void M_MoveToGoal (edict_t *ent, float dist);
 void M_ChangeYaw (edict_t *ent);
 
 //
@@ -1136,12 +1158,12 @@ int		vortexstate;
 
 typedef struct 
 { 
-	int		nummaps;
+	int		nummaps; // the map count from the file
 	char	mapnames[MAX_MAPS][MAX_MAPNAME_LEN];
 	char	ctf[MAX_MAPS];
 	char	lightsoff[MAX_MAPS];
-	int		mlflag;
-	int		currentmap;
+	int		mlflag; // rotational mode
+	int		currentmap; // the map we're on in the list.
 } maplist_t;
 
 maplist_t maplist;

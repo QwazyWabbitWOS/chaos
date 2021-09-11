@@ -125,6 +125,7 @@ void InitGame (void)
 	coop = gi.cvar ("coop", "0", CVAR_LATCH);
 	skill = gi.cvar ("skill", "1", CVAR_LATCH);
 	maxentities = gi.cvar ("maxentities", "1024", CVAR_LATCH);
+	
 	g_maplistfile = gi.cvar("g_maplistfile", "chaosdm.txt", 0);
 	g_maplistmode = gi.cvar("g_maplistmode", "1", 0);
 

@@ -13,7 +13,6 @@ void	Svcmd_Test_f(void)
 
 // Force the next map in queue
 void Svcmd_nextmap_f()
-
 {
 	bprintf2(PRINT_HIGH, "Advancing to next level.\n");
 	EndDMLevel();
@@ -51,19 +50,23 @@ void Svcmd_random_f(void)
 
 void Svcmd_goto_f(char *mapnum)
 {
+	char command[MAX_QPATH] = { 0 };
+
 	if (maplist.nummaps > 0)  // does a maplist exist?
 	{
 		if (maplist.mlflag > 0)
 		{
-			int num = atoi(mapnum);
-			if (num < maplist.nummaps)
+			// mapnum is 1 to n for users
+			// we convert it here for zero based array
+			int num = atoi(mapnum) - 1;
+			if (num < maplist.nummaps && num >= 0) // range check
 			{
-				maplist.currentmap = num;
-				gi.cprintf(NULL, PRINT_HIGH, "Map is changing to %d! %s\n\n", num, maplist.mapnames[num]);
-				EndDMLevel();
+				sprintf(command, "gamemap %s", maplist.mapnames[num]);
+				gi.cprintf(NULL, PRINT_HIGH, "Map is changing to %d! %s\n\n", num + 1, maplist.mapnames[num]);
+				gi.AddCommandString(command);
 			}
 			else
-				gi.cprintf(NULL, PRINT_HIGH, "Map number %d not found!\n\n", num);
+				gi.cprintf(NULL, PRINT_HIGH, "Map number %d not found!\n\n", num + 1);
 		}
 		else
 			gi.cprintf(NULL, PRINT_HIGH, "You have to start the map rotation with <sv ml 1 or 2> first!\n\n");

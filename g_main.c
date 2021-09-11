@@ -178,32 +178,35 @@ EndDMLevel
 The timelimit or fraglimit has been exceeded
 =================
 */
-void EndDMLevel (void)
+void EndDMLevel(void)
 {
-	edict_t		*ent;
+	edict_t* ent;
 	int			i;
 
 	// stay on same level flag
 	if ((int)dmflags->value & DF_SAME_LEVEL)
 	{
-		ent = G_Spawn ();
+		ent = G_Spawn();
 		ent->classname = "target_changelevel";
 		ent->map = level.mapname;
 	}
-	else if (maplist.mlflag > 0) 
-    { 
-		switch (maplist.mlflag)
-		{ 
+	else if (maplist.mlflag > 0)
+	{
+		{
+			switch (maplist.mlflag)
+			{
 			case ML_ROTATE_SEQ:
-				i = (maplist.currentmap + 1) % maplist.nummaps; 
-				break; 
+				i = (maplist.currentmap + 1) % maplist.nummaps;
+				break;
 			case ML_ROTATE_RANDOM:
-				i = (int) (random() * maplist.nummaps); 
-				break; 
+				i = (int)(random() * maplist.nummaps);
+				break;
 			default:
 				i = maplist.currentmap;
+			}
 		}
-		maplist.currentmap = i; 
+
+		maplist.currentmap = i;
 
 		if (maplist.ctf[i] == '1')
 			gi.cvar_set("ctf", "1");
@@ -217,29 +220,29 @@ void EndDMLevel (void)
 		else
 			gi.cvar_set("lightsoff", "0");
 
-		ent = G_Spawn (); 
-		ent->classname = "target_changelevel"; 
-		ent->map = maplist.mapnames[i];	
-    } 
+		ent = G_Spawn();
+		ent->classname = "target_changelevel";
+		ent->map = maplist.mapnames[i];
+	}
 	else if (level.nextmap[0])
 	{	// go to a specific map
-		ent = G_Spawn ();
+		ent = G_Spawn();
 		ent->classname = "target_changelevel";
 		ent->map = level.nextmap;
 	}
 	else
-	{	// search for a changeleve
-		ent = G_Find (NULL, FOFS(classname), "target_changelevel");
+	{	// search for a changelevel
+		ent = G_Find(NULL, FOFS(classname), "target_changelevel");
 		if (!ent)
 		{	// the map designer didn't include a changelevel,
 			// so create a fake ent that goes back to the same level
-			ent = G_Spawn ();
+			ent = G_Spawn();
 			ent->classname = "target_changelevel";
 			ent->map = level.mapname;
 		}
 	}
 
-	BeginIntermission (ent);
+	BeginIntermission(ent);
 }
 
 /*
