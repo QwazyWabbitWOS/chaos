@@ -7,7 +7,7 @@
 
 qboolean Bot_CanHearClient(edict_t *ent, edict_t *other)
 {
-	vec3_t	dist;
+	vec3_t	dist = { 0 };
 
 	if (other->mynoise)
 	{
@@ -130,17 +130,19 @@ qboolean Bot_ValidCloseItem(edict_t *ent)
 	return 1;
 }
 
-qboolean Bot_StandingUnderPlat(edict_t *ent)
+qboolean Bot_StandingUnderPlat(edict_t* ent)
 {
 	trace_t	tr;
-	vec3_t	end;
+	vec3_t	end = { 0 };
 
 	VectorCopy(ent->s.origin, end);
-	end[2] +=1000;
+	end[2] += 1000;
 
-	tr = gi.trace (ent->s.origin, NULL, NULL, end, NULL, MASK_SOLID);
-	
+	tr = gi.trace(ent->s.origin, NULL, NULL, end, NULL, MASK_SOLID);
+
+	/* MrG{DRGN} */
 	if (tr.ent && (Q_stricmp(tr.ent->classname, "func_plat") == 0))
+	//if (tr.ent && (tr.ent->classindex == FUNC_PLAT))
 		return true;
 	return false;
 }
@@ -152,6 +154,9 @@ void Bot_Think(edict_t *ent)
 	vec3_t		angles = { 0,0,0 };
 	vec3_t		mins = { -16,-16,0 };
 	vec3_t		maxs = { 16,16,10 };
+	/* MrG{DRGN} sanity check */
+	if (!ent || !ent->client)
+		return;
 
 	// init usercmd variable
 	VectorCopy(ent->client->v_angle, angles);
@@ -193,7 +198,7 @@ void Bot_Think(edict_t *ent)
 			ent->client->b_strafedir = 0;
 		else
 			ent->client->b_strafedir = 1;
-		ent->client->b_strafechange = level.time + 0.3 + random();
+		ent->client->b_strafechange = level.time + 0.3f + random();
 	}
 
 	// randomly change the rundir for no-path-roaming

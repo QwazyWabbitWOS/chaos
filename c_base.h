@@ -18,13 +18,15 @@ void CreateCamera(edict_t *ent);
 void CamNext(edict_t *ent);
 void CamPrev(edict_t *ent);
 void CameraThink(edict_t *ent, usercmd_t *ucmd);
+void ClearMaplist();
+void LoadMaplist(char* filename);
 
 // Weapon banning console variables
 
 cvar_t	*ban_sword, *ban_chainsaw, *ban_supershotgun,
 		*ban_crossbow,*ban_airgun, *ban_grenadelauncher,
 		*ban_proxylauncher, *ban_rocketlauncher, *ban_hyperblaster,
-		*ban_railgun, *ban_buzzsaw, *ban_vortex, *ban_defenceturret,
+		*ban_railgun, *ban_buzzsaw, *ban_vortex, *ban_defenseturret,
 		*ban_rocketturret, *ban_bfg;
 
 // Item banning console variables
@@ -52,7 +54,7 @@ cvar_t	*start_sword, *start_chainsaw, *start_supershotgun, *start_crossbow,
 
 // Startup item console variables
 
-cvar_t	*start_grapple, *start_defenceturret, *start_rocketturret, 
+cvar_t	*start_grapple, *start_defenseturret, *start_rocketturret, 
 		*start_autosentry, *start_gravityvortex, *start_bodyarmor,
 		*start_combatarmor, *start_jacketarmor, *start_armorshard,
 		*start_powerscreen, *start_powershield, *start_ammo_grenades,

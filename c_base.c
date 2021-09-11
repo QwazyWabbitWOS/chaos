@@ -156,6 +156,7 @@ qboolean TouchingLadder(edict_t *self)
 	return false;
 }
 
+// Clears the maplist and turns off rotation
 void ClearMaplist(void)
 {
 	int i;
@@ -178,38 +179,40 @@ void ClearMaplist(void)
 	}
 }
 
-void LoadMaplist(char	*filename) 
-{ 
-	FILE	*fp = NULL;
+void LoadMaplist(char* filename)
+{
+	FILE* fp = NULL;
 	int		i = 0;
 	char	file[MAX_QPATH];
-	char	line[MAX_MAPNAME_LEN + 3];
+	char	line[128];
 
-      Com_strcpy(file, sizeof file, "./");
-      Com_strcat(file, sizeof file, game_dir->string);
-      Com_strcat(file, sizeof file, "/maplists/");
-	  Com_strcat(file, sizeof file, filename);
-	  Com_strcat(file, sizeof file, ".txt");
+	Com_strcpy(file, sizeof file, "./");
+	Com_strcat(file, sizeof file, game_dir->string);
+	Com_strcat(file, sizeof file, "/maplists/");
+	Com_strcat(file, sizeof file, filename);
+	if (!(strrchr(filename, '.')))	// user didn't add extension
+		Com_strcat(file, sizeof file, ".txt");	// add a default
 
-	//open the maplist file
+	//open the file
 	if ((fp = fopen(file, "r")) == NULL)
-    { 
-		gi.cprintf (NULL, PRINT_HIGH, "Could not find file \"%s\".\n\n", file); 
+	{
+		gi.cprintf(NULL, PRINT_HIGH, "Could not find file \"%s\".\n\n", file);
 		return;
-    }
+	}
+	
 	maplist.nummaps = 0;	//reset maplist counter
 
 	if (fp)
-	{ 
+	{
 		i = 0;
 
-		while ((!feof(fp)) && (i < MAX_MAPS)) 
-		{ 
-			int		len;
+		while ((!feof(fp)) && (i < MAX_MAPS))
+		{
+			int	len;
 
-			if (fgets(line, sizeof line, fp) == NULL)
+			if ((fgets(line, sizeof line, fp) == NULL) && feof(fp))
 				gi.dprintf("%s file read error %s\n", __func__, file);
-			len=strlen(line);
+			len = strlen(line);
 
 			if (len < 5) //invalid
 				continue;
@@ -217,8 +220,8 @@ void LoadMaplist(char	*filename)
 				continue;
 
 			len--;
-			while(line[len] == '\n'||line[len] == '\r')
-			  len--;
+			while (line[len] == '\n' || line[len] == '\r')
+				len--;
 
 			// lightsoff
 			maplist.lightsoff[i] = line[len--];
@@ -228,26 +231,26 @@ void LoadMaplist(char	*filename)
 
 			// mapname
 			strncpy(maplist.mapnames[i], line, len);
-			
-			gi.cprintf(NULL, PRINT_HIGH, "...%s,ctf=%c,lightsoff=%c\n", maplist.mapnames[i], maplist.ctf[i], maplist.lightsoff[i]);
-			i++; 
-		} 
-	} 
-	//close file
-	if (fp)
-		fclose(fp); 
 
-	//print status
-	if (i == 0) 
-	{ 
-		gi.cprintf (NULL, PRINT_HIGH, "No maps listed in %s\n\n", file);
-		maplist.nummaps = 0;
-		return;
+			gi.cprintf(NULL, PRINT_HIGH, "...%s,ctf=%c,lightsoff=%c\n", maplist.mapnames[i], maplist.ctf[i], maplist.lightsoff[i]);
+			i++;
+		}
+		fclose(fp);
 	}
 
-	gi.cprintf (NULL, PRINT_HIGH, "%i map(s) loaded.\n\n", i); 
-	maplist.nummaps = i; 
-} 
+	maplist.nummaps = i;
+	if (maplist.nummaps == 0)
+	{
+		gi.cprintf(NULL, PRINT_HIGH, "No maps listed in %s\n", file);
+		gi.cprintf(NULL, PRINT_HIGH, "Map rotatation is %s\n\n", maplist.mlflag ? "ON" : "OFF");
+		return;
+	}
+	else 
+	{
+		gi.cprintf(NULL, PRINT_HIGH, "%i map(s) loaded.\n\n", i);
+		return;
+	}
+}
 
 void GetSettings()
 {
@@ -279,7 +282,7 @@ void GetSettings()
 	ban_hyperblaster = gi.cvar("ban_hyperblaster", "0", CVAR_LATCH);
 	ban_railgun = gi.cvar("ban_railgun", "0", CVAR_LATCH);
 	ban_buzzsaw = gi.cvar("ban_buzzsaw", "0", CVAR_LATCH);
-	ban_defenceturret = gi.cvar("ban_defenceturret", "0", CVAR_LATCH);
+	ban_defenseturret = gi.cvar("ban_defenseturret", "0", CVAR_LATCH);
 	ban_rocketturret = gi.cvar("ban_rocketturret", "0", CVAR_LATCH);
 	ban_vortex = gi.cvar("ban_vortex", "0", CVAR_LATCH);
 	ban_bfg = gi.cvar("ban_bfg", "0", CVAR_LATCH);
@@ -343,7 +346,7 @@ void GetSettings()
 	start_grapple = gi.cvar("start_grapple", "0", CVAR_LATCH);
 	start_jetpack = gi.cvar("start_jetpack", "0", CVAR_LATCH);
 	start_gravityvortex = gi.cvar("start_gravityvortex", "0", CVAR_LATCH);
-	start_defenceturret = gi.cvar("start_defenceturret", "0", CVAR_LATCH);
+	start_defenseturret = gi.cvar("start_defenseturret", "0", CVAR_LATCH);
 	start_rocketturret = gi.cvar("start_rocketturret", "0", CVAR_LATCH);
 	start_bodyarmor = gi.cvar("start_bodyarmor", "0", CVAR_LATCH);
 	start_combatarmor = gi.cvar("start_combatarmor", "0", CVAR_LATCH);

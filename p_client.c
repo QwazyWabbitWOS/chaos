@@ -935,8 +935,8 @@ void InitClientPersistant (gclient_t *client)
 		if (start_gravityvortex->value > 0)
 			client->pers.inventory[ITEM_INDEX(it_vortex)] = 1;
 
-		if (start_defenceturret->value > 0)
-			client->pers.inventory[ITEM_INDEX(it_lturret)] = start_defenceturret->value;
+		if (start_defenseturret->value > 0)
+			client->pers.inventory[ITEM_INDEX(it_lturret)] = start_defenseturret->value;
 
 		if (start_rocketturret->value > 0)
 			client->pers.inventory[ITEM_INDEX(it_rturret)] = start_rocketturret->value;

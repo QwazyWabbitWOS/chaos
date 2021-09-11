@@ -497,7 +497,7 @@ void DoRespawn (edict_t *ent)
 				item = it_vortex;
 				ent->classname = "ammo_vortex";
 			}
-			else if (ban_defenceturret->value == 0)
+			else if (ban_defenseturret->value == 0)
 			{
 				item = it_lturret;
 				ent->classname = "ammo_laserturret";
@@ -520,7 +520,7 @@ void DoRespawn (edict_t *ent)
 				item = it_bfg;
 				ent->classname = "weapon_bfg";
 			}
-			else if (ban_defenceturret->value == 0)
+			else if (ban_defenseturret->value == 0)
 			{
 				item = it_lturret;
 				ent->classname = "ammo_laserturret";
@@ -536,7 +536,7 @@ void DoRespawn (edict_t *ent)
 				return;
 			}
 		}
-		else if (strcmp(ent->classname, "ammo_laserturret") == 0 && ban_defenceturret->value > 0)
+		else if (strcmp(ent->classname, "ammo_laserturret") == 0 && ban_defenseturret->value > 0)
 		{
 			if (ban_bfg->value == 0)
 			{
@@ -566,7 +566,7 @@ void DoRespawn (edict_t *ent)
 				item = it_bfg;
 				ent->classname = "weapon_bfg";
 			}
-			else if (ban_defenceturret->value == 0)
+			else if (ban_defenseturret->value == 0)
 			{
 				item = it_lturret;
 				ent->classname = "ammo_laserturret";
@@ -2623,7 +2623,7 @@ void SpawnItem (edict_t *ent, gitem_t *item)
 			item = it_vortex;
 			ent->classname = "ammo_vortex";
 		}
-		else if (ban_defenceturret->value == 0)
+		else if (ban_defenseturret->value == 0)
 		{
 			item = it_lturret;
 			ent->classname = "ammo_laserturret";
@@ -2642,7 +2642,7 @@ void SpawnItem (edict_t *ent, gitem_t *item)
 	//Vortex
 	else if (strcmp(ent->classname, "ammo_vortex") == 0 && ban_vortex->value > 0)
 	{
-		if (ban_defenceturret->value == 0)
+		if (ban_defenseturret->value == 0)
 		{
 			item = it_lturret;
 			ent->classname = "ammo_laserturret";
@@ -2664,7 +2664,7 @@ void SpawnItem (edict_t *ent, gitem_t *item)
 		}
 	}
 	//defence turret
-	else if (strcmp(ent->classname, "ammo_laserturret") == 0 && ban_defenceturret->value > 0)
+	else if (strcmp(ent->classname, "ammo_laserturret") == 0 && ban_defenseturret->value > 0)
 	{
 		if (ban_rocketturret->value == 0)
 		{
@@ -2700,7 +2700,7 @@ void SpawnItem (edict_t *ent, gitem_t *item)
 			item = it_vortex;
 			ent->classname = "ammo_vortex";
 		}
-		else if (ban_defenceturret->value == 0)
+		else if (ban_defenseturret->value == 0)
 		{
 			item = it_lturret;
 			ent->classname = "ammo_laserturret";
