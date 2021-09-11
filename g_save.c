@@ -125,6 +125,7 @@ void InitGame (void)
 	coop = gi.cvar ("coop", "0", CVAR_LATCH);
 	skill = gi.cvar ("skill", "1", CVAR_LATCH);
 	maxentities = gi.cvar ("maxentities", "1024", CVAR_LATCH);
+	g_maplistfile = gi.cvar("g_maplistfile", "chaosdm.txt", 0);
 
 	//MATTHIAS
 	numbots		= 0;	
@@ -137,7 +138,6 @@ void InitGame (void)
 	blue_base	= -1;
 	red_base	= -1;
 
-	ClearMaplist();
 	GetSettings();
 	
 	//clear path buffer
@@ -187,6 +187,8 @@ void InitGame (void)
 	game.maxclients = maxclients->value;
 	game.clients = gi.TagMalloc (game.maxclients * sizeof(game.clients[0]), TAG_GAME);
 	globals.num_edicts = game.maxclients+1;
+
+	LoadMaplist(g_maplistfile->string);
 
 	CTFInit();
 }

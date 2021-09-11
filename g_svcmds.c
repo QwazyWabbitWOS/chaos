@@ -141,7 +141,6 @@ void ServerCommand(void)
 		}
 		else	//load maplist
 		{
-			ClearMaplist();
 			LoadMaplist(gi.argv(2));
 		}
 	}
