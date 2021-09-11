@@ -255,7 +255,7 @@ void GetSettings()
 	blindtime = gi.cvar("blindtime", "20", CVAR_SERVERINFO);
 	poisontime = gi.cvar("poisontime", "15", CVAR_SERVERINFO);
 	lasertime = gi.cvar("lasertime", "60", CVAR_SERVERINFO);
-	proxytime = gi.cvar("lasertime", "60", CVAR_SERVERINFO);
+	proxytime = gi.cvar("proxytime", "60", CVAR_SERVERINFO);
 	defence_turret_ammo = gi.cvar("defence_turret_ammo", "1000", CVAR_SERVERINFO);
 	rocket_turret_ammo = gi.cvar("rocket_turret_ammo", "90", CVAR_SERVERINFO);
 	lasermine_health = gi.cvar("lasermine_health", "150", CVAR_LATCH);

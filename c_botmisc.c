@@ -1222,8 +1222,8 @@ qboolean Bot_CanPickupItem(edict_t* ent, edict_t* eitem)
 		|| Q_stricmp(eitem->classname, "item_armor_jacket") == 0
 		|| Q_stricmp(eitem->classname, "item_armor_combat") == 0)
 	{
-		if (!Bot_CanPickupArmor(ent, eitem));
-		return 0;
+		if (!Bot_CanPickupArmor(ent, eitem))
+			return 0;
 	}
 
 	return 1;

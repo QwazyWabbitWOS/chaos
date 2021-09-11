@@ -1138,17 +1138,17 @@ edict_t *Bot_FindBestHealth(edict_t *ent)
 			// We really really want these !!!
 			bonus = 6;
 		}
-		else if (it_health_large)
+		else if (current->item == it_health_large)/* MrG{DRGN} was missing current->item == */
 		{
 			// We really want these !!
 			bonus = 4;
 		}
-		else if (it_health)
+		else if (current->item == it_health)/* MrG{DRGN} was missing current->item == */
 		{
 			// Not to bad !
 			bonus = 0;
 		}
-
+		
 		dist = dist - bonus;
 
 		if (dist < best_dist)

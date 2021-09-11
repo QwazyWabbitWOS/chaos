@@ -1125,7 +1125,7 @@ int		numblue;	//size of the blue team
 int		numturrets;
 int		vortexstate;
 
-#define MAX_MAPS           64 
+#define MAX_MAPS           256
 #define MAX_MAPNAME_LEN    32
 
 #define ML_OFF				0

@@ -415,13 +415,9 @@ qboolean Bot_SaveNodes(void)
 	float	dist;
 	FILE	*output;
 	char	file[256];
-	cvar_t	*game_dir;
 	const char	nodetable_version[]	= "v02";
 	const char	nodetable_id[]		= "CHAOSDM NODE TABLE";
 	int		dntgvalue = dntg->value;
-
-
-	game_dir = gi.cvar ("game", "", 0);
 
 	Com_strcpy(file, sizeof file, "./");
 	Com_strcat(file, sizeof file, game_dir->string);
@@ -471,15 +467,12 @@ qboolean Bot_LoadNodes(void)
 	float	dist;
 	FILE* input;
 	char	file[256];
-	cvar_t* game_dir;
 	const char	nodetable_version[] = "v02";
 	const char	nodetable_id[] = "CHAOSDM NODE TABLE";
 	char	id_buffer[28] = { 0 };
 	char	version_buffer[5] = { 0 };
 	int		dntgvalue;
 	size_t	num;
-
-	game_dir = gi.cvar("game", "", 0);
 
 	Com_strcpy(file, sizeof file, "./");
 	Com_strcat(file, sizeof file, game_dir->string);
