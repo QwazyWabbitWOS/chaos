@@ -1145,7 +1145,7 @@ edict_t *Bot_FindBestHealth(edict_t *ent)
 		}
 		else if (current->item == it_health)/* MrG{DRGN} was missing current->item == */
 		{
-			// Not to bad !
+			// Not too bad !
 			bonus = 0;
 		}
 		
