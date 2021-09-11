@@ -5,7 +5,6 @@
 
 //MATTHIAS
 void GetSettings(void);
-void ClearMaplist();
 
 field_t fields[] = {
 	{"classname", FOFS(classname), F_LSTRING},

@@ -200,7 +200,7 @@ void LoadMaplist(char* filename)
 		return;
 	}
 	
-	maplist.nummaps = 0;	//reset maplist counter
+	ClearMaplist();
 
 	if (fp)
 	{
@@ -235,21 +235,21 @@ void LoadMaplist(char* filename)
 			gi.cprintf(NULL, PRINT_HIGH, "...%s,ctf=%c,lightsoff=%c\n", maplist.mapnames[i], maplist.ctf[i], maplist.lightsoff[i]);
 			i++;
 		}
+		maplist.nummaps = i;
+		if (maplist.nummaps > 0)
+			maplist.mlflag = 1; // set sequential mode
 		fclose(fp);
 	}
 
-	maplist.nummaps = i;
 	if (maplist.nummaps == 0)
 	{
 		gi.cprintf(NULL, PRINT_HIGH, "No maps listed in %s\n", file);
-		gi.cprintf(NULL, PRINT_HIGH, "Map rotatation is %s\n\n", maplist.mlflag ? "ON" : "OFF");
-		return;
 	}
 	else 
 	{
 		gi.cprintf(NULL, PRINT_HIGH, "%i map(s) loaded.\n\n", i);
-		return;
 	}
+	gi.cprintf(NULL, PRINT_HIGH, "Map rotation is %s mode %i\n\n", maplist.mlflag ? "ON" : "OFF", maplist.mlflag);
 }
 
 void GetSettings()
