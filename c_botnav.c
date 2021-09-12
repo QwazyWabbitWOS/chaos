@@ -2,7 +2,7 @@
 #include "c_base.h"
 #include "c_botnav.h"
 
-qboolean Bot_CanReachSpotDirectly(edict_t *ent, vec3_t target);
+qboolean Bot_CanReachSpotDirectly(edict_t* ent, vec3_t target);
 
 /*
 Init the note table system
@@ -19,16 +19,16 @@ void Bot_InitNodes(void)
 		nodes[i].origin[1] = 0.0;
 		nodes[i].origin[2] = 0.0;
 		nodes[i].flag = 0;
-		nodes[i].duckflag	= 0;
+		nodes[i].duckflag = 0;
 
-		for (l = 0; l < MAX_NODES ; l++)
+		for (l = 0; l < MAX_NODES; l++)
 		{
 			nodes[i].dist[l] = (double)BOT_INFINITY;
 		}
 	}
 }
 
-qboolean Bot_FindNode(edict_t *self, float radius, int flag)
+qboolean Bot_FindNode(edict_t* self, float radius, int flag)
 {
 	int		i;
 	vec3_t	dvec;
@@ -67,7 +67,7 @@ qboolean Bot_FindNode(edict_t *self, float radius, int flag)
 int Bot_FindNodeAtEnt(vec3_t	spot)
 {
 	int		i, best = -1;
-	vec3_t	dvec;
+	vec3_t	dvec = { 0, 0, 0 };
 	vec_t	bestdist = 180, dist;
 
 	for (i = 0; i <= numnodes; i++)
@@ -75,7 +75,7 @@ int Bot_FindNodeAtEnt(vec3_t	spot)
 		dvec[0] = nodes[i].origin[0] - spot[0];
 		dvec[1] = nodes[i].origin[1] - spot[1];
 		dvec[2] = nodes[i].origin[2] - spot[2];
-		
+
 		dist = VectorLength(dvec);
 		if (dist < bestdist)
 		{
@@ -89,7 +89,7 @@ int Bot_FindNodeAtEnt(vec3_t	spot)
 	return best;
 }
 
-int RecalculateCurrentNode(edict_t *ent)
+int RecalculateCurrentNode(edict_t* ent)
 {
 	int		dist, bestdist = 200;
 	int		i, n, bestnode;
@@ -97,8 +97,8 @@ int RecalculateCurrentNode(edict_t *ent)
 
 	n = ent->client->b_currentnode;
 	bestnode = n;
-	
-	for (i = n; i >= 0;i--)
+
+	for (i = n; i >= 0; i--)
 	{
 		if (ent->client->b_path[i])
 		{
@@ -106,7 +106,7 @@ int RecalculateCurrentNode(edict_t *ent)
 			dvec[1] = nodes[ent->client->b_path[i]].origin[1] - ent->s.origin[1];
 			dvec[2] = nodes[ent->client->b_path[i]].origin[2] - ent->s.origin[2];
 
-			dist = VectorLength(dvec);
+			dist = (int)VectorLength(dvec); /* MrG{DRGN} result is discarded*/
 			if ((dist < bestdist) && Bot_CanReachSpotDirectly(ent, nodes[ent->client->b_path[i]].origin))
 			{
 				bestdist = dist;
@@ -117,25 +117,25 @@ int RecalculateCurrentNode(edict_t *ent)
 	return bestnode;
 }
 
-qboolean visible2 (vec3_t spot1, vec3_t spot2)
+qboolean visible2(vec3_t spot1, vec3_t spot2)
 {
 	trace_t	trace;
-	vec3_t	mins = {0, 0, 0};
-	vec3_t	maxs = {0, 0, 0};
+	vec3_t	mins = { 0, 0, 0 };
+	vec3_t	maxs = { 0, 0, 0 };
 
-	trace = gi.trace (spot1, mins, maxs, spot2, NULL, MASK_SOLID);
-	
+	trace = gi.trace(spot1, mins, maxs, spot2, NULL, MASK_SOLID);
+
 	if (trace.fraction == 1.0)
 		return true;
 	return false;
 }
 
-qboolean visible_node (vec3_t spot1, vec3_t spot2)
+qboolean visible_node(vec3_t spot1, vec3_t spot2)
 {
 	trace_t	tr;
 
-	tr = gi.trace (spot1, NULL, NULL, spot2, NULL, MASK_SOLID);
-	
+	tr = gi.trace(spot1, NULL, NULL, spot2, NULL, MASK_SOLID);
+
 	if (tr.fraction == 1.0 || (tr.ent && (Q_stricmp(tr.ent->classname, "func_door") == 0)))
 		return true;
 	return false;
@@ -154,7 +154,7 @@ void Bot_PlaceNode(vec3_t spot, int flag, int duckflag)
 
 		// ok let's place that node
 		numnodes++;
-		VectorCopy (spot, nodes[numnodes].origin);
+		VectorCopy(spot, nodes[numnodes].origin);
 		nodes[numnodes].flag = flag;
 
 		if (duckflag == 1)
@@ -182,10 +182,10 @@ void Bot_PlaceNode(vec3_t spot, int flag, int duckflag)
 			//edict_t	*arrow;
 
 			nprintf(PRINT_HIGH, "Ladder node %d placed!\n", numnodes);
-			
+
 			/*arrow = G_Spawn();
 			VectorCopy (spot, arrow->s.origin);
-			
+
 			arrow->movetype = MOVETYPE_NONE;
 			arrow->clipmask = MASK_SHOT;
 			arrow->solid = SOLID_NOT;
@@ -199,14 +199,14 @@ void Bot_PlaceNode(vec3_t spot, int flag, int duckflag)
 	}
 }
 
-void Bot_CalcNode(edict_t *self, int nindex)
+void Bot_CalcNode(edict_t* self, int nindex)
 {
 	int			i;
-	vec3_t		dvec, down, midair,addvect;
+	vec3_t		dvec, down, midair, addvect;
 	double		dist;
 	trace_t		tr;
 	vec_t		height;
-	vec3_t  mins = {0, 0, 0},maxs = {0, 0, 0};
+	vec3_t  mins = { 0, 0, 0 }, maxs = { 0, 0, 0 };
 
 	//go through all nodes
 	for (i = 0; i <= numnodes; i++)
@@ -217,7 +217,7 @@ void Bot_CalcNode(edict_t *self, int nindex)
 			nodes[nindex].dist[i] = 1;
 			continue;
 		}
-		
+
 		//look if node is visible from current node
 		if (visible2(nodes[i].origin, nodes[nindex].origin))
 		{
@@ -225,7 +225,7 @@ void Bot_CalcNode(edict_t *self, int nindex)
 			dvec[1] = nodes[i].origin[1] - nodes[nindex].origin[1];
 			dvec[2] = nodes[i].origin[2] - nodes[nindex].origin[2];
 
-			dist = (double) VectorLength(dvec);
+			dist = (double)VectorLength(dvec);
 
 			if (dist > 160) //check if current node is in range
 				continue;
@@ -234,7 +234,7 @@ void Bot_CalcNode(edict_t *self, int nindex)
 				|| gi.pointcontents(nodes[nindex].origin) & (CONTENTS_WATER))
 			{
 				// at least one node is in water so don't check for midair position!
-				
+
 				//connect the two nodes
 				nodes[nindex].dist[i] = dist;
 				nodes[i].dist[nindex] = dist;
@@ -245,7 +245,7 @@ void Bot_CalcNode(edict_t *self, int nindex)
 				|| nodes[i].flag == LADDER_NODE)
 			{
 				// at least one node is a ladder node so don't check for midair position!
-				
+
 				//connect the two nodes
 				nodes[nindex].dist[i] = dist;
 				nodes[i].dist[nindex] = dist;
@@ -257,18 +257,18 @@ void Bot_CalcNode(edict_t *self, int nindex)
 				// both nodes are in-air nodes...check if we can connect them
 
 				height = nodes[nindex].origin[2] - nodes[i].origin[2];
-					
-				if(height > 20)
+
+				if (height > 20)
 				{
 					//connect only one direction
 					nodes[nindex].dist[i] = dist;
 				}
-				else if(height < - 20)
+				else if (height < -20)
 				{
 					//connect only one direction
 					nodes[i].dist[nindex] = dist;
 				}
-				
+
 				//else connect no direction
 			}
 			else
@@ -290,13 +290,13 @@ void Bot_CalcNode(edict_t *self, int nindex)
 					nprintf(PRINT_HIGH, "Midair route!\n");
 
 					height = nodes[nindex].origin[2] - nodes[i].origin[2];
-					
-					if(height > 35)
+
+					if (height > 35)
 					{
 						//connect only one direction
 						nodes[nindex].dist[i] = dist;
 					}
-					else if(height < - 35)
+					else if (height < -35)
 					{
 						//connect only one direction
 						nodes[i].dist[nindex] = dist;
@@ -319,7 +319,7 @@ void Bot_CalcNode(edict_t *self, int nindex)
 	}
 }
 
-int Bot_ShortestPath (int source, int target)
+int Bot_ShortestPath(int source, int target)
 {
 	int		i, k, kNew, j;
 	double	minDist;
@@ -331,17 +331,17 @@ int Bot_ShortestPath (int source, int target)
 	//direct path, source=target
 	if (source == target)
 	{
-		path_buffer[0]	= target;
-		first_pathnode	= 0;
+		path_buffer[0] = target;
+		first_pathnode = 0;
 		return VALID_PATH;
 	}
 
 	// initialize state
 	for (i = 0; i < numnodes; i++)
 	{
-		nodeinfo[i].predecessor	= noPredecessor;
-		nodeinfo[i].dist		= (double)BOT_INFINITY;
-		nodeinfo[i].state		= tentative;
+		nodeinfo[i].predecessor = noPredecessor;
+		nodeinfo[i].dist = (double)BOT_INFINITY;
+		nodeinfo[i].state = tentative;
 	}
 
 	// initialize start position
@@ -354,9 +354,9 @@ int Bot_ShortestPath (int source, int target)
 	do
 	{
 		// kNew is the tentatively labeled node with smallest path size
-		kNew	= BOT_INFINITY; 
+		kNew = BOT_INFINITY;
 		minDist = (double)BOT_INFINITY;
-	
+
 		// is there a better path from k
 		for (i = 0; i < numnodes; i++)
 		{
@@ -368,16 +368,16 @@ int Bot_ShortestPath (int source, int target)
 			nodeIdist = nodeinfo[i].dist;
 			nodeKdist = nodeinfo[k].dist;
 
-			if ( (distKI != BOT_INFINITY) && (nodeinfo[i].state == tentative) )
+			if ((distKI != BOT_INFINITY) && (nodeinfo[i].state == tentative))
 			{
-				if ( (nodeKdist + distKI) < nodeIdist)
+				if ((nodeKdist + distKI) < nodeIdist)
 				{
 					nodeinfo[i].predecessor = k;
 					nodeinfo[i].dist = nodeIdist = nodeKdist + distKI;
 				}
 			}
 
-			if ( (nodeIdist < minDist) && (nodeinfo[i].state == tentative) )
+			if ((nodeIdist < minDist) && (nodeinfo[i].state == tentative))
 			{
 				kNew = i;
 				minDist = nodeIdist;
@@ -390,19 +390,19 @@ int Bot_ShortestPath (int source, int target)
 			return NO_PATH;
 
 		// make that node permanent; there cannot exist a shorter path from source to k
-		k = kNew;	
-		nodeinfo[k].state		= permanent;
+		k = kNew;
+		nodeinfo[k].state = permanent;
 	} while (k != target);
 
 	// copy path to output array
 	i = 0; k = target;
 	do
 	{
-		path_buffer[i++]	= k;
-		k					= nodeinfo[k].predecessor;
+		path_buffer[i++] = k;
+		k = nodeinfo[k].predecessor;
 
 		if (k != noPredecessor)
-			first_pathnode	= i;
+			first_pathnode = i;
 
 	} while (k != noPredecessor && i < 100);
 
@@ -413,10 +413,10 @@ qboolean Bot_SaveNodes(void)
 {
 	int		i, j;
 	float	dist;
-	FILE	*output;
+	FILE* output;
 	char	file[256];
-	const char	nodetable_version[]	= "v02";
-	const char	nodetable_id[]		= "CHAOSDM NODE TABLE";
+	const char	nodetable_version[] = "v02";
+	const char	nodetable_id[] = "CHAOSDM NODE TABLE";
 	int		dntgvalue = dntg->value;
 
 	Com_strcpy(file, sizeof file, "./");
@@ -432,34 +432,33 @@ qboolean Bot_SaveNodes(void)
 	}
 
 	//check1
-	fwrite (nodetable_id, sizeof(const char), 19, output);
-	fwrite (nodetable_version, sizeof(const char), 4, output);
-	fwrite (&numnodes, sizeof(int), 1, output);
+	fwrite(nodetable_id, sizeof(const char), 19, output);
+	fwrite(nodetable_version, sizeof(const char), 4, output);
+	fwrite(&numnodes, sizeof(int), 1, output);
 
 	//dynamic node table generation on/off
-	fwrite (&dntgvalue, sizeof(int), 1, output);
+	fwrite(&dntgvalue, sizeof(int), 1, output);
 
 	for (i = 0; i < numnodes; i++)
 	{
-		fwrite (&nodes[i].flag, sizeof(int), 1, output);
-		fwrite (&nodes[i].duckflag, sizeof(int), 1, output);
-		fwrite (&nodes[i].origin, sizeof(vec3_t), 1, output);
+		fwrite(&nodes[i].flag, sizeof(int), 1, output);
+		fwrite(&nodes[i].duckflag, sizeof(int), 1, output);
+		fwrite(&nodes[i].origin, sizeof(vec3_t), 1, output);
 
 		for (j = 0; j < numnodes; j++)
 		{
 			dist = (float)nodes[i].dist[j];
-			fwrite (&dist, sizeof(float),1, output);
+			fwrite(&dist, sizeof(float), 1, output);
 		}
 	}
 	//check2
-	fwrite (nodetable_id, sizeof(const char), 19, output);
-	fwrite (nodetable_version, sizeof(const char), 4, output);
-	
-	Com_Printf ("%d nodes written to %s\n", numnodes, file);
+	fwrite(nodetable_id, sizeof(const char), 19, output);
+	fwrite(nodetable_version, sizeof(const char), 4, output);
 
-	fclose (output);
+	Com_Printf("%d nodes written to %s\n", numnodes, file);
+
+	fclose(output);
 	return true;
-
 }
 
 qboolean Bot_LoadNodes(void)
@@ -566,5 +565,3 @@ qboolean Bot_LoadNodes(void)
 	Com_Printf("%d nodes read from %s\n", numnodes, file);
 	return true;
 }
-
-
