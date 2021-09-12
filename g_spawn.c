@@ -1,6 +1,7 @@
 #include "g_local.h"
 #include "c_base.h"
 #include "c_botnav.h"
+#include "c_botai.h"
 #include "stdlog.h"
 #include "gslog.h"
 
@@ -10,10 +11,6 @@ typedef struct
 	void	(*spawn)(edict_t *ent);
 } spawn_t;
 
-
-void PreCacheAll(void);	//MATTHIAS
-void LoadMOTD(void);
-void Load_BotChat(void);
 
 void SP_item_health (edict_t *self);
 void SP_item_health_small (edict_t *self);
@@ -1028,9 +1025,11 @@ void SP_worldspawn (edict_t *ent)
 		gi.configstring(CS_LIGHTS+12, "a");
 	}
 
-	//PreCacheAll();
+
 	LoadMOTD();
-	Load_BotChat();
+
+	if (botchat->value)/* MrG{DRGN} */
+		Load_BotChat();
 
 	Bot_InitNodes();		//init route table
 

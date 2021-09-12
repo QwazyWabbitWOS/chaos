@@ -1,15 +1,10 @@
 #include "g_local.h"
 #include "c_base.h"
+#include "c_botai.h"
 #include "c_botnav.h"
 #include "c_cam.h"
 #include "m_player.h"
 
-void Cmd_Say_f (edict_t *ent, qboolean team, qboolean arg0);
-void ClientBeginDeathmatch (edict_t *ent);
-void TossClientWeapon (edict_t *self);
-void ThrowUpNow(edict_t *self);
-void ClientCommand2 (edict_t *ent);
-void FakeDeath(edict_t *self);
 void Drop_Weapon (edict_t *ent, gitem_t *item);
 void Cmd_Hook_f (edict_t *ent);
 qboolean ClientConnect (edict_t *ent, char *userinfo);
@@ -22,8 +17,12 @@ void ClientBegin (edict_t *ent);
 
 qboolean visible (edict_t *self, edict_t *other)
 {
-	vec3_t	spot1, spot2;
+	vec3_t	spot1 = { 0 }, spot2 = { 0 };
 	trace_t	trace;
+	/* MrG{DRGN} sanity check */
+	if (!self || !other)
+		return false;
+	/* END */
 
 	VectorCopy (self->s.origin, spot1);
 	spot1[2] += self->viewheight;
@@ -38,7 +37,7 @@ qboolean visible (edict_t *self, edict_t *other)
 
 qboolean infront (edict_t *self, edict_t *other)
 {
-	vec3_t	vec;
+	vec3_t	vec = { 0 };
 	float	dot;
 	vec3_t	forward;
 	
@@ -123,7 +122,7 @@ void ShowGun(edict_t *ent)	//vwep
 
 qboolean TouchingLadder(edict_t *self)
 {
-	vec3_t org;
+	vec3_t org = { 0 };
 
 	VectorCopy(self->s.origin, org);
 

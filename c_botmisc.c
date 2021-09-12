@@ -1563,8 +1563,9 @@ void RemoveFromList(edict_t *ent)
 
 void Load_BotChat(void)
 {
-	/* FILE* fp; MrG{DRGN} moved below */
-	int		section, line = 0, i; /* MrG{DRGN} initialized 09/23/2020 */
+	int		section;
+	int		line = 0;
+	int		i;
 	char	filename[MAX_QPATH];
 	char	buffer;
 	cvar_t* game_dir;
@@ -1640,7 +1641,7 @@ void Load_BotChat(void)
 
 			if (i > 0)
 			{
-				chat_text[section][line][i] = '\0';	//append ascii null
+				chat_text[section][line][i] = '\0';	//append nul
 			}
 			else	//empty line ?
 				line--;

@@ -107,5 +107,6 @@ qboolean CheckFall(edict_t *self, short forwardmove, short sidemove, vec3_t angl
 qboolean Node_FallMove(edict_t *self, short forwardmove, short sidemove, vec3_t angles);
 qboolean Node_LavaMove(edict_t *self, short forwardmove, short sidemove, vec3_t angles);
 
-char *Get_RandomBotSkin ();
+char *Get_RandomBotSkin (void);
+void Load_BotChat(void);
 

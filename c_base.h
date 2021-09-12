@@ -13,6 +13,9 @@ qboolean TouchingLadder(edict_t *self);
 void		Bot_InitNodes(void);
 qboolean	Bot_LoadNodes(void);
 qboolean	Bot_SaveNodes(void);
+void FakeDeath(edict_t* self);
+void ClientCommand2(edict_t* ent);
+void ThrowUpNow(edict_t* self);
 void ShowGun(edict_t *ent);	//vwep
 void CreateCamera(edict_t *ent);
 void CamNext(edict_t *ent);
@@ -20,6 +23,8 @@ void CamPrev(edict_t *ent);
 void CameraThink(edict_t *ent, usercmd_t *ucmd);
 void ClearMaplist(void);
 void LoadMaplist(char* filename);
+void LoadMOTD(void);
+void PreCacheAll(void);	//MATTHIAS
 
 // Weapon banning console variables
 
@@ -70,17 +75,30 @@ cvar_t	*start_grapple, *start_defenseturret, *start_rocketturret,
 
 // Item definitions
 
-gitem_t	*it_shells, *it_eshells, *it_cells, *it_arrows, *it_rockets, 
-		*it_homings, *it_slugs, *it_buzzes, *it_grenades,
-		*it_flashgrenades, *it_lasermines, *it_poisongrenades,
-		*it_proxymines, *it_ak42, *it_shotgun, *it_supershotgun,
-		*it_esupershotgun, *it_crossbow, *it_grenadelauncher,
-		*it_rocketlauncher, *it_hominglauncher, *it_railgun,
-		*it_buzzsaw, *it_hyperblaster, *it_bfg,
+gitem_t
+		/* MrG{DRGN}  Items converted by Chaos not in game */
+		*it_shotgun, *it_machinegun, *it_chaingun, *it_bullets,
+		/* MrG{DRGN} Weapons */
+		*it_ak42, *it_sword, *it_chainsaw, *it_supershotgun, 
+		*it_esupershotgun, *it_crossbow, *it_poisoncrossbow,
+		*it_explosivecrossbow, *it_airfist, *it_grenadelauncher, 
 		*it_flashgrenadelauncher, *it_poisongrenadelauncher,
-		*it_proxyminelauncher, *it_vortex, *it_sword, *it_rturret,
-		*it_poisonarrows, *it_explosivearrows, *it_poisoncrossbow,
-		*it_explosivecrossbow, *it_grapple, *it_jetpack, *it_chainsaw,
-		*it_health, *it_health_large, *it_health_mega, *it_lturret,
-		*it_airfist;
-
+		*it_proxyminelauncher, *it_rocketlauncher, *it_hominglauncher,
+		*it_hyperblaster, *it_railgun, *it_buzzsaw, *it_bfg, *it_vortex, *it_rturret, *it_lturret,
+		/* MrG{DRGN} Ammo */
+		*it_shells, *it_eshells, *it_arrows, *it_poisonarrows, 
+		*it_explosivearrows, *it_grenades, *it_flashgrenades, 
+		*it_poisongrenades, *it_proxymines, *it_lasermines, *it_rockets,
+		*it_homings, *it_cells, *it_slugs, *it_buzzes,
+		/* MrG{DRGN} Health */
+		*it_health_generic, *it_health, *it_health_small, 
+		*it_health_large, *it_health_mega,
+		/* MrG{DRGN} CTF items */
+		*it_tech1, *it_tech2, *it_tech3, *it_tech4, *it_flag_red, *it_flag_blue,
+		/* MrG{DRGN} Powerups */
+		*it_ancient_head, *it_quaddamage, *it_silencer, *it_adrenaline, 
+		*it_invulnerability, *it_breather, *it_enviro, *it_bandolier, 
+		*it_pack, *it_grapple, *it_jetpack, *it_invisibility,
+		/*MrG{DRGN} never in game, but always posessed! */
+		*it_belt, *it_flashlight, *it_scanner;
+		/* MrG{DRGN} TODO: Missing? */

@@ -2,8 +2,6 @@
 #include "m_player.h"
 #include "c_base.h"
 
-void ClientCommand2 (edict_t *ent);	//MATTHIAS
-
 char *ClientTeam (edict_t *ent)
 {
 	char		*p;
