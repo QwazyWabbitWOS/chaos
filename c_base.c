@@ -393,7 +393,7 @@ qboolean infront2(edict_t* self, edict_t* other)
 
 qboolean infront3(edict_t* self, edict_t* other)
 {
-	vec3_t	vec;
+	vec3_t	vec = { 0 };
 	float	dot;
 	vec3_t	forward;
 
@@ -409,7 +409,7 @@ qboolean infront3(edict_t* self, edict_t* other)
 
 qboolean infront4(edict_t* self, edict_t* other)
 {
-	vec3_t	vec;
+	vec3_t	vec = { 0 };
 	float	dot;
 	vec3_t	forward;
 
@@ -425,7 +425,12 @@ qboolean infront4(edict_t* self, edict_t* other)
 
 void PreCacheAll()
 {
+	gi.dprintf("\nPrecaching images:");
 	//pics
+	gi.imageindex("i_help");
+	level.pic_health = gi.imageindex("i_health");
+	gi.imageindex("help");
+	gi.imageindex("field_3");
 	gi.imageindex("scanner/dot");
 	gi.imageindex("scanner/down");
 	gi.imageindex("scanner/up");
@@ -479,6 +484,7 @@ void PreCacheAll()
 	gi.imageindex("w_chainsaw");
 
 	//models
+	gi.dprintf("\nPrecaching models:");
 	gi.modelindex("models/weapons/v_sword/tris.md2");
 	gi.modelindex("models/weapons/g_sword/tris.md2");
 	gi.modelindex("models/weapons/v_chsaw/tris.md2");
@@ -523,7 +529,7 @@ void PreCacheAll()
 	gi.modelindex("models/objects/earrow/tris.md2");
 	gi.modelindex("models/objects/gflash/tris.md2");
 	gi.modelindex("models/objects/gpoison/tris.md2");
-	gi.modelindex("models/objects/hgevilpr/tris.md2");
+	//gi.modelindex("models/objects/hgevilpr/tris.md2");
 	gi.modelindex("models/objects/hgflash/tris.md2");
 	gi.modelindex("models/objects/hglaser/tris.md2");
 	gi.modelindex("models/objects/hgpoison/tris.md2");
@@ -548,8 +554,75 @@ void PreCacheAll()
 	gi.modelindex("models/items/invis/tris.md2");
 	gi.modelindex("models/items/jet/tris.md2");
 
-
+	sm_meat_index = gi.modelindex("models/objects/gibs/sm_meat/tris.md2");
+	sm_meat_index = gi.modelindex("models/objects/gibs/sm_gib1/tris.md2");
+	sm_meat_index = gi.modelindex("models/objects/gibs/sm_gib2/tris.md2");
+	sm_meat_index = gi.modelindex("models/objects/gibs/sm_gib3/tris.md2");
+	sm_meat_index = gi.modelindex("models/objects/gibs/sm_gib4/tris.md2");
+	sm_meat_index = gi.modelindex("models/objects/gibs/sm_gib5/tris.md2");
+	gi.modelindex("models/objects/gibs/arm/tris.md2");
+	gi.modelindex("models/objects/gibs/bone/tris.md2");
+	gi.modelindex("models/objects/gibs/bone2/tris.md2");
+	gi.modelindex("models/objects/gibs/chest/tris.md2");
+	gi.modelindex("models/objects/gibs/skull/tris.md2");
+	gi.modelindex("#w_ak42.md2");
+	gi.modelindex("#w_sword.md2");
+	gi.modelindex("#w_chainsaw.md2");
+	gi.modelindex("#w_sshotgun.md2");
+	gi.modelindex("#w_bow.md2");
+	gi.modelindex("#w_airfist.md2");
+	gi.modelindex("#a_grenades1.md2");
+	gi.modelindex("#w_glauncher1.md2");
+	gi.modelindex("#w_xlauncher.md2");
+	gi.modelindex("#w_rlauncher.md2");
+	gi.modelindex("#w_hyperblaster.md2");
+	gi.modelindex("#w_railgun.md2");
+	gi.modelindex("#w_buzzsaw.md2");
+	gi.modelindex("#w_bfg.md2");
+	gi.modelindex("#a_vortex.md2");
+	gi.modelindex("#a_rturret.md2");
+	gi.dprintf("\nPrecaching sprites:");
+	gi.modelindex("sprites/s_bfg3.sp2");
+	gi.modelindex("sprites/s_bfg1.sp2");
 	//sound
+	gi.dprintf("\nPrecaching sounds:");
+	gi.soundindex("player/lava1.wav");
+	gi.soundindex("player/lava2.wav");
+	gi.soundindex("misc/pc_up.wav");
+	gi.soundindex("misc/talk1.wav");
+	gi.soundindex("misc/udeath.wav");
+	gi.soundindex("items/respawn1.wav");
+	gi.soundindex("*death1.wav");
+	gi.soundindex("*death2.wav");
+	gi.soundindex("*death3.wav");
+	gi.soundindex("*death4.wav");
+	gi.soundindex("*fall1.wav");
+	gi.soundindex("*fall2.wav");
+	gi.soundindex("*gurp1.wav");		// drowning damage
+	gi.soundindex("*gurp2.wav");
+	gi.soundindex("*jump1.wav");		// player jump
+	gi.soundindex("*pain25_1.wav");
+	gi.soundindex("*pain25_2.wav");
+	gi.soundindex("*pain50_1.wav");
+	gi.soundindex("*pain50_2.wav");
+	gi.soundindex("*pain75_1.wav");
+	gi.soundindex("*pain75_2.wav");
+	gi.soundindex("*pain100_1.wav");
+	gi.soundindex("*pain100_2.wav");
+	gi.soundindex("player/gasp1.wav");		// gasping for air
+	gi.soundindex("player/gasp2.wav");		// head breaking surface, not gasping
+	gi.soundindex("player/watr_in.wav");	// feet hitting water
+	gi.soundindex("player/watr_out.wav");	// feet leaving water
+	gi.soundindex("player/watr_un.wav");	// head going underwater
+	gi.soundindex("player/u_breath1.wav");
+	gi.soundindex("player/u_breath2.wav");
+	gi.soundindex("items/pkup.wav");		// bonus item pickup
+	gi.soundindex("world/land.wav");		// landing thud
+	gi.soundindex("misc/h2ohit1.wav");		// landing splash
+	gi.soundindex("items/damage.wav");
+	gi.soundindex("items/protect.wav");
+	gi.soundindex("items/protect4.wav");
+	gi.soundindex("weapons/noammo.wav");
 	gi.soundindex("hook/hit.wav");
 	gi.soundindex("hook/chain1.wav");
 	gi.soundindex("hook/chain2.wav");
@@ -604,6 +677,7 @@ void PreCacheAll()
 	gi.soundindex("misc/bubbles1.wav");
 	gi.soundindex("misc/bubbles2.wav");
 	gi.soundindex("misc/burp.wav");
+	gi.dprintf("\nPrecaching complete!\n");
 }
 
 qboolean TeamMembers(edict_t* p1, edict_t* p2)
@@ -634,7 +708,7 @@ qboolean TeamMembers(edict_t* p1, edict_t* p2)
 void LoadMOTD(void)
 {
 	FILE* fp;
-	char file[256];
+	char file[MAX_QPATH];
 	char line[80];
 	int i;
 
