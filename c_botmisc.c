@@ -1,4 +1,4 @@
-#include "g_local.h"
+﻿#include "g_local.h"
 #include "c_base.h"
 #include "c_item.h"
 #include "c_botai.h"
@@ -21,9 +21,9 @@ void Svcmd_addbots_f(void)	// adds "num" bots.
 	num = atoi(gi.argv(2));
 	bot_skill = atoi(gi.argv(3));
 	team = atoi(gi.argv(4));
-	Com_strcpy (name, sizeof name, gi.argv(5));
+	Com_strcpy(name, sizeof name, gi.argv(5));
 
-	if(bot_skill == 0)
+	if (bot_skill == 0)
 		bot_skill = 3;
 
 	if (num == 0)	// spawn 0 bots ???
@@ -32,7 +32,7 @@ void Svcmd_addbots_f(void)	// adds "num" bots.
 	{
 		if (numbots >= 10)
 		{
-			gi.cprintf (NULL, PRINT_HIGH, "You can't spawn more than 10 Havoc-Bots!\n");
+			gi.cprintf(NULL, PRINT_HIGH, "You can't spawn more than 10 Havoc-Bots!\n");
 			return;
 		}
 
@@ -45,10 +45,10 @@ void Svcmd_addbots_f(void)	// adds "num" bots.
 			Com_sprintf(model, sizeof model, gi.argv(6));
 
 		// set the name
-		if(Q_stricmp(name,"") == 0
-			|| Q_stricmp(name," ") == 0)
+		if (Q_stricmp(name, "") == 0
+			|| Q_stricmp(name, " ") == 0)
 		{
-			Com_strcpy(name,sizeof name, (strchr(model, '/')+1));
+			Com_strcpy(name, sizeof name, (strchr(model, '/') + 1));
 		}
 
 		Bot_Create(bot_skill, team, name, model);
@@ -59,10 +59,10 @@ void Svcmd_addbots_f(void)	// adds "num" bots.
 		{
 			if (numbots >= 10)
 			{
-				gi.cprintf (NULL, PRINT_HIGH, "You can't spawn more than 10 Havoc-Bots!\n");
+				gi.cprintf(NULL, PRINT_HIGH, "You can't spawn more than 10 Havoc-Bots!\n");
 				return;
 			}
-			
+
 			// set the model
 			if (Q_stricmp(gi.argv(6), "") == 0)
 			{
@@ -72,7 +72,7 @@ void Svcmd_addbots_f(void)	// adds "num" bots.
 				Com_sprintf(model, sizeof model, gi.argv(6));
 
 			// set the name
-			Com_strcpy(name, sizeof name, (strchr(model, '/')+1));
+			Com_strcpy(name, sizeof name, (strchr(model, '/') + 1));
 
 			//char *_strupr( char *string );
 
@@ -81,13 +81,13 @@ void Svcmd_addbots_f(void)	// adds "num" bots.
 	}
 }
 
-void Svcmd_killbot_f(char *name)
+void Svcmd_killbot_f(char* name)
 {
 	int i, k, count;
 
 	count = numplayers + 1;
 
-	if(Q_stricmp(name, "all") == 0)	//kill all bots
+	if (Q_stricmp(name, "all") == 0)	//kill all bots
 	{
 		for (i = 0; i < count; i++)
 		{
@@ -98,7 +98,7 @@ void Svcmd_killbot_f(char *name)
 				if (!players[k]->client)
 					continue;
 
-				if(Q_stricmp(players[k]->classname,"bot") == 0)
+				if (Q_stricmp(players[k]->classname, "bot") == 0)
 				{
 					ClientDisconnect(players[k]);
 					numbots--;
@@ -115,7 +115,7 @@ void Svcmd_killbot_f(char *name)
 			if (!players[i]->client)
 				continue;
 
-			if((Q_stricmp(players[i]->classname,"bot") == 0) && (Q_stricmp(players[i]->client->pers.netname, name) == 0))
+			if ((Q_stricmp(players[i]->classname, "bot") == 0) && (Q_stricmp(players[i]->client->pers.netname, name) == 0))
 			{
 				ClientDisconnect(players[i]);
 				numbots--;
@@ -128,17 +128,17 @@ void Svcmd_killbot_f(char *name)
 /// bot create/spawn/respawn/die
 ///------------------------------------------------------------------------------------------
 
-void Bot_Create(int bot_skill, int team, char *name, char *skin)
+void Bot_Create(int bot_skill, int team, char* name, char* skin)
 {
 	int       i;
 	char      userinfo[MAX_INFO_STRING];
-	edict_t   *bot = NULL;
+	edict_t* bot = NULL;
 
 	for (i = maxclients->value; i > 0; i--)
 	{
 		bot = g_edicts + i + 1;
 		if (!bot->inuse)
-		break;
+			break;
 	}
 
 	if (bot && bot->inuse)
@@ -146,7 +146,7 @@ void Bot_Create(int bot_skill, int team, char *name, char *skin)
 
 	if (!bot)
 	{
-		bprintf2 (PRINT_HIGH, "%s can't connect, server is full!\n", name);
+		bprintf2(PRINT_HIGH, "%s can't connect, server is full!\n", name);
 		return;
 	}
 
@@ -181,14 +181,14 @@ void Bot_Create(int bot_skill, int team, char *name, char *skin)
 	numbots++;
 
 	//TEAMPLAY
-	if(ctf->value)
+	if (ctf->value)
 	{
 		if ((team != 1) && (team != 2))
 		{
 			if (numblue < numred)
-				CTFBotJoinTeam(bot,2);
+				CTFBotJoinTeam(bot, 2);
 			else
-				CTFBotJoinTeam(bot,1);
+				CTFBotJoinTeam(bot, 1);
 		}
 		else
 			CTFBotJoinTeam(bot, team);
@@ -196,25 +196,25 @@ void Bot_Create(int bot_skill, int team, char *name, char *skin)
 	else
 	{
 		if (team == 0)
-			bot->client->resp.team	= 0;
+			bot->client->resp.team = 0;
 		else if ((team > 0) && (team < 100))
 		{
-			bot->client->resp.team	= team;
-			bprintf2 (PRINT_HIGH, "%s has joined team %d!\n", name, team);
+			bot->client->resp.team = team;
+			bprintf2(PRINT_HIGH, "%s has joined team %d!\n", name, team);
 		}
 		else
 		{
-			bot->client->resp.team	= 0;
-			bprintf2 (PRINT_HIGH, "Invalid team number! %s has joined NO team!\n", name);
+			bot->client->resp.team = 0;
+			bprintf2(PRINT_HIGH, "Invalid team number! %s has joined NO team!\n", name);
 		}
 	}
 }
 
-void Bot_Spawn(edict_t *ent)
+void Bot_Spawn(edict_t* ent)
 {
 	vec3_t               origin, angles;
-	vec3_t               mins = {-16, -16, -24};
-	vec3_t               maxs = {16, 16, 32};
+	vec3_t               mins = { -16, -16, -24 };
+	vec3_t               maxs = { 16, 16, 32 };
 	int                  i, index;
 	client_persistant_t  pers;
 	client_respawn_t     resp;
@@ -240,7 +240,7 @@ void Bot_Spawn(edict_t *ent)
 	}
 	else
 		memset(&resp, 0, sizeof(client_respawn_t));
-         
+
 	pers = ent->client->pers;
 	memset(ent->client, 0, sizeof(gclient_t));
 	ent->client->pers = pers;
@@ -248,27 +248,27 @@ void Bot_Spawn(edict_t *ent)
 
 	FetchClientEntData(ent);
 
-	ent->groundentity     = NULL;
-	ent->client           = &game.clients[index];
-	ent->takedamage       = DAMAGE_AIM;
-	ent->movetype         = MOVETYPE_BOT;
-	ent->viewheight       = 22;
-	ent->inuse            = true;
-	ent->classname        = "bot";
-	ent->mass             = 200;
-	ent->solid            = SOLID_BBOX;
-	ent->deadflag         = DEAD_NO;
-	ent->air_finished     = level.time + 12;
-	ent->clipmask         = MASK_PLAYERSOLID;
-	ent->think            = Bot_Think;
-	ent->touch            = NULL;
-	ent->pain             = bot_pain;
-	ent->die              = bot_die;
-	ent->waterlevel       = 0;
-	ent->watertype        = 0;
-	ent->flags           &= ~FL_NO_KNOCKBACK;
-	ent->enemy            = NULL;
-	ent->movetarget       = NULL;
+	ent->groundentity = NULL;
+	ent->client = &game.clients[index];
+	ent->takedamage = DAMAGE_AIM;
+	ent->movetype = MOVETYPE_BOT;
+	ent->viewheight = 22;
+	ent->inuse = true;
+	ent->classname = "bot";
+	ent->mass = 200;
+	ent->solid = SOLID_BBOX;
+	ent->deadflag = DEAD_NO;
+	ent->air_finished = level.time + 12;
+	ent->clipmask = MASK_PLAYERSOLID;
+	ent->think = Bot_Think;
+	ent->touch = NULL;
+	ent->pain = bot_pain;
+	ent->die = bot_die;
+	ent->waterlevel = 0;
+	ent->watertype = 0;
+	ent->flags &= ~FL_NO_KNOCKBACK;
+	ent->enemy = NULL;
+	ent->movetarget = NULL;
 
 	ent->client->b_respawntime = 0;
 	ent->client->b_nextshot = 0;
@@ -280,7 +280,7 @@ void Bot_Spawn(edict_t *ent)
 	ent->client->b_waittime = 0;
 	ent->client->b_pausetime = 0;
 	ent->client->grenadesactive = 1;
-	ent->client->b_nodetime	= 0;
+	ent->client->b_nodetime = 0;
 	ent->client->b_nextroam = 0;
 	ent->client->b_closeitem = NULL;
 	ent->client->b_nopathitem = NULL;
@@ -310,22 +310,22 @@ void Bot_Spawn(edict_t *ent)
 	ent->client->ps.fov = 90;
 	ent->client->ps.gunindex = gi.modelindex(ent->client->pers.weapon->view_model);
 
-	ent->s.effects        = 0;
-	ent->s.skinnum        = index;
-	ent->s.modelindex     = 255;
+	ent->s.effects = 0;
+	ent->s.skinnum = index;
+	ent->s.modelindex = 255;
 
 	ShowGun(ent); //vwep
 	//ent->s.modelindex2    = 255;
-	ent->s.frame          = 0;
-	ent->enemy			  = NULL;
-	ent->client->b_currentnode	= -1;
+	ent->s.frame = 0;
+	ent->enemy = NULL;
+	ent->client->b_currentnode = -1;
 
 	VectorCopy(origin, ent->s.origin);
 	ent->s.origin[2]++;
 
-	ent->s.angles[PITCH]  = 0;
-	ent->s.angles[YAW]    = angles[YAW];
-	ent->s.angles[ROLL]   = 0;
+	ent->s.angles[PITCH] = 0;
+	ent->s.angles[YAW] = angles[YAW];
+	ent->s.angles[ROLL] = 0;
 
 	VectorCopy(ent->s.angles, ent->client->ps.viewangles);
 	VectorCopy(ent->s.angles, ent->client->v_angle);
@@ -340,7 +340,7 @@ void Bot_Spawn(edict_t *ent)
 	ent->nextthink = level.time + FRAMETIME;
 }
 
-void Bot_Respawn(edict_t *ent)
+void Bot_Respawn(edict_t* ent)
 {
 	CopyToBodyQue(ent);
 
@@ -355,9 +355,9 @@ void Bot_Respawn(edict_t *ent)
 	ent->client->ps.pmove.pm_time = 14;
 }
 
-void bot_die (edict_t *self, edict_t *inflictor, edict_t *attacker, int damage, vec3_t point)
+void bot_die(edict_t* self, edict_t* inflictor, edict_t* attacker, int damage, vec3_t point)
 {
-	VectorClear (self->avelocity);
+	VectorClear(self->avelocity);
 
 	self->takedamage = DAMAGE_YES;
 	self->movetype = MOVETYPE_TOSS;
@@ -379,12 +379,12 @@ void bot_die (edict_t *self, edict_t *inflictor, edict_t *attacker, int damage, 
 	{
 		self->client->respawn_time = level.time + 1.0;
 		self->client->ps.pmove.pm_type = PM_DEAD;
-		ClientObituary (self, inflictor, attacker);
+		ClientObituary(self, inflictor, attacker);
 
-		sl_WriteStdLogDeath( &gi, level, self, inflictor, attacker);	// StdLog - Mark Davies
-		
+		sl_WriteStdLogDeath(&gi, level, self, inflictor, attacker);	// StdLog - Mark Davies
+
 		CTFFragBonuses(self, inflictor, attacker);
-		TossClientWeapon (self);
+		TossClientWeapon(self);
 
 		CTFDeadDropFlag(self);
 		CTFDeadDropTech(self);
@@ -400,33 +400,33 @@ void bot_die (edict_t *self, edict_t *inflictor, edict_t *attacker, int damage, 
 	self->s.effects = 0;
 
 	if (Jet_Active(self))
-    {
-		Jet_BecomeExplosion( self, damage );
+	{
+		Jet_BecomeExplosion(self, damage);
 		self->client->jet_framenum = 0;
-    }
+	}
 
 	// clear inventory
 	memset(self->client->pers.inventory, 0, sizeof(self->client->pers.inventory));
 
 	self->client->b_respawntime = level.time + 1.5;
 
-// check for gib
+	// check for gib
 	if (self->health < -40)
 	{	// gib
-		gi.sound (self, CHAN_BODY, gi.soundindex ("misc/udeath.wav"), 1, ATTN_NORM, 0);
-		ThrowGib (self, "models/objects/gibs/sm_gib1/tris.md2", damage, GIB_ORGANIC);
-		ThrowGib (self, "models/objects/gibs/sm_gib2/tris.md2", damage, GIB_ORGANIC);
-		ThrowGib (self, "models/objects/gibs/sm_gib2/tris.md2", damage, GIB_ORGANIC);
-		ThrowGib (self, "models/objects/gibs/sm_gib3/tris.md2", damage, GIB_ORGANIC);
-		ThrowGib (self, "models/objects/gibs/sm_gib4/tris.md2", damage, GIB_ORGANIC);
-		ThrowGib (self, "models/objects/gibs/sm_gib5/tris.md2", damage, GIB_ORGANIC);
-		ThrowGib (self, "models/objects/gibs/bone2/tris.md2", damage, GIB_ORGANIC);
+		gi.sound(self, CHAN_BODY, gi.soundindex("misc/udeath.wav"), 1, ATTN_NORM, 0);
+		ThrowGib(self, "models/objects/gibs/sm_gib1/tris.md2", damage, GIB_ORGANIC);
+		ThrowGib(self, "models/objects/gibs/sm_gib2/tris.md2", damage, GIB_ORGANIC);
+		ThrowGib(self, "models/objects/gibs/sm_gib2/tris.md2", damage, GIB_ORGANIC);
+		ThrowGib(self, "models/objects/gibs/sm_gib3/tris.md2", damage, GIB_ORGANIC);
+		ThrowGib(self, "models/objects/gibs/sm_gib4/tris.md2", damage, GIB_ORGANIC);
+		ThrowGib(self, "models/objects/gibs/sm_gib5/tris.md2", damage, GIB_ORGANIC);
+		ThrowGib(self, "models/objects/gibs/bone2/tris.md2", damage, GIB_ORGANIC);
 
-		ThrowClientHead (self, damage);
-//ZOID
+		ThrowClientHead(self, damage);
+		//ZOID
 		self->client->anim_priority = ANIM_DEATH;
 		self->client->anim_end = 0;
-//ZOID
+		//ZOID
 		self->takedamage = DAMAGE_NO;
 	}
 	else
@@ -435,30 +435,30 @@ void bot_die (edict_t *self, edict_t *inflictor, edict_t *attacker, int damage, 
 		{
 			static int i;
 
-			i = (i+1)%3;
+			i = (i + 1) % 3;
 			// start a death animation
 			self->client->anim_priority = ANIM_DEATH;
 			if (self->client->ps.pmove.pm_flags & PMF_DUCKED)
 			{
-				self->s.frame = FRAME_crdeath1-1;
+				self->s.frame = FRAME_crdeath1 - 1;
 				self->client->anim_end = FRAME_crdeath5;
 			}
 			else switch (i)
 			{
 			case 0:
-				self->s.frame = FRAME_death101-1;
+				self->s.frame = FRAME_death101 - 1;
 				self->client->anim_end = FRAME_death106;
 				break;
 			case 1:
-				self->s.frame = FRAME_death201-1;
+				self->s.frame = FRAME_death201 - 1;
 				self->client->anim_end = FRAME_death206;
 				break;
 			case 2:
-				self->s.frame = FRAME_death301-1;
+				self->s.frame = FRAME_death301 - 1;
 				self->client->anim_end = FRAME_death308;
 				break;
 			}
-			gi.sound (self, CHAN_VOICE, gi.soundindex(va("*death%i.wav", (rand()%4)+1)), 1, ATTN_NORM, 0);
+			gi.sound(self, CHAN_VOICE, gi.soundindex(va("*death%i.wav", (rand() % 4) + 1)), 1, ATTN_NORM, 0);
 			self->s.modelindex = 255;
 		}
 	}
@@ -470,12 +470,12 @@ void bot_die (edict_t *self, edict_t *inflictor, edict_t *attacker, int damage, 
 	self->client->invisible = 0;
 
 	self->client->flashlightactive = 0;
-	if(self->client->flashlight)
+	if (self->client->flashlight)
 	{
-	  	self->client->flashlight->think = G_FreeEdict;
+		self->client->flashlight->think = G_FreeEdict;
 		G_FreeEdict(self->client->flashlight);
 	}
-	if(self->client->teleporter)
+	if (self->client->teleporter)
 		G_FreeEdict(self->client->teleporter);
 
 	gi.linkentity(self);
@@ -485,7 +485,7 @@ void bot_die (edict_t *self, edict_t *inflictor, edict_t *attacker, int damage, 
 /// bot misc functions
 ///------------------------------------------------------------------------------------------
 
-float Bot_Fire_Freq(edict_t *ent)
+float Bot_Fire_Freq(edict_t* ent)
 {
 	it_lturret = FindItem("automatic defence turret");	//bugfix
 
@@ -536,12 +536,12 @@ float Bot_Fire_Freq(edict_t *ent)
 		return  1;
 }
 
-void Turret_Die (edict_t *ent, edict_t *inflictor, edict_t *attacker, int damage, vec3_t point);
+void Turret_Die(edict_t* ent, edict_t* inflictor, edict_t* attacker, int damage, vec3_t point);
 
-void Bot_BestMidWeapon(edict_t *self)
+void Bot_BestMidWeapon(edict_t* self)
 {
-	gclient_t	*client;
-	gitem_t		*oldweapon;
+	gclient_t* client;
+	gitem_t* oldweapon;
 	qboolean	turret = 0;
 
 	client = self->client;
@@ -574,28 +574,28 @@ void Bot_BestMidWeapon(edict_t *self)
 		return;
 	}
 	// Buzzsaw
-	if ( client->pers.inventory[ITEM_INDEX(it_buzzes)] &&  client->pers.inventory[ITEM_INDEX(it_buzzsaw)])
+	if (client->pers.inventory[ITEM_INDEX(it_buzzes)] && client->pers.inventory[ITEM_INDEX(it_buzzsaw)])
 	{
 		if (oldweapon != it_buzzsaw)
 			self->client->newweapon = it_buzzsaw;
 		return;
 	}
 	// Railgun
-	if ( client->pers.inventory[ITEM_INDEX(it_slugs)] &&  client->pers.inventory[ITEM_INDEX(it_railgun)])
+	if (client->pers.inventory[ITEM_INDEX(it_slugs)] && client->pers.inventory[ITEM_INDEX(it_railgun)])
 	{
 		if (oldweapon != it_railgun)
 			self->client->newweapon = it_railgun;
 		return;
 	}
 	// Rocket Launcher
-	if ( client->pers.inventory[ITEM_INDEX(it_rockets)]	&&  client->pers.inventory[ITEM_INDEX(it_rocketlauncher)])
+	if (client->pers.inventory[ITEM_INDEX(it_rockets)] && client->pers.inventory[ITEM_INDEX(it_rocketlauncher)])
 	{
 		if (oldweapon != it_rocketlauncher)
 			self->client->newweapon = it_rocketlauncher;
 		return;
 	}
 	// Hyperblaster
-	if ((client->pers.inventory[ITEM_INDEX(it_cells)] > 10) &&  client->pers.inventory[ITEM_INDEX(it_hyperblaster)])
+	if ((client->pers.inventory[ITEM_INDEX(it_cells)] > 10) && client->pers.inventory[ITEM_INDEX(it_hyperblaster)])
 	{
 		if (oldweapon != it_hyperblaster)
 			self->client->newweapon = it_hyperblaster;
@@ -609,112 +609,112 @@ void Bot_BestMidWeapon(edict_t *self)
 		return;
 	}
 	// BFG
-	if ((client->pers.inventory[ITEM_INDEX(it_cells)] >= 50) &&  client->pers.inventory[ITEM_INDEX(it_bfg)])
+	if ((client->pers.inventory[ITEM_INDEX(it_cells)] >= 50) && client->pers.inventory[ITEM_INDEX(it_bfg)])
 	{
 		if (oldweapon != it_bfg)
 			self->client->newweapon = it_bfg;
 		return;
 	}
 	// Explosive Crossbow
-	if ( client->pers.inventory[ITEM_INDEX(it_explosivecrossbow)] &&  client->pers.inventory[ITEM_INDEX(it_explosivearrows)])
+	if (client->pers.inventory[ITEM_INDEX(it_explosivecrossbow)] && client->pers.inventory[ITEM_INDEX(it_explosivearrows)])
 	{
 		if (oldweapon != it_explosivecrossbow)
 			self->client->newweapon = it_explosivecrossbow;
 		return;
 	}
 	// Proxymine Launcher
-	if ( client->pers.inventory[ITEM_INDEX(it_proxymines)]	&&  client->pers.inventory[ITEM_INDEX(it_proxyminelauncher)])
+	if (client->pers.inventory[ITEM_INDEX(it_proxymines)] && client->pers.inventory[ITEM_INDEX(it_proxyminelauncher)])
 	{
 		if (oldweapon != it_proxyminelauncher)
 			self->client->newweapon = it_proxyminelauncher;
 		return;
 	}
 	// Homing Missile Launcher
-	if ( client->pers.inventory[ITEM_INDEX(it_homings)]	&&  client->pers.inventory[ITEM_INDEX(it_hominglauncher)])
+	if (client->pers.inventory[ITEM_INDEX(it_homings)] && client->pers.inventory[ITEM_INDEX(it_hominglauncher)])
 	{
 		if (oldweapon != it_hominglauncher)
 			self->client->newweapon = it_hominglauncher;
 		return;
 	}
 	// Poison Crossbow
-	if ( client->pers.inventory[ITEM_INDEX(it_poisoncrossbow)]	&&  client->pers.inventory[ITEM_INDEX(it_poisonarrows)])
+	if (client->pers.inventory[ITEM_INDEX(it_poisoncrossbow)] && client->pers.inventory[ITEM_INDEX(it_poisonarrows)])
 	{
 		if (oldweapon != it_poisonarrows)
 			self->client->newweapon = it_poisoncrossbow;
 		return;
 	}
 	// Crossbow
-	if ( client->pers.inventory[ITEM_INDEX(it_crossbow)] &&  client->pers.inventory[ITEM_INDEX(it_arrows)])
+	if (client->pers.inventory[ITEM_INDEX(it_crossbow)] && client->pers.inventory[ITEM_INDEX(it_arrows)])
 	{
 		if (oldweapon != it_crossbow)
 			self->client->newweapon = it_crossbow;
 		return;
 	}
 	// Explosive Super Shotgun
-	if ( client->pers.inventory[ITEM_INDEX(it_eshells)]	&&  client->pers.inventory[ITEM_INDEX(it_esupershotgun)])
+	if (client->pers.inventory[ITEM_INDEX(it_eshells)] && client->pers.inventory[ITEM_INDEX(it_esupershotgun)])
 	{
 		if (oldweapon != it_esupershotgun)
 			self->client->newweapon = it_esupershotgun;
 		return;
 	}
 	// Super Shotgun
-	if ( client->pers.inventory[ITEM_INDEX(it_shells)] &&  client->pers.inventory[ITEM_INDEX(it_supershotgun)])
+	if (client->pers.inventory[ITEM_INDEX(it_shells)] && client->pers.inventory[ITEM_INDEX(it_supershotgun)])
 	{
 		if (oldweapon != it_supershotgun)
 			self->client->newweapon = it_supershotgun;
 		return;
 	}
 	// Grenade Launcher
-	if ( client->pers.inventory[ITEM_INDEX(it_grenades)] &&  client->pers.inventory[ITEM_INDEX(it_grenadelauncher)])
+	if (client->pers.inventory[ITEM_INDEX(it_grenades)] && client->pers.inventory[ITEM_INDEX(it_grenadelauncher)])
 	{
 		if (oldweapon != it_grenadelauncher)
 			self->client->newweapon = it_grenadelauncher;
 		return;
 	}
 	// Airfist
-	if ( client->pers.inventory[ITEM_INDEX(it_airfist)] && !turret)
+	if (client->pers.inventory[ITEM_INDEX(it_airfist)] && !turret)
 	{
 		if (oldweapon != it_airfist)
 			self->client->newweapon = it_airfist;
 		return;
 	}
 	// Flashgrenade Launcher
-	if ( client->pers.inventory[ITEM_INDEX(it_flashgrenades)] &&  client->pers.inventory[ITEM_INDEX(it_flashgrenadelauncher)] && !turret)
+	if (client->pers.inventory[ITEM_INDEX(it_flashgrenades)] && client->pers.inventory[ITEM_INDEX(it_flashgrenadelauncher)] && !turret)
 	{
 		if (oldweapon != it_flashgrenadelauncher)
 			self->client->newweapon = it_flashgrenadelauncher;
 		return;
 	}
 	// Poisongrenade Launcher
-	if ( client->pers.inventory[ITEM_INDEX(it_poisongrenades)] &&  client->pers.inventory[ITEM_INDEX(it_poisongrenadelauncher)] && !turret)
+	if (client->pers.inventory[ITEM_INDEX(it_poisongrenades)] && client->pers.inventory[ITEM_INDEX(it_poisongrenadelauncher)] && !turret)
 	{
 		if (oldweapon != it_poisongrenadelauncher)
 			self->client->newweapon = it_poisongrenadelauncher;
 		return;
 	}
 	// Sword
-	if ( client->pers.inventory[ITEM_INDEX(it_sword)])
+	if (client->pers.inventory[ITEM_INDEX(it_sword)])
 	{
 		if (oldweapon != it_sword)
 			self->client->newweapon = it_sword;
 		return;
 	}
 	// Chainsaw
-	if ( client->pers.inventory[ITEM_INDEX(it_chainsaw)])
+	if (client->pers.inventory[ITEM_INDEX(it_chainsaw)])
 	{
 		if (oldweapon != it_chainsaw)
 			self->client->newweapon = it_chainsaw;
 		return;
 	}
 	// Flash Grenades
-	if ( client->pers.inventory[ITEM_INDEX(it_flashgrenades)] && !turret)
+	if (client->pers.inventory[ITEM_INDEX(it_flashgrenades)] && !turret)
 	{
 		if (oldweapon != it_flashgrenades)
-			 self->client->newweapon = it_flashgrenades;
+			self->client->newweapon = it_flashgrenades;
 		return;
 	}
 	// Poison Grenades
-	if ( client->pers.inventory[ITEM_INDEX(it_poisongrenades)] && !turret)
+	if (client->pers.inventory[ITEM_INDEX(it_poisongrenades)] && !turret)
 	{
 		if (oldweapon != it_poisongrenades)
 			self->client->newweapon = it_poisongrenades;
@@ -725,10 +725,10 @@ void Bot_BestMidWeapon(edict_t *self)
 	self->client->newweapon = it_ak42;
 }
 
-void Bot_BestCloseWeapon(edict_t *self)
+void Bot_BestCloseWeapon(edict_t* self)
 {
-	gclient_t	*client;
-	gitem_t		*oldweapon;
+	gclient_t* client;
+	gitem_t* oldweapon;
 	qboolean	turret = 0;
 
 	client = self->client;
@@ -747,42 +747,42 @@ void Bot_BestCloseWeapon(edict_t *self)
 	}
 
 	// Sword
-	if ( client->pers.inventory[ITEM_INDEX(it_sword)])
+	if (client->pers.inventory[ITEM_INDEX(it_sword)])
 	{
 		if (oldweapon != it_sword)
 			self->client->newweapon = it_sword;
 		return;
 	}
 	// Chainsaw
-	if ( client->pers.inventory[ITEM_INDEX(it_chainsaw)])
+	if (client->pers.inventory[ITEM_INDEX(it_chainsaw)])
 	{
 		if (oldweapon != it_chainsaw)
 			self->client->newweapon = it_chainsaw;
 		return;
 	}
 	// Buzzsaw
-	if ( client->pers.inventory[ITEM_INDEX(it_buzzes)] &&  client->pers.inventory[ITEM_INDEX(it_buzzsaw)])
+	if (client->pers.inventory[ITEM_INDEX(it_buzzes)] && client->pers.inventory[ITEM_INDEX(it_buzzsaw)])
 	{
 		if (oldweapon != it_buzzsaw)
 			self->client->newweapon = it_buzzsaw;
 		return;
 	}
 	// Railgun
-	if ( client->pers.inventory[ITEM_INDEX(it_slugs)] &&  client->pers.inventory[ITEM_INDEX(it_railgun)])
+	if (client->pers.inventory[ITEM_INDEX(it_slugs)] && client->pers.inventory[ITEM_INDEX(it_railgun)])
 	{
 		if (oldweapon != it_railgun)
 			self->client->newweapon = it_railgun;
 		return;
 	}
 	// Rocket Launcher
-	if ( client->pers.inventory[ITEM_INDEX(it_rockets)]	&&  client->pers.inventory[ITEM_INDEX(it_rocketlauncher)])
+	if (client->pers.inventory[ITEM_INDEX(it_rockets)] && client->pers.inventory[ITEM_INDEX(it_rocketlauncher)])
 	{
 		if (oldweapon != it_rocketlauncher)
 			self->client->newweapon = it_rocketlauncher;
 		return;
 	}
 	// Hyperblaster
-	if ((client->pers.inventory[ITEM_INDEX(it_cells)] > 10) &&  client->pers.inventory[ITEM_INDEX(it_hyperblaster)])
+	if ((client->pers.inventory[ITEM_INDEX(it_cells)] > 10) && client->pers.inventory[ITEM_INDEX(it_hyperblaster)])
 	{
 		if (oldweapon != it_hyperblaster)
 			self->client->newweapon = it_hyperblaster;
@@ -796,21 +796,21 @@ void Bot_BestCloseWeapon(edict_t *self)
 		return;
 	}
 	// BFG
-	if ((client->pers.inventory[ITEM_INDEX(it_cells)] >= 50) &&  client->pers.inventory[ITEM_INDEX(it_bfg)])
+	if ((client->pers.inventory[ITEM_INDEX(it_cells)] >= 50) && client->pers.inventory[ITEM_INDEX(it_bfg)])
 	{
 		if (oldweapon != it_bfg)
 			self->client->newweapon = it_bfg;
 		return;
 	}
 	// Poison Crossbow
-	if ( client->pers.inventory[ITEM_INDEX(it_poisoncrossbow)]	&&  client->pers.inventory[ITEM_INDEX(it_poisonarrows)])
+	if (client->pers.inventory[ITEM_INDEX(it_poisoncrossbow)] && client->pers.inventory[ITEM_INDEX(it_poisonarrows)])
 	{
 		if (oldweapon != it_poisonarrows)
 			self->client->newweapon = it_poisoncrossbow;
 		return;
-	}	
+	}
 	// Crossbow
-	if ( client->pers.inventory[ITEM_INDEX(it_crossbow)] &&  client->pers.inventory[ITEM_INDEX(it_arrows)])
+	if (client->pers.inventory[ITEM_INDEX(it_crossbow)] && client->pers.inventory[ITEM_INDEX(it_arrows)])
 	{
 		if (oldweapon != it_crossbow)
 			self->client->newweapon = it_crossbow;
@@ -831,77 +831,77 @@ void Bot_BestCloseWeapon(edict_t *self)
 		return;
 	}
 	// Proxymine Launcher
-	if ( client->pers.inventory[ITEM_INDEX(it_proxymines)]	&&  client->pers.inventory[ITEM_INDEX(it_proxyminelauncher)])
+	if (client->pers.inventory[ITEM_INDEX(it_proxymines)] && client->pers.inventory[ITEM_INDEX(it_proxyminelauncher)])
 	{
 		if (oldweapon != it_proxyminelauncher)
 			self->client->newweapon = it_proxyminelauncher;
 		return;
 	}
 	// Homing Missile Launcher
-	if ( client->pers.inventory[ITEM_INDEX(it_homings)]	&&  client->pers.inventory[ITEM_INDEX(it_hominglauncher)])
+	if (client->pers.inventory[ITEM_INDEX(it_homings)] && client->pers.inventory[ITEM_INDEX(it_hominglauncher)])
 	{
 		if (oldweapon != it_hominglauncher)
 			self->client->newweapon = it_hominglauncher;
 		return;
 	}
 	// Explosive Crossbow
-	if ( client->pers.inventory[ITEM_INDEX(it_explosivecrossbow)] &&  client->pers.inventory[ITEM_INDEX(it_explosivearrows)])
+	if (client->pers.inventory[ITEM_INDEX(it_explosivecrossbow)] && client->pers.inventory[ITEM_INDEX(it_explosivearrows)])
 	{
 		if (oldweapon != it_explosivecrossbow)
 			self->client->newweapon = it_explosivecrossbow;
 		return;
 	}
 	// Explosive Super Shotgun
-	if ( client->pers.inventory[ITEM_INDEX(it_eshells)]	&&  client->pers.inventory[ITEM_INDEX(it_esupershotgun)])
+	if (client->pers.inventory[ITEM_INDEX(it_eshells)] && client->pers.inventory[ITEM_INDEX(it_esupershotgun)])
 	{
 		if (oldweapon != it_esupershotgun)
 			self->client->newweapon = it_esupershotgun;
 		return;
 	}
 	// Super Shotgun
-	if ( client->pers.inventory[ITEM_INDEX(it_shells)] &&  client->pers.inventory[ITEM_INDEX(it_supershotgun)])
+	if (client->pers.inventory[ITEM_INDEX(it_shells)] && client->pers.inventory[ITEM_INDEX(it_supershotgun)])
 	{
 		if (oldweapon != it_supershotgun)
 			self->client->newweapon = it_supershotgun;
 		return;
 	}
 	// Grenade Launcher
-	if ( client->pers.inventory[ITEM_INDEX(it_grenades)] &&  client->pers.inventory[ITEM_INDEX(it_grenadelauncher)])
+	if (client->pers.inventory[ITEM_INDEX(it_grenades)] && client->pers.inventory[ITEM_INDEX(it_grenadelauncher)])
 	{
 		if (oldweapon != it_grenadelauncher)
 			self->client->newweapon = it_grenadelauncher;
 		return;
 	}
 	// Airfist
-	if ( client->pers.inventory[ITEM_INDEX(it_airfist)] && !turret)
+	if (client->pers.inventory[ITEM_INDEX(it_airfist)] && !turret)
 	{
 		if (oldweapon != it_airfist)
 			self->client->newweapon = it_airfist;
 		return;
 	}
 	// Flashgrenade Launcher
-	if ( client->pers.inventory[ITEM_INDEX(it_flashgrenades)] &&  client->pers.inventory[ITEM_INDEX(it_flashgrenadelauncher)] && !turret)
+	if (client->pers.inventory[ITEM_INDEX(it_flashgrenades)] && client->pers.inventory[ITEM_INDEX(it_flashgrenadelauncher)] && !turret)
 	{
 		if (oldweapon != it_flashgrenadelauncher)
 			self->client->newweapon = it_flashgrenadelauncher;
 		return;
 	}
 	// Poisongrenade Launcher
-	if ( client->pers.inventory[ITEM_INDEX(it_poisongrenades)] &&  client->pers.inventory[ITEM_INDEX(it_poisongrenadelauncher)] && !turret)
+	if (client->pers.inventory[ITEM_INDEX(it_poisongrenades)] && client->pers.inventory[ITEM_INDEX(it_poisongrenadelauncher)] && !turret)
 	{
 		if (oldweapon != it_poisongrenadelauncher)
 			self->client->newweapon = it_poisongrenadelauncher;
 		return;
 	}
 	// Flash Grenades
-	if ( client->pers.inventory[ITEM_INDEX(it_flashgrenades)] && !turret)
+	if (client->pers.inventory[ITEM_INDEX(it_flashgrenades)] && !turret)
 	{
 		if (oldweapon != it_flashgrenades)
-			 self->client->newweapon = it_flashgrenades;
+			self->client->newweapon = it_flashgrenades;
 		return;
 	}
 	// Poison Grenades
-	if ( client->pers.inventory[ITEM_INDEX(it_poisongrenades)] && !turret)
+	if (client->pers.inventory[ITEM_INDEX(it_poisongrenades)] && !turret)
 	{
 		if (oldweapon != it_poisongrenades)
 			self->client->newweapon = it_poisongrenades;
@@ -912,10 +912,10 @@ void Bot_BestCloseWeapon(edict_t *self)
 	self->client->newweapon = it_ak42;
 }
 
-void Bot_BestFarWeapon(edict_t *self)
+void Bot_BestFarWeapon(edict_t* self)
 {
-	gclient_t	*client;
-	gitem_t		*oldweapon;
+	gclient_t* client;
+	gitem_t* oldweapon;
 	qboolean	turret = 0;
 
 	client = self->client;
@@ -957,63 +957,63 @@ void Bot_BestFarWeapon(edict_t *self)
 	}
 
 	// Railgun
-	if ( client->pers.inventory[ITEM_INDEX(it_slugs)] &&  client->pers.inventory[ITEM_INDEX(it_railgun)])
+	if (client->pers.inventory[ITEM_INDEX(it_slugs)] && client->pers.inventory[ITEM_INDEX(it_railgun)])
 	{
 		if (oldweapon != it_railgun)
 			self->client->newweapon = it_railgun;
 		return;
 	}
 	// Buzzsaw
-	if ( client->pers.inventory[ITEM_INDEX(it_buzzes)] &&  client->pers.inventory[ITEM_INDEX(it_buzzsaw)])
+	if (client->pers.inventory[ITEM_INDEX(it_buzzes)] && client->pers.inventory[ITEM_INDEX(it_buzzsaw)])
 	{
 		if (oldweapon != it_buzzsaw)
 			self->client->newweapon = it_buzzsaw;
 		return;
 	}
 	// BFG
-	if ((client->pers.inventory[ITEM_INDEX(it_cells)] >= 50) &&  client->pers.inventory[ITEM_INDEX(it_bfg)])
+	if ((client->pers.inventory[ITEM_INDEX(it_cells)] >= 50) && client->pers.inventory[ITEM_INDEX(it_bfg)])
 	{
 		if (oldweapon != it_bfg)
 			self->client->newweapon = it_bfg;
 		return;
 	}
 	// Explosive Crossbow
-	if ( client->pers.inventory[ITEM_INDEX(it_explosivecrossbow)] &&  client->pers.inventory[ITEM_INDEX(it_explosivearrows)])
+	if (client->pers.inventory[ITEM_INDEX(it_explosivecrossbow)] && client->pers.inventory[ITEM_INDEX(it_explosivearrows)])
 	{
 		if (oldweapon != it_explosivecrossbow)
 			self->client->newweapon = it_explosivecrossbow;
 		return;
 	}
 	// Homing Missile Launcher
-	if ( client->pers.inventory[ITEM_INDEX(it_homings)]	&&  client->pers.inventory[ITEM_INDEX(it_hominglauncher)])
+	if (client->pers.inventory[ITEM_INDEX(it_homings)] && client->pers.inventory[ITEM_INDEX(it_hominglauncher)])
 	{
 		if (oldweapon != it_hominglauncher)
 			self->client->newweapon = it_hominglauncher;
 		return;
 	}
 	// Hyperblaster
-	if ((client->pers.inventory[ITEM_INDEX(it_cells)] > 10) &&  client->pers.inventory[ITEM_INDEX(it_hyperblaster)])
+	if ((client->pers.inventory[ITEM_INDEX(it_cells)] > 10) && client->pers.inventory[ITEM_INDEX(it_hyperblaster)])
 	{
 		if (oldweapon != it_hyperblaster)
 			self->client->newweapon = it_hyperblaster;
 		return;
 	}
 	// Rocket Launcher
-	if ( client->pers.inventory[ITEM_INDEX(it_rockets)]	&&  client->pers.inventory[ITEM_INDEX(it_rocketlauncher)])
+	if (client->pers.inventory[ITEM_INDEX(it_rockets)] && client->pers.inventory[ITEM_INDEX(it_rocketlauncher)])
 	{
 		if (oldweapon != it_rocketlauncher)
 			self->client->newweapon = it_rocketlauncher;
 		return;
 	}
 	// Poison Crossbow
-	if ( client->pers.inventory[ITEM_INDEX(it_poisoncrossbow)]	&&  client->pers.inventory[ITEM_INDEX(it_poisonarrows)])
+	if (client->pers.inventory[ITEM_INDEX(it_poisoncrossbow)] && client->pers.inventory[ITEM_INDEX(it_poisonarrows)])
 	{
 		if (oldweapon != it_poisonarrows)
 			self->client->newweapon = it_poisoncrossbow;
 		return;
 	}
 	// Crossbow
-	if ( client->pers.inventory[ITEM_INDEX(it_crossbow)] &&  client->pers.inventory[ITEM_INDEX(it_arrows)])
+	if (client->pers.inventory[ITEM_INDEX(it_crossbow)] && client->pers.inventory[ITEM_INDEX(it_arrows)])
 	{
 		if (oldweapon != it_crossbow)
 			self->client->newweapon = it_crossbow;
@@ -1034,14 +1034,14 @@ void Bot_BestFarWeapon(edict_t *self)
 		return;
 	}
 	// Explosive Super Shotgun
-	if ( client->pers.inventory[ITEM_INDEX(it_eshells)]	&&  client->pers.inventory[ITEM_INDEX(it_esupershotgun)])
+	if (client->pers.inventory[ITEM_INDEX(it_eshells)] && client->pers.inventory[ITEM_INDEX(it_esupershotgun)])
 	{
 		if (oldweapon != it_esupershotgun)
 			self->client->newweapon = it_esupershotgun;
 		return;
 	}
 	// Super Shotgun
-	if ( client->pers.inventory[ITEM_INDEX(it_shells)] &&  client->pers.inventory[ITEM_INDEX(it_supershotgun)])
+	if (client->pers.inventory[ITEM_INDEX(it_shells)] && client->pers.inventory[ITEM_INDEX(it_supershotgun)])
 	{
 		if (oldweapon != it_supershotgun)
 			self->client->newweapon = it_supershotgun;
@@ -1055,63 +1055,63 @@ void Bot_BestFarWeapon(edict_t *self)
 		return;
 	}
 	// Proxymine Launcher
-	if ( client->pers.inventory[ITEM_INDEX(it_proxymines)]	&&  client->pers.inventory[ITEM_INDEX(it_proxyminelauncher)])
+	if (client->pers.inventory[ITEM_INDEX(it_proxymines)] && client->pers.inventory[ITEM_INDEX(it_proxyminelauncher)])
 	{
 		if (oldweapon != it_proxyminelauncher)
 			self->client->newweapon = it_proxyminelauncher;
 		return;
 	}
 	// Grenade Launcher
-	if ( client->pers.inventory[ITEM_INDEX(it_grenades)] &&  client->pers.inventory[ITEM_INDEX(it_grenadelauncher)])
+	if (client->pers.inventory[ITEM_INDEX(it_grenades)] && client->pers.inventory[ITEM_INDEX(it_grenadelauncher)])
 	{
 		if (oldweapon != it_grenadelauncher)
 			self->client->newweapon = it_grenadelauncher;
 		return;
 	}
 	// Airfist
-	if ( client->pers.inventory[ITEM_INDEX(it_airfist)] && !turret)
+	if (client->pers.inventory[ITEM_INDEX(it_airfist)] && !turret)
 	{
 		if (oldweapon != it_airfist)
 			self->client->newweapon = it_airfist;
 		return;
 	}
 	// Flashgrenade Launcher
-	if ( client->pers.inventory[ITEM_INDEX(it_flashgrenades)] &&  client->pers.inventory[ITEM_INDEX(it_flashgrenadelauncher)] && !turret)
+	if (client->pers.inventory[ITEM_INDEX(it_flashgrenades)] && client->pers.inventory[ITEM_INDEX(it_flashgrenadelauncher)] && !turret)
 	{
 		if (oldweapon != it_flashgrenadelauncher)
 			self->client->newweapon = it_flashgrenadelauncher;
 		return;
 	}
 	// Poisongrenade Launcher
-	if ( client->pers.inventory[ITEM_INDEX(it_poisongrenades)] &&  client->pers.inventory[ITEM_INDEX(it_poisongrenadelauncher)] && !turret)
+	if (client->pers.inventory[ITEM_INDEX(it_poisongrenades)] && client->pers.inventory[ITEM_INDEX(it_poisongrenadelauncher)] && !turret)
 	{
 		if (oldweapon != it_poisongrenadelauncher)
 			self->client->newweapon = it_poisongrenadelauncher;
 		return;
 	}
 	// Sword
-	if ( client->pers.inventory[ITEM_INDEX(it_sword)])
+	if (client->pers.inventory[ITEM_INDEX(it_sword)])
 	{
 		if (oldweapon != it_sword)
 			self->client->newweapon = it_sword;
 		return;
 	}
 	// Chainsaw
-	if ( client->pers.inventory[ITEM_INDEX(it_chainsaw)])
+	if (client->pers.inventory[ITEM_INDEX(it_chainsaw)])
 	{
 		if (oldweapon != it_chainsaw)
 			self->client->newweapon = it_chainsaw;
 		return;
 	}
 	// Flash Grenades
-	if ( client->pers.inventory[ITEM_INDEX(it_flashgrenades)] && !turret)
+	if (client->pers.inventory[ITEM_INDEX(it_flashgrenades)] && !turret)
 	{
 		if (oldweapon != it_flashgrenades)
-			 self->client->newweapon = it_flashgrenades;
+			self->client->newweapon = it_flashgrenades;
 		return;
 	}
 	// Poison Grenades
-	if ( client->pers.inventory[ITEM_INDEX(it_poisongrenades)] && !turret)
+	if (client->pers.inventory[ITEM_INDEX(it_poisongrenades)] && !turret)
 	{
 		if (oldweapon != it_poisongrenades)
 			self->client->newweapon = it_poisongrenades;
@@ -1122,10 +1122,10 @@ void Bot_BestFarWeapon(edict_t *self)
 	self->client->newweapon = it_ak42;
 }
 
-qboolean Bot_CanPickupAmmo(edict_t *ent, edict_t *eitem)
+qboolean Bot_CanPickupAmmo(edict_t* ent, edict_t* eitem)
 {
-	gitem_t	*item;
-	
+	gitem_t* item;
+
 	it_lturret = FindItem("automatic defence turret");	//bugfix
 
 	item = eitem->item;
@@ -1233,15 +1233,15 @@ extern gitem_armor_t jacketarmor_info;
 extern gitem_armor_t combatarmor_info;
 extern gitem_armor_t bodyarmor_info;
 
-int Bot_CanPickupArmor (edict_t *self, edict_t *ent)
+int Bot_CanPickupArmor(edict_t* self, edict_t* ent)
 {
 	int				old_armor_index;
-	gitem_armor_t	*oldinfo;
-	gitem_armor_t	*newinfo;
+	gitem_armor_t* oldinfo;
+	gitem_armor_t* newinfo;
 	int				newcount;
 	float			salvage;
 	int				salvagecount;
-	gclient_t	*client;
+	gclient_t* client;
 
 	if (self->client)
 		client = self->client;
@@ -1249,9 +1249,9 @@ int Bot_CanPickupArmor (edict_t *self, edict_t *ent)
 		return 0;
 
 	// get info on new armor
-	newinfo = (gitem_armor_t *)ent->item->info;
+	newinfo = (gitem_armor_t*)ent->item->info;
 
-	old_armor_index = ArmorIndex (self);
+	old_armor_index = ArmorIndex(self);
 
 	// handle armor shards specially
 	if (ent->item->tag == ARMOR_SHARD)
@@ -1300,22 +1300,22 @@ int Bot_CanPickupArmor (edict_t *self, edict_t *ent)
 	}
 }
 
-qboolean Bot_CanReachSpotDirectly(edict_t *ent, vec3_t target)
+qboolean Bot_CanReachSpotDirectly(edict_t* ent, vec3_t target)
 {
 	vec3_t	dir, midpos, end_trace, mins;
 	trace_t	tr;
 	//float	dist, progressive_dist;
 
 	// water
-	if (ent->waterlevel && (gi.pointcontents (target) & MASK_WATER))
+	if (ent->waterlevel && (gi.pointcontents(target) & MASK_WATER))
 		return true;
 
-	VectorAdd(ent->mins, tv(0,0,12), mins);
+	VectorAdd(ent->mins, tv(0, 0, 12), mins);
 	//VectorCopy(ent->s.origin, start);
 
 	VectorSubtract(target, ent->s.origin, dir);
 	VectorMA(ent->s.origin, 0.5, dir, midpos);
-	VectorSubtract(midpos, tv(0,0,40), end_trace);
+	VectorSubtract(midpos, tv(0, 0, 40), end_trace);
 
 	// check if the way to target is free
 	tr = gi.trace(ent->s.origin, NULL, NULL, target, ent, MASK_SOLID);
@@ -1336,24 +1336,24 @@ qboolean Bot_CanReachSpotDirectly(edict_t *ent, vec3_t target)
 		return false;
 
 	//if ((dist = VectorLength(dir)) < 32)
-		return true;
+	return true;
 }
-	/*VectorNormalize2(dir, dir);
+/*VectorNormalize2(dir, dir);
 
-	inc = 12;		// do more thourough checking
+inc = 12;		// do more thourough checking
 
-	for (progressive_dist = 32; progressive_dist < (dist - 16) ; progressive_dist += inc)
-	{
-		VectorMA(start, progressive_dist, dir, midpos2);
-		VectorSubtract(midpos2, tv(0,0,28), end_trace);
+for (progressive_dist = 32; progressive_dist < (dist - 16) ; progressive_dist += inc)
+{
+	VectorMA(start, progressive_dist, dir, midpos2);
+	VectorSubtract(midpos2, tv(0,0,28), end_trace);
 
-		trace = gi.trace(midpos2, mins, self->maxs, end_trace, self, MASK_SOLID);
+	trace = gi.trace(midpos2, mins, self->maxs, end_trace, self, MASK_SOLID);
 
-		if (trace.fraction == 1)
-			return false;
-	}
+	if (trace.fraction == 1)
+		return false;
+}
 
-	retu
+retu
 }
 
 	vec3_t	dir, midpos, end, start;
@@ -1383,9 +1383,9 @@ qboolean Bot_CanReachSpotDirectly(edict_t *ent, vec3_t target)
 	return true;
 }
 */
-qboolean Bot_CheckObstacle(edict_t *self)
+qboolean Bot_CheckObstacle(edict_t* self)
 {
-	vec3_t  mins = {-16, -16, -10},maxs = {16, 16, 0};
+	vec3_t  mins = { -16, -16, -10 }, maxs = { 16, 16, 0 };
 	vec3_t	start, forward, dir;
 	trace_t	tr;
 
@@ -1396,7 +1396,7 @@ qboolean Bot_CheckObstacle(edict_t *self)
 	VectorCopy(self->s.origin, start);
 	start[2] += 10;
 
-	tr = gi.trace(start, mins, maxs, dir, self, MASK_SOLID  | MASK_PLAYERSOLID);
+	tr = gi.trace(start, mins, maxs, dir, self, MASK_SOLID | MASK_PLAYERSOLID);
 
 	if ((tr.fraction != 1) || tr.startsolid)
 		return true;
@@ -1404,14 +1404,14 @@ qboolean Bot_CheckObstacle(edict_t *self)
 	return false;
 }
 
-qboolean	Pickup_Weapon (edict_t *ent, edict_t *other);
-qboolean	Pickup_NoAmmoWeapon (edict_t *ent, edict_t *other);
-qboolean	Pickup_Health (edict_t *ent, edict_t *other);
-qboolean	Pickup_Ammo (edict_t *ent, edict_t *other);
+qboolean	Pickup_Weapon(edict_t* ent, edict_t* other);
+qboolean	Pickup_NoAmmoWeapon(edict_t* ent, edict_t* other);
+qboolean	Pickup_Health(edict_t* ent, edict_t* other);
+qboolean	Pickup_Ammo(edict_t* ent, edict_t* other);
 
-void AddItemToList(edict_t *ent)
+void AddItemToList(edict_t* ent)
 {
-	edict_t *current = NULL;
+	edict_t* current = NULL;
 
 	if (!ent->item)
 		return;
@@ -1419,11 +1419,11 @@ void AddItemToList(edict_t *ent)
 	if (!ent->item->pickup)
 		return;
 
-	if(Q_stricmp(ent->classname, "item_armor_shard") == 0	//don't add armor shards to our list!!!
+	if (Q_stricmp(ent->classname, "item_armor_shard") == 0	//don't add armor shards to our list!!!
 		|| Q_stricmp(ent->classname, "item_flag_team1") == 0	//don't add ctf flags to our list!
 		|| Q_stricmp(ent->classname, "item_flag_team2") == 0
 		|| Q_stricmp(ent->classname, "freed") == 0
-		|| Q_stricmp(ent->classname, "item_health_small") == 0) //don't add mini health packs to our list!	
+		|| Q_stricmp(ent->classname, "item_health_small") == 0) //don't add mini health packs to our list!
 		return;
 
 	//find the list head
@@ -1434,7 +1434,7 @@ void AddItemToList(edict_t *ent)
 		|| Q_stricmp(ent->classname, "ammo_rocketturret") == 0
 		)
 	{
-		if(!weapon_list)	//list is empty so the first item becomes the head
+		if (!weapon_list)	//list is empty so the first item becomes the head
 		{
 			weapon_list = ent;
 			return;
@@ -1444,7 +1444,7 @@ void AddItemToList(edict_t *ent)
 	}
 	else if (ent->item->pickup == Pickup_Health)
 	{
-		if(!health_list)	//list is empty so the first item becomes the head
+		if (!health_list)	//list is empty so the first item becomes the head
 		{
 			health_list = ent;
 			return;
@@ -1453,7 +1453,7 @@ void AddItemToList(edict_t *ent)
 			current = health_list;	// start with the head
 	}
 	else if (ent->item->pickup == Pickup_Ammo)
-		if(!ammo_list)	//list is empty so the first item becomes the head
+		if (!ammo_list)	//list is empty so the first item becomes the head
 		{
 			ammo_list = ent;
 			return;
@@ -1462,7 +1462,7 @@ void AddItemToList(edict_t *ent)
 			current = ammo_list;	// start with the head
 	else
 	{
-		if(!powerup_list)	//list is empty so the first item becomes the head
+		if (!powerup_list)	//list is empty so the first item becomes the head
 		{
 			powerup_list = ent;
 			return;
@@ -1487,9 +1487,9 @@ void AddItemToList(edict_t *ent)
 	}
 }
 
-void RemoveFromList(edict_t *ent)
+void RemoveFromList(edict_t* ent)
 {
-	edict_t *current = NULL;
+	edict_t* current = NULL;
 
 	if (!ent->item)
 		return;
@@ -1497,7 +1497,7 @@ void RemoveFromList(edict_t *ent)
 	if (!ent->item->pickup)
 		return;
 
-	if(Q_stricmp(ent->classname, "item_armor_shard") == 0
+	if (Q_stricmp(ent->classname, "item_armor_shard") == 0
 		|| Q_stricmp(ent->classname, "item_flag_team1") == 0
 		|| Q_stricmp(ent->classname, "item_flag_team2") == 0
 		|| Q_stricmp(ent->classname, "freed") == 0
@@ -1507,7 +1507,7 @@ void RemoveFromList(edict_t *ent)
 	//find the list head
 	if (ent->item->pickup == Pickup_Weapon)
 	{
-		if(!weapon_list)	//list is empty
+		if (!weapon_list)	//list is empty
 		{
 			return;
 		}
@@ -1516,7 +1516,7 @@ void RemoveFromList(edict_t *ent)
 	}
 	else if (ent->item->pickup == Pickup_Health)
 	{
-		if(!health_list)	//list is empty
+		if (!health_list)	//list is empty
 		{
 			return;
 		}
@@ -1525,7 +1525,7 @@ void RemoveFromList(edict_t *ent)
 	}
 	else if (ent->item->pickup == Pickup_Ammo)
 	{
-		if(!ammo_list)	//list is empty so the first item becomes the head
+		if (!ammo_list)	//list is empty so the first item becomes the head
 		{
 			return;
 		}
@@ -1534,7 +1534,7 @@ void RemoveFromList(edict_t *ent)
 	}
 	else
 	{
-		if(!powerup_list)	//list is empty so the first item becomes the head
+		if (!powerup_list)	//list is empty so the first item becomes the head
 		{
 			return;
 		}
@@ -1655,42 +1655,41 @@ void Load_BotChat(void)
 	fclose(fp);
 }
 
-char *Get_RandomBotSkin ()
+char* Get_RandomBotSkin()
 {
 	int rn;
-	
 
-	switch(rn = (int) (random() * 28 ))
+
+	switch (rn = (int)(random() * 28))
 	{
-	  case 0:  	return "male/cipher";break;
-	  case 1:	return "male/claymore";break;
-	  case 2:	return "male/flak";break;
-	  case 3:	return "male/grunt";break;
-	  case 4:	return "male/howitzer";break;
-	  case 5:	return "male/major";break;
-	  case 6:	return "male/nightops";break;
-	  case 7:	return "male/pointman";break;
-	  case 8:	return "male/psycho";break;
-	  case 9:	return "male/rampage";break;
-	  case 10:	return "male/razor";break;
-	  case 11:	return "male/recon";break;
-	  case 12:	return "male/scout";break;
-	  case 13:	return "male/sniper";break;
-	  case 14:	return "male/viper";break;
-	  case 15: 	return "female/athena";break;
-	  case 16: 	return "female/brianna";break;
-	  case 17:	return "female/cobalt";break;
-	  case 18:	return "female/ensign";break;
-	  case 19:	return "female/jezebel";break;
-	  case 20:	return "female/jungle";break;
-	  case 21:	return "female/lotus";break;
-	  case 22:	return "female/stiletto";break;
-	  case 23:	return "female/venus";break;
-	  case 24:	return "female/voodoo";break;
-	  case 25:	return "cyborg/oni911";break;
-	  case 26:	return "cyborg/ps9000";break;
-	  case 27:	return "cyborg/tyr574";break;
-	  default:	return "male/major";break;
+	case 0:  	return "male/cipher"; break;
+	case 1:	return "male/claymore"; break;
+	case 2:	return "male/flak"; break;
+	case 3:	return "male/grunt"; break;
+	case 4:	return "male/howitzer"; break;
+	case 5:	return "male/major"; break;
+	case 6:	return "male/nightops"; break;
+	case 7:	return "male/pointman"; break;
+	case 8:	return "male/psycho"; break;
+	case 9:	return "male/rampage"; break;
+	case 10:	return "male/razor"; break;
+	case 11:	return "male/recon"; break;
+	case 12:	return "male/scout"; break;
+	case 13:	return "male/sniper"; break;
+	case 14:	return "male/viper"; break;
+	case 15: 	return "female/athena"; break;
+	case 16: 	return "female/brianna"; break;
+	case 17:	return "female/cobalt"; break;
+	case 18:	return "female/ensign"; break;
+	case 19:	return "female/jezebel"; break;
+	case 20:	return "female/jungle"; break;
+	case 21:	return "female/lotus"; break;
+	case 22:	return "female/stiletto"; break;
+	case 23:	return "female/venus"; break;
+	case 24:	return "female/voodoo"; break;
+	case 25:	return "cyborg/oni911"; break;
+	case 26:	return "cyborg/ps9000"; break;
+	case 27:	return "cyborg/tyr574"; break;
+	default:	return "male/major"; break;
 	}
 }
-
