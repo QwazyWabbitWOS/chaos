@@ -425,10 +425,11 @@ qboolean Bot_SaveNodes(void)
 	Com_strcat(file, sizeof file, level.mapname);
 	Com_strcat(file, sizeof file, ".ntb");
 
-	output = fopen (file, "wb");
-
-	if (!output)
+	if ((output = fopen(file, "wb")) == NULL)    /* MrG{DRGN} check the return */
+	{
+		Com_Printf("Unable to open file! %s.\n", strerror(errno));
 		return false;
+	}
 
 	//check1
 	fwrite (nodetable_id, sizeof(const char), 19, output);
@@ -482,10 +483,11 @@ qboolean Bot_LoadNodes(void)
 
 	Com_Printf("Reading bot node table: %s\n", file);
 
-	input = fopen(file, "rb");
-
-	if (!input)
+	if ((input = fopen(file, "rb")) == NULL)    /* MrG{DRGN} check the return */
+	{
+		Com_Printf("Unable to open file! %s.\n", strerror(errno));
 		return false;
+	}
 
 	//check 1
 	num = fread(id_buffer, sizeof(const char), sizeof nodetable_id, input);
