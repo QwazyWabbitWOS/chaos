@@ -708,6 +708,14 @@ typedef enum
 #define	ANGLE2SHORT(x)	((int)((x)*65536/360) & 65535)
 #define	SHORT2ANGLE(x)	((x)*(360.0/65536))
 
+/* MrG{DRGN}
+COORD2SHORT() has additional benefit of casting result to int, which
+avoids undefined behavior when result overflows short, but doesn't
+overflow int.
+*/
+#define COORD2SHORT(x)  ((int)((x)*8.0f))
+#define SHORT2COORD(x)  ((x)*(1.0f/8))
+/* END */
 
 //
 // config strings are a general means of communication from

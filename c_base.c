@@ -425,12 +425,7 @@ qboolean infront4(edict_t* self, edict_t* other)
 
 void PreCacheAll()
 {
-	gi.dprintf("\nPrecaching images:");
 	//pics
-	gi.imageindex("i_help");
-	level.pic_health = gi.imageindex("i_health");
-	gi.imageindex("help");
-	gi.imageindex("field_3");
 	gi.imageindex("scanner/dot");
 	gi.imageindex("scanner/down");
 	gi.imageindex("scanner/up");
@@ -484,7 +479,6 @@ void PreCacheAll()
 	gi.imageindex("w_chainsaw");
 
 	//models
-	gi.dprintf("\nPrecaching models:");
 	gi.modelindex("models/weapons/v_sword/tris.md2");
 	gi.modelindex("models/weapons/g_sword/tris.md2");
 	gi.modelindex("models/weapons/v_chsaw/tris.md2");
@@ -529,7 +523,7 @@ void PreCacheAll()
 	gi.modelindex("models/objects/earrow/tris.md2");
 	gi.modelindex("models/objects/gflash/tris.md2");
 	gi.modelindex("models/objects/gpoison/tris.md2");
-	//gi.modelindex("models/objects/hgevilpr/tris.md2");
+	gi.modelindex("models/objects/hgevilpr/tris.md2");
 	gi.modelindex("models/objects/hgflash/tris.md2");
 	gi.modelindex("models/objects/hglaser/tris.md2");
 	gi.modelindex("models/objects/hgpoison/tris.md2");
@@ -554,75 +548,8 @@ void PreCacheAll()
 	gi.modelindex("models/items/invis/tris.md2");
 	gi.modelindex("models/items/jet/tris.md2");
 
-	sm_meat_index = gi.modelindex("models/objects/gibs/sm_meat/tris.md2");
-	sm_meat_index = gi.modelindex("models/objects/gibs/sm_gib1/tris.md2");
-	sm_meat_index = gi.modelindex("models/objects/gibs/sm_gib2/tris.md2");
-	sm_meat_index = gi.modelindex("models/objects/gibs/sm_gib3/tris.md2");
-	sm_meat_index = gi.modelindex("models/objects/gibs/sm_gib4/tris.md2");
-	sm_meat_index = gi.modelindex("models/objects/gibs/sm_gib5/tris.md2");
-	gi.modelindex("models/objects/gibs/arm/tris.md2");
-	gi.modelindex("models/objects/gibs/bone/tris.md2");
-	gi.modelindex("models/objects/gibs/bone2/tris.md2");
-	gi.modelindex("models/objects/gibs/chest/tris.md2");
-	gi.modelindex("models/objects/gibs/skull/tris.md2");
-	gi.modelindex("#w_ak42.md2");
-	gi.modelindex("#w_sword.md2");
-	gi.modelindex("#w_chainsaw.md2");
-	gi.modelindex("#w_sshotgun.md2");
-	gi.modelindex("#w_bow.md2");
-	gi.modelindex("#w_airfist.md2");
-	gi.modelindex("#a_grenades1.md2");
-	gi.modelindex("#w_glauncher1.md2");
-	gi.modelindex("#w_xlauncher.md2");
-	gi.modelindex("#w_rlauncher.md2");
-	gi.modelindex("#w_hyperblaster.md2");
-	gi.modelindex("#w_railgun.md2");
-	gi.modelindex("#w_buzzsaw.md2");
-	gi.modelindex("#w_bfg.md2");
-	gi.modelindex("#a_vortex.md2");
-	gi.modelindex("#a_rturret.md2");
-	gi.dprintf("\nPrecaching sprites:");
-	gi.modelindex("sprites/s_bfg3.sp2");
-	gi.modelindex("sprites/s_bfg1.sp2");
+
 	//sound
-	gi.dprintf("\nPrecaching sounds:");
-	gi.soundindex("player/lava1.wav");
-	gi.soundindex("player/lava2.wav");
-	gi.soundindex("misc/pc_up.wav");
-	gi.soundindex("misc/talk1.wav");
-	gi.soundindex("misc/udeath.wav");
-	gi.soundindex("items/respawn1.wav");
-	gi.soundindex("*death1.wav");
-	gi.soundindex("*death2.wav");
-	gi.soundindex("*death3.wav");
-	gi.soundindex("*death4.wav");
-	gi.soundindex("*fall1.wav");
-	gi.soundindex("*fall2.wav");
-	gi.soundindex("*gurp1.wav");		// drowning damage
-	gi.soundindex("*gurp2.wav");
-	gi.soundindex("*jump1.wav");		// player jump
-	gi.soundindex("*pain25_1.wav");
-	gi.soundindex("*pain25_2.wav");
-	gi.soundindex("*pain50_1.wav");
-	gi.soundindex("*pain50_2.wav");
-	gi.soundindex("*pain75_1.wav");
-	gi.soundindex("*pain75_2.wav");
-	gi.soundindex("*pain100_1.wav");
-	gi.soundindex("*pain100_2.wav");
-	gi.soundindex("player/gasp1.wav");		// gasping for air
-	gi.soundindex("player/gasp2.wav");		// head breaking surface, not gasping
-	gi.soundindex("player/watr_in.wav");	// feet hitting water
-	gi.soundindex("player/watr_out.wav");	// feet leaving water
-	gi.soundindex("player/watr_un.wav");	// head going underwater
-	gi.soundindex("player/u_breath1.wav");
-	gi.soundindex("player/u_breath2.wav");
-	gi.soundindex("items/pkup.wav");		// bonus item pickup
-	gi.soundindex("world/land.wav");		// landing thud
-	gi.soundindex("misc/h2ohit1.wav");		// landing splash
-	gi.soundindex("items/damage.wav");
-	gi.soundindex("items/protect.wav");
-	gi.soundindex("items/protect4.wav");
-	gi.soundindex("weapons/noammo.wav");
 	gi.soundindex("hook/hit.wav");
 	gi.soundindex("hook/chain1.wav");
 	gi.soundindex("hook/chain2.wav");
@@ -677,7 +604,6 @@ void PreCacheAll()
 	gi.soundindex("misc/bubbles1.wav");
 	gi.soundindex("misc/bubbles2.wav");
 	gi.soundindex("misc/burp.wav");
-	gi.dprintf("\nPrecaching complete!\n");
 }
 
 qboolean TeamMembers(edict_t* p1, edict_t* p2)
@@ -962,8 +888,8 @@ void T_RadiusDamage2(edict_t* attacker, vec3_t position, float damage, float rad
 {
 	float	points;
 	edict_t* ent = NULL;
-	vec3_t	v;
-	vec3_t	dir;
+	vec3_t	v = { 0 };
+	vec3_t	dir = { 0 };
 
 	while ((ent = findradius(ent, position, radius)) != NULL)
 	{
@@ -971,7 +897,7 @@ void T_RadiusDamage2(edict_t* attacker, vec3_t position, float damage, float rad
 			continue;
 
 		VectorSubtract(ent->s.origin, position, v);
-		points = damage - 0.5 * VectorLength(v);
+		points = damage - 0.5f * VectorLength(v);
 		//		if (ent == attacker)
 			//	points = points * 0.5;
 		if (points > 0)
@@ -987,7 +913,7 @@ void T_RadiusDamage2(edict_t* attacker, vec3_t position, float damage, float rad
 
 edict_t* findradius2(edict_t* from, vec3_t org, float rad)	//find all entities
 {
-	vec3_t	eorg;
+	vec3_t	eorg = { 0 };
 	int		j;
 
 	if (!from)
@@ -1117,9 +1043,9 @@ void ThrowUpNow(edict_t* self)
 	rn = random();
 	if (rn < 0.25)
 		gi.sound(self, CHAN_VOICE, gi.soundindex("misc/vomit1.wav"), 1, ATTN_NORM, 0);
-	else if (0.25 <= rn || rn < 0.5)
+	else if (0.25 <= rn && rn < 0.5) /* MrG{DRGN} made this work properly by adding && rn 09/23/2020*/
 		gi.sound(self, CHAN_VOICE, gi.soundindex("misc/vomit2.wav"), 1, ATTN_NORM, 0);
-	else if (0.5 <= rn || rn < 0.75)
+	else if (0.5 <= rn && rn < 0.75) /* MrG{DRGN} made this work properly by adding && rn 09/23/2020*/
 		gi.sound(self, CHAN_VOICE, gi.soundindex("misc/vomit3.wav"), 1, ATTN_NORM, 0);
 	else
 		gi.sound(self, CHAN_VOICE, gi.soundindex("misc/vomit4.wav"), 1, ATTN_NORM, 0);
@@ -1157,7 +1083,7 @@ void Teleport_Think(edict_t* ent)
 	if (ent->s.frame > 9)
 		ent->s.frame = 0;
 
-	ent->nextthink = level.time + 0.1;
+	ent->nextthink = level.time + 0.1f;
 }
 
 void Teleport(edict_t* ent)
@@ -1170,6 +1096,7 @@ void Teleport(edict_t* ent)
 
 	if (ent->client->teleporter)	//teleport
 	{
+		int i; /* MrG{DRGN} */
 		if (ctf->value)
 			CTFDeadDropFlag(ent);
 
@@ -1178,9 +1105,16 @@ void Teleport(edict_t* ent)
 		VectorCopy(telep->s.origin, spawn_origin);
 		spawn_origin[2] += 9;
 
+		/* MrG{DRGN}
 		ent->client->ps.pmove.origin[0] = spawn_origin[0] * 8;
 		ent->client->ps.pmove.origin[1] = spawn_origin[1] * 8;
 		ent->client->ps.pmove.origin[2] = spawn_origin[2] * 8;
+		*/
+
+		for (i = 0; i < 3; i++) {
+			ent->client->ps.pmove.origin[i] = COORD2SHORT(spawn_origin[i]);
+		}
+		/* END */
 		ent->s.event = EV_ITEM_RESPAWN;
 		spawn_origin[2] += 1;
 		VectorCopy(spawn_origin, ent->s.origin);
