@@ -13,6 +13,7 @@
 #endif /* _WIN32 */
 
 #include <assert.h>
+#include <errno.h>
 #include <math.h>
 #include <stdio.h>
 #include <stdarg.h>
