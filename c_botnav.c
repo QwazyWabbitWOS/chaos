@@ -481,11 +481,9 @@ qboolean Bot_LoadNodes(void)
 	Com_strcat(file, sizeof file, level.mapname);
 	Com_strcat(file, sizeof file, ".ntb");
 
-	Com_Printf("Reading bot node table: %s\n", file);
-
 	if ((input = fopen(file, "rb")) == NULL)    /* MrG{DRGN} check the return */
 	{
-		Com_Printf("Unable to open file! %s.\n", strerror(errno));
+		Com_Printf("Unable to open %s! %s.\n", file, strerror(errno));
 		return false;
 	}
 
