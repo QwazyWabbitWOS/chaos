@@ -3674,7 +3674,7 @@ void PoisonGrenade_Explode(edict_t* ent)
 		target->client->PoisonBase = poisontime->value;
 		target->s.angles[YAW] = (rand() % 360); // Whee!
 
-		if (target->client && target->client->fakedeath != 0)	//target is fakedead
+		if (/* target->client && */target->client->fakedeath != 0)	//target is fakedead /* Redundant */
 		{
 			FakeDeath(target); //unfake him
 		}

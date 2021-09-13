@@ -1280,8 +1280,7 @@ size_t Com_strcat(char* dest, size_t destSize, const char* src)
 
 	if (decSize == 0)
 		return (dLen + strlen(s));
-
-	if (decSize > 0) {
+	else {
 		while (--decSize && *s)
 			*d++ = *s++;
 
