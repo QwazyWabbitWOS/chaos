@@ -1,4 +1,4 @@
-/*
+﻿/*
 Copyright (C) 1997-2001 Id Software, Inc.
 
 This program is free software; you can redistribute it and/or
@@ -82,6 +82,8 @@ typedef enum { false, true }	qboolean;
 #define	MAX_EDICTS			1024	// must change protocol to increase more
 #define	MAX_LIGHTSTYLES		256
 #define	MAX_MODELS			256		// these are sent over the net as bytes
+#define VWEP_MODEL            (MAX_MODELS - 1) // for vwep model
+#define	PLAYER_MODEL			(MAX_MODELS - 1)// for player model
 #define	MAX_SOUNDS			256		// so they cannot be blindly increased
 #define	MAX_IMAGES			256
 #define	MAX_ITEMS			256

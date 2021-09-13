@@ -478,7 +478,7 @@ void bot_die(edict_t* self, edict_t* inflictor, edict_t* attacker, int damage, v
 				break;
 			}
 			gi.sound(self, CHAN_VOICE, gi.soundindex(va("*death%i.wav", (rand() % 4) + 1)), 1, ATTN_NORM, 0);
-			self->s.modelindex = (MAX_MODELS - 1); /* MrG{DRGN} no Magic Number 255 */
+			self->s.modelindex = (PLAYER_MODEL); /* MrG{DRGN} no Magic Number 255 */
 		}
 	}
 

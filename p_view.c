@@ -1,4 +1,4 @@
-
+﻿
 #include "g_local.h"
 #include "m_player.h"
 #include "c_base.h"
@@ -54,14 +54,14 @@ void P_DamageFeedback(edict_t* player)
 	gclient_t* client;
 	float	side;
 	float	realcount, count, kick;
-	vec3_t	v = {0};
+	vec3_t	v = { 0 };
 	int		r, l;
 	static	vec3_t	power_color = { 0.0, 1.0, 0.0 };
 	static	vec3_t	acolor = { 1.0, 1.0, 1.0 };
 	static	vec3_t	bcolor = { 1.0, 0.0, 0.0 };
 
 	/* MrG{DRGN} sanity check*/
-	if (!player|| player->bot_player)
+	if (!player || player->bot_player)
 	{
 		return;
 	}
@@ -82,7 +82,7 @@ void P_DamageFeedback(edict_t* player)
 		return;		// didn't take any damage
 
 	// start a pain animation if still in the player model
-	if (client->anim_priority < ANIM_PAIN && player->s.modelindex == (MAX_MODELS - 1)) /* MrG{DRGN} no Magic Number 255 */
+	if (client->anim_priority < ANIM_PAIN && player->s.modelindex == (PLAYER_MODEL)) /* MrG{DRGN} no Magic Number 255 */
 	{
 		static int		i;
 
@@ -209,7 +209,7 @@ void SV_CalcViewOffset(edict_t* ent)
 	float		bob;
 	float		ratio;
 	float		delta;
-	vec3_t		v = {0};
+	vec3_t		v = { 0 };
 
 	/* MrG{DRGN} sanity check*/
 	if (!ent)
@@ -420,7 +420,7 @@ SV_CalcBlend
 void SV_CalcBlend(edict_t* ent)
 {
 	int		contents;
-	vec3_t	vieworg = {0};
+	vec3_t	vieworg = { 0 };
 	int		remaining;
 	float alpha = 0; /* MrG{DRGN} moved out of conditional below and initialized 09/23/2020 */
 
@@ -513,7 +513,7 @@ void SV_CalcBlend(edict_t* ent)
 	}
 	else if ((ent->client->PoisonTime < 1 && ent->client->PoisonTime > 0) || ent->client->pers.health <= 0)	   /* MrG{DRGN} or dead */
 	{
-		
+
 		/* MrG{DRGN} integer comparison vs string comparison.*/
 		if (ent->classindex == PLAYER)/*strcmp(ent->classname,"player") == 0)*/
 		{
@@ -628,7 +628,7 @@ void P_FallingDamage(edict_t* ent)
 {
 	float	delta;
 	int		damage;
-	vec3_t	dir = {0};
+	vec3_t	dir = { 0 };
 
 	/* MrG{DRGN} sanity check*/
 	if (!ent)
@@ -910,7 +910,7 @@ void G_SetClientEffects(edict_t* ent)
 	}
 
 	//ZOID
-	if(ctf->value)/* MrG{DRGN} */
+	if (ctf->value)/* MrG{DRGN} */
 		CTFEffects(ent);
 	//ZOID
 
@@ -1031,7 +1031,7 @@ void G_SetClientFrame(edict_t* ent)
 	}
 	/* END */
 
-	if (ent->s.modelindex != (MAX_MODELS - 1)) /* MrG{DRGN} no Magic Number 255 */
+	if (ent->s.modelindex != (PLAYER_MODEL)) /* MrG{DRGN} no Magic Number 255 */
 		return;		// not in the player model
 
 	client = ent->client;
