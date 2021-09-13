@@ -1,4 +1,4 @@
-# 
+#
 # Makefile				Chaotic Dreams Makefile
 #
 # Major'Trips'
@@ -10,10 +10,10 @@
 BUILD_DEBUG_DIR=debug
 BUILD_RELEASE_DIR=release
 
-CC=gcc
+CC=gccgcc -std=c18 -Wall -Wpedantic
 
 # Base Flags
-# If you want to add a CFLAG to be included in both the 
+# If you want to add a CFLAG to be included in both the
 # debug and the release build, add it here
 BASE_CFLAGS=-Dstricmp=strcasecmp -DC_ONLY -pedantic -m386 -V2.7.2.3
 
@@ -28,9 +28,9 @@ RELEASE_CFLAGS=$(BASE_CFLAGS) -ffast-math -funroll-loops \
 DEBUG_CFLAGS=$(BASE_CFLAGS) -g -Wall
 
 # LD Flags
-# These are typically not used, though I understand it's 
+# These are typically not used, though I understand it's
 # necessary to use them on a Slakware system
-#LDFLAGS=-ldl -lm 
+#LDFLAGS=-ldl -lm
 
 ##### Dont go beyond here unless you know what's going on ####
 

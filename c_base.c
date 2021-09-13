@@ -220,44 +220,43 @@ void LoadMaplist(char* filename)
 
 	ClearMaplist();
 
-	if (fp)
+	i = 0;
+
+	while ((!feof(fp)) && (i < MAX_MAPS))
 	{
-		i = 0;
+		int	len;
 
-		while ((!feof(fp)) && (i < MAX_MAPS))
-		{
-			int	len;
+		if ((fgets(line, sizeof line, fp) == NULL) && feof(fp))
+			gi.dprintf("%s file read error %s\n", __func__, file);
+		len = strlen(line);
 
-			if ((fgets(line, sizeof line, fp) == NULL) && feof(fp))
-				gi.dprintf("%s file read error %s\n", __func__, file);
-			len = strlen(line);
+		if (len < 5) //invalid
+			continue;
+		if (line[0] == ';') //comment
+			continue;
 
-			if (len < 5) //invalid
-				continue;
-			if (line[0] == ';') //comment
-				continue;
-
+		len--;
+		while (line[len] == '\n' || line[len] == '\r')
 			len--;
-			while (line[len] == '\n' || line[len] == '\r')
-				len--;
 
-			// lightsoff
-			maplist.lightsoff[i] = line[len--];
+		// lightsoff
+		maplist.lightsoff[i] = line[len--];
 
-			// ctf
-			maplist.ctf[i] = line[len--];
+		// ctf
+		maplist.ctf[i] = line[len--];
 
-			// mapname
-			strncpy(maplist.mapnames[i], line, len);
+		// mapname
+		strncpy(maplist.mapnames[i], line, len);
 
-			gi.cprintf(NULL, PRINT_HIGH, "...%s,ctf=%c,lightsoff=%c\n", maplist.mapnames[i], maplist.ctf[i], maplist.lightsoff[i]);
-			i++;
-		}
-		maplist.nummaps = i;
-		if (maplist.nummaps > 0)
-			maplist.mlflag = g_maplistmode->value; //set per configured mode.
-		fclose(fp);
+		gi.cprintf(NULL, PRINT_HIGH, "...%s,ctf=%c,lightsoff=%c\n", maplist.mapnames[i], maplist.ctf[i], maplist.lightsoff[i]);
+		i++;
 	}
+
+	maplist.nummaps = i;
+
+	if (maplist.nummaps > 0)
+		maplist.mlflag = g_maplistmode->value; //set per configured mode.
+	fclose(fp);
 
 	if (maplist.nummaps == 0)
 	{
@@ -699,34 +698,29 @@ void LoadMOTD(void)
 		gi.cprintf(NULL, PRINT_HIGH, "Could not find file \"%s\".\n\n", file, strerror(errno));
 		return;
 	}
-	if (fp)
+
+	i = 0;
+
+	while ((!feof(fp)) && (i < sizeof motd))
 	{
-		i = 0;
-
-		while ((!feof(fp)) && (i < sizeof motd))
-		{
-			int		len;
-
-			if (fgets(line, sizeof line, fp) == NULL) {
-				if (!feof(fp))
-					gi.dprintf("%s problem reading %s\n", __func__, file);
-			}
-			len = strlen(line);
-
-			while (line[len] == '\n' || line[len] == '\r')
-				len--;
-
-			if ((i + len) < sizeof motd)
-				strncpy(motd + i, line, len);
-			else
-				gi.dprintf("MOTD is too long (> %u chars), truncated\n", sizeof motd);
-
-			i += len;
+		int		len;
+		if (fgets(line, sizeof line, fp) == NULL) {
+			if (!feof(fp))
+				gi.dprintf("%s problem reading %s\n", __func__, file);
 		}
+		len = strlen(line);
+		while (line[len] == '\n' || line[len] == '\r')
+			len--;
+
+		if ((i + len) < sizeof motd)
+			strncpy(motd + i, line, len);
+		else
+			gi.dprintf("MOTD is too long (> %u chars), truncated\n", sizeof motd);
+		i += len;
 	}
+
 	//close file
-	if (fp)
-		fclose(fp);
+	fclose(fp);
 }
 
 void FakeDeath(edict_t* self)
