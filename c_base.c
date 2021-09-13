@@ -224,7 +224,7 @@ void LoadMaplist(char* filename)
 
 	while ((!feof(fp)) && (i < MAX_MAPS))
 	{
-		int	len;
+		size_t	len;
 
 		if ((fgets(line, sizeof line, fp) == NULL) && feof(fp))
 			gi.dprintf("%s file read error %s\n", __func__, file);
@@ -668,7 +668,7 @@ void LoadMOTD(void)
 	FILE* fp;
 	char file[MAX_QPATH];
 	char line[80];
-	int i;
+	size_t i;
 
 	Com_strcpy(file, sizeof file, "./");
 	Com_strcat(file, sizeof file, game_dir->string);
@@ -703,7 +703,7 @@ void LoadMOTD(void)
 
 	while ((!feof(fp)) && (i < sizeof motd))
 	{
-		int		len;
+		size_t	len;
 		if (fgets(line, sizeof line, fp) == NULL) {
 			if (!feof(fp))
 				gi.dprintf("%s problem reading %s\n", __func__, file);

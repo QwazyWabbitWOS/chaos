@@ -203,12 +203,14 @@ DeathmatchScoreboardMessage
 
 ==================
 */
-void DeathmatchScoreboardMessage (edict_t *ent, edict_t *killer)
+void DeathmatchScoreboardMessage(edict_t* ent, edict_t* killer)
 {
 	char	entry[1024];
 	char	string[1400];
-	int		stringlength;
-	int		i, j, k;
+	size_t	stringlength;
+	int		i;
+	size_t	j;
+	int		k;
 	int		sorted[MAX_CLIENTS];
 	int		sortedscores[MAX_CLIENTS];
 	int		score, total;
