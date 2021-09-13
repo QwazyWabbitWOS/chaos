@@ -1,4 +1,4 @@
-#include "g_local.h"
+﻿#include "g_local.h"
 #include "c_botnav.h"
 #include "gslog.h"
 
@@ -848,7 +848,7 @@ void SP_worldspawn(edict_t * ent)
 	ent->movetype = MOVETYPE_PUSH;
 	ent->solid = SOLID_BSP;
 	ent->inuse = true;			// since the world doesn't use G_Spawn()
-	ent->s.modelindex = 1;		// world model is always index 1
+	ent->s.modelindex = WORLD_MODEL;		// world model is always index 1
 	ent->classindex = WORLDSPAWN; /* MrG{DRGN} */
 	ent->classname = "worldspawn";
 	/* MrG{DRGN}
