@@ -1145,17 +1145,17 @@ void Com_PageInMemory(byte* buffer, int size)
  if s1 is contained within s2 then return 0, they are "equal".
  else return the lexicographic difference between them.
 */
-int	Q_stricmp(const char* s1, const char* s2)
-{
-	const unsigned char
-		* uc1 = (const unsigned char*)s1,
-		* uc2 = (const unsigned char*)s2;
-
-	while (tolower(*uc1) == tolower(*uc2++))
-		if (*uc1++ == '\0')
-			return (0);
-	return (tolower(*uc1) - tolower(*--uc2));
-}
+//int	Q_stricmp(const char* s1, const char* s2)
+//{
+//	const unsigned char
+//		* uc1 = (const unsigned char*)s1,
+//		* uc2 = (const unsigned char*)s2;
+//
+//	while (tolower(*uc1) == tolower(*uc2++))
+//		if (*uc1++ == '\0')
+//			return (0);
+//	return (tolower(*uc1) - tolower(*--uc2));
+//}
 
 int Q_strncasecmp(char* s1, char* s2, size_t n) /* MrG{DRGN}  changed from int to size_t for 64 bit compatibility */
 {
