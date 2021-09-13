@@ -1,4 +1,4 @@
-#include "g_local.h"
+﻿#include "g_local.h"
 #include "m_player.h"
 
 void ClientCommand2(edict_t* ent);	//MATTHIAS
@@ -40,7 +40,7 @@ qboolean OnSameTeam(edict_t* ent1, edict_t* ent2)
 	Com_strcpy(ent1Team, sizeof(ent1Team), ClientTeam(ent1));
 	Com_strcpy(ent2Team, sizeof(ent2Team), ClientTeam(ent2));
 
-	if (Q_strcasecmp(ent1Team, ent2Team) == 0)
+	if (Q_stricmp(ent1Team, ent2Team) == 0)
 		return true;
 	return false;
 }
@@ -161,12 +161,12 @@ void Cmd_Give_f(edict_t* ent)
 
 	name = gi.args();
 
-	if (Q_strcasecmp(name, "all") == 0)
+	if (Q_stricmp(name, "all") == 0)
 		give_all = true;
 	else
 		give_all = false;
 
-	if (give_all || Q_strcasecmp(gi.argv(1), "health") == 0)
+	if (give_all || Q_stricmp(gi.argv(1), "health") == 0)
 	{
 		if (gi.argc() == 3)
 		{
@@ -179,7 +179,7 @@ void Cmd_Give_f(edict_t* ent)
 			return;
 	}
 
-	if (give_all || Q_strcasecmp(name, "weapons") == 0)
+	if (give_all || Q_stricmp(name, "weapons") == 0)
 	{
 		for (i = 0; i < game.num_items; i++)
 		{
@@ -199,7 +199,7 @@ void Cmd_Give_f(edict_t* ent)
 			return;
 	}
 
-	if (give_all || Q_strcasecmp(name, "ammo") == 0)
+	if (give_all || Q_stricmp(name, "ammo") == 0)
 	{
 		for (i = 0; i < game.num_items; i++)
 		{
@@ -217,7 +217,7 @@ void Cmd_Give_f(edict_t* ent)
 			return;
 	}
 
-	if (give_all || Q_strcasecmp(name, "armor") == 0)
+	if (give_all || Q_stricmp(name, "armor") == 0)
 	{
 		gitem_armor_t* info;
 
@@ -235,7 +235,7 @@ void Cmd_Give_f(edict_t* ent)
 			return;
 	}
 
-	if (give_all || Q_strcasecmp(name, "Power Shield") == 0)
+	if (give_all || Q_stricmp(name, "Power Shield") == 0)
 	{
 		it = FindItemByClassindex(AR_POWER_SHIELD);
 		it_ent = G_Spawn();
@@ -458,7 +458,7 @@ void Cmd_Drop_f(edict_t* ent)
 	char* s;
 
 	//ZOID--special case for tech powerups
-	if (Q_strcasecmp(gi.args(), "tech") == 0 && (it = CTFWhat_Tech(ent)) != NULL) {
+	if (Q_stricmp(gi.args(), "tech") == 0 && (it = CTFWhat_Tech(ent)) != NULL) {
 		it->drop(ent, it);
 		return;
 	}
@@ -741,7 +741,7 @@ void Cmd_Kill_f(edict_t* ent)
 
 	 /* MrG{DRGN} replaced with integer comparision
 		if (ent->classindex == CAMPLAYER)
-		 if (!Q_strcasecmp (ent->classname, "camera") */
+		 if (!Q_stricmp (ent->classname, "camera") */
 	if (ent->classindex == CAMPLAYER || ent->client->camera)
 		return;
 	/*
@@ -995,7 +995,7 @@ void Cmd_Say_f(edict_t* ent, qboolean team, qboolean arg0)
 			continue;
 		if (!other->client)
 			continue;
-		if (Q_strcasecmp(other->classname, "bot") == 0)
+		if (Q_stricmp(other->classname, "bot") == 0)
 			continue;
 		if (team)
 		{
@@ -1024,27 +1024,27 @@ void ClientCommand(edict_t* ent)
 
 	cmd = gi.argv(0);
 
-	if (Q_strcasecmp(cmd, "players") == 0)
+	if (Q_stricmp(cmd, "players") == 0)
 	{
 		Cmd_Players_f(ent);
 		return;
 	}
-	if (Q_strcasecmp(cmd, "say") == 0)
+	if (Q_stricmp(cmd, "say") == 0)
 	{
 		Cmd_Say_f(ent, false, false);
 		return;
 	}
-	if (Q_strcasecmp(cmd, "say_team") == 0 || Q_strcasecmp(cmd, "steam") == 0)
+	if (Q_stricmp(cmd, "say_team") == 0 || Q_stricmp(cmd, "steam") == 0)
 	{
 		CTFSay_Team(ent, gi.args());
 		return;
 	}
-	if (Q_strcasecmp(cmd, "score") == 0)
+	if (Q_stricmp(cmd, "score") == 0)
 	{
 		Cmd_Score_f(ent);
 		return;
 	}
-	if (Q_strcasecmp(cmd, "help") == 0)
+	if (Q_stricmp(cmd, "help") == 0)
 	{
 		Cmd_Help_f(ent);
 		return;
@@ -1053,55 +1053,55 @@ void ClientCommand(edict_t* ent)
 	if (level.intermissiontime)
 		return;
 
-	if (Q_strcasecmp(cmd, "use") == 0)
+	if (Q_stricmp(cmd, "use") == 0)
 		Cmd_Use_f(ent);
-	else if (Q_strcasecmp(cmd, "drop") == 0)
+	else if (Q_stricmp(cmd, "drop") == 0)
 		Cmd_Drop_f(ent);
-	else if (Q_strcasecmp(cmd, "give") == 0)
+	else if (Q_stricmp(cmd, "give") == 0)
 		Cmd_Give_f(ent);
-	else if (Q_strcasecmp(cmd, "god") == 0)
+	else if (Q_stricmp(cmd, "god") == 0)
 		Cmd_God_f(ent);
-	else if (Q_strcasecmp(cmd, "notarget") == 0)
+	else if (Q_stricmp(cmd, "notarget") == 0)
 		Cmd_Notarget_f(ent);
-	else if (Q_strcasecmp(cmd, "noclip") == 0)
+	else if (Q_stricmp(cmd, "noclip") == 0)
 		Cmd_Noclip_f(ent);
-	else if (Q_strcasecmp(cmd, "inven") == 0)
+	else if (Q_stricmp(cmd, "inven") == 0)
 		Cmd_Inven_f(ent);
-	else if (Q_strcasecmp(cmd, "invnext") == 0)
+	else if (Q_stricmp(cmd, "invnext") == 0)
 		SelectNextItem(ent, -1);
-	else if (Q_strcasecmp(cmd, "invprev") == 0)
+	else if (Q_stricmp(cmd, "invprev") == 0)
 		SelectPrevItem(ent, -1);
-	else if (Q_strcasecmp(cmd, "invnexta") == 0)
+	else if (Q_stricmp(cmd, "invnexta") == 0)
 		SelectNextItem(ent, IT_AMMO);
-	else if (Q_strcasecmp(cmd, "invpreva") == 0)
+	else if (Q_stricmp(cmd, "invpreva") == 0)
 		SelectPrevItem(ent, IT_AMMO);
-	else if (Q_strcasecmp(cmd, "invnextw") == 0)
+	else if (Q_stricmp(cmd, "invnextw") == 0)
 		SelectNextItem(ent, IT_WEAPON);
-	else if (Q_strcasecmp(cmd, "invprevw") == 0)
+	else if (Q_stricmp(cmd, "invprevw") == 0)
 		SelectPrevItem(ent, IT_WEAPON);
-	else if (Q_strcasecmp(cmd, "invnextp") == 0)
+	else if (Q_stricmp(cmd, "invnextp") == 0)
 		SelectNextItem(ent, IT_POWERUP);
-	else if (Q_strcasecmp(cmd, "invprevp") == 0)
+	else if (Q_stricmp(cmd, "invprevp") == 0)
 		SelectPrevItem(ent, IT_POWERUP);
-	else if (Q_strcasecmp(cmd, "invuse") == 0)
+	else if (Q_stricmp(cmd, "invuse") == 0)
 		Cmd_InvUse_f(ent);
-	else if (Q_strcasecmp(cmd, "invdrop") == 0)
+	else if (Q_stricmp(cmd, "invdrop") == 0)
 		Cmd_InvDrop_f(ent);
-	else if (Q_strcasecmp(cmd, "weapprev") == 0)
+	else if (Q_stricmp(cmd, "weapprev") == 0)
 		Cmd_WeapPrev_f(ent);
-	else if (Q_strcasecmp(cmd, "weapnext") == 0)
+	else if (Q_stricmp(cmd, "weapnext") == 0)
 		Cmd_WeapNext_f(ent);
-	else if (Q_strcasecmp(cmd, "weaplast") == 0)
+	else if (Q_stricmp(cmd, "weaplast") == 0)
 		Cmd_WeapLast_f(ent);
-	else if (Q_strcasecmp(cmd, "kill") == 0)
+	else if (Q_stricmp(cmd, "kill") == 0)
 		Cmd_Kill_f(ent);
-	else if (Q_strcasecmp(cmd, "putaway") == 0)
+	else if (Q_stricmp(cmd, "putaway") == 0)
 		Cmd_PutAway_f(ent);
-	else if (Q_strcasecmp(cmd, "wave") == 0)
+	else if (Q_stricmp(cmd, "wave") == 0)
 		Cmd_Wave_f(ent);
-	else if (Q_strcasecmp(cmd, "team") == 0)
+	else if (Q_stricmp(cmd, "team") == 0)
 		CTFTeam_f(ent);
-	else if (Q_strcasecmp(cmd, "id") == 0)
+	else if (Q_stricmp(cmd, "id") == 0)
 		CTFID_f(ent);
 	else
 		ClientCommand2(ent);

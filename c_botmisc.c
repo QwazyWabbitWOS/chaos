@@ -38,7 +38,7 @@ void Svcmd_addbots_f()	// adds "num" bots.
 		}
 
 		// set the model
-		if (Q_strcasecmp(gi.argv(6), "") == 0)
+		if (Q_stricmp(gi.argv(6), "") == 0)
 		{
 			Com_Printf(model, Get_RandomBotSkin());
 		}
@@ -46,8 +46,8 @@ void Svcmd_addbots_f()	// adds "num" bots.
 			Com_Printf(model, gi.argv(6));
 
 		// set the name
-		if (Q_strcasecmp(name, "") == 0
-			|| Q_strcasecmp(name, " ") == 0)
+		if (Q_stricmp(name, "") == 0
+			|| Q_stricmp(name, " ") == 0)
 		{
 			/*	MrG{DRGN} destination safe strcpy replacement */
 			Com_strcpy(name, sizeof(name), (strchr(model, '/') + 1));
@@ -66,7 +66,7 @@ void Svcmd_addbots_f()	// adds "num" bots.
 			}
 
 			// set the model
-			if (Q_strcasecmp(gi.argv(6), "") == 0)
+			if (Q_stricmp(gi.argv(6), "") == 0)
 			{
 				Com_Printf(model, Get_RandomBotSkin());
 			}
@@ -90,7 +90,7 @@ void Svcmd_killbot_f(char* name)
 
 	count = numplayers + 1;
 
-	if (Q_strcasecmp(name, "all") == 0)	//kill all bots
+	if (Q_stricmp(name, "all") == 0)	//kill all bots
 	{
 		for (i = 0; i < count; i++)
 		{
@@ -101,7 +101,7 @@ void Svcmd_killbot_f(char* name)
 				if (!players[k]->client)
 					continue;
 				/* MrG{DRGN}
-				if (Q_strcasecmp(players[k]->classname, "bot") == 0)
+				if (Q_stricmp(players[k]->classname, "bot") == 0)
 				*/
 				if (players[k]->bot_player)
 				{
@@ -120,9 +120,9 @@ void Svcmd_killbot_f(char* name)
 			if (!players[i]->client)
 				continue;
 			/* MrG{DRGN}
-			if ((Q_strcasecmp(players[i]->classname, "bot") == 0) && (Q_strcasecmp(players[i]->client->pers.netname, name) == 0))
+			if ((Q_stricmp(players[i]->classname, "bot") == 0) && (Q_stricmp(players[i]->client->pers.netname, name) == 0))
 			*/
-			if ((players[i]->bot_player) && (Q_strcasecmp(players[i]->client->pers.netname, name) == 0))
+			if ((players[i]->bot_player) && (Q_stricmp(players[i]->client->pers.netname, name) == 0))
 			{
 				ClientDisconnect(players[i]);
 				numbots--;
@@ -1356,7 +1356,7 @@ qboolean Bot_CanReachSpotDirectly(edict_t* ent, vec3_t target)
 	// check if the way to target is free
 	tr = gi.trace(ent->s.origin, NULL, NULL, target, ent, MASK_SOLID);
 
-	if (tr.ent && Q_strcasecmp(tr.ent->classname, "func_door") == 0)
+	if (tr.ent && Q_stricmp(tr.ent->classname, "func_door") == 0)
 	{
 		// we are standing in front of a door
 	}
@@ -1455,19 +1455,19 @@ void AddItemToList(edict_t* ent)
 	if (!ent->item->pickup)
 		return;
 
-	if (Q_strcasecmp(ent->classname, "item_armor_shard") == 0	//don't add armor shards to our list!!!
-		|| Q_strcasecmp(ent->classname, "item_flag_team1") == 0	//don't add ctf flags to our list!
-		|| Q_strcasecmp(ent->classname, "item_flag_team2") == 0
-		|| Q_strcasecmp(ent->classname, "freed") == 0
-		|| Q_strcasecmp(ent->classname, "item_health_small") == 0) //don't add mini health packs to our list!
+	if (Q_stricmp(ent->classname, "item_armor_shard") == 0	//don't add armor shards to our list!!!
+		|| Q_stricmp(ent->classname, "item_flag_team1") == 0	//don't add ctf flags to our list!
+		|| Q_stricmp(ent->classname, "item_flag_team2") == 0
+		|| Q_stricmp(ent->classname, "freed") == 0
+		|| Q_stricmp(ent->classname, "item_health_small") == 0) //don't add mini health packs to our list!
 		return;
 
 	//find the list head
 	if (ent->item->pickup == Pickup_Weapon
 		|| ent->item->pickup == Pickup_NoAmmoWeapon
-		|| Q_strcasecmp(ent->classname, "ammo_vortex") == 0
-		|| Q_strcasecmp(ent->classname, "ammo_laserturret") == 0
-		|| Q_strcasecmp(ent->classname, "ammo_rocketturret") == 0
+		|| Q_stricmp(ent->classname, "ammo_vortex") == 0
+		|| Q_stricmp(ent->classname, "ammo_laserturret") == 0
+		|| Q_stricmp(ent->classname, "ammo_rocketturret") == 0
 		)
 	{
 		if (!weapon_list)	//list is empty so the first item becomes the head
@@ -1533,11 +1533,11 @@ void RemoveFromList(edict_t* ent)
 	if (!ent->item->pickup)
 		return;
 
-	if (Q_strcasecmp(ent->classname, "item_armor_shard") == 0
-		|| Q_strcasecmp(ent->classname, "item_flag_team1") == 0
-		|| Q_strcasecmp(ent->classname, "item_flag_team2") == 0
-		|| Q_strcasecmp(ent->classname, "freed") == 0
-		|| Q_strcasecmp(ent->classname, "item_health_small") == 0)
+	if (Q_stricmp(ent->classname, "item_armor_shard") == 0
+		|| Q_stricmp(ent->classname, "item_flag_team1") == 0
+		|| Q_stricmp(ent->classname, "item_flag_team2") == 0
+		|| Q_stricmp(ent->classname, "freed") == 0
+		|| Q_stricmp(ent->classname, "item_health_small") == 0)
 		return;
 
 	//find the list head

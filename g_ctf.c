@@ -1,4 +1,4 @@
-#include "g_local.h"
+﻿#include "g_local.h"
 #include "stdlog.h"
 
 void ClientBeginDeathmatch(edict_t* ent);
@@ -1194,9 +1194,9 @@ void CTFTeam_f(edict_t* ent)
 			CTFTeamName(ent->client->resp.ctf_team));
 		return;
 	}
-	if (Q_strcasecmp(t, "red") == 0)
+	if (Q_stricmp(t, "red") == 0)
 		desired_team = CTF_TEAM1;
-	else if (Q_strcasecmp(t, "blue") == 0)
+	else if (Q_stricmp(t, "blue") == 0)
 		desired_team = CTF_TEAM2;
 	else {
 		cprintf2(ent, PRINT_HIGH, "Unknown team %s.\n", t);
@@ -2401,11 +2401,11 @@ int CTFUpdateJoinMenu(edict_t* ent)
 	joinmenu[6].SelectFunc = CTFJoinTeam2;
 
 	if (ctf_forcejoin->string && *ctf_forcejoin->string) {
-		if (Q_strcasecmp(ctf_forcejoin->string, "red") == 0) {
+		if (Q_stricmp(ctf_forcejoin->string, "red") == 0) {
 			joinmenu[6].text = NULL;
 			joinmenu[6].SelectFunc = NULL;
 		}
-		else if (Q_strcasecmp(ctf_forcejoin->string, "blue") == 0) {
+		else if (Q_stricmp(ctf_forcejoin->string, "blue") == 0) {
 			joinmenu[4].text = NULL;
 			joinmenu[4].SelectFunc = NULL;
 		}

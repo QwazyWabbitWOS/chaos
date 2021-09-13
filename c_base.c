@@ -734,7 +734,7 @@ void FakeDeath(edict_t* self)
 	/* END */
 
 	/* MrG{DRGN} replaced with integer comparision
-	if (Q_strcasecmp (self->classname, "camera") == 0)
+	if (Q_stricmp (self->classname, "camera") == 0)
 	*/
 	if (self->classindex == CAMPLAYER || self->movetype == MOVETYPE_NOCLIP)/* MrG{DRGN} if you haven't joined a team yet. you can't fakedeath! */
 		return;
@@ -1563,7 +1563,7 @@ void ClientCommand2(edict_t* ent)
 
 	cmd = gi.argv(0);
 
-	if (!Q_strcasecmp(cmd, "grapple"))
+	if (!Q_stricmp(cmd, "grapple"))
 	{
 		if (ent->classindex == CAMPLAYER || ent->movetype == MOVETYPE_NOCLIP)/* MrG{DRGN} if you haven't joined a team yet. you can't use the hook! */
 			return;
@@ -1582,7 +1582,7 @@ void ClientCommand2(edict_t* ent)
 			return;
 		}
 	}
-	else if (Q_strcasecmp(cmd, "class2") == 0)
+	else if (Q_stricmp(cmd, "class2") == 0)
 	{
 		if (ent->health <= 0)
 			return;
@@ -1590,7 +1590,7 @@ void ClientCommand2(edict_t* ent)
 			return;
 		Use_Class2(ent);
 	}
-	else if (Q_strcasecmp(cmd, "class3") == 0)
+	else if (Q_stricmp(cmd, "class3") == 0)
 	{
 		if (ent->health <= 0)
 			return;
@@ -1598,7 +1598,7 @@ void ClientCommand2(edict_t* ent)
 			return;
 		Use_Class3(ent);
 	}
-	else if (Q_strcasecmp(cmd, "class4") == 0)
+	else if (Q_stricmp(cmd, "class4") == 0)
 	{
 		if (ent->health <= 0)
 			return;
@@ -1606,7 +1606,7 @@ void ClientCommand2(edict_t* ent)
 			return;
 		Use_Class4(ent);
 	}
-	else if (Q_strcasecmp(cmd, "class5") == 0)
+	else if (Q_stricmp(cmd, "class5") == 0)
 	{
 		if (ent->health <= 0)
 			return;
@@ -1614,7 +1614,7 @@ void ClientCommand2(edict_t* ent)
 			return;
 		Use_Class5(ent);
 	}
-	else if (Q_strcasecmp(cmd, "class6") == 0)
+	else if (Q_stricmp(cmd, "class6") == 0)
 	{
 		if (ent->health <= 0)
 			return;
@@ -1622,7 +1622,7 @@ void ClientCommand2(edict_t* ent)
 			return;
 		Use_Class6(ent);
 	}
-	else if (Q_strcasecmp(cmd, "class7") == 0)
+	else if (Q_stricmp(cmd, "class7") == 0)
 	{
 		if (ent->health <= 0)
 			return;
@@ -1630,7 +1630,7 @@ void ClientCommand2(edict_t* ent)
 			return;
 		Use_Class7(ent);
 	}
-	else if (Q_strcasecmp(cmd, "class8") == 0)
+	else if (Q_stricmp(cmd, "class8") == 0)
 	{
 		if (ent->health <= 0)
 			return;
@@ -1638,7 +1638,7 @@ void ClientCommand2(edict_t* ent)
 			return;
 		Use_Class8(ent);
 	}
-	else if (Q_strcasecmp(cmd, "class9") == 0)
+	else if (Q_stricmp(cmd, "class9") == 0)
 	{
 		if (ent->health <= 0)
 			return;
@@ -1646,7 +1646,7 @@ void ClientCommand2(edict_t* ent)
 			return;
 		Use_Class9(ent);
 	}
-	else if (Q_strcasecmp(cmd, "class0") == 0)
+	else if (Q_stricmp(cmd, "class0") == 0)
 	{
 		if (ent->health <= 0)
 			return;
@@ -1654,7 +1654,7 @@ void ClientCommand2(edict_t* ent)
 			return;
 		Use_Class0(ent);
 	}
-	else if (Q_strcasecmp(cmd, "grenades") == 0)
+	else if (Q_stricmp(cmd, "grenades") == 0)
 	{
 		if (ent->health <= 0)
 			return;
@@ -1662,7 +1662,7 @@ void ClientCommand2(edict_t* ent)
 			return;
 		Use_Grenades(ent);
 	}
-	else if (Q_strcasecmp(cmd, "throwup") == 0)
+	else if (Q_stricmp(cmd, "throwup") == 0)
 	{
 		if (ent->classindex == CAMPLAYER || ent->movetype == MOVETYPE_NOCLIP)/* MrG{DRGN} if you haven't joined a team yet. you can't puke! */
 			return;
@@ -1676,7 +1676,7 @@ void ClientCommand2(edict_t* ent)
 			ent->client->nextvomit = level.time + 1;
 		}
 	}
-	else if (Q_strcasecmp(cmd, "zoom") == 0)
+	else if (Q_stricmp(cmd, "zoom") == 0)
 	{
 		int zoomtype = atoi(gi.argv(1));
 
@@ -1695,9 +1695,9 @@ void ClientCommand2(edict_t* ent)
 			else ent->client->ps.fov = 90;
 		}
 	}
-	else if (Q_strcasecmp(cmd, "camera") == 0)
+	else if (Q_stricmp(cmd, "camera") == 0)
 	{
-		if (Q_strcasecmp(gi.argv(1), "0") == 0)	//cam off
+		if (Q_stricmp(gi.argv(1), "0") == 0)	//cam off
 		{
 			if (ent->client->camera)
 			{
@@ -1719,7 +1719,7 @@ void ClientCommand2(edict_t* ent)
 				cprintf2(ent, PRINT_HIGH, "Camera OFF!\n");
 			}
 		}
-		else if (Q_strcasecmp(gi.argv(1), "1") == 0)	//intelli mode
+		else if (Q_stricmp(gi.argv(1), "1") == 0)	//intelli mode
 		{
 			if (!ent->client->camera)
 				CreateCamera(ent);
@@ -1727,7 +1727,7 @@ void ClientCommand2(edict_t* ent)
 			ent->client->cammode = 1;
 			cprintf2(ent, PRINT_HIGH, "IntelliCam Mode!\n");
 		}
-		else if (Q_strcasecmp(gi.argv(1), "2") == 0)	//chase cam mode
+		else if (Q_stricmp(gi.argv(1), "2") == 0)	//chase cam mode
 		{
 			if (!ent->client->camera)
 				CreateCamera(ent);
@@ -1735,7 +1735,7 @@ void ClientCommand2(edict_t* ent)
 			ent->client->cammode = 2;
 			cprintf2(ent, PRINT_HIGH, "ChaseCam Mode!\n");
 		}
-		else if (Q_strcasecmp(gi.argv(1), "3") == 0)	// birdview chase cam
+		else if (Q_stricmp(gi.argv(1), "3") == 0)	// birdview chase cam
 		{
 			if (!ent->client->camera)
 				CreateCamera(ent);
@@ -1743,7 +1743,7 @@ void ClientCommand2(edict_t* ent)
 			ent->client->cammode = 3;
 			cprintf2(ent, PRINT_HIGH, "Birdview ChaseCam Mode!\n");
 		}
-		else if (Q_strcasecmp(gi.argv(1), "4") == 0)	// TV cam mode
+		else if (Q_stricmp(gi.argv(1), "4") == 0)	// TV cam mode
 		{
 			if (!ent->client->camera)
 				CreateCamera(ent);
@@ -1752,7 +1752,7 @@ void ClientCommand2(edict_t* ent)
 			cprintf2(ent, PRINT_HIGH, "TV-Cam Mode!\n");
 		}
 	}
-	else if (Q_strcasecmp(cmd, "pathdebug") == 0)
+	else if (Q_stricmp(cmd, "pathdebug") == 0)
 	{
 		if (!ent->client->b_target)
 		{
@@ -1773,14 +1773,14 @@ void ClientCommand2(edict_t* ent)
 
 
 	}
-	else if (Q_strcasecmp(cmd, "scanner") == 0)
+	else if (Q_stricmp(cmd, "scanner") == 0)
 	{
 		if (ent->classindex == CAMPLAYER || ent->movetype == MOVETYPE_NOCLIP)/* MrG{DRGN} if you haven't joined a team yet. you can't puke! */
 			return;
 
 		Toggle_Scanner(ent);
 	}
-	else if (Q_strcasecmp(cmd, "placenode") == 0)
+	else if (Q_stricmp(cmd, "placenode") == 0)
 	{
 		if (dntg->value)
 		{
@@ -1825,7 +1825,7 @@ void ClientCommand2(edict_t* ent)
 		else
 			cprintf2(ent, PRINT_HIGH, "Dynamic Node Table Generation is off activate it with <set dntg 1>!\n");
 	}
-	else if (Q_strcasecmp(cmd, "belt") == 0)
+	else if (Q_stricmp(cmd, "belt") == 0)
 	{
 		if (ent->classindex == CAMPLAYER || ent->movetype == MOVETYPE_NOCLIP)/* MrG{DRGN} if you haven't joined a team yet. you can't puke! */
 			return;
@@ -1856,7 +1856,7 @@ void ClientCommand2(edict_t* ent)
 			}
 		}
 	}
-	else if (Q_strcasecmp(cmd, "flashlight") == 0)
+	else if (Q_stricmp(cmd, "flashlight") == 0)
 	{
 		if (ent->classindex == CAMPLAYER || ent->movetype == MOVETYPE_NOCLIP)/* MrG{DRGN} if you haven't joined a team yet. you can't use the flashlight! */
 			return;
@@ -1901,7 +1901,7 @@ void ClientCommand2(edict_t* ent)
 			cprintf2(ent, PRINT_HIGH, "Flashlight ON\n");
 		}
 	}
-	else if (Q_strcasecmp(cmd, "teleport") == 0)
+	else if (Q_stricmp(cmd, "teleport") == 0)
 	{
 		if (ent->classindex == CAMPLAYER || ent->movetype == MOVETYPE_NOCLIP)/* MrG{DRGN} if you haven't joined a team yet. you can't teleport! */
 			return;
@@ -1927,7 +1927,7 @@ void ClientCommand2(edict_t* ent)
 			}
 		}
 	}
-	else if (Q_strcasecmp(cmd, "kamikaze") == 0)
+	else if (Q_stricmp(cmd, "kamikaze") == 0)
 	{
 		if (ent->classindex == CAMPLAYER || ent->movetype == MOVETYPE_NOCLIP)/* MrG{DRGN} if you haven't joined a team yet. you can't puke! */
 			return;
@@ -1950,7 +1950,7 @@ void ClientCommand2(edict_t* ent)
 		ent->s.effects = EF_ROCKET;
 		gi.sound(ent, CHAN_VOICE, gi.soundindex("misc/kamikaze.wav"), 1, ATTN_NORM, 0);
 	}
-	else if (Q_strcasecmp(cmd, "togglegrenades") == 0)
+	else if (Q_stricmp(cmd, "togglegrenades") == 0)
 	{
 		if (ent->classindex == CAMPLAYER || ent->movetype == MOVETYPE_NOCLIP)/* MrG{DRGN} if you haven't joined a team yet. you can't toggle nades */
 			return;
@@ -1965,14 +1965,14 @@ void ClientCommand2(edict_t* ent)
 			ent->client->grenadesactive = 1;
 		}
 	}
-	else if (Q_strcasecmp(cmd, "fakedeath") == 0)
+	else if (Q_stricmp(cmd, "fakedeath") == 0)
 	{
 		if (ent->health <= 0)
 			return;
 
 		FakeDeath(ent);
 	}
-	else if (Q_strcasecmp(cmd, "kick") == 0)
+	else if (Q_stricmp(cmd, "kick") == 0)
 	{
 		edict_t* blip = NULL;
 		vec3_t	forward;
@@ -1988,29 +1988,29 @@ void ClientCommand2(edict_t* ent)
 		{
 			/*if (blip->client
 				|| blip->item
-				|| Q_strcasecmp(blip->classname, "bolt") == 0
-				|| Q_strcasecmp(blip->classname, "arrow") == 0
-				|| Q_strcasecmp(blip->classname, "grenade") == 0
-				|| Q_strcasecmp(blip->classname, "hgrenade") == 0
-				|| Q_strcasecmp(blip->classname, "flashgrenade") == 0
-				|| Q_strcasecmp(blip->classname, "lasermine") == 0
-				|| Q_strcasecmp(blip->classname, "poisongrenade") == 0
-				|| Q_strcasecmp(blip->classname, "proxymine") == 0
-				|| Q_strcasecmp(blip->classname, "rocket") == 0
-				|| Q_strcasecmp(blip->classname, "homing") == 0
-				|| Q_strcasecmp(blip->classname, "buzz") == 0
-				|| Q_strcasecmp(blip->classname, "bfg blast") == 0
-				|| Q_strcasecmp(blip->classname, "item_flag_team1") == 0 // MrG{DRGN} to kick, or not to kick... that is the question? left here on mistake by prior coder!
-				|| Q_strcasecmp(blip->classname, "item_flag_team2") == 0// MrG{DRGN} to kick, or not to kick... that is the question?
+				|| Q_stricmp(blip->classname, "bolt") == 0
+				|| Q_stricmp(blip->classname, "arrow") == 0
+				|| Q_stricmp(blip->classname, "grenade") == 0
+				|| Q_stricmp(blip->classname, "hgrenade") == 0
+				|| Q_stricmp(blip->classname, "flashgrenade") == 0
+				|| Q_stricmp(blip->classname, "lasermine") == 0
+				|| Q_stricmp(blip->classname, "poisongrenade") == 0
+				|| Q_stricmp(blip->classname, "proxymine") == 0
+				|| Q_stricmp(blip->classname, "rocket") == 0
+				|| Q_stricmp(blip->classname, "homing") == 0
+				|| Q_stricmp(blip->classname, "buzz") == 0
+				|| Q_stricmp(blip->classname, "bfg blast") == 0
+				|| Q_stricmp(blip->classname, "item_flag_team1") == 0 // MrG{DRGN} to kick, or not to kick... that is the question? left here on mistake by prior coder!
+				|| Q_stricmp(blip->classname, "item_flag_team2") == 0// MrG{DRGN} to kick, or not to kick... that is the question?
 
-				|| Q_strcasecmp(blip->classname, "bodyque") == 0)
+				|| Q_stricmp(blip->classname, "bodyque") == 0)
 
-				if (Q_strcasecmp(blip->classname, "laser_turret_base") != 0 // MrG{DRGN} This doesn't exist! Should have simply been "turret_base".
-					&& Q_strcasecmp(blip->classname, "rocket_turret_base") != 0 // MrG{DRGN} This doesn't exist! Should have simply been "turret_base".
-					&& Q_strcasecmp(blip->classname, "laser_turret") != 0
-					&& Q_strcasecmp(blip->classname, "rocket_turret") != 0
-					&& Q_strcasecmp(blip->classname, "item_flag_team1") != 0 // MrG{DRGN} Not kickable!
-					&& Q_strcasecmp(blip->classname, "item_flag_team2") != 0) // MrG{DRGN} Not kickable!
+				if (Q_stricmp(blip->classname, "laser_turret_base") != 0 // MrG{DRGN} This doesn't exist! Should have simply been "turret_base".
+					&& Q_stricmp(blip->classname, "rocket_turret_base") != 0 // MrG{DRGN} This doesn't exist! Should have simply been "turret_base".
+					&& Q_stricmp(blip->classname, "laser_turret") != 0
+					&& Q_stricmp(blip->classname, "rocket_turret") != 0
+					&& Q_stricmp(blip->classname, "item_flag_team1") != 0 // MrG{DRGN} Not kickable!
+					&& Q_stricmp(blip->classname, "item_flag_team2") != 0) // MrG{DRGN} Not kickable!
 					*/
 					/* MrG{DRGN} much faster than a string comparison!*/
 			if (blip->client
@@ -2061,15 +2061,15 @@ void ClientCommand2(edict_t* ent)
 				}/* MrG{DRGN} END */
 		}
 	}
-	else if (Q_strcasecmp(cmd, "load_nodes") == 0)
+	else if (Q_stricmp(cmd, "load_nodes") == 0)
 	{
 		Bot_LoadNodes();
 	}
-	else if (Q_strcasecmp(cmd, "save_nodes") == 0)
+	else if (Q_stricmp(cmd, "save_nodes") == 0)
 	{
 		Bot_SaveNodes();
 	}
-	else if (Q_strcasecmp(cmd, "nums") == 0)
+	else if (Q_stricmp(cmd, "nums") == 0)
 	{
 		cprintf2(ent, PRINT_HIGH, "numplayers=%d\n", numplayers);
 		cprintf2(ent, PRINT_HIGH, "numbots=%d\n", numbots);
@@ -2079,7 +2079,7 @@ void ClientCommand2(edict_t* ent)
 		cprintf2(ent, PRINT_HIGH, "blue_base=%d\n", blue_base);
 		cprintf2(ent, PRINT_HIGH, "numturrets=%d\n", numturrets);
 	}
-	else if (Q_strcasecmp(cmd, "join_team") == 0)
+	else if (Q_stricmp(cmd, "join_team") == 0)
 	{
 		int team = atoi(gi.argv(1));
 
@@ -2095,7 +2095,7 @@ void ClientCommand2(edict_t* ent)
 			ent->client->resp.team = team;
 		}
 	}
-	else if (Q_strcasecmp(cmd, "playerlist") == 0)
+	else if (Q_stricmp(cmd, "playerlist") == 0)
 	{
 		int		i;
 
@@ -2106,7 +2106,7 @@ void ClientCommand2(edict_t* ent)
 					cprintf2(ent, PRINT_HIGH, "%d: %s\n", i, players[i]->client->pers.netname);
 		}
 	}
-	else if (Q_strcasecmp(cmd, "turretlist") == 0)
+	else if (Q_stricmp(cmd, "turretlist") == 0)
 	{
 		int		i;
 
@@ -2116,7 +2116,7 @@ void ClientCommand2(edict_t* ent)
 				cprintf2(ent, PRINT_HIGH, "turret %d active\n", i);
 		}
 	}
-	else if (Q_strcasecmp(cmd, "weaponlist") == 0)
+	else if (Q_stricmp(cmd, "weaponlist") == 0)
 	{
 		edict_t* current = NULL;
 
@@ -2129,7 +2129,7 @@ void ClientCommand2(edict_t* ent)
 			current = current->next_listitem;	//go to next item in list
 		}
 	}
-	else if (Q_strcasecmp(cmd, "healthlist") == 0)
+	else if (Q_stricmp(cmd, "healthlist") == 0)
 	{
 		edict_t* current = NULL;
 
@@ -2142,7 +2142,7 @@ void ClientCommand2(edict_t* ent)
 			current = current->next_listitem;	//go to next item in list
 		}
 	}
-	else if (Q_strcasecmp(cmd, "ammolist") == 0)
+	else if (Q_stricmp(cmd, "ammolist") == 0)
 	{
 		edict_t* current = NULL;
 
@@ -2155,7 +2155,7 @@ void ClientCommand2(edict_t* ent)
 			current = current->next_listitem;	//go to next item in list
 		}
 	}
-	else if (Q_strcasecmp(cmd, "poweruplist") == 0)
+	else if (Q_stricmp(cmd, "poweruplist") == 0)
 	{
 		edict_t* current = NULL;
 
@@ -2168,13 +2168,13 @@ void ClientCommand2(edict_t* ent)
 			current = current->next_listitem;	//go to next item in list
 		}
 	}/* MrG{DRGN} for debugging */
-	else if (Q_strcasecmp(cmd, "spawn") == 0)
+	else if (Q_stricmp(cmd, "spawn") == 0)
 	{
 		Cmd_Spawn_f(ent);
 		return;
 	}
 
-	else if (Q_strcasecmp(cmd, "gameversion") == 0)
+	else if (Q_stricmp(cmd, "gameversion") == 0)
 	{
 		gi.cprintf(ent, PRINT_HIGH, "%s : %s : %s\n", GAMEVERSION, __DATE__, __TIME__);
 	}

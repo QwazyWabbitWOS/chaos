@@ -1,4 +1,4 @@
-
+﻿
 #include "g_local.h"
 #include "c_botnav.h"
 #include "c_botai.h"
@@ -90,7 +90,7 @@ gitem_t* FindItemByClassname(char* classname)
 	{
 		if (!it->classname)
 			continue;
-		if (!Q_strcasecmp(it->classname, classname))
+		if (!Q_stricmp(it->classname, classname))
 			return it;
 	}
 
@@ -113,7 +113,7 @@ gitem_t* FindItem(char* pickup_name)
 	{
 		if (!it->pickup_name)
 			continue;
-		if (!Q_strcasecmp(it->pickup_name, pickup_name))
+		if (!Q_stricmp(it->pickup_name, pickup_name))
 			return it;
 	}
 
@@ -425,7 +425,7 @@ void DoRespawn(edict_t* ent)
 		}
 		//MATTHIAS - Weapon banning
 
-		if (!Q_strcasecmp(ent->classname, "weapon_sword") && ban_sword->value)
+		if (!Q_stricmp(ent->classname, "weapon_sword") && ban_sword->value)
 		{
 			if (ban_chainsaw->value) //banned,too
 			{

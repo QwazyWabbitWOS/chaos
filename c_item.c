@@ -1,4 +1,4 @@
-#include "g_local.h"
+﻿#include "g_local.h"
 #include "c_item.h"
 
 void Use_Invisibility(edict_t* ent, gitem_t* item)
@@ -53,7 +53,7 @@ void Use_Jet(edict_t* ent, gitem_t* item)
 
 qboolean Jet_AvoidGround(edict_t* ent)
 {
-	vec3_t        new_origin = {0};
+	vec3_t        new_origin = { 0 };
 	trace_t       trace;
 	qboolean      success;
 	/* MrG{DRGN} sanity check*/
@@ -276,60 +276,60 @@ void ShowScanner(edict_t* ent, char* layout)
 	/* MrG{DRGN this is probably faster than the long series of if else statemnts that was here */
 	switch (ent->client->scanneractive)
 	{
-		case 1:
-			Com_sprintf(stats, sizeof(stats), "xr -120 yt 0 picn %s ", "scanner/scan01");
+	case 1:
+		Com_sprintf(stats, sizeof(stats), "xr -120 yt 0 picn %s ", "scanner/scan01");
 		break;
-		case 2:
-			Com_sprintf(stats, sizeof(stats), "xr -120 yt 0 picn %s ", "scanner/scan02");
+	case 2:
+		Com_sprintf(stats, sizeof(stats), "xr -120 yt 0 picn %s ", "scanner/scan02");
 		break;
-		case 3:
-			Com_sprintf(stats, sizeof(stats), "xr -120 yt 0 picn %s ", "scanner/scan03");
+	case 3:
+		Com_sprintf(stats, sizeof(stats), "xr -120 yt 0 picn %s ", "scanner/scan03");
 		break;
-		case 4:
-			Com_sprintf(stats, sizeof(stats), "xr -120 yt 0 picn %s ", "scanner/scan04");
+	case 4:
+		Com_sprintf(stats, sizeof(stats), "xr -120 yt 0 picn %s ", "scanner/scan04");
 		break;
-		case 5:
-			Com_sprintf(stats, sizeof(stats), "xr -120 yt 0 picn %s ", "scanner/scan05");
+	case 5:
+		Com_sprintf(stats, sizeof(stats), "xr -120 yt 0 picn %s ", "scanner/scan05");
 		break;
-		case 6:
-			Com_sprintf(stats, sizeof(stats), "xr -120 yt 0 picn %s ", "scanner/scan06");
+	case 6:
+		Com_sprintf(stats, sizeof(stats), "xr -120 yt 0 picn %s ", "scanner/scan06");
 		break;
-		case 7:
-			Com_sprintf(stats, sizeof(stats), "xr -120 yt 0 picn %s ", "scanner/scan07");
+	case 7:
+		Com_sprintf(stats, sizeof(stats), "xr -120 yt 0 picn %s ", "scanner/scan07");
 		break;
-		case 8:
-			Com_sprintf(stats, sizeof(stats), "xr -120 yt 0 picn %s ", "scanner/scan08");
+	case 8:
+		Com_sprintf(stats, sizeof(stats), "xr -120 yt 0 picn %s ", "scanner/scan08");
 		break;
-		case 9:
-			Com_sprintf(stats, sizeof(stats), "xr -120 yt 0 picn %s ", "scanner/scan09");
+	case 9:
+		Com_sprintf(stats, sizeof(stats), "xr -120 yt 0 picn %s ", "scanner/scan09");
 		break;
-		case 10:
-			Com_sprintf(stats, sizeof(stats), "xr -120 yt 0 picn %s ", "scanner/scan10");
+	case 10:
+		Com_sprintf(stats, sizeof(stats), "xr -120 yt 0 picn %s ", "scanner/scan10");
 		break;
-		case 11:
-			Com_sprintf(stats, sizeof(stats), "xr -120 yt 0 picn %s ", "scanner/scan11");
+	case 11:
+		Com_sprintf(stats, sizeof(stats), "xr -120 yt 0 picn %s ", "scanner/scan11");
 		break;
-		case 12:
-			Com_sprintf(stats, sizeof(stats), "xr -120 yt 0 picn %s ", "scanner/scan12");
+	case 12:
+		Com_sprintf(stats, sizeof(stats), "xr -120 yt 0 picn %s ", "scanner/scan12");
 		break;
-		case 13:
-			Com_sprintf(stats, sizeof(stats), "xr -120 yt 0 picn %s ", "scanner/scan13");
+	case 13:
+		Com_sprintf(stats, sizeof(stats), "xr -120 yt 0 picn %s ", "scanner/scan13");
 		break;
-		case 14:
-			Com_sprintf(stats, sizeof(stats), "xr -120 yt 0 picn %s ", "scanner/scan14");
+	case 14:
+		Com_sprintf(stats, sizeof(stats), "xr -120 yt 0 picn %s ", "scanner/scan14");
 		break;
-		case 15:
-			Com_sprintf(stats, sizeof(stats), "xr -120 yt 0 picn %s ", "scanner/scan15");
+	case 15:
+		Com_sprintf(stats, sizeof(stats), "xr -120 yt 0 picn %s ", "scanner/scan15");
 		break;
-		case 16:
-			Com_sprintf(stats, sizeof(stats), "xr -120 yt 0 picn %s ", "scanner/scan16");
+	case 16:
+		Com_sprintf(stats, sizeof(stats), "xr -120 yt 0 picn %s ", "scanner/scan16");
 		break;
-		case 17:
-			Com_sprintf(stats, sizeof(stats), "xr -120 yt 0 picn %s ", "scanner/scan17");
+	case 17:
+		Com_sprintf(stats, sizeof(stats), "xr -120 yt 0 picn %s ", "scanner/scan17");
 		break;
-		case 18:
-		default:
-			Com_sprintf(stats, sizeof(stats), "xr -120 yt 0 picn %s ", "scanner/scan18");
+	case 18:
+	default:
+		Com_sprintf(stats, sizeof(stats), "xr -120 yt 0 picn %s ", "scanner/scan18");
 	}
 
 	ent->client->scanneractive += 1;
@@ -434,7 +434,7 @@ void Scanner_Think(edict_t* ent)
 {
 	gclient_t* client;
 
-	if (!ent|| !ent->client)
+	if (!ent || !ent->client)
 		return;
 	if (ent->health <= 0)
 		return;
@@ -568,7 +568,7 @@ void Grapple_Touch(edict_t* ent, edict_t* other, cplane_t* plane, csurface_t* su
 
 	VectorCopy(other->velocity, ent->velocity);
 	ent->owner->client->grapple_state = GRAPPLE_STARTSHRINK;	//Start with shrink
-	
+
 	ent->enemy = other;
 	ent->touch = NULL;
 	ent->nextthink = level.time + FRAMETIME;
@@ -714,7 +714,7 @@ void Grapple_Fire(edict_t* ent)
 
 void Cmd_Hook_f(edict_t* ent)
 {
-	if (Q_strcasecmp(gi.argv(1), "grow") == 0)
+	if (Q_stricmp(gi.argv(1), "grow") == 0)
 	{
 		if (ent->client->grapple_state > 1 && ent->client->grapple)
 		{
@@ -725,7 +725,7 @@ void Cmd_Hook_f(edict_t* ent)
 			gi.sound(ent, CHAN_AUTO, gi.soundindex("misc/grapple/grow.wav"), 1, ATTN_NORM, 0);
 		}
 	}
-	else if (Q_strcasecmp(gi.argv(1), "shrink") == 0)
+	else if (Q_stricmp(gi.argv(1), "shrink") == 0)
 	{
 		if (ent->client->grapple_state > 1 && ent->client->grapple)
 		{

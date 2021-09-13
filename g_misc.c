@@ -1,4 +1,4 @@
-// g_misc.c
+﻿// g_misc.c
 
 #include "g_local.h"
 #include "c_botnav.h"
@@ -251,8 +251,8 @@ void BecomeExplosion1(edict_t* self)
 	}
 	//ZOID
 
-	if (Q_strcasecmp(self->classname, "rocket_turret") == 0
-		|| Q_strcasecmp(self->classname, "laser_turret") == 0)
+	if (Q_stricmp(self->classname, "rocket_turret") == 0
+		|| Q_stricmp(self->classname, "laser_turret") == 0)
 		numturrets--;
 
 	gi.WriteByte(svc_temp_entity);
@@ -274,8 +274,8 @@ void BecomeExplosion1(edict_t* self)
 
 void BecomeExplosion2(edict_t* self)
 {
-	if (Q_strcasecmp(self->classname, "rocket_turret") == 0
-		|| Q_strcasecmp(self->classname, "laser_turret") == 0)
+	if (Q_stricmp(self->classname, "rocket_turret") == 0
+		|| Q_stricmp(self->classname, "laser_turret") == 0)
 		numturrets--;
 
 	gi.WriteByte(svc_temp_entity);

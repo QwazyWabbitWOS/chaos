@@ -1,4 +1,4 @@
-#include "g_local.h"
+﻿#include "g_local.h"
 #include "c_cam.h"
 #include "gslog.h"
 
@@ -384,7 +384,7 @@ void G_RunFrame(void)
 		if (i > 0 && i <= maxclients->value)
 		{
 			ClientBeginServerFrame(ent);
-			if ((Q_strcasecmp(ent->classname, "bot") != 0)) /* MrG{DRGN} simplify */
+			if ((Q_stricmp(ent->classname, "bot") != 0)) /* MrG{DRGN} simplify */
 				continue;							//MATTHIAS
 		}
 

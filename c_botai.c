@@ -1,4 +1,4 @@
-#include "g_local.h"
+﻿#include "g_local.h"
 #include "c_botai.h"
 #include "c_botnav.h"
 #include "c_cam.h"
@@ -135,7 +135,7 @@ qboolean Bot_StandingUnderPlat(edict_t* ent)
 	tr = gi.trace(ent->s.origin, NULL, NULL, end, NULL, MASK_SOLID);
 
 	/* MrG{DRGN}
-	if (tr.ent && (Q_strcasecmp(tr.ent->classname, "func_plat") == 0)) */
+	if (tr.ent && (Q_stricmp(tr.ent->classname, "func_plat") == 0)) */
 	if (tr.ent && (tr.ent->classindex == FUNC_PLAT))
 		return true;
 	return false;
@@ -358,8 +358,8 @@ void Bot_Think(edict_t* ent)
 							Bot_BestCloseWeapon(ent);
 					}
 					/* MrG{DRGN}
-					else if (Q_strcasecmp(ent->client->pers.weapon->classname, "weapon_sword") == 0
-						|| Q_strcasecmp(ent->client->pers.weapon->classname, "weapon_chainsaw") == 0)*/
+					else if (Q_stricmp(ent->client->pers.weapon->classname, "weapon_sword") == 0
+						|| Q_stricmp(ent->client->pers.weapon->classname, "weapon_chainsaw") == 0)*/
 					else if ((ent->client->pers.weapon->classindex == W_SWORD)
 						|| (ent->client->pers.weapon->classindex == W_CHAINSAW))
 					{
@@ -698,7 +698,7 @@ void Bot_Think(edict_t* ent)
 						while ((plat = findradius2(plat, nodes[ent->client->b_path[n]].origin, 300)) != NULL)
 						{
 							/*
-							if (Q_strcasecmp(plat->classname, "func_plat") == 0)*/
+							if (Q_stricmp(plat->classname, "func_plat") == 0)*/
 							if (plat->classindex == FUNC_PLAT)
 							{
 								//nprintf(PRINT_HIGH,"Found plat!\n");
@@ -707,7 +707,7 @@ void Bot_Think(edict_t* ent)
 						}
 
 						/* MrG{DRGN}
-						if (plat && (Q_strcasecmp(plat->classname, "func_plat") == 0)) */
+						if (plat && (Q_stricmp(plat->classname, "func_plat") == 0)) */
 						if (plat && plat->classindex == FUNC_PLAT)
 						{
 							if (plat->moveinfo.state == STATE_BOTTOM)
@@ -970,8 +970,8 @@ void Bot_Think(edict_t* ent)
 
 			if ((tr.fraction != 1) || tr.startsolid)
 			{
-				if (Q_strcasecmp(tr.ent->classname, "func_door") == 0
-					|| Q_strcasecmp(tr.ent->classname, "func_door_secret") == 0)
+				if (Q_stricmp(tr.ent->classname, "func_door") == 0
+					|| Q_stricmp(tr.ent->classname, "func_door_secret") == 0)
 				{
 					ent->client->b_waittime = level.time + 2;
 				}
@@ -1500,7 +1500,7 @@ void Bot_Attack(edict_t* ent, usercmd_t* cmd, vec3_t angles, vec3_t target)
 				target[2] += ent->enemy->viewheight;
 			// aim explosives at feet
 			/* MrG{DRGN}
-			else if ((Q_strcasecmp(weapon->classname, "weapon_rocketlauncher") == 0) || (ent->enemy->client &&(ent->enemy->client ->ps.pmove.pm_flags & PMF_DUCKED)))*/
+			else if ((Q_stricmp(weapon->classname, "weapon_rocketlauncher") == 0) || (ent->enemy->client &&(ent->enemy->client ->ps.pmove.pm_flags & PMF_DUCKED)))*/
 			else if ((weapon->classindex == W_ROCKETLAUNCHER) || (ent->enemy->client && (ent->enemy->client->ps.pmove.pm_flags & PMF_DUCKED)))
 				target[2] -= 12;
 
@@ -1512,14 +1512,14 @@ void Bot_Attack(edict_t* ent, usercmd_t* cmd, vec3_t angles, vec3_t target)
 			angles[0] = t_angles[0];
 
 			/* MrG{DRGN}
-			if (Q_strcasecmp(weapon->classname, "weapon_hyperblaster") == 0)*/
+			if (Q_stricmp(weapon->classname, "weapon_hyperblaster") == 0)*/
 			if (weapon->classindex == W_HYPERBLASTER)
 			{
 				angles[YAW] += crandom() * (ent->client->b_botlevel) / 2;
 				angles[PITCH] += crandom() * (ent->client->b_botlevel) / 2;
 			}/* MrG{DRGN}
-			else if (Q_strcasecmp(weapon->classname, "weapon_rocketlauncher") == 0
-				|| Q_strcasecmp(weapon->classname, "weapon_hominglauncher") == 0) */
+			else if (Q_stricmp(weapon->classname, "weapon_rocketlauncher") == 0
+				|| Q_stricmp(weapon->classname, "weapon_hominglauncher") == 0) */
 			else if (weapon->classindex == W_ROCKETLAUNCHER
 				|| weapon->classindex == W_HOMINGLAUNCHER)
 			{
@@ -1802,19 +1802,19 @@ void Bot_FindActivator(edict_t* ent)
 		if (activator->avoidtime > level.time)
 			continue;
 
-		if (Q_strcasecmp(activator->classname, "misc_teleporter") == 0
+		if (Q_stricmp(activator->classname, "misc_teleporter") == 0
 			&& visible(ent, activator))
 		{
 			ent->client->b_activator = activator;
 			break;
 		}
-		if (Q_strcasecmp(activator->classname, "func_button") == 0
+		if (Q_stricmp(activator->classname, "func_button") == 0
 			&& visible(ent, activator))
 		{
 			ent->client->b_activator = activator;
 			break;
 		}
-		if (Q_strcasecmp(activator->classname, "func_door") == 0
+		if (Q_stricmp(activator->classname, "func_door") == 0
 			&& visible(ent, activator))
 		{
 			ent->client->b_activator = activator;
@@ -1829,14 +1829,14 @@ void Bot_ProjectileAvoidance(edict_t* self, usercmd_t* cmd, vec3_t angles)
 
 	while ((blip = findradius(blip, self->s.origin, 150)) != NULL)
 	{
-		if (Q_strcasecmp(blip->classname, "arrow") == 0
-			|| Q_strcasecmp(blip->classname, "poison_arrow") == 0
-			|| Q_strcasecmp(blip->classname, "explosive_arrow") == 0
-			|| Q_strcasecmp(blip->classname, "flashgrenade") == 0
-			|| Q_strcasecmp(blip->classname, "lasermine") == 0
-			|| Q_strcasecmp(blip->classname, "poisongrenade") == 0
-			|| Q_strcasecmp(blip->classname, "proxymine") == 0
-			|| Q_strcasecmp(blip->classname, "bfg blast") == 0)
+		if (Q_stricmp(blip->classname, "arrow") == 0
+			|| Q_stricmp(blip->classname, "poison_arrow") == 0
+			|| Q_stricmp(blip->classname, "explosive_arrow") == 0
+			|| Q_stricmp(blip->classname, "flashgrenade") == 0
+			|| Q_stricmp(blip->classname, "lasermine") == 0
+			|| Q_stricmp(blip->classname, "poisongrenade") == 0
+			|| Q_stricmp(blip->classname, "proxymine") == 0
+			|| Q_stricmp(blip->classname, "bfg blast") == 0)
 		{
 			if (!visible(self, blip))
 				continue;
@@ -1847,12 +1847,12 @@ void Bot_ProjectileAvoidance(edict_t* self, usercmd_t* cmd, vec3_t angles)
 			self->client->b_strafechange = level.time + 0.5F; /* MrG{DRGN} Explicitly now a float */
 			break;
 		}
-		if (Q_strcasecmp(blip->classname, "rocket") == 0
-			|| Q_strcasecmp(blip->classname, "homing") == 0
-			|| Q_strcasecmp(blip->classname, "buzz") == 0
-			|| Q_strcasecmp(blip->classname, "turret_rocket") == 0
-			|| Q_strcasecmp(blip->classname, "grenade") == 0
-			|| Q_strcasecmp(blip->classname, "hgrenade") == 0)
+		if (Q_stricmp(blip->classname, "rocket") == 0
+			|| Q_stricmp(blip->classname, "homing") == 0
+			|| Q_stricmp(blip->classname, "buzz") == 0
+			|| Q_stricmp(blip->classname, "turret_rocket") == 0
+			|| Q_stricmp(blip->classname, "grenade") == 0
+			|| Q_stricmp(blip->classname, "hgrenade") == 0)
 		{
 			if (!visible(self, blip))
 				continue;
@@ -2110,7 +2110,7 @@ void Bot_Say(edict_t* ent, qboolean team, char* fmt, ...)
 		cl_ent = g_edicts + 1 + i;
 
 		/* MrG{DRGN}
-		if (!cl_ent->inuse || (Q_strcasecmp(cl_ent->classname, "bot") == 0)) */
+		if (!cl_ent->inuse || (Q_stricmp(cl_ent->classname, "bot") == 0)) */
 		if (!cl_ent->inuse || cl_ent->bot_player)
 			continue;
 

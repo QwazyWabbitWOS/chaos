@@ -1,4 +1,4 @@
-/*
+﻿/*
 Copyright (C) 1997-2001 Id Software, Inc.
 
 This program is free software; you can redistribute it and/or
@@ -1183,7 +1183,7 @@ int Q_strncasecmp(char* s1, char* s2, size_t n) /* MrG{DRGN}  changed from int t
 	return 0;		// strings are equal
 }
 
-int Q_strcasecmp(char* s1, char* s2)
+int Q_stricmp(char* s1, char* s2)
 {
 	return Q_strncasecmp(s1, s2, 99999);
 }

@@ -1,4 +1,4 @@
-#include "g_local.h"
+﻿#include "g_local.h"
 #include "c_botnav.h"
 
 /*
@@ -819,7 +819,7 @@ void SP_func_button(edict_t* ent)
 	ent->solid = SOLID_BSP;
 	ent->classindex = FUNC_BUTTON; /* MrG{DRGN} */
 	gi.setmodel(ent, ent->model);
-	
+
 	if (ent->sounds != 1)
 		ent->moveinfo.sound_start = gi.soundindex("switches/butn2.wav");
 
@@ -908,7 +908,7 @@ void door_use_areaportals(edict_t* self, qboolean open)
 
 	while ((t = G_Find(t, FOFS(targetname), self->target)) != 0)
 	{
-		if (Q_strcasecmp(t->classname, "func_areaportal") == 0)
+		if (Q_stricmp(t->classname, "func_areaportal") == 0)
 		{
 			gi.SetAreaPortalState(t->style, open);
 		}

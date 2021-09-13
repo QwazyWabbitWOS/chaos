@@ -1,4 +1,4 @@
-#include "g_local.h"
+﻿#include "g_local.h"
 #include "c_base.h"
 #include "c_botnav.h"
 
@@ -136,7 +136,7 @@ qboolean visible_node(vec3_t spot1, vec3_t spot2)
 
 	tr = gi.trace(spot1, NULL, NULL, spot2, NULL, MASK_SOLID);
 
-	if (tr.fraction == 1.0 || (tr.ent && (Q_strcasecmp(tr.ent->classname, "func_door") == 0)))
+	if (tr.fraction == 1.0 || (tr.ent && (Q_stricmp(tr.ent->classname, "func_door") == 0)))
 		return true;
 	return false;
 }

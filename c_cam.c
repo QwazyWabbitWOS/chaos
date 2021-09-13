@@ -1,4 +1,4 @@
-#include "g_local.h"
+﻿#include "g_local.h"
 #include "c_item.h"
 
 #define CAMERA_SWITCH_TIME  15
@@ -613,21 +613,21 @@ void FindNewTVSpot(edict_t* ent)
 		if (dummy->client
 			|| dummy->item
 			/*  MrG{DRGN}
-			|| Q_strcasecmp(dummy->classname, "bolt") == 0
-			|| Q_strcasecmp(dummy->classname, "grenade") == 0
-			|| Q_strcasecmp(dummy->classname, "hgrenade") == 0
-			|| Q_strcasecmp(dummy->classname, "flashgrenade") == 0
-			|| Q_strcasecmp(dummy->classname, "lasermine") == 0
-			|| Q_strcasecmp(dummy->classname, "poisongrenade") == 0
-			|| Q_strcasecmp(dummy->classname, "proxymine") == 0
-			|| Q_strcasecmp(dummy->classname, "rocket") == 0
-			|| Q_strcasecmp(dummy->classname, "homing") == 0
-			|| Q_strcasecmp(dummy->classname, "buzz") == 0
-			|| Q_strcasecmp(dummy->classname, "bfg blast") == 0
-			|| Q_strcasecmp(dummy->classname, "item_flag_team1") == 0
-			|| Q_strcasecmp(dummy->classname, "item_flag_team2") == 0
-			|| Q_strcasecmp(dummy->classname, "info_player_deathmatch") == 0
-			|| Q_strcasecmp(dummy->classname, "bodyque") == 0)
+			|| Q_stricmp(dummy->classname, "bolt") == 0
+			|| Q_stricmp(dummy->classname, "grenade") == 0
+			|| Q_stricmp(dummy->classname, "hgrenade") == 0
+			|| Q_stricmp(dummy->classname, "flashgrenade") == 0
+			|| Q_stricmp(dummy->classname, "lasermine") == 0
+			|| Q_stricmp(dummy->classname, "poisongrenade") == 0
+			|| Q_stricmp(dummy->classname, "proxymine") == 0
+			|| Q_stricmp(dummy->classname, "rocket") == 0
+			|| Q_stricmp(dummy->classname, "homing") == 0
+			|| Q_stricmp(dummy->classname, "buzz") == 0
+			|| Q_stricmp(dummy->classname, "bfg blast") == 0
+			|| Q_stricmp(dummy->classname, "item_flag_team1") == 0
+			|| Q_stricmp(dummy->classname, "item_flag_team2") == 0
+			|| Q_stricmp(dummy->classname, "info_player_deathmatch") == 0
+			|| Q_stricmp(dummy->classname, "bodyque") == 0)
 			*/
 			|| dummy->classindex == BOLT
 			|| dummy->classindex == ARROW

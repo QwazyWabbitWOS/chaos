@@ -1,4 +1,4 @@
-#include "g_local.h"
+ï»¿#include "g_local.h"
 #include "c_weapon.h"
 #include "m_player.h"
 #include "c_botai.h"
@@ -73,9 +73,9 @@ void Weapon_Chainsaw(edict_t* ent)
 {
 	// 0 -11 :  putup:  Einschaltsequenz
 	// 12-19  cuton:  Hochfahren bzw vorstrecken zum Angriff
-	// 20-27   cut   :  vorgestreckter Angriff als beständiger Loop...aber beim stoppen immer noch bis fram 19 laufen lassen!
-	// 28-35    cutoff :  Säge zurück in Trageposition
-	// 36-55   idle  : rumdragen halt  pött-pött-pött  :)
+	// 20-27   cut   :  vorgestreckter Angriff als bestÃ¤ndiger Loop...aber beim stoppen immer noch bis fram 19 laufen lassen!
+	// 28-35    cutoff :  SÃ¤ge zurÃ¼ck in Trageposition
+	// 36-55   idle  : rumdragen halt  pÃ¶tt-pÃ¶tt-pÃ¶tt  :)
 	// 56-60   putdown  : runternehmen
 
 	/* MrG{DRGN} sanity check */
@@ -626,9 +626,9 @@ void LaserTurret_Think(edict_t* ent)
 		{
 			/* MrG{DRGN}
 			if (blip->client
-				|| Q_strcasecmp(blip->classname, "proxmine") == 0                typo here should be proxymine!
-				|| Q_strcasecmp(blip->classname, "laser_turret") == 0
-				|| Q_strcasecmp(blip->classname, "rocket_turret") == 0)*/
+				|| Q_stricmp(blip->classname, "proxmine") == 0                typo here should be proxymine!
+				|| Q_stricmp(blip->classname, "laser_turret") == 0
+				|| Q_stricmp(blip->classname, "rocket_turret") == 0)*/
 			if (blip->client
 				|| (blip->classindex == PROXYMINE)
 				|| (blip->classindex == LTURRET)
@@ -688,7 +688,7 @@ void LaserTurret_Think(edict_t* ent)
 			blipdir[2] += crandom() * 10;
 
 			/* MrG{DRGN}  reformat this to have only 1 bot check and use ent->enemy->classindex
-			if (Q_strcasecmp(ent->enemy->classname, "bot") == 0)
+			if (Q_stricmp(ent->enemy->classname, "bot") == 0)
 				fire_lead3(ent, forigin, blipdir, 2, 0, TE_GUNSHOT, DEFAULT_BULLET_HSPREAD, DEFAULT_BULLET_VSPREAD, MOD_TURRET);
 			else
 				fire_lead3(ent, forigin, blipdir, 3, 3, TE_GUNSHOT, DEFAULT_BULLET_HSPREAD, DEFAULT_BULLET_VSPREAD, MOD_TURRET);
@@ -697,7 +697,7 @@ void LaserTurret_Think(edict_t* ent)
 			VectorAdd(forigin, side, forigin);
 			VectorSubtract(ent->enemy->s.origin, forigin, blipdir);
 
-			if (Q_strcasecmp(ent->enemy->classname, "bot") == 0)
+			if (Q_stricmp(ent->enemy->classname, "bot") == 0)
 				fire_lead3(ent, forigin, blipdir, 2, 0, TE_GUNSHOT, DEFAULT_BULLET_HSPREAD, DEFAULT_BULLET_VSPREAD, MOD_TURRET);
 			else
 				fire_lead3(ent, forigin, blipdir, 3, 3, TE_GUNSHOT, DEFAULT_BULLET_HSPREAD, DEFAULT_BULLET_VSPREAD, MOD_TURRET);
@@ -818,9 +818,9 @@ void RocketTurret_Think(edict_t* ent)
 		{
 			/* MrG{DRGN}
 			if (blip->client
-				|| Q_strcasecmp(blip->classname, "proxymine") == 0 
-				|| Q_strcasecmp(blip->classname, "laser_turret") == 0
-				|| Q_strcasecmp(blip->classname, "rocket_turret") == 0)*/
+				|| Q_stricmp(blip->classname, "proxymine") == 0
+				|| Q_stricmp(blip->classname, "laser_turret") == 0
+				|| Q_stricmp(blip->classname, "rocket_turret") == 0)*/
 			if (blip->client
 				|| (blip->classindex == PROXYMINE)
 				|| (blip->classindex == LTURRET)
@@ -940,9 +940,9 @@ void Turret_Touch(edict_t* ent, edict_t* other, cplane_t* plane, csurface_t* sur
 		ent->nextthink = level.time + 1;
 
 		/* MrG{DRGN}
-		if (Q_strcasecmp(ent->classname, "laser_turret") == 0)
+		if (Q_stricmp(ent->classname, "laser_turret") == 0)
 			ent->think = LaserTurret_Think;
-		else if (Q_strcasecmp(ent->classname, "rocket_turret") == 0)
+		else if (Q_stricmp(ent->classname, "rocket_turret") == 0)
 			ent->think = RocketTurret_Think;
 		*/
 		if (ent->classindex == LTURRET)
@@ -1588,24 +1588,24 @@ void fire_air(edict_t* self, vec3_t start, vec3_t dir)
 	{
 		if ((blip->client && !blip->client->camera)
 			|| blip->item
-			|| Q_strcasecmp(blip->classname, "bolt") == 0
-			|| Q_strcasecmp(blip->classname, "arrow") == 0
-			|| Q_strcasecmp(blip->classname, "poison_arrow") == 0
-			|| Q_strcasecmp(blip->classname, "explosive_arrow") == 0
-			|| Q_strcasecmp(blip->classname, "grenade") == 0
-			|| Q_strcasecmp(blip->classname, "hgrenade") == 0
-			|| Q_strcasecmp(blip->classname, "flashgrenade") == 0
-			|| Q_strcasecmp(blip->classname, "lasermine") == 0
-			|| Q_strcasecmp(blip->classname, "poisongrenade") == 0
-			|| Q_strcasecmp(blip->classname, "proxymine") == 0
-			|| Q_strcasecmp(blip->classname, "rocket") == 0
-			|| Q_strcasecmp(blip->classname, "turret_rocket") == 0
-			|| Q_strcasecmp(blip->classname, "homing") == 0
-			|| Q_strcasecmp(blip->classname, "buzz") == 0
-			|| Q_strcasecmp(blip->classname, "bfg blast") == 0
-			|| Q_strcasecmp(blip->classname, "item_flag_team1") == 0
-			|| Q_strcasecmp(blip->classname, "item_flag_team2") == 0
-			|| Q_strcasecmp(blip->classname, "bodyque") == 0)
+			|| Q_stricmp(blip->classname, "bolt") == 0
+			|| Q_stricmp(blip->classname, "arrow") == 0
+			|| Q_stricmp(blip->classname, "poison_arrow") == 0
+			|| Q_stricmp(blip->classname, "explosive_arrow") == 0
+			|| Q_stricmp(blip->classname, "grenade") == 0
+			|| Q_stricmp(blip->classname, "hgrenade") == 0
+			|| Q_stricmp(blip->classname, "flashgrenade") == 0
+			|| Q_stricmp(blip->classname, "lasermine") == 0
+			|| Q_stricmp(blip->classname, "poisongrenade") == 0
+			|| Q_stricmp(blip->classname, "proxymine") == 0
+			|| Q_stricmp(blip->classname, "rocket") == 0
+			|| Q_stricmp(blip->classname, "turret_rocket") == 0
+			|| Q_stricmp(blip->classname, "homing") == 0
+			|| Q_stricmp(blip->classname, "buzz") == 0
+			|| Q_stricmp(blip->classname, "bfg blast") == 0
+			|| Q_stricmp(blip->classname, "item_flag_team1") == 0
+			|| Q_stricmp(blip->classname, "item_flag_team2") == 0
+			|| Q_stricmp(blip->classname, "bodyque") == 0)
 		{
 			if (blip == self)
 				continue;
@@ -1614,8 +1614,8 @@ void fire_air(edict_t* self, vec3_t start, vec3_t dir)
 			if (!infront(self, blip))
 				continue;
 
-			if (Q_strcasecmp(blip->classname, "item_flag_team1") == 0
-				|| Q_strcasecmp(blip->classname, "item_flag_team2") == 0)
+			if (Q_stricmp(blip->classname, "item_flag_team1") == 0
+				|| Q_stricmp(blip->classname, "item_flag_team2") == 0)
 				continue;
 
 			VectorSubtract(blip->s.origin, self->s.origin, blipdir);
@@ -1795,7 +1795,7 @@ void fire_lead2(edict_t* self, vec3_t start, vec3_t aimdir, int damage, int kick
 			{
 				if (tr.contents & CONTENTS_WATER)
 				{
-					if (Q_strcasecmp(tr.surface->name, "*brwater") == 0)
+					if (Q_stricmp(tr.surface->name, "*brwater") == 0)
 						color = SPLASH_BROWN_WATER;
 					else
 						color = SPLASH_BLUE_WATER;
@@ -2029,7 +2029,7 @@ void arrow_touch(edict_t* self, edict_t* other, cplane_t* plane, csurface_t* sur
 			G_FreeEdict(self);
 		}
 	}
-	else if ((Q_strcasecmp(other->classname, "func_door") == 0) || (Q_strcasecmp(other->classname, "func_plat") == 0)) //door or plat
+	else if ((Q_stricmp(other->classname, "func_door") == 0) || (Q_stricmp(other->classname, "func_plat") == 0)) //door or plat
 	{
 		self->s.sound = 0;
 		self->movetype = MOVETYPE_BOUNCE;
@@ -2207,14 +2207,14 @@ void parrow_touch(edict_t* self, edict_t* other, cplane_t* plane, csurface_t* su
 		if (other->client)
 		{
 			if (!(other->client->invincible_framenum > level.framenum)
-				&& !(other->flags & FL_GODMODE)&& !(other->health <= 0)) // invulnerable or god		 /* MrG{DRGN} or dead */
+				&& !(other->flags & FL_GODMODE) && !(other->health <= 0)) // invulnerable or god		 /* MrG{DRGN} or dead */
 			{
 				other->client->PoisonTime += 10;
 				G_FreeEdict(self);
 			}
 		}
 	}
-	else if ((Q_strcasecmp(other->classname, "func_door") == 0) || (Q_strcasecmp(other->classname, "func_plat") == 0)) //door or plat
+	else if ((Q_stricmp(other->classname, "func_door") == 0) || (Q_stricmp(other->classname, "func_plat") == 0)) //door or plat
 	{
 		self->s.sound = 0;
 		self->movetype = MOVETYPE_BOUNCE;
@@ -3323,10 +3323,10 @@ void LaserMine_Touch(edict_t* ent, edict_t* other, cplane_t* plane, csurface_t* 
 		return;
 	}
 	/* MrG{DRGN} faster than a string comparison
-	if (Q_strcasecmp(other->classname, "info_player_deathmatch") == 0
-		|| Q_strcasecmp(other->classname, "info_player_start") == 0
-		|| Q_strcasecmp(other->classname, "func_door") == 0
-		|| Q_strcasecmp(other->classname, "func_plat") == 0) */
+	if (Q_stricmp(other->classname, "info_player_deathmatch") == 0
+		|| Q_stricmp(other->classname, "info_player_start") == 0
+		|| Q_stricmp(other->classname, "func_door") == 0
+		|| Q_stricmp(other->classname, "func_plat") == 0) */
 	if ((other->classindex == INFO_PLAYER_DEATHMATCH)
 		|| (other->classindex == INFO_PLAYER_START)
 		|| (other->classindex == FUNC_DOOR)
@@ -4348,7 +4348,7 @@ void Proxy_Touch(edict_t* ent, edict_t* other, cplane_t* plane, csurface_t* surf
 	{
 		/*
 		 * This is now handled in the Proxy_Think
-		if (random() < 0.1 && ent->owner && (Q_strcasecmp(ent->owner->classname, "bot") !=0))	//evil proxy
+		if (random() < 0.1 && ent->owner && (Q_stricmp(ent->owner->classname, "bot") !=0))	//evil proxy
 		{
 			gi.setmodel (ent, "models/objects/hgevilpr/tris.md2");
 			ent->s.event = EV_ITEM_RESPAWN;
@@ -4673,7 +4673,7 @@ int Valid_Target(edict_t* ent, edict_t* blip)
 	 * The Vortex doesn't care who launched it or who is one what team,
 	 * it just eats everything in it's path
 	 */
-	if (Q_strcasecmp(ent->classname, "vortex") /*== 0)*/)
+	if (Q_stricmp(ent->classname, "vortex") /*== 0)*/)
 		/*
 	  {
 		if (blip->item || blip->client)
@@ -4727,28 +4727,28 @@ int Valid_Target(edict_t* ent, edict_t* blip)
 		 * if the roll fails then we fall back to the turret/proxy
 		 * rules, else we are an evil proxy and that's life. */
 
-		if (Q_strcasecmp(ent->classname, "proxymine") == 0)
+		if (Q_stricmp(ent->classname, "proxymine") == 0)
 		{
 			/* dummy = 0; MrG{DRGN} unused */
 
-			if ((Q_strcasecmp(blip->classname, "rocket_turret") == 0) &&
+			if ((Q_stricmp(blip->classname, "rocket_turret") == 0) &&
 				(blip->owner != ent->owner))
 				return true;
 
-			if ((Q_strcasecmp(blip->classname, "laser_turret") == 0) &&
+			if ((Q_stricmp(blip->classname, "laser_turret") == 0) &&
 				(blip->owner != ent->owner))
 				return true;
 
 			/* MrG{DRGN} integer comparison vs string comparison.*/
-			if (/*(Q_strcasecmp(blip->classname, "player") == 0)*/ (blip->classindex == PLAYER) &&
+			if (/*(Q_stricmp(blip->classname, "player") == 0)*/ (blip->classindex == PLAYER) &&
 				(blip != ent->owner) && !TeamMembers(ent->owner, blip->owner))
 				return true;
 
-			if ((Q_strcasecmp(blip->classname, "bot") == 0) &&
+			if ((Q_stricmp(blip->classname, "bot") == 0) &&
 				(blip != ent->owner) && !TeamMembers(ent->owner, blip->owner))
 				return true;
 
-			if (Q_strcasecmp(blip->classname, "proxymine") == 0)
+			if (Q_stricmp(blip->classname, "proxymine") == 0)
 			{
 				if (blip->owner == ent->owner)
 				{
@@ -4763,7 +4763,7 @@ int Valid_Target(edict_t* ent, edict_t* blip)
 			/* Roll for an EvilProxy */
 			if (random() < 0.05 &&
 				ent->owner &&
-				(Q_strcasecmp(ent->owner->classname, "bot") != 0))
+				(Q_stricmp(ent->owner->classname, "bot") != 0))
 			{
 				if (blip == ent->owner ||
 					blip->owner == ent->owner ||
@@ -4798,66 +4798,66 @@ int Valid_Target(edict_t* ent, edict_t* blip)
 		switch (blip->classname[0])
 		{
 		case 'a':
-			if (Q_strcasecmp(blip->classname, "arrow") == 0)
+			if (Q_stricmp(blip->classname, "arrow") == 0)
 				return true;
 			break;
 		case 'b':
-			if (Q_strcasecmp(blip->classname, "bolt") == 0
-				|| Q_strcasecmp(blip->classname, "buzz") == 0
-				|| Q_strcasecmp(blip->classname, "bfg blast") == 0
-				|| Q_strcasecmp(blip->classname, "blackholestuff") == 0)
+			if (Q_stricmp(blip->classname, "bolt") == 0
+				|| Q_stricmp(blip->classname, "buzz") == 0
+				|| Q_stricmp(blip->classname, "bfg blast") == 0
+				|| Q_stricmp(blip->classname, "blackholestuff") == 0)
 				return true;
 			break;
 
 		case 'e':
-			if (Q_strcasecmp(blip->classname, "explosive_arrow") == 0)
+			if (Q_stricmp(blip->classname, "explosive_arrow") == 0)
 				return true;
 			break;
 
 		case 'f':
-			if (Q_strcasecmp(blip->classname, "flashgrenade") == 0)
+			if (Q_stricmp(blip->classname, "flashgrenade") == 0)
 				return true;
 			break;
 
 		case 'g':
-			if (Q_strcasecmp(blip->classname, "grenade") == 0
-				|| Q_strcasecmp(blip->classname, "gib") == 0)
+			if (Q_stricmp(blip->classname, "grenade") == 0
+				|| Q_stricmp(blip->classname, "gib") == 0)
 				return true;
 			break;
 
 		case 'h':
-			if (Q_strcasecmp(blip->classname, "hgrenade") == 0
-				|| Q_strcasecmp(blip->classname, "homing") == 0)
+			if (Q_stricmp(blip->classname, "hgrenade") == 0
+				|| Q_stricmp(blip->classname, "homing") == 0)
 				return true;
 			break;
 		case 'i':
-			if (Q_strcasecmp(blip->classname, "item_flag_team1") == 0
-				|| Q_strcasecmp(blip->classname, "item_flag_team2") == 0
-				|| Q_strcasecmp(blip->classname, "item_tech1") == 0
-				|| Q_strcasecmp(blip->classname, "item_tech2") == 0
-				|| Q_strcasecmp(blip->classname, "item_tech3") == 0
-				|| Q_strcasecmp(blip->classname, "item_tech4") == 0)
+			if (Q_stricmp(blip->classname, "item_flag_team1") == 0
+				|| Q_stricmp(blip->classname, "item_flag_team2") == 0
+				|| Q_stricmp(blip->classname, "item_tech1") == 0
+				|| Q_stricmp(blip->classname, "item_tech2") == 0
+				|| Q_stricmp(blip->classname, "item_tech3") == 0
+				|| Q_stricmp(blip->classname, "item_tech4") == 0)
 				return false;
 
 		case 'l':
-			if (Q_strcasecmp(blip->classname, "lasermine") == 0
-				|| Q_strcasecmp(blip->classname, "laser_turret") == 0)
+			if (Q_stricmp(blip->classname, "lasermine") == 0
+				|| Q_stricmp(blip->classname, "laser_turret") == 0)
 				return true;
 			break;
 
 		case 'p':
-			if (Q_strcasecmp(blip->classname, "poisongrenade") == 0
-				|| Q_strcasecmp(blip->classname, "poison_arrow") == 0
-				|| Q_strcasecmp(blip->classname, "proxymine") == 0)
+			if (Q_stricmp(blip->classname, "poisongrenade") == 0
+				|| Q_stricmp(blip->classname, "poison_arrow") == 0
+				|| Q_stricmp(blip->classname, "proxymine") == 0)
 				return true;
 			break;
 		case 'r':
-			if (Q_strcasecmp(blip->classname, "rocket") == 0
-				|| Q_strcasecmp(blip->classname, "rocket_turret") == 0)
+			if (Q_stricmp(blip->classname, "rocket") == 0
+				|| Q_stricmp(blip->classname, "rocket_turret") == 0)
 				return true;
 			break;
 		case 't':
-			if (Q_strcasecmp(blip->classname, "turret_rocket") == 0)
+			if (Q_stricmp(blip->classname, "turret_rocket") == 0)
 				return true;
 			break;
 		default:

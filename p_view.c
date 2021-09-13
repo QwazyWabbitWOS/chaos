@@ -1232,7 +1232,7 @@ void ClientEndServerFrame(edict_t* ent)
 	P_FallingDamage(ent);
 
 	// apply all the damage taken this frame
-	/*if (Q_strcasecmp(ent->classname, "bot") != 0) */
+	/*if (Q_stricmp(ent->classname, "bot") != 0) */
 	P_DamageFeedback(ent);
 
 	// determine the view offsets
