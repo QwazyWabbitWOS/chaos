@@ -133,6 +133,10 @@ void InitGame(void)
 
 	// noset vars
 	dedicated = gi.cvar("dedicated", "0", CVAR_NOSET);
+	game_dir = gi.cvar("game", "", CVAR_NOSET);
+	if (Q_stricmp(game_dir->string, "chaos") != 0) {
+		Com_Printf("Chaos: GAME ERROR!! Game directory must be chaos.\n");
+	}
 
 	// latched vars
 	sv_cheats = gi.cvar("cheats", "0", CVAR_LATCH); /* MrG{DRGN}  removed CVAR_SERVVERINFO no need to fill the string or broadcast this.*/

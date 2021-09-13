@@ -1604,10 +1604,8 @@ void Load_BotChat(void)
 	int		section, line = 0, i; /* MrG{DRGN} initialized 09/23/2020 */
 	char	filename[MAX_QPATH];
 	char	buffer;
-	cvar_t* game_dir;
 
 	memset(chat_text, 0, sizeof(chat_text));
-	game_dir = gi.cvar("game", "", 0);
 
 	Com_strcpy(filename, sizeof filename, "./");
 	Com_strcat(filename, sizeof filename, game_dir->string);
