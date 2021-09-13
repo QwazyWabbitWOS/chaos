@@ -150,6 +150,9 @@ void InitGame(void)
 	/* MrG{DRGN} lets not use a Magic Number here
 	maxentities = gi.cvar("maxentities", "1024", CVAR_LATCH); */
 	maxentities = gi.cvar("maxentities", va("%i", MAX_EDICTS), CVAR_LATCH);
+	g_maplistfile = gi.cvar("g_maplistfile", "chaosdm.txt", 0);
+	g_maplistmode = gi.cvar("g_maplistmode", "1", 0);
+
 	//MATTHIAS
 	numbots = 0;
 	numplayers = 0;
@@ -222,6 +225,7 @@ void InitGame(void)
 	game.clients = gi.TagMalloc(game.maxclients * sizeof(game.clients[0]), TAG_GAME);
 	globals.num_edicts = game.maxclients + 1;
 
+	LoadMaplist(g_maplistfile->string);
 	CTFInit();
 }
 
