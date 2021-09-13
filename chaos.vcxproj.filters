@@ -60,6 +60,9 @@
     <ClInclude Include="stdlog.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="classindex.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="game.def">

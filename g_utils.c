@@ -2,14 +2,12 @@
 
 #include "g_local.h"
 
-
-void G_ProjectSource (vec3_t point, vec3_t distance, vec3_t forward, vec3_t right, vec3_t result)
+void G_ProjectSource(vec3_t point, vec3_t distance, vec3_t forward, vec3_t right, vec3_t result)
 {
 	result[0] = point[0] + forward[0] * distance[0] + right[0] * distance[1];
 	result[1] = point[1] + forward[1] * distance[0] + right[1] * distance[1];
 	result[2] = point[2] + forward[2] * distance[0] + right[2] * distance[1] + distance[2];
 }
-
 
 /*
 =============
@@ -23,29 +21,28 @@ NULL will be returned if the end of the list is reached.
 
 =============
 */
-edict_t *G_Find (edict_t *from, int fieldofs, char *match)
+edict_t* G_Find(edict_t* from, int fieldofs, char* match)
 {
-	char	*s;
+	char* s;
 
 	if (!from)
 		from = g_edicts;
 	else
 		from++;
 
-	for ( ; from < &g_edicts[globals.num_edicts] ; from++)
+	for (; from < &g_edicts[globals.num_edicts]; from++)
 	{
 		if (!from->inuse)
 			continue;
-		s = *(char **) ((byte *)from + fieldofs);
+		s = *(char**)((byte*)from + fieldofs);
 		if (!s)
 			continue;
-		if (!Q_stricmp (s, match))
+		if (!Q_strcasecmp(s, match))
 			return from;
 	}
 
 	return NULL;
 }
-
 
 /*
 =================
@@ -56,23 +53,23 @@ Returns entities that have origins within a spherical area
 findradius (origin, radius)
 =================
 */
-edict_t *findradius (edict_t *from, vec3_t org, float rad)
+edict_t* findradius(edict_t* from, vec3_t org, float rad)
 {
-	vec3_t	eorg;
+	vec3_t	eorg = { 0 };
 	int		j;
 
 	if (!from)
 		from = g_edicts;
 	else
 		from++;
-	for ( ; from < &g_edicts[globals.num_edicts]; from++)
+	for (; from < &g_edicts[globals.num_edicts]; from++)
 	{
 		if (!from->inuse)
 			continue;
 		if (from->solid == SOLID_NOT)
 			continue;
-		for (j=0 ; j<3 ; j++)
-			eorg[j] = org[j] - (from->s.origin[j] + (from->mins[j] + from->maxs[j])*0.5f);
+		for (j = 0; j < 3; j++)
+			eorg[j] = org[j] - (from->s.origin[j] + (from->mins[j] + from->maxs[j]) * 0.5F); /* MrG{DRGN} This was 0.5, I changed it to an explicit float */
 		if (VectorLength(eorg) > rad)
 			continue;
 		return from;
@@ -80,7 +77,6 @@ edict_t *findradius (edict_t *from, vec3_t org, float rad)
 
 	return NULL;
 }
-
 
 /*
 =============
@@ -96,11 +92,11 @@ NULL will be returned if the end of the list is reached.
 */
 #define MAXCHOICES	8
 
-edict_t *G_PickTarget (char *targetname)
+edict_t* G_PickTarget(char* targetname)
 {
-	edict_t	*ent = NULL;
+	edict_t* ent = NULL;
 	int		num_choices = 0;
-	edict_t	*choice[MAXCHOICES];
+	edict_t* choice[MAXCHOICES] = { 0 };
 
 	if (!targetname)
 	{
@@ -108,9 +104,9 @@ edict_t *G_PickTarget (char *targetname)
 		return NULL;
 	}
 
-	while(1)
+	while (1)
 	{
-		ent = G_Find (ent, FOFS(targetname), targetname);
+		ent = G_Find(ent, FOFS(targetname), targetname);
 		if (!ent)
 			break;
 		choice[num_choices++] = ent;
@@ -127,12 +123,10 @@ edict_t *G_PickTarget (char *targetname)
 	return choice[rand() % num_choices];
 }
 
-
-
-void Think_Delay (edict_t *ent)
+void Think_Delay(edict_t* ent)
 {
-	G_UseTargets (ent, ent->activator);
-	G_FreeEdict (ent);
+	G_UseTargets(ent, ent->activator);
+	G_FreeEdict(ent);
 }
 
 /*
@@ -151,52 +145,58 @@ match (string)self.target and call their .use function
 
 ==============================
 */
-void G_UseTargets (edict_t *ent, edict_t *activator)
+void G_UseTargets(edict_t* ent, edict_t* activator)
 {
-	edict_t		*t;
+	edict_t* t;
 
+	/* MrG{DRGN} sanity check */
+	if (!ent)
+		return;
+	/* END */
 //
 // check for a delay
 //
 	if (ent->delay)
 	{
-	// create a temp object to fire at a later time
+		// create a temp object to fire at a later time
 		t = G_Spawn();
 		t->classname = "DelayedUse";
+		t->classindex = DELAYEDUSE; /* MrG{DRGN} */
 		t->nextthink = level.time + ent->delay;
 		t->think = Think_Delay;
 		t->activator = activator;
 		if (!activator)
-			gi.dprintf ("Think_Delay with no activator\n");
+			gi.dprintf("Think_Delay with no activator\n");
 		t->message = ent->message;
 		t->target = ent->target;
 		t->killtarget = ent->killtarget;
 		return;
 	}
-	
-	
-//
-// print the message
-//
+
+	//
+	// print the message
+	//
 	if (ent->message)
 	{
-		if (strcmp(activator->classname,"bot") != 0)
-			gi.centerprintf (activator, "%s", ent->message);
+
+		/* MrG{DRGN} if (strcmp(activator->classname, "bot") != 0)*/
+		if (!activator->bot_player)
+			gi.centerprintf(activator, "%s", ent->message);
 		if (ent->noise_index)
-			gi.sound (activator, CHAN_AUTO, ent->noise_index, 1, ATTN_NORM, 0);
+			gi.sound(activator, CHAN_AUTO, ent->noise_index, 1, ATTN_NORM, 0);
 		else
-			gi.sound (activator, CHAN_AUTO, gi.soundindex ("misc/talk1.wav"), 1, ATTN_NORM, 0);
+			gi.sound(activator, CHAN_AUTO, gi.soundindex("misc/talk1.wav"), 1, ATTN_NORM, 0);
 	}
 
-//
-// kill killtargets
-//
+	//
+	// kill killtargets
+	//
 	if (ent->killtarget)
 	{
 		t = NULL;
-		while ((t = G_Find (t, FOFS(targetname), ent->killtarget)) != NULL)
+		while ((t = G_Find(t, FOFS(targetname), ent->killtarget)) != 0)
 		{
-			G_FreeEdict (t);
+			G_FreeEdict(t);
 			if (!ent->inuse)
 			{
 				gi.dprintf("entity was removed while using killtargets\n");
@@ -205,29 +205,29 @@ void G_UseTargets (edict_t *ent, edict_t *activator)
 		}
 	}
 
-//	gi.dprintf("TARGET: activating %s\n", ent->target);
+	//	gi.dprintf("TARGET: activating %s\n", ent->target);
 
-//
-// fire targets
-//
+	//
+	// fire targets
+	//
 	if (ent->target)
 	{
 		t = NULL;
-		while ((t = G_Find (t, FOFS(targetname), ent->target)) != NULL)
+		while ((t = G_Find(t, FOFS(targetname), ent->target)) != 0)
 		{
 			// doors fire area portals in a specific way
-			if (!Q_stricmp(t->classname, "func_areaportal") &&
-				(!Q_stricmp(ent->classname, "func_door") || !Q_stricmp(ent->classname, "func_door_rotating")))
+			if (!Q_strcasecmp(t->classname, "func_areaportal") &&
+				(!Q_strcasecmp(ent->classname, "func_door") || !Q_strcasecmp(ent->classname, "func_door_rotating")))
 				continue;
 
 			if (t == ent)
 			{
-				gi.dprintf ("WARNING: Entity used itself.\n");
+				gi.dprintf("WARNING: Entity used itself.\n");
 			}
 			else
 			{
 				if (t->use)
-					t->use (t, ent, activator);
+					t->use(t, ent, activator);
 			}
 			if (!ent->inuse)
 			{
@@ -238,7 +238,6 @@ void G_UseTargets (edict_t *ent, edict_t *activator)
 	}
 }
 
-
 /*
 =============
 TempVector
@@ -247,16 +246,16 @@ This is just a convenience function
 for making temporary vectors for function calls
 =============
 */
-float	*tv (float x, float y, float z)
+float* tv(float x, float y, float z)
 {
-	static	int		index;
+	static	int	index = 0;
 	static	vec3_t	vecs[8];
-	float	*v;
+	float* v;
 
 	// use an array so that multiple tempvectors won't collide
 	// for a while
 	v = vecs[index];
-	index = (index + 1)&7;
+	index = (index + 1) & 7;
 
 	v[0] = x;
 	v[1] = y;
@@ -264,7 +263,6 @@ float	*tv (float x, float y, float z)
 
 	return v;
 }
-
 
 /*
 =============
@@ -274,55 +272,53 @@ This is just a convenience function
 for printing vectors
 =============
 */
-char	*vtos (vec3_t v)
+char* vtos(vec3_t v)
 {
-	static	int		index;
-	static	char	str[8][32];
-	char	*s;
+	static	int		index = 0;
+	static	char	str[8][32] = { 0 };
+	char* s;
 
 	// use an array so that multiple vtos won't collide
 	s = str[index];
-	index = (index + 1)&7;
+	index = (index + 1) & 7;
 
-	Com_sprintf (s, 32, "(%i %i %i)", (int)v[0], (int)v[1], (int)v[2]);
+	Com_sprintf(s, 32, "(%i %i %i)", (int)v[0], (int)v[1], (int)v[2]);
 
 	return s;
 }
 
+vec3_t VEC_UP = { 0, -1, 0 };
+vec3_t MOVEDIR_UP = { 0, 0, 1 };
+vec3_t VEC_DOWN = { 0, -2, 0 };
+vec3_t MOVEDIR_DOWN = { 0, 0, -1 };
 
-vec3_t VEC_UP		= {0, -1, 0};
-vec3_t MOVEDIR_UP	= {0, 0, 1};
-vec3_t VEC_DOWN		= {0, -2, 0};
-vec3_t MOVEDIR_DOWN	= {0, 0, -1};
-
-void G_SetMovedir (vec3_t angles, vec3_t movedir)
+void G_SetMovedir(vec3_t angles, vec3_t movedir)
 {
-	if (VectorCompare (angles, VEC_UP))
+	if (VectorCompare(angles, VEC_UP))
 	{
-		VectorCopy (MOVEDIR_UP, movedir);
+		VectorCopy(MOVEDIR_UP, movedir);
 	}
-	else if (VectorCompare (angles, VEC_DOWN))
+	else if (VectorCompare(angles, VEC_DOWN))
 	{
-		VectorCopy (MOVEDIR_DOWN, movedir);
+		VectorCopy(MOVEDIR_DOWN, movedir);
 	}
 	else
 	{
-		AngleVectors (angles, movedir, NULL, NULL);
+		AngleVectors(angles, movedir, NULL, NULL);
 	}
 
-	VectorClear (angles);
+	VectorClear(angles);
 }
 
-
-float vectoyaw (vec3_t vec)
+float vectoyaw(vec3_t vec)
 {
 	float	yaw;
-	
+
 	if (vec[YAW] == 0 && vec[PITCH] == 0)
 		yaw = 0;
 	else
 	{
-		yaw = (int) (atan2(vec[YAW], vec[PITCH]) * 180 / M_PI);
+		yaw = (int)(atan2(vec[YAW], vec[PITCH]) * 180 / M_PI);
 		if (yaw < 0)
 			yaw += 360;
 	}
@@ -330,12 +326,11 @@ float vectoyaw (vec3_t vec)
 	return yaw;
 }
 
-
-void vectoangles (vec3_t value1, vec3_t angles)
+void vectoangles(vec3_t value1, vec3_t angles)
 {
 	float	forward;
 	float	yaw, pitch;
-	
+
 	if (value1[1] == 0 && value1[0] == 0)
 	{
 		yaw = 0;
@@ -346,12 +341,12 @@ void vectoangles (vec3_t value1, vec3_t angles)
 	}
 	else
 	{
-		yaw = (int) (atan2(value1[1], value1[0]) * 180 / M_PI);
+		yaw = (int)(atan2(value1[1], value1[0]) * 180 / M_PI);
 		if (yaw < 0)
 			yaw += 360;
 
-		forward = sqrtf (value1[0]*value1[0] + value1[1]*value1[1]);
-		pitch = (int) (atan2(value1[2], forward) * 180 / M_PI);
+		forward = sqrtf(value1[0] * value1[0] + value1[1] * value1[1]);/* MrG{DRGN} changed from sqrt to sqrtf since we're working with fl,oats, not doubles */
+		pitch = (int)(atan2(value1[2], forward) * 180 / M_PI);
 		if (pitch < 0)
 			pitch += 360;
 	}
@@ -361,22 +356,31 @@ void vectoangles (vec3_t value1, vec3_t angles)
 	angles[ROLL] = 0;
 }
 
-char *G_CopyString (char *in)
+char* G_CopyString(char* in)
 {
-	char	*out;
-	
-	out = gi.TagMalloc (strlen(in)+1, TAG_LEVEL);
-	strcpy (out, in);
+	char* out;
+
+	out = gi.TagMalloc((int)strlen(in) + 1, TAG_LEVEL); /* MrG{DRGN} cast to what TagMalloc is looking for */
+	Com_strcpy(out, sizeof(out), in);
 	return out;
 }
 
-
-void G_InitEdict (edict_t *e)
+void G_InitEdict(edict_t* e)
 {
 	e->inuse = true;
+	e->classindex = NOCLASS; /* MrG{DRGN} */
 	e->classname = "noclass";
 	e->gravity = 1.0;
 	e->s.number = e - g_edicts;
+
+	/* MrG{DRGN}
+	Clear what the free-edict list may have set. */
+	e->chain = NULL;
+
+	/* MrG{DRGN}
+	 This is another headache. */
+	e->think = NULL;
+	e->nextthink = 0;
 }
 
 /*
@@ -390,29 +394,28 @@ instead of being removed and recreated, which can cause interpolated
 angles and bad trails.
 =================
 */
-edict_t *G_Spawn (void)
+edict_t* G_Spawn(void)
 {
 	int			i;
-	edict_t		*e;
+	edict_t* e;
 
-	e = &g_edicts[(int)maxclients->value+1];
-	for ( i=maxclients->value+1 ; i<globals.num_edicts ; i++, e++)
+	e = &g_edicts[(int)maxclients->value + 1];
+	for (i = maxclients->value + 1; i < globals.num_edicts; i++, e++)
 	{
 		// the first couple seconds of server time can involve a lot of
 		// freeing and allocating, so relax the replacement policy
-		if (!e->inuse && ( e->freetime < 2 || level.time - e->freetime > 0.5f ) )
+		if (!e->inuse && (e->freetime < 2 || level.time - e->freetime > 0.5F)) /* Explicit float */
 		{
-			G_InitEdict (e);
+			G_InitEdict(e);
 			return e;
 		}
 	}
-	
-	if (i == game.maxentities) {
+
+	if (i == game.maxentities)
 		gi.error("ED_Alloc: no free edicts");
-		exit(EXIT_FAILURE); // never happens
-	}
+
 	globals.num_edicts++;
-	G_InitEdict (e);
+	G_InitEdict(e);
 	return e;
 }
 
@@ -423,22 +426,22 @@ G_FreeEdict
 Marks the edict as free
 =================
 */
-void G_FreeEdict (edict_t *ed)
+void G_FreeEdict(edict_t* ed)
 {
-	gi.unlinkentity (ed);		// unlink from world
+	gi.unlinkentity(ed);		// unlink from world
 
 	if ((ed - g_edicts) <= (maxclients->value + BODY_QUEUE_SIZE))
 	{
-//		gi.dprintf("tried to free special edict\n");
+		//		gi.dprintf("tried to free special edict\n");
 		return;
 	}
 
-	memset (ed, 0, sizeof(*ed));
+	memset(ed, 0, sizeof(*ed));
 	ed->classname = "freed";
+	ed->classindex = FREED; /* MrG{DRGN} */
 	ed->freetime = level.time;
 	ed->inuse = false;
 }
-
 
 /*
 ============
@@ -446,28 +449,28 @@ G_TouchTriggers
 
 ============
 */
-void	G_TouchTriggers (edict_t *ent)
+void	G_TouchTriggers(edict_t* ent)
 {
 	int			i, num;
-	edict_t		*touch[MAX_EDICTS], *hit;
+	edict_t* touch[MAX_EDICTS], * hit;
 
 	// dead things don't activate triggers!
 	if ((ent->client) && (ent->health <= 0))
 		return;
 
-	num = gi.BoxEdicts (ent->absmin, ent->absmax, touch
+	num = gi.BoxEdicts(ent->absmin, ent->absmax, touch
 		, MAX_EDICTS, AREA_TRIGGERS);
 
 	// be careful, it is possible to have an entity in this
 	// list removed before we get to it (killtriggered)
-	for (i=0 ; i<num ; i++)
+	for (i = 0; i < num; i++)
 	{
 		hit = touch[i];
 		if (!hit->inuse)
 			continue;
 		if (!hit->touch)
 			continue;
-		hit->touch (hit, ent, NULL, NULL);
+		hit->touch(hit, ent, NULL, NULL);
 	}
 }
 
@@ -479,30 +482,27 @@ Call after linking a new trigger in during gameplay
 to force all entities it covers to immediately touch it
 ============
 */
-void	G_TouchSolids (edict_t *ent)
+void	G_TouchSolids(edict_t* ent)
 {
 	int			i, num;
-	edict_t		*touch[MAX_EDICTS], *hit;
+	edict_t* touch[MAX_EDICTS], * hit;
 
-	num = gi.BoxEdicts (ent->absmin, ent->absmax, touch
+	num = gi.BoxEdicts(ent->absmin, ent->absmax, touch
 		, MAX_EDICTS, AREA_SOLID);
 
 	// be careful, it is possible to have an entity in this
 	// list removed before we get to it (killtriggered)
-	for (i=0 ; i<num ; i++)
+	for (i = 0; i < num; i++)
 	{
 		hit = touch[i];
 		if (!hit->inuse)
 			continue;
 		if (ent->touch)
-			ent->touch (hit, ent, NULL, NULL);
+			ent->touch(hit, ent, NULL, NULL);
 		if (!ent->inuse)
 			break;
 	}
 }
-
-
-
 
 /*
 ==============================================================================
@@ -520,18 +520,18 @@ Kills all entities that would touch the proposed new positioning
 of ent.  Ent should be unlinked before calling this!
 =================
 */
-qboolean KillBox (edict_t *ent)
+qboolean KillBox(edict_t* ent)
 {
 	trace_t		tr;
 
 	while (1)
 	{
-		tr = gi.trace (ent->s.origin, ent->mins, ent->maxs, ent->s.origin, NULL, MASK_PLAYERSOLID);
+		tr = gi.trace(ent->s.origin, ent->mins, ent->maxs, ent->s.origin, NULL, MASK_PLAYERSOLID);
 		if (!tr.ent)
 			break;
 
 		// nail it
-		T_Damage (tr.ent, ent, ent, vec3_origin, ent->s.origin, vec3_origin, 100000, 0, DAMAGE_NO_PROTECTION, MOD_TELEFRAG);
+		T_Damage(tr.ent, ent, ent, vec3_origin, ent->s.origin, vec3_origin, 100000, 0, DAMAGE_NO_PROTECTION, MOD_TELEFRAG);
 
 		// if we didn't kill it, fail
 		if (tr.ent->solid)

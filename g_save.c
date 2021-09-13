@@ -1,12 +1,12 @@
 #include "g_local.h"
-#include "stdlog.h"
 #include "gslog.h"
-#include "c_base.h"
 
 //MATTHIAS
 void GetSettings(void);
+void ClearMaplist();
 
 field_t fields[] = {
+	{"classindex", FOFS(classindex), F_INT}, /* MrG{DRGN} */
 	{"classname", FOFS(classname), F_LSTRING},
 	{"origin", FOFS(s.origin), F_VECTOR},
 	{"model", FOFS(model), F_LSTRING},
@@ -40,6 +40,29 @@ field_t fields[] = {
 	{"attenuation", FOFS(attenuation), F_FLOAT},
 	{"map", FOFS(map), F_LSTRING},
 
+	{"goalentity", FOFS(goalentity), F_EDICT, FFL_NOSPAWN},
+	{"movetarget", FOFS(movetarget), F_EDICT, FFL_NOSPAWN},
+	{"enemy", FOFS(enemy), F_EDICT, FFL_NOSPAWN},
+	{"activator", FOFS(activator), F_EDICT, FFL_NOSPAWN},
+	{"groundentity", FOFS(groundentity), F_EDICT, FFL_NOSPAWN},
+	{"teamchain", FOFS(teamchain), F_EDICT, FFL_NOSPAWN},
+	{"teammaster", FOFS(teammaster), F_EDICT, FFL_NOSPAWN},
+	{"owner", FOFS(owner), F_EDICT, FFL_NOSPAWN},
+	{"mynoise", FOFS(mynoise), F_EDICT, FFL_NOSPAWN},
+	{"mynoise2", FOFS(mynoise2), F_EDICT, FFL_NOSPAWN},
+	{"target_ent", FOFS(target_ent), F_EDICT, FFL_NOSPAWN},
+	{"chain", FOFS(chain), F_EDICT, FFL_NOSPAWN},
+
+	{"prethink", FOFS(prethink), F_FUNCTION, FFL_NOSPAWN},
+	{"think", FOFS(think), F_FUNCTION, FFL_NOSPAWN},
+	{"blocked", FOFS(blocked), F_FUNCTION, FFL_NOSPAWN},
+	{"touch", FOFS(touch), F_FUNCTION, FFL_NOSPAWN},
+	{"use", FOFS(use), F_FUNCTION, FFL_NOSPAWN},
+	{"pain", FOFS(pain), F_FUNCTION, FFL_NOSPAWN},
+	{"die", FOFS(die), F_FUNCTION, FFL_NOSPAWN},
+
+	{"endfunc", FOFS(moveinfo.endfunc), F_FUNCTION, FFL_NOSPAWN},
+
 	// temp spawn vars -- only valid when the spawn function is called
 	{"lip", STOFS(lip), F_INT, FFL_SPAWNTEMP},
 	{"distance", STOFS(distance), F_INT, FFL_SPAWNTEMP},
@@ -55,7 +78,8 @@ field_t fields[] = {
 	{"maxyaw", STOFS(maxyaw), F_FLOAT, FFL_SPAWNTEMP},
 	{"minpitch", STOFS(minpitch), F_FLOAT, FFL_SPAWNTEMP},
 	{"maxpitch", STOFS(maxpitch), F_FLOAT, FFL_SPAWNTEMP},
-	{"nextmap", STOFS(nextmap), F_LSTRING, FFL_SPAWNTEMP}
+	{"nextmap", STOFS(nextmap), F_LSTRING, FFL_SPAWNTEMP},
+	{NULL, 0, F_INT}
 };
 
 field_t		levelfields[] =
@@ -79,7 +103,6 @@ field_t		clientfields[] =
 	{NULL, 0, F_INT}
 };
 
-
 /*
 ============
 InitGame
@@ -89,59 +112,53 @@ only happens when a new game is started or a save game
 is loaded.
 ============
 */
-void InitGame (void)
+void InitGame(void)
 {
 	int j;
 
-	sl_Logging( &gi, "chaos" );	// StdLog - Mark Davies (Only required to set patch name)
+	sl_Logging(&gi, "chaos");	// StdLog - Mark Davies (Only required to set patch name)
 
-	Com_Printf("\n====               InitGame               ====\n");
-	Com_Printf("==== %s built on %s, at %s ====\n\n", GAMEVERSION, __DATE__, __TIME__);
+	gi.dprintf("\n====               InitGame               ====\n");
+	gi.dprintf("%s built on %s, at %s\n\n", GAMEVERSION, __DATE__, __TIME__);
 
-	gun_x = gi.cvar ("gun_x", "0", 0);
-	gun_y = gi.cvar ("gun_y", "0", 0);
-	gun_z = gi.cvar ("gun_z", "0", 0);
+	gun_x = gi.cvar("gun_x", "0", 0);
+	gun_y = gi.cvar("gun_y", "0", 0);
+	gun_z = gi.cvar("gun_z", "0", 0);
 
 	//FIXME: sv_ prefix is wrong for these
-	sv_rollspeed = gi.cvar ("sv_rollspeed", "200", 0);
-	sv_rollangle = gi.cvar ("sv_rollangle", "2", 0);
-	sv_maxvelocity = gi.cvar ("sv_maxvelocity", "2000", 0);
-	sv_gravity = gi.cvar ("sv_gravity", "800", 0);
+	sv_rollspeed = gi.cvar("sv_rollspeed", "200", 0);
+	sv_rollangle = gi.cvar("sv_rollangle", "2", 0);
+	sv_maxvelocity = gi.cvar("sv_maxvelocity", "2000", 0);
+	sv_gravity = gi.cvar("sv_gravity", "800", 0);
 
 	// noset vars
-	dedicated = gi.cvar ("dedicated", "0", CVAR_NOSET);
-	game_dir = gi.cvar("game", "", CVAR_NOSET);
-	if (Q_stricmp(game_dir->string, "chaos") != 0) {
-		Com_Printf("Chaos: GAME ERROR!! Game directory must be chaos.\n");
-	}
+	dedicated = gi.cvar("dedicated", "0", CVAR_NOSET);
 
 	// latched vars
-	sv_cheats = gi.cvar ("cheats", "0", CVAR_SERVERINFO|CVAR_LATCH);
-	gi.cvar ("gamename", GAMEVERSION , CVAR_SERVERINFO | CVAR_LATCH);
-	gi.cvar ("gamedate", __DATE__ , CVAR_SERVERINFO | CVAR_LATCH);
+	sv_cheats = gi.cvar("cheats", "0", CVAR_LATCH); /* MrG{DRGN}  removed CVAR_SERVVERINFO no need to fill the string or broadcast this.*/
+	gi.cvar("gamename", GAMEVERSION, CVAR_SERVERINFO | CVAR_LATCH);
+	gi.cvar("gamedate", __DATE__, CVAR_SERVERINFO | CVAR_LATCH);
 
-	maxclients = gi.cvar ("maxclients", "8", CVAR_SERVERINFO | CVAR_LATCH);
-	deathmatch = gi.cvar ("deathmatch", "1", CVAR_LATCH);
-	coop = gi.cvar ("coop", "0", CVAR_LATCH);
-	skill = gi.cvar ("skill", "1", CVAR_LATCH);
-	maxentities = gi.cvar ("maxentities", "1024", CVAR_LATCH);
-	
-	g_maplistfile = gi.cvar("g_maplistfile", "chaosdm.txt", 0);
-	g_maplistmode = gi.cvar("g_maplistmode", "1", 0);
-
+	maxclients = gi.cvar("maxclients", "8", CVAR_SERVERINFO | CVAR_LATCH);
+	deathmatch = gi.cvar("deathmatch", "1", CVAR_LATCH);
+	coop = gi.cvar("coop", "0", CVAR_LATCH);
+	skill = gi.cvar("skill", "1", CVAR_LATCH);
+	/* MrG{DRGN} lets not use a Magic Number here
+	maxentities = gi.cvar("maxentities", "1024", CVAR_LATCH); */
+	maxentities = gi.cvar("maxentities", va("%i", MAX_EDICTS), CVAR_LATCH);
 	//MATTHIAS
-	numbots		= 0;	
-	numplayers	= 0;
-	numturrets	= 0;
-	numblue		= 0;
-	numred		= 0;
+	numbots = 0;
+	numplayers = 0;
+	numturrets = 0;
+	numblue = 0;
+	numred = 0;
 	vortex_pointer = NULL;
-	vortexstate	= 0;
-	blue_base	= -1;
-	red_base	= -1;
+	vortexstate = 0;
+	blue_base = -1;
+	red_base = -1;
 
 	GetSettings();
-	
+
 	//clear path buffer
 	for (j = 0; j < 100; j++)
 	{
@@ -149,64 +166,77 @@ void InitGame (void)
 	}
 
 	//This game.dll only supports deathmatch
-	if (!deathmatch->value) {
-		Com_Printf("Forcing deathmatch.");
+	if (!deathmatch->value)
+	{
+		gi.dprintf("Forcing deathmatch.\n"); /* MrG{DRGN} added newline */
 		gi.cvar_set("deathmatch", "1");
 	}
 	//force coop off
 	if (coop->value)
 		gi.cvar_set("coop", "0");
 
-
 	// change anytime vars
-	dmflags = gi.cvar ("dmflags", "0", CVAR_SERVERINFO);
-	fraglimit = gi.cvar ("fraglimit", "0", CVAR_SERVERINFO);
-	timelimit = gi.cvar ("timelimit", "0", CVAR_SERVERINFO);
-	capturelimit = gi.cvar ("capturelimit", "0", CVAR_SERVERINFO);
- 	password = gi.cvar ("password", "", CVAR_USERINFO);
+	dmflags = gi.cvar("dmflags", "0", CVAR_SERVERINFO);
+	fraglimit = gi.cvar("fraglimit", "0", CVAR_SERVERINFO);
+	timelimit = gi.cvar("timelimit", "0", CVAR_SERVERINFO);
+	capturelimit = gi.cvar("capturelimit", "0", CVAR_SERVERINFO);
+	password = gi.cvar("password", "", CVAR_USERINFO);
 
-	g_select_empty = gi.cvar ("g_select_empty", "0", CVAR_ARCHIVE);
+	g_select_empty = gi.cvar("g_select_empty", "0", CVAR_ARCHIVE);
 
-	run_pitch = gi.cvar ("run_pitch", "0.002", 0);
-	run_roll = gi.cvar ("run_roll", "0.005", 0);
-	bob_up  = gi.cvar ("bob_up", "0.005", 0);
-	bob_pitch = gi.cvar ("bob_pitch", "0.002", 0);
-	bob_roll = gi.cvar ("bob_roll", "0.002", 0);
+	run_pitch = gi.cvar("run_pitch", "0.002", 0);
+	run_roll = gi.cvar("run_roll", "0.005", 0);
+	bob_up = gi.cvar("bob_up", "0.005", 0);
+	bob_pitch = gi.cvar("bob_pitch", "0.002", 0);
+	bob_roll = gi.cvar("bob_roll", "0.002", 0);
+
+	/* MrG{DRGN} */
+	flood_msgs = gi.cvar("flood_msgs", "4", 0);
+	flood_persecond = gi.cvar("flood_persecond", "4", 0);
+	flood_waitdelay = gi.cvar("flood_waitdelay", "10", 0);
+	/* END */
 
 	// items
-	InitItems ();
+	InitItems();
 
+	/* MrG{DRGN} fix some printf formatting errors
 	Com_sprintf (game.helpmessage1, sizeof(game.helpmessage1), "");
 	Com_sprintf (game.helpmessage2, sizeof(game.helpmessage2), "");
+	 */
+	game.helpmessage1[0] = 0;
+	game.helpmessage2[0] = 0;
+	/* END */
 
 	// initialize all entities for this game
 	game.maxentities = maxentities->value;
-	g_edicts =  gi.TagMalloc (game.maxentities * sizeof(g_edicts[0]), TAG_GAME);
+	g_edicts = gi.TagMalloc(game.maxentities * sizeof(g_edicts[0]), TAG_GAME);
 	globals.edicts = g_edicts;
 	globals.max_edicts = game.maxentities;
 
 	// initialize all clients for this game
 	game.maxclients = maxclients->value;
-	game.clients = gi.TagMalloc (game.maxclients * sizeof(game.clients[0]), TAG_GAME);
-	globals.num_edicts = game.maxclients+1;
-
-	LoadMaplist(g_maplistfile->string);
+	game.clients = gi.TagMalloc(game.maxclients * sizeof(game.clients[0]), TAG_GAME);
+	globals.num_edicts = game.maxclients + 1;
 
 	CTFInit();
 }
 
-void WriteGame (char *filename, qboolean autosave)
+void WriteGame(char* filename, qboolean autosave)
 {
+	/* Unused */
 }
 
-void ReadGame (char *filename)
+void ReadGame(char* filename)
 {
+	/* Unused */
 }
 
-void WriteLevel (char *filename)
+void WriteLevel(char* filename)
 {
+	/* Unused */
 }
 
-void ReadLevel (char *filename)
+void ReadLevel(char* filename)
 {
+	/* Unused */
 }

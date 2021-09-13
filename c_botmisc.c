@@ -10,73 +10,76 @@
 ///------------------------------------------------------------------------------------------
 /// Command handling
 ///------------------------------------------------------------------------------------------
-
-void Svcmd_addbots_f(void)	// adds "num" bots.
+#define MAX_BOTS ((int)maxclients->value -2)
+void Svcmd_addbots_f()	// adds "num" bots.
 {
-	int		i, num, bot_skill, team;
+	int		i, num, skill_level, team;
 	char	name[64], model[128];
 
-	// sv addbots <amount> <skill> <team> <name> <model/skin>
+	// sv addbots <amount> <skill_level> <team> <name> <model/skin>
 
 	num = atoi(gi.argv(2));
-	bot_skill = atoi(gi.argv(3));
+	skill_level = atoi(gi.argv(3));
 	team = atoi(gi.argv(4));
-	Com_strcpy(name, sizeof name, gi.argv(5));
+	/*	MrG{DRGN} destination safe strcpy replacement*/
+	Com_strcpy(name, sizeof(name), gi.argv(5));
 
-	if (bot_skill == 0)
-		bot_skill = 3;
+	if (skill_level == 0)
+		skill_level = 3;
 
 	if (num == 0)	// spawn 0 bots ???
 		return;
 	else if (num == 1)
 	{
-		if (numbots >= 10)
+		if (numbots >= MAX_BOTS)
 		{
-			gi.cprintf(NULL, PRINT_HIGH, "You can't spawn more than 10 Havoc-Bots!\n");
+			gi.cprintf(NULL, PRINT_HIGH, "You can't spawn more than %i Havoc-Bots!\n", MAX_BOTS);
 			return;
 		}
 
 		// set the model
-		if (Q_stricmp(gi.argv(6), "") == 0)
+		if (Q_strcasecmp(gi.argv(6), "") == 0)
 		{
-			Com_sprintf(model, sizeof model, Get_RandomBotSkin());
+			Com_Printf(model, Get_RandomBotSkin());
 		}
 		else
-			Com_sprintf(model, sizeof model, gi.argv(6));
+			Com_Printf(model, gi.argv(6));
 
 		// set the name
-		if (Q_stricmp(name, "") == 0
-			|| Q_stricmp(name, " ") == 0)
+		if (Q_strcasecmp(name, "") == 0
+			|| Q_strcasecmp(name, " ") == 0)
 		{
-			Com_strcpy(name, sizeof name, (strchr(model, '/') + 1));
+			/*	MrG{DRGN} destination safe strcpy replacement */
+			Com_strcpy(name, sizeof(name), (strchr(model, '/') + 1));
 		}
 
-		Bot_Create(bot_skill, team, name, model);
+		Bot_Create(skill_level, team, name, model);
 	}
 	else
 	{
 		for (i = 0; i < num; i++)
 		{
-			if (numbots >= 10)
+			if (numbots >= MAX_BOTS)
 			{
-				gi.cprintf(NULL, PRINT_HIGH, "You can't spawn more than 10 Havoc-Bots!\n");
+				gi.cprintf(NULL, PRINT_HIGH, "You can't spawn more than %i Havoc-Bots!\n", MAX_BOTS);
 				return;
 			}
 
 			// set the model
-			if (Q_stricmp(gi.argv(6), "") == 0)
+			if (Q_strcasecmp(gi.argv(6), "") == 0)
 			{
-				Com_sprintf(model, sizeof model, Get_RandomBotSkin());
+				Com_Printf(model, Get_RandomBotSkin());
 			}
 			else
-				Com_sprintf(model, sizeof model, gi.argv(6));
+				Com_Printf(model, gi.argv(6));
 
 			// set the name
-			Com_strcpy(name, sizeof name, (strchr(model, '/') + 1));
+			/*	MrG{DRGN} destination safe strcpy replacement*/
+			Com_strcpy(name, sizeof(name), (strchr(model, '/') + 1));
 
 			//char *_strupr( char *string );
 
-			Bot_Create(bot_skill, team, name, model);
+			Bot_Create(skill_level, team, name, model);
 		}
 	}
 }
@@ -87,7 +90,7 @@ void Svcmd_killbot_f(char* name)
 
 	count = numplayers + 1;
 
-	if (Q_stricmp(name, "all") == 0)	//kill all bots
+	if (Q_strcasecmp(name, "all") == 0)	//kill all bots
 	{
 		for (i = 0; i < count; i++)
 		{
@@ -97,8 +100,10 @@ void Svcmd_killbot_f(char* name)
 					continue;
 				if (!players[k]->client)
 					continue;
-
-				if (Q_stricmp(players[k]->classname, "bot") == 0)
+				/* MrG{DRGN}
+				if (Q_strcasecmp(players[k]->classname, "bot") == 0)
+				*/
+				if (players[k]->bot_player)
 				{
 					ClientDisconnect(players[k]);
 					numbots--;
@@ -114,8 +119,10 @@ void Svcmd_killbot_f(char* name)
 				continue;
 			if (!players[i]->client)
 				continue;
-
-			if ((Q_stricmp(players[i]->classname, "bot") == 0) && (Q_stricmp(players[i]->client->pers.netname, name) == 0))
+			/* MrG{DRGN}
+			if ((Q_strcasecmp(players[i]->classname, "bot") == 0) && (Q_strcasecmp(players[i]->client->pers.netname, name) == 0))
+			*/
+			if ((players[i]->bot_player) && (Q_strcasecmp(players[i]->client->pers.netname, name) == 0))
 			{
 				ClientDisconnect(players[i]);
 				numbots--;
@@ -128,11 +135,11 @@ void Svcmd_killbot_f(char* name)
 /// bot create/spawn/respawn/die
 ///------------------------------------------------------------------------------------------
 
-void Bot_Create(int bot_skill, int team, char* name, char* skin)
+void Bot_Create(int accuracy_level, int team, char* name, char* skin)
 {
 	int       i;
 	char      userinfo[MAX_INFO_STRING];
-	edict_t* bot = NULL;
+	edict_t* bot = NULL; /* MrG{DRGN} initialized */
 
 	for (i = maxclients->value; i > 0; i--)
 	{
@@ -146,7 +153,7 @@ void Bot_Create(int bot_skill, int team, char* name, char* skin)
 
 	if (!bot)
 	{
-		bprintf2(PRINT_HIGH, "%s can't connect, server is full!\n", name);
+		bprintf2(PRINT_HIGH, "%s cant connect, server is full!\n", name);
 		return;
 	}
 
@@ -162,12 +169,12 @@ void Bot_Create(int bot_skill, int team, char* name, char* skin)
 
 	Bot_Spawn(bot);
 
-	if (bot_skill > 5)
-		bot_skill = 5;
-	if (bot_skill < 1)
-		bot_skill = 1;
+	if (accuracy_level > 5)
+		accuracy_level = 5;
+	if (accuracy_level < 1)
+		accuracy_level = 1;
 
-	bot->client->b_botlevel = bot_skill;
+	bot->client->b_botlevel = accuracy_level;
 
 	gi.WriteByte(svc_muzzleflash);
 	gi.WriteShort(bot - g_edicts);
@@ -215,16 +222,17 @@ void Bot_Spawn(edict_t* ent)
 	vec3_t               origin, angles;
 	vec3_t               mins = { -16, -16, -24 };
 	vec3_t               maxs = { 16, 16, 32 };
-	int                  i, index;
+	int                 i, index;
 	client_persistant_t  pers;
-	client_respawn_t     resp;
+	client_respawn_t     resp = { 0 };
 
+	/* MrG{DRGN}  Always DM
 	if (!deathmatch->value)
 	{
-		Com_Printf("Must be in Deathmatch to spawn as Bot!\n");
+		gi.dprintf("Must be in Deathmatch to spawn as Bot!\n");
 		return;
 	}
-
+	*/
 	SelectSpawnPoint(ent, origin, angles);
 
 	index = ent - g_edicts - 1;
@@ -241,6 +249,7 @@ void Bot_Spawn(edict_t* ent)
 	else
 		memset(&resp, 0, sizeof(client_respawn_t));
 
+
 	pers = ent->client->pers;
 	memset(ent->client, 0, sizeof(gclient_t));
 	ent->client->pers = pers;
@@ -254,7 +263,9 @@ void Bot_Spawn(edict_t* ent)
 	ent->movetype = MOVETYPE_BOT;
 	ent->viewheight = 22;
 	ent->inuse = true;
+	ent->bot_player = true;  /* MrG{DRGN} this is a lot easier than checking the classname to track if we're dealing wiith a bot or not! */
 	ent->classname = "bot";
+	ent->classindex = BOT;
 	ent->mass = 200;
 	ent->solid = SOLID_BBOX;
 	ent->deadflag = DEAD_NO;
@@ -303,7 +314,7 @@ void Bot_Spawn(edict_t* ent)
 
 	for (i = 0; i < 3; i++)
 	{
-		ent->client->ps.pmove.origin[i] = origin[i] * 8;
+		ent->client->ps.pmove.origin[i] = (short)origin[i] * 8; /* MrG{DRGN} explicit cast to shut up compiler! */
 		ent->client->ps.pmove.delta_angles[i] = ANGLE2SHORT(angles[i] - ent->client->resp.cmd_angles[i]);
 	}
 
@@ -312,13 +323,17 @@ void Bot_Spawn(edict_t* ent)
 
 	ent->s.effects = 0;
 	ent->s.skinnum = index;
-	ent->s.modelindex = 255;
+	ent->s.modelindex = (MAX_MODELS - 1); /* MrG{DRGN} no Magic Number 255 */
 
 	ShowGun(ent); //vwep
 	//ent->s.modelindex2    = 255;
 	ent->s.frame = 0;
 	ent->enemy = NULL;
 	ent->client->b_currentnode = -1;
+	/* MrG{DRGN} make their aim speed a little more reasonable
+	(20 degrees per frame base, + 5 degrees per level)
+	vs the hardcoded 90 it was!  ty Paril */
+	ent->yaw_speed = 90;// + (ent->client->b_botlevel * 5);
 
 	VectorCopy(origin, ent->s.origin);
 	ent->s.origin[2]++;
@@ -346,7 +361,6 @@ void Bot_Respawn(edict_t* ent)
 
 	Bot_Spawn(ent);
 
-
 	// add a teleportation effect
 	ent->s.event = EV_PLAYER_TELEPORT;
 
@@ -363,7 +377,7 @@ void bot_die(edict_t* self, edict_t* inflictor, edict_t* attacker, int damage, v
 	self->movetype = MOVETYPE_TOSS;
 
 	self->s.modelindex2 = 0;	// remove linked weapon model
-	self->s.modelindex3 = 0;	// remove linked ctf flag
+
 
 	self->s.angles[0] = 0;
 	self->s.angles[2] = 0;
@@ -377,16 +391,21 @@ void bot_die(edict_t* self, edict_t* inflictor, edict_t* attacker, int damage, v
 
 	if (!self->deadflag)
 	{
-		self->client->respawn_time = level.time + 1.0;
+		self->client->respawn_time = level.time + 1.0F; /* MrG{DRGN} Explicit float */
 		self->client->ps.pmove.pm_type = PM_DEAD;
 		ClientObituary(self, inflictor, attacker);
 
 		sl_WriteStdLogDeath(&gi, level, self, inflictor, attacker);	// StdLog - Mark Davies
 
-		CTFFragBonuses(self, inflictor, attacker);
+		/* MrG{DRGN} move CTF specific stuff here */
+		if (ctf->value)
+		{	//ZOID
+			self->s.modelindex3 = 0;	// remove linked ctf flag
+			CTFFragBonuses(self, inflictor, attacker);
+			CTFDeadDropFlag(self);
+		}/* END */
 		TossClientWeapon(self);
 
-		CTFDeadDropFlag(self);
 		CTFDeadDropTech(self);
 	}
 
@@ -408,7 +427,7 @@ void bot_die(edict_t* self, edict_t* inflictor, edict_t* attacker, int damage, v
 	// clear inventory
 	memset(self->client->pers.inventory, 0, sizeof(self->client->pers.inventory));
 
-	self->client->b_respawntime = level.time + 1.5;
+	self->client->b_respawntime = level.time + 1.5F; /* MrG{DRGN} Explicit float */
 
 	// check for gib
 	if (self->health < -40)
@@ -459,7 +478,7 @@ void bot_die(edict_t* self, edict_t* inflictor, edict_t* attacker, int damage, v
 				break;
 			}
 			gi.sound(self, CHAN_VOICE, gi.soundindex(va("*death%i.wav", (rand() % 4) + 1)), 1, ATTN_NORM, 0);
-			self->s.modelindex = 255;
+			self->s.modelindex = (MAX_MODELS - 1); /* MrG{DRGN} no Magic Number 255 */
 		}
 	}
 
@@ -487,7 +506,9 @@ void bot_die(edict_t* self, edict_t* inflictor, edict_t* attacker, int damage, v
 
 float Bot_Fire_Freq(edict_t* ent)
 {
+	/* MrG{DRGN} no longer needed
 	it_lturret = FindItem("automatic defence turret");	//bugfix
+	*/
 
 	if (ent->client->pers.weapon == it_ak42)
 		return AK42_FREQ;
@@ -547,8 +568,10 @@ void Bot_BestMidWeapon(edict_t* self)
 	client = self->client;
 	oldweapon = client->pers.weapon;
 
+	/* MrG{DRGN} no longer needed
 	it_lturret = FindItem("automatic defence turret");	//bugfix
 	it_airfist = FindItem("airgun");	//bugfix
+	*/
 
 	// Is our enemy a turret ?
 	if (self->enemy
@@ -734,8 +757,10 @@ void Bot_BestCloseWeapon(edict_t* self)
 	client = self->client;
 	oldweapon = client->pers.weapon;
 
+	/* MrG{DRGN} no longer needed
 	it_lturret = FindItem("automatic defence turret");	//bugfix
 	it_airfist = FindItem("airgun");	//bugfix
+	*/
 
 	// Is our enemy a turret ?
 	if (self->enemy
@@ -921,8 +946,10 @@ void Bot_BestFarWeapon(edict_t* self)
 	client = self->client;
 	oldweapon = client->pers.weapon;
 
+	/* MrG{DRGN} no longer needed
 	it_lturret = FindItem("automatic defence turret");	//bugfix
 	it_airfist = FindItem("airgun");	//bugfix
+	*/
 
 	// Is our enemy a turret ?
 	if (self->enemy
@@ -1126,7 +1153,9 @@ qboolean Bot_CanPickupAmmo(edict_t* ent, edict_t* eitem)
 {
 	gitem_t* item;
 
+	/* MrG{DRGN} no longer needed
 	it_lturret = FindItem("automatic defence turret");	//bugfix
+	*/
 
 	item = eitem->item;
 
@@ -1192,37 +1221,40 @@ qboolean Bot_CanPickupItem(edict_t* ent, edict_t* eitem)
 {
 	gitem_t* item;
 
+	/* MrG{DRGN} no longer needed
 	it_lturret = FindItem("automatic defence turret");	//bugfix
+	*/
 
 	item = eitem->item;
 
-	if (item == FindItem("Red Flag")
-		|| item == FindItem("Blue Flag"))
+	if (item == FindItemByClassindex(ITEM_FLAG_TEAM1)
+		|| item == FindItemByClassindex(ITEM_FLAG_TEAM2))
 		return 0;
 
 	if (item == FindItem("Health") && ent->health >= ent->max_health)
 		return 0;
 
-	if (item == FindItem("Power Amplifier")
-		|| item == FindItem("Time Accel")
-		|| item == FindItem("Autodoc")
-		|| item == FindItem("Disruptor Shield"))
+	if (item == it_tech2
+		|| item == it_tech3
+		|| item == it_tech4
+		|| item == it_tech1)
+
 	{
-		if (ent->client->pers.inventory[ITEM_INDEX(FindItem("Power Amplifier"))]
-			|| ent->client->pers.inventory[ITEM_INDEX(FindItem("Time Accel"))]
-			|| ent->client->pers.inventory[ITEM_INDEX(FindItem("Autodoc"))]
-			|| ent->client->pers.inventory[ITEM_INDEX(FindItem("Disruptor Shield"))])
+		if (ent->client->pers.inventory[ITEM_INDEX(it_tech2)]
+			|| ent->client->pers.inventory[ITEM_INDEX(it_tech3)]
+			|| ent->client->pers.inventory[ITEM_INDEX(it_tech4)]
+			|| ent->client->pers.inventory[ITEM_INDEX(it_tech1)])
 			return 0;
 	}
 
 	if (!Bot_CanPickupAmmo(ent, eitem))
 		return 0;
-
-	if (Q_stricmp(eitem->classname, "item_armor_body") == 0
-		|| Q_stricmp(eitem->classname, "item_armor_jacket") == 0
-		|| Q_stricmp(eitem->classname, "item_armor_combat") == 0)
+	/* MrG{DRGN} */
+	if (eitem->classindex == AR_BODY
+		|| eitem->classindex == AR_JACKET
+		|| eitem->classindex == AR_COMBAT)/* END */
 	{
-		if (!Bot_CanPickupArmor(ent, eitem))
+		if (!Bot_CanPickupArmor(ent, eitem))/* MrG{DRGN} there was an unintended ; here. */
 			return 0;
 	}
 
@@ -1275,7 +1307,7 @@ int Bot_CanPickupArmor(edict_t* self, edict_t* ent)
 		{
 			// calc new armor values
 			salvage = oldinfo->normal_protection / newinfo->normal_protection;
-			salvagecount = salvage * client->pers.inventory[old_armor_index];
+			salvagecount = (int)(salvage * client->pers.inventory[old_armor_index]); /* MrG{DRGN} explicit cast to shut up compiler! */
 			newcount = newinfo->base_count + salvagecount;
 			if (newcount > newinfo->max_count)
 				newcount = newinfo->max_count;
@@ -1286,7 +1318,7 @@ int Bot_CanPickupArmor(edict_t* self, edict_t* ent)
 		{
 			// calc new armor values
 			salvage = newinfo->normal_protection / oldinfo->normal_protection;
-			salvagecount = salvage * newinfo->base_count;
+			salvagecount = (int)(salvage * newinfo->base_count); /* MrG{DRGN} explicit cast to shut up compiler! */
 			newcount = client->pers.inventory[old_armor_index] + salvagecount;
 			if (newcount > oldinfo->max_count)
 				newcount = oldinfo->max_count;
@@ -1298,11 +1330,15 @@ int Bot_CanPickupArmor(edict_t* self, edict_t* ent)
 			return 1;
 		}
 	}
+	/* MrG{DRGN} unreachable code
+	return 0;
+	*/
+
 }
 
 qboolean Bot_CanReachSpotDirectly(edict_t* ent, vec3_t target)
 {
-	vec3_t	dir, midpos, end_trace, mins;
+	vec3_t	dir = { 0 }, midpos, end_trace = { 0 }, mins = { 0 };
 	trace_t	tr;
 	//float	dist, progressive_dist;
 
@@ -1320,7 +1356,7 @@ qboolean Bot_CanReachSpotDirectly(edict_t* ent, vec3_t target)
 	// check if the way to target is free
 	tr = gi.trace(ent->s.origin, NULL, NULL, target, ent, MASK_SOLID);
 
-	if (tr.ent && Q_stricmp(tr.ent->classname, "func_door") == 0)
+	if (tr.ent && Q_strcasecmp(tr.ent->classname, "func_door") == 0)
 	{
 		// we are standing in front of a door
 	}
@@ -1386,7 +1422,7 @@ retu
 qboolean Bot_CheckObstacle(edict_t* self)
 {
 	vec3_t  mins = { -16, -16, -10 }, maxs = { 16, 16, 0 };
-	vec3_t	start, forward, dir;
+	vec3_t	start = { 0 }, forward, dir;
 	trace_t	tr;
 
 	AngleVectors(self->client->v_angle, forward, NULL, NULL);
@@ -1395,9 +1431,9 @@ qboolean Bot_CheckObstacle(edict_t* self)
 
 	VectorCopy(self->s.origin, start);
 	start[2] += 10;
-
-	tr = gi.trace(start, mins, maxs, dir, self, MASK_SOLID | MASK_PLAYERSOLID);
-
+	/* MrG{DRGN} operator has equivalent nested opperands
+	tr = gi.trace(start, mins, maxs, dir, self, MASK_SOLID | MASK_PLAYERSOLID);	*/
+	tr = gi.trace(start, mins, maxs, dir, self, MASK_PLAYERSOLID);
 	if ((tr.fraction != 1) || tr.startsolid)
 		return true;
 
@@ -1419,19 +1455,19 @@ void AddItemToList(edict_t* ent)
 	if (!ent->item->pickup)
 		return;
 
-	if (Q_stricmp(ent->classname, "item_armor_shard") == 0	//don't add armor shards to our list!!!
-		|| Q_stricmp(ent->classname, "item_flag_team1") == 0	//don't add ctf flags to our list!
-		|| Q_stricmp(ent->classname, "item_flag_team2") == 0
-		|| Q_stricmp(ent->classname, "freed") == 0
-		|| Q_stricmp(ent->classname, "item_health_small") == 0) //don't add mini health packs to our list!
+	if (Q_strcasecmp(ent->classname, "item_armor_shard") == 0	//don't add armor shards to our list!!!
+		|| Q_strcasecmp(ent->classname, "item_flag_team1") == 0	//don't add ctf flags to our list!
+		|| Q_strcasecmp(ent->classname, "item_flag_team2") == 0
+		|| Q_strcasecmp(ent->classname, "freed") == 0
+		|| Q_strcasecmp(ent->classname, "item_health_small") == 0) //don't add mini health packs to our list!
 		return;
 
 	//find the list head
 	if (ent->item->pickup == Pickup_Weapon
 		|| ent->item->pickup == Pickup_NoAmmoWeapon
-		|| Q_stricmp(ent->classname, "ammo_vortex") == 0
-		|| Q_stricmp(ent->classname, "ammo_laserturret") == 0
-		|| Q_stricmp(ent->classname, "ammo_rocketturret") == 0
+		|| Q_strcasecmp(ent->classname, "ammo_vortex") == 0
+		|| Q_strcasecmp(ent->classname, "ammo_laserturret") == 0
+		|| Q_strcasecmp(ent->classname, "ammo_rocketturret") == 0
 		)
 	{
 		if (!weapon_list)	//list is empty so the first item becomes the head
@@ -1497,11 +1533,11 @@ void RemoveFromList(edict_t* ent)
 	if (!ent->item->pickup)
 		return;
 
-	if (Q_stricmp(ent->classname, "item_armor_shard") == 0
-		|| Q_stricmp(ent->classname, "item_flag_team1") == 0
-		|| Q_stricmp(ent->classname, "item_flag_team2") == 0
-		|| Q_stricmp(ent->classname, "freed") == 0
-		|| Q_stricmp(ent->classname, "item_health_small") == 0)
+	if (Q_strcasecmp(ent->classname, "item_armor_shard") == 0
+		|| Q_strcasecmp(ent->classname, "item_flag_team1") == 0
+		|| Q_strcasecmp(ent->classname, "item_flag_team2") == 0
+		|| Q_strcasecmp(ent->classname, "freed") == 0
+		|| Q_strcasecmp(ent->classname, "item_health_small") == 0)
 		return;
 
 	//find the list head
@@ -1561,11 +1597,11 @@ void RemoveFromList(edict_t* ent)
 	}
 }
 
+
 void Load_BotChat(void)
 {
-	int		section;
-	int		line = 0;
-	int		i;
+	/* FILE* fp; MrG{DRGN} moved below */
+	int		section, line = 0, i; /* MrG{DRGN} initialized 09/23/2020 */
 	char	filename[MAX_QPATH];
 	char	buffer;
 	cvar_t* game_dir;
@@ -1582,7 +1618,7 @@ void Load_BotChat(void)
 	if (!fp)
 	{
 		//QwazyWabbit gracefully fail if file doesn't exist.
-		Com_Printf("Unable to open %s! %s.\n", filename, strerror(errno));
+		Com_Printf("Unable to open file! %s.\n", strerror(errno));
 		Com_Printf("Forcing botchat OFF\n");
 		gi.cvar_set("botchat", "0");
 		return;
@@ -1641,7 +1677,7 @@ void Load_BotChat(void)
 
 			if (i > 0)
 			{
-				chat_text[section][line][i] = '\0';	//append nul
+				chat_text[section][line][i] = '\0';	//append ascii null
 			}
 			else	//empty line ?
 				line--;
@@ -1655,10 +1691,9 @@ void Load_BotChat(void)
 	fclose(fp);
 }
 
-char* Get_RandomBotSkin()
+char* Get_RandomBotSkin(void)
 {
-	int rn;
-
+	int rn = 0;
 
 	switch (rn = (int)(random() * 28))
 	{

@@ -136,7 +136,7 @@ qboolean visible_node(vec3_t spot1, vec3_t spot2)
 
 	tr = gi.trace(spot1, NULL, NULL, spot2, NULL, MASK_SOLID);
 
-	if (tr.fraction == 1.0 || (tr.ent && (Q_stricmp(tr.ent->classname, "func_door") == 0)))
+	if (tr.fraction == 1.0 || (tr.ent && (Q_strcasecmp(tr.ent->classname, "func_door") == 0)))
 		return true;
 	return false;
 }
@@ -403,7 +403,6 @@ int Bot_ShortestPath(int source, int target)
 
 		if (k != noPredecessor)
 			first_pathnode = i;
-
 	} while (k != noPredecessor && i < 100);
 
 	return VALID_PATH;
@@ -415,9 +414,9 @@ qboolean Bot_SaveNodes(void)
 	float	dist;
 	FILE* output;
 	char	file[256];
-	const char	nodetable_version[] = "v02";
-	const char	nodetable_id[] = "CHAOSDM NODE TABLE";
-	int		dntgvalue = dntg->value;
+	const char	nodetable_version[] = "v02";  /* MrG{DRGN} let the compiler figure out the size */
+	const char	nodetable_id[] = "CHAOSDM NODE TABLE";	/* MrG{DRGN} let the compiler figure out the size */
+	int	dntgvalue = (int)dntg->value; /* MrG{DRGN} safe cast */
 
 	Com_strcpy(file, sizeof file, "./");
 	Com_strcat(file, sizeof file, game_dir->string);
@@ -464,6 +463,7 @@ qboolean Bot_SaveNodes(void)
 qboolean Bot_LoadNodes(void)
 {
 	int		i, j;
+
 	float	dist;
 	FILE* input;
 	char	file[256];

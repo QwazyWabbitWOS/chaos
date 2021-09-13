@@ -1,6 +1,6 @@
 // basic definitions
 #define		MAX_NODES			512
-#define		BOT_INFINITY			65535
+#define		BOT_INFINITY			65535 /* MrG{DRGN} replaced INFINITY to avoid header collision error */
 #define		noPredecessor		BOT_INFINITY
 
 #define		NO_PATH				0
@@ -19,9 +19,8 @@
 #define	INAIR_NODE		8
 
 // node states
-enum nodestate {permanent, tentative};
+enum nodestate { permanent, tentative };
 typedef enum	nodestate	nodestate_t;
-
 
 // nodeinfo structure
 typedef struct
@@ -29,28 +28,24 @@ typedef struct
 	int				predecessor;
 	double			dist;
 	nodestate_t		state;
-} nodeinfo_t ;
-
+} nodeinfo_t;
 
 // node structure
 typedef struct
 {
-	vec3_t		origin;				//Node location			
+	vec3_t		origin;				//Node location
 	int			flag;				//Flags for special nodes
 	int			duckflag;
 	double		dist[MAX_NODES];	//Distances to surrounding nodes
 } nodes_t;
 
-
 nodes_t		nodes[MAX_NODES];
 nodeinfo_t	nodeinfo[MAX_NODES];
 
-
 // functions
-qboolean	Bot_FindNode(edict_t *self, float radius, int flag);
+qboolean	Bot_FindNode(edict_t* self, float radius, int flag);
 int			Bot_FindNodeAtEnt(vec3_t spot);
-int RecalculateCurrentNode(edict_t *ent);
+int RecalculateCurrentNode(edict_t* ent);
 void		Bot_PlaceNode(vec3_t spot, int flag, int duckflag);
-void		Bot_CalcNode(edict_t *self,int nindex);
-int			Bot_ShortestPath (int source, int target);
-
+void		Bot_CalcNode(edict_t* self, int nindex);
+int			Bot_ShortestPath(int source, int target);

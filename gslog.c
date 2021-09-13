@@ -11,7 +11,6 @@
 #include <time.h>
 
 #include "g_local.h"
-
 #include "stdlog.h"
 
 

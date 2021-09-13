@@ -1,17 +1,16 @@
 #include "g_local.h"
-#include "c_base.h"
 #include "c_botai.h"
 #include "c_botnav.h"
 #include "c_cam.h"
 #include "m_player.h"
 
-qboolean Bot_CanHearClient(edict_t *ent, edict_t *other)
+qboolean Bot_CanHearClient(edict_t* ent, edict_t* other)
 {
 	vec3_t	dist = { 0 };
 
 	if (other->mynoise)
 	{
-		if (!visible (ent, other))
+		if (!visible(ent, other))
 			return false;
 	}
 	else if (other->mynoise2)
@@ -24,7 +23,7 @@ qboolean Bot_CanHearClient(edict_t *ent, edict_t *other)
 		return false;
 	}
 
-	VectorSubtract (other->s.origin, ent->s.origin, dist);
+	VectorSubtract(other->s.origin, ent->s.origin, dist);
 
 	if (VectorLength(dist) > 1000)	// too far to hear
 		return false;
@@ -37,64 +36,59 @@ qboolean Bot_CanHearClient(edict_t *ent, edict_t *other)
 	return true;
 }
 
-edict_t *Bot_FindBestItem(edict_t *ent)
+edict_t* Bot_FindBestItem(edict_t* ent)
 {
-	edict_t	*best = NULL;
+	edict_t* best = NULL;
 	int		did_weapons = 0, did_health = 0;
-	
-// let's look if we need something very special first:
 
-	// we need health so go for a health pack
+	// let's look if we need something very special first:
+
+		// we need health so go for a health pack
 	if (ent->health <= 40)
 	{
-		nprintf(PRINT_HIGH,"%s needs some health!\n", ent->client->pers.netname);
+		nprintf(PRINT_HIGH, "%s needs some health!\n", ent->client->pers.netname);
 
-		best = Bot_FindBestHealth(ent);
-		if (best)
+		if ((best = Bot_FindBestHealth(ent)) != 0)
 			goto found;
 
 		did_health = 1;
 	}
 
 	// we need a better weapon so search one
-	if (ent->client->pers.weapon == it_ak42 || 
-		ent->client->pers.weapon == it_grenades || 
-		ent->client->pers.weapon == it_flashgrenades || 
-		ent->client->pers.weapon == it_poisongrenades || 
-		ent->client->pers.weapon == it_lasermines) 
+	if (ent->client->pers.weapon == it_ak42 ||
+		ent->client->pers.weapon == it_grenades ||
+		ent->client->pers.weapon == it_flashgrenades ||
+		ent->client->pers.weapon == it_poisongrenades ||
+		ent->client->pers.weapon == it_lasermines)
 	{
-		nprintf(PRINT_HIGH,"%s needs a better weapon!\n", ent->client->pers.netname);
+		nprintf(PRINT_HIGH, "%s needs a better weapon!\n", ent->client->pers.netname);
 
-		best = Bot_FindBestWeapon(ent);
-		if (best)
+		if ((best = Bot_FindBestWeapon(ent)) != 0)
 			goto found;
 
 		did_weapons = 1;
 	}
 
-// ok we need nothing special or we haven't found it so search other thingies:
+	// ok we need nothing special or we haven't found it so search other thingies:
 
 	if (random() > 0.3) // OPTIMZE: We do not ALWAYS search for POWER-UPS
 	{
 		// POWER-UPS
-		best = Bot_FindBestPowerup(ent);
-		if (best)
+		if ((best = Bot_FindBestPowerup(ent)) != 0)
 			goto found;
 	}
 
 	// WEAPONS
 	if (!did_weapons)
 	{
-		best = Bot_FindBestWeapon(ent);
-		if (best)
+		if ((best = Bot_FindBestWeapon(ent)) != 0)
 			goto found;
 	}
 
 	// HEALTH
 	if ((ent->health < (ent->max_health - 20)) && !did_health)
 	{
-		best = Bot_FindBestHealth(ent);
-		if (best)
+		if ((best = Bot_FindBestHealth(ent)) != 0)
 			goto found;
 	}
 
@@ -105,14 +99,14 @@ found:
 
 	if (best)
 	{
-		nprintf(PRINT_HIGH,"%s is going for %s!\n", ent->client->pers.netname, best->classname);
-		Bot_CalcPath (ent, best->s.origin, ent->s.origin);
+		nprintf(PRINT_HIGH, "%s is going for %s!\n", ent->client->pers.netname, best->classname);
+		Bot_CalcPath(ent, best->s.origin, ent->s.origin);
 	}
 
 	return best;
 }
 
-qboolean Bot_ValidCloseItem(edict_t *ent)
+qboolean Bot_ValidCloseItem(edict_t* ent)
 {
 	if (!ent->client->b_closeitem)
 		return 0;
@@ -140,20 +134,18 @@ qboolean Bot_StandingUnderPlat(edict_t* ent)
 
 	tr = gi.trace(ent->s.origin, NULL, NULL, end, NULL, MASK_SOLID);
 
-	/* MrG{DRGN} */
-	if (tr.ent && (Q_stricmp(tr.ent->classname, "func_plat") == 0))
-	//if (tr.ent && (tr.ent->classindex == FUNC_PLAT))
+	/* MrG{DRGN}
+	if (tr.ent && (Q_strcasecmp(tr.ent->classname, "func_plat") == 0)) */
+	if (tr.ent && (tr.ent->classindex == FUNC_PLAT))
 		return true;
 	return false;
 }
 
-
-void Bot_Think(edict_t *ent)
+void Bot_Think(edict_t* ent)
 {
-	usercmd_t	cmd;
-	vec3_t		angles = { 0,0,0 };
-	vec3_t		mins = { -16,-16,0 };
-	vec3_t		maxs = { 16,16,10 };
+	usercmd_t   cmd;
+	vec3_t      angles = { 0,0,0 }, mins = { -16,-16,0 }, maxs = { 16,16,10 };
+
 	/* MrG{DRGN} sanity check */
 	if (!ent || !ent->client)
 		return;
@@ -198,7 +190,7 @@ void Bot_Think(edict_t *ent)
 			ent->client->b_strafedir = 0;
 		else
 			ent->client->b_strafedir = 1;
-		ent->client->b_strafechange = level.time + 0.3f + random();
+		ent->client->b_strafechange = level.time + 0.3F + random(); /* MrG{DRGN} Explicitly now a float */
 	}
 
 	// randomly change the rundir for no-path-roaming
@@ -216,54 +208,55 @@ void Bot_Think(edict_t *ent)
 		ent->client->b_currentnode = RecalculateCurrentNode(ent);
 	}
 
-// DEAD
+	// DEAD
 	if (ent->deadflag == DEAD_DEAD)
 	{
 		if (level.time >= ent->client->b_respawntime)
 			cmd.buttons = BUTTON_ATTACK;
 	}
-// FLASHLIGHT
+	// FLASHLIGHT
 	if (lightsoff->value > 0 && ent->client->flashlightactive == 0 && ent->health > 30)
 	{
-		vec3_t  start,forward,right,end;
+		vec3_t  start, forward, right, end = { 0 };
 
 		ent->client->flashlightactive = 1;
-		AngleVectors (ent->client->v_angle, forward, right, NULL);
-		VectorSet(end,100 , 0, 0);
-		G_ProjectSource (ent->s.origin, end, forward, right, start);
+		AngleVectors(ent->client->v_angle, forward, right, NULL);
+		VectorSet(end, 100, 0, 0);
+		G_ProjectSource(ent->s.origin, end, forward, right, start);
 
 		ent->client->flashlight = G_Spawn();
 		ent->client->flashlight->think = FlashLightThink;
-		ent->client->flashlight->nextthink = level.time +0.1;
+		ent->client->flashlight->nextthink = level.time + 0.1F; /* MrG{DRGN} Explicitly now a float */
 		ent->client->flashlight->s.effects = EF_HYPERBLASTER;
-		ent->client->flashlight->s.modelindex = gi.modelindex ("models/objects/dummy/tris.md2");
+		ent->client->flashlight->s.modelindex = gi.modelindex("models/objects/dummy/tris.md2");
 		ent->client->flashlight->solid = SOLID_NOT;
 		ent->client->flashlight->owner = ent;
 		ent->client->flashlight->classname = "flashlight";
-		ent->client->flashlight->movetype =MOVETYPE_NOCLIP;
+		ent->client->flashlight->classindex = FLASHLIGHT;
+		ent->client->flashlight->movetype = MOVETYPE_NOCLIP;
 		ent->client->flashlight->clipmask = MASK_SHOT;
-		VectorCopy (end,ent->client->flashlight->s.origin);
-    
+		VectorCopy(end, ent->client->flashlight->s.origin);
+
 		gi.linkentity(ent->client->flashlight);
 	}
 	else if ((lightsoff->value == 0 && ent->client->flashlightactive > 0) || (ent->health <= 30 && ent->client->flashlightactive > 0))
 	{
 		ent->client->flashlightactive = 0;
-		if(ent->client->flashlight)
+		if (ent->client->flashlight)
 		{
-		  	ent->client->flashlight->think = G_FreeEdict;
+			ent->client->flashlight->think = G_FreeEdict;
 			G_FreeEdict(ent->client->flashlight);
 		}
 	}
-// PAUSE (WAIT FOR SOMETHING LIKE WAVE ANIMATIONS)
+	// PAUSE (WAIT FOR SOMETHING LIKE WAVE ANIMATIONS)
 	else if (ent->client->b_pausetime > level.time)
 	{
 		goto finishmove;
 	}
-// ENEMY
+	// ENEMY
 	else if (ent->enemy)
-    {
-		vec3_t		forward,right,dir,oorigin,target;
+	{
+		vec3_t		forward, right, dir = { 0 }, oorigin = { 0 }, target;
 		vec_t		dist;
 		trace_t		tr;
 
@@ -285,11 +278,11 @@ void Bot_Think(edict_t *ent)
 					VectorSubtract(ent->enemy->s.origin, ent->s.origin, dir);
 					dist = VectorLength(dir);
 					if (dist > IDEAL_ENEMY_DIST)
-						Bot_BestFarWeapon (ent);
+						Bot_BestFarWeapon(ent);
 					else if (dist >= MELEE_DIST)
-						Bot_BestMidWeapon (ent);
+						Bot_BestMidWeapon(ent);
 					else
-						Bot_BestCloseWeapon (ent);
+						Bot_BestCloseWeapon(ent);
 				}
 
 				if (ent->client->b_closeitem != NULL)	//close item
@@ -307,13 +300,16 @@ void Bot_Think(edict_t *ent)
 						VectorMA(ent->s.origin, 32, right, dir);
 					else
 						VectorMA(ent->s.origin, -32, right, dir);
-					
+
 					VectorCopy(ent->s.origin, oorigin);
 					oorigin[2] += 24;
 
+					/* MrG{DRGN} operator has equivalent nested opperands
 					tr = gi.trace(oorigin, mins, maxs, dir, ent, MASK_SOLID | MASK_PLAYERSOLID);
+					*/
+					tr = gi.trace(oorigin, mins, maxs, dir, ent, MASK_PLAYERSOLID);
 
-					if ((tr.fraction != 1) || tr.startsolid) 
+					if ((tr.fraction != 1) || tr.startsolid)
 					{
 						if (ent->client->b_strafedir == 0)
 							ent->client->b_strafedir = 1;
@@ -321,9 +317,9 @@ void Bot_Think(edict_t *ent)
 							ent->client->b_strafedir = 0;
 					}
 
-					if(SaveMoveDir(ent, 0, STRAFE_SPEED, angles))
+					if (SaveMoveDir(ent, 0, STRAFE_SPEED, angles))
 					{
-						if(CheckFall(ent, 0, STRAFE_SPEED, angles)
+						if (CheckFall(ent, 0, STRAFE_SPEED, angles)
 							|| random() < 0.3)
 							Bot_Strafe(ent, &cmd, ent->client->b_strafedir, STRAFE_SPEED, angles);
 						else
@@ -344,7 +340,7 @@ void Bot_Think(edict_t *ent)
 
 					//move to enemy or away
 					VectorScale(ent->enemy->velocity, FRAMETIME, target);
-					VectorAdd (ent->enemy->s.origin, target, target);
+					VectorAdd(ent->enemy->s.origin, target, target);
 					Bot_Aim(ent, target, angles);
 
 					VectorSubtract(ent->enemy->s.origin, ent->s.origin, dir);
@@ -355,20 +351,23 @@ void Bot_Think(edict_t *ent)
 						VectorSubtract(ent->enemy->s.origin, ent->s.origin, dir);
 						dist = VectorLength(dir);
 						if (dist > IDEAL_ENEMY_DIST)
-							Bot_BestFarWeapon (ent);
+							Bot_BestFarWeapon(ent);
 						else if (dist >= MELEE_DIST)
-							Bot_BestMidWeapon (ent);
+							Bot_BestMidWeapon(ent);
 						else
-							Bot_BestCloseWeapon (ent);
+							Bot_BestCloseWeapon(ent);
 					}
-					else if (Q_stricmp(ent->client->pers.weapon->classname, "weapon_sword") == 0
-						|| Q_stricmp(ent->client->pers.weapon->classname, "weapon_chainsaw") == 0)
+					/* MrG{DRGN}
+					else if (Q_strcasecmp(ent->client->pers.weapon->classname, "weapon_sword") == 0
+						|| Q_strcasecmp(ent->client->pers.weapon->classname, "weapon_chainsaw") == 0)*/
+					else if ((ent->client->pers.weapon->classindex == W_SWORD)
+						|| (ent->client->pers.weapon->classindex == W_CHAINSAW))
 					{
 						if (dist >= 50)
 						{
-							if(SaveMoveDir(ent, RUN_SPEED, 0, angles))
+							if (SaveMoveDir(ent, RUN_SPEED, 0, angles))
 							{
-								if(CheckFall(ent, RUN_SPEED, 0, angles)
+								if (CheckFall(ent, RUN_SPEED, 0, angles)
 									|| random() < 0.3)
 									cmd.forwardmove = RUN_SPEED;
 							}
@@ -378,22 +377,26 @@ void Bot_Think(edict_t *ent)
 					{
 						if (dist >= IDEAL_ENEMY_DIST)
 						{
-							if(SaveMoveDir(ent, RUN_SPEED, 0, angles))
+							if (SaveMoveDir(ent, RUN_SPEED, 0, angles))
 							{
-								if(CheckFall(ent, RUN_SPEED, 0, angles) || random() < 0.3)
+								if (CheckFall(ent, RUN_SPEED, 0, angles) || random() < 0.3)
 									cmd.forwardmove = RUN_SPEED;
 							}
 						}
 						else
 						{
-							AngleVectors (ent->client->v_angle, forward, NULL, NULL);
+							/* trace_t	tr; MrG{DRGN} redundant declaration! */
+
+							AngleVectors(ent->client->v_angle, forward, NULL, NULL);
 							VectorMA(ent->s.origin, -30, forward, forward);
 
-							tr = gi.trace(ent->s.origin, mins, maxs, forward, ent, MASK_SOLID  | MASK_PLAYERSOLID);
+							/* MrG{DRGN} operator has equivalent nested opperands
+							tr = gi.trace(oorigin, mins, maxs, dir, ent, MASK_SOLID | MASK_PLAYERSOLID);*/
+							tr = gi.trace(oorigin, mins, maxs, dir, ent, MASK_PLAYERSOLID);
 
 							if ((tr.fraction != 1) || tr.startsolid)
 							{
-								if(SaveMoveDir(ent, RUN_SPEED, 0, angles))
+								if (SaveMoveDir(ent, RUN_SPEED, 0, angles))
 								{
 									cmd.forwardmove = RUN_SPEED;
 									cmd.sidemove = crandom() * STRAFE_SPEED;
@@ -402,10 +405,10 @@ void Bot_Think(edict_t *ent)
 							}
 							else
 							{
-								if(SaveMoveDir(ent, - RUN_SPEED, 0, angles))
+								if (SaveMoveDir(ent, -RUN_SPEED, 0, angles))
 								{
-									if(CheckFall(ent, - RUN_SPEED, 0, angles) || random() < 0.3)
-										cmd.forwardmove = - RUN_SPEED;
+									if (CheckFall(ent, -RUN_SPEED, 0, angles) || random() < 0.3)
+										cmd.forwardmove = -RUN_SPEED;
 								}
 							}
 						}
@@ -413,11 +416,11 @@ void Bot_Think(edict_t *ent)
 
 					if (level.time >= ent->client->b_nextrandjump)
 					{
-						if(SaveMoveDir(ent, cmd.forwardmove, cmd.sidemove, angles))
+						if (SaveMoveDir(ent, cmd.forwardmove, cmd.sidemove, angles))
 						{
 							Bot_Jump(ent, &cmd);
 						}
-						ent->client->b_nextrandjump = level.time  + 4 + 6 * random();
+						ent->client->b_nextrandjump = level.time + 4 + 6 * random();
 					}
 
 					if (visible2(ent->s.origin, target) && infront(ent, ent->enemy))
@@ -428,31 +431,31 @@ void Bot_Think(edict_t *ent)
 		else	//enemy not visible
 		{
 			//Try to get to the last position we know of the enemy
-			
-			if (Bot_CalcPath (ent, ent->enemy->s.origin, ent->s.origin))
+
+			if (Bot_CalcPath(ent, ent->enemy->s.origin, ent->s.origin))
 			{
-				edict_t	*mark;
+				edict_t* mark;
 
 				mark = G_Spawn();
 				mark->classname = "enemy_mark";
-				VectorSet (mark->mins, -8, -8, -8);
-				VectorSet (mark->maxs, 8, 8, 8);
+				VectorSet(mark->mins, -8, -8, -8);
+				VectorSet(mark->maxs, 8, 8, 8);
 				mark->owner = ent;
 				mark->solid = SOLID_TRIGGER;
 				mark->svflags = SVF_NOCLIENT;
-				mark-> nextthink = level.time + 15;
+				mark->nextthink = level.time + 15;
 				mark->think = G_FreeEdict;
 				ent->client->b_goalitem = mark;
-				nprintf(PRINT_HIGH,"%d's enemy is out of sight but he found a path to the last know position!\n", ent->client->pers.netname);
+				nprintf(PRINT_HIGH, "%d's enemy is out of sight but he found a path to the last know position!\n", ent->client->pers.netname);
 			}
 			ent->enemy = NULL;
 		}
-    }
+	}
 
-// ON PLATFORM
-	else if (Riding_Plat (ent))
+	// ON PLATFORM
+	else if (Riding_Plat(ent))
 	{
-		vec3_t	center, dir;
+		vec3_t	center, dir = { 0 };
 
 		// find center of plat
 		if (ent->groundentity)
@@ -488,17 +491,18 @@ void Bot_Think(edict_t *ent)
 			}
 		}
 
-		ent->client->b_nodetime	= level.time + 3;
+		ent->client->b_nodetime = level.time + 3.0F; /* MrG{DRGN} Explicitly now a float */
 	}
-// FOLLOW PATH
+	// FOLLOW PATH
 	else if (ent->client->b_goalitem)
 	{
 		int		n;
-		vec3_t	dvec;
+		vec3_t	dvec = { 0 };
 		vec_t	dist;
 
+		/* MrG{DRGN} no longer needed
 		it_lturret = FindItem("automatic defence turret");	//bugfix
-
+		*/
 		// HAVE ROCKET TURRET
 		if ((numturrets < 3)
 			&& ent->client->pers.inventory[ITEM_INDEX(it_rturret)]
@@ -547,7 +551,7 @@ void Bot_Think(edict_t *ent)
 			}
 			else
 			{
-				ent->client->b_nextshot = level.time + 0.3;
+				ent->client->b_nextshot = level.time + 0.3F; /* MrG{DRGN} Explicitly now a float */
 				cmd.buttons = BUTTON_ATTACK;
 			}
 		}
@@ -559,30 +563,29 @@ void Bot_Think(edict_t *ent)
 		{
 			ent->client->b_duck = 1;
 		}
-		
+
 		if (n < 0)	//go for item
 		{
 			if (level.time > ent->client->b_nodetime)	//forget that item
 			{
-				ent->client->b_nodetime	= 0;
+				ent->client->b_nodetime = 0;
 				ent->client->b_goalitem->avoidtime = level.time + 15;
 				ent->client->b_goalitem = NULL;
-				ent->client->b_currentnode =- 1;
-				
+				ent->client->b_currentnode = -1;
 			}
 			else if (!visible(ent, ent->client->b_goalitem))
 			{
-				ent->client->b_nodetime	= 0;
+				ent->client->b_nodetime = 0;
 				ent->client->b_goalitem->avoidtime = level.time + 15;
 				ent->client->b_goalitem = NULL;
-				ent->client->b_currentnode =- 1;
+				ent->client->b_currentnode = -1;
 			}
 			else
 			{
 				dvec[0] = ent->client->b_goalitem->s.origin[0] - ent->s.origin[0];
 				dvec[1] = ent->client->b_goalitem->s.origin[1] - ent->s.origin[1];
 				dvec[2] = ent->client->b_goalitem->s.origin[2] - ent->s.origin[2];
-				
+
 				dist = VectorLength(dvec);
 				if (dist > 30)
 				{
@@ -592,12 +595,12 @@ void Bot_Think(edict_t *ent)
 					//check for jumping out of water
 					if (ent->waterlevel)
 					{
-						if(gi.pointcontents (ent->client->b_goalitem->s.origin) & MASK_WATER)
+						if (gi.pointcontents(ent->client->b_goalitem->s.origin) & MASK_WATER)
 						{
 						}
 						else
 						{
-							nprintf(PRINT_HIGH,"%d tries to jump out of the water!\n", ent->client->pers.netname);
+							nprintf(PRINT_HIGH, "%d tries to jump out of the water!\n", ent->client->pers.netname);
 							cmd.upmove = RUN_SPEED;
 						}
 					}
@@ -610,24 +613,26 @@ void Bot_Think(edict_t *ent)
 						ent->velocity[0] = 0;
 						ent->velocity[1] = 0;
 					}
-						
+
 					if (ent->client->b_goalitem->s.origin[2] - ent->s.origin[2] > 20)
 						cmd.upmove = ent->client->b_goalitem->s.origin[2] - ent->s.origin[2];
 				}
 				else
 				{
-					ent->client->b_nodetime	= 0;
+					ent->client->b_nodetime = 0;
 					ent->client->b_goalitem = NULL;
-					ent->client->b_currentnode =- 1;
+					ent->client->b_currentnode = -1;
 				}
 			}
 		}
 		else
 		{
-			//int	lastnodeflag = NORMAL_NODE;
+			/* MrG{DRGN} assigned a value that is never used
+			int	lastnodeflag = NORMAL_NODE;
 
-			//if (n > 0)
-			//	lastnodeflag = nodes[ent->client->b_path[n-1]].flag;
+			if (n > 0)
+				lastnodeflag = nodes[ent->client->b_path[n - 1]].flag;
+			*/
 
 			VectorSubtract(nodes[ent->client->b_path[n]].origin, ent->s.origin, dvec);
 			dist = VectorLength(dvec);
@@ -641,12 +646,12 @@ void Bot_Think(edict_t *ent)
 					//check for jumping out of water
 					if (ent->waterlevel)
 					{
-						if(gi.pointcontents (ent->client->b_closeitem->s.origin) & MASK_WATER)
+						if (gi.pointcontents(ent->client->b_closeitem->s.origin) & MASK_WATER)
 						{
 						}
 						else
 						{
-							nprintf(PRINT_HIGH,"%d tries to jump out of the water!\n", ent->client->pers.netname);
+							nprintf(PRINT_HIGH, "%d tries to jump out of the water!\n", ent->client->pers.netname);
 							cmd.upmove = RUN_SPEED;
 						}
 					}
@@ -659,48 +664,51 @@ void Bot_Think(edict_t *ent)
 			{
 				if (level.time > ent->client->b_nodetime)	//forget that item
 				{
-					ent->client->b_nodetime	= 0;
+					ent->client->b_nodetime = 0;
 					ent->client->b_goalitem->avoidtime = level.time + 10;
 					ent->client->b_goalitem = NULL;
-					ent->client->b_currentnode =- 1;
-
+					ent->client->b_currentnode = -1;
 				}
 				else if (!visible_node(nodes[ent->client->b_path[n]].origin, ent->s.origin))
 				{
-					nprintf(PRINT_HIGH,"visible_node == 0!\n");
+					nprintf(PRINT_HIGH, "visible_node == 0!\n");
 					ent->client->b_goalitem->avoidtime = level.time + 10;
 					ent->client->b_goalitem = NULL;
-					ent->client->b_currentnode =- 1;
+					ent->client->b_currentnode = -1;
 				}
 				else if ((nodes[ent->client->b_path[n]].flag == PLAT_NODE)
 					&& dist < 100
-					&& visible2 (nodes[ent->client->b_path[n]].origin, ent->s.origin))	// next is a plat node
+					&& visible2(nodes[ent->client->b_path[n]].origin, ent->s.origin))	// next is a plat node
 				{
-					edict_t *plat = NULL;
+					edict_t* plat = NULL;
 
 					// check if we are standing under the plat
 					if (Bot_StandingUnderPlat(ent))
 					{
-						ent->client->b_nodetime	= 0;
+						ent->client->b_nodetime = 0;
 						ent->client->b_goalitem->avoidtime = level.time + 10;
 						ent->client->b_goalitem = NULL;
-						ent->client->b_currentnode =- 1;
+						ent->client->b_currentnode = -1;
 					}
 					else
 					{
 						//nprintf(PRINT_HIGH,"Next node is a plat node!\n");
-						
+
 						//find the plat
 						while ((plat = findradius2(plat, nodes[ent->client->b_path[n]].origin, 300)) != NULL)
 						{
-							if (Q_stricmp(plat->classname, "func_plat") == 0)
+							/*
+							if (Q_strcasecmp(plat->classname, "func_plat") == 0)*/
+							if (plat->classindex == FUNC_PLAT)
 							{
 								//nprintf(PRINT_HIGH,"Found plat!\n");
 								break;
 							}
 						}
 
-						if (plat && (Q_stricmp(plat->classname, "func_plat") == 0))
+						/* MrG{DRGN}
+						if (plat && (Q_strcasecmp(plat->classname, "func_plat") == 0)) */
+						if (plat && plat->classindex == FUNC_PLAT)
 						{
 							if (plat->moveinfo.state == STATE_BOTTOM)
 							{
@@ -731,7 +739,7 @@ void Bot_Think(edict_t *ent)
 						else
 						{
 							//nprintf(PRINT_HIGH,"Waiting for plat!\n");
-							
+
 							// look for enemies
 							if (ent->client->b_strafedir == 0)
 							{
@@ -751,7 +759,7 @@ void Bot_Think(edict_t *ent)
 					}
 				}
 				else if ((nodes[ent->client->b_path[n]].flag == LADDER_NODE)
-					&& visible2 (nodes[ent->client->b_path[n]].origin, ent->s.origin))	// next is a ladder node
+					&& visible2(nodes[ent->client->b_path[n]].origin, ent->s.origin))	// next is a ladder node
 				{
 					if (TouchingLadder(ent))
 					{
@@ -767,20 +775,20 @@ void Bot_Think(edict_t *ent)
 				{
 					Bot_Aim(ent, nodes[ent->client->b_path[n]].origin, angles);
 
-					if ((n > 0) && nodes[ent->client->b_path[n]].flag != INAIR_NODE 
-						&& nodes[ent->client->b_path[n-1]].flag != INAIR_NODE)
+					if ((n > 0) && nodes[ent->client->b_path[n]].flag != INAIR_NODE
+						&& nodes[ent->client->b_path[n - 1]].flag != INAIR_NODE)
 					{
 						Bot_Move(ent, &cmd);
 
 						//check for jumping out of water
 						if (ent->waterlevel)
 						{
-							if(gi.pointcontents (nodes[ent->client->b_path[n]].origin) & MASK_WATER)
+							if (gi.pointcontents(nodes[ent->client->b_path[n]].origin) & MASK_WATER)
 							{
 							}
 							else
 							{
-								nprintf(PRINT_HIGH,"%d tries to jump out of the water!\n", ent->client->pers.netname);
+								nprintf(PRINT_HIGH, "%d tries to jump out of the water!\n", ent->client->pers.netname);
 								cmd.upmove = RUN_SPEED;
 							}
 						}
@@ -788,7 +796,7 @@ void Bot_Think(edict_t *ent)
 						if (level.time >= ent->client->b_nextrandjump)
 						{
 							cmd.upmove = RUN_SPEED;
-							ent->client->b_nextrandjump = level.time  + 4 + 6 * random();
+							ent->client->b_nextrandjump = level.time + 4 + 6 * random();
 						}
 
 						if (Node_LavaMove(ent, RUN_SPEED, 0, angles))
@@ -822,7 +830,7 @@ void Bot_Think(edict_t *ent)
 			else
 			{
 				//bprintf2(PRINT_HIGH,"currentnode %d!\n",ent->client->b_currentnode);
-				ent->client->b_nodetime	= level.time + 3;
+				ent->client->b_nodetime = level.time + 3.0F; /* MrG{DRGN} Explicitly now a float */
 
 				if (ent->client->b_currentnode > 0)
 				{
@@ -830,20 +838,23 @@ void Bot_Think(edict_t *ent)
 				}
 				else	// reached last node
 				{
-					ent->client->b_nodetime	= level.time + 3;
-					ent->client->b_currentnode = -1;		
+					ent->client->b_nodetime = level.time + 3.0F; /* MrG{DRGN} Explicitly now a float */
+					ent->client->b_currentnode = -1;
 				}
 			}
 		}
 	}
-//NO-PATH ROAMING
+	//NO-PATH ROAMING
 	else
 	{
-		vec3_t	forward, dir, oorigin, wallangles;
-		//vec_t	dist;
+		vec3_t	forward, dir = { 0 }, oorigin = { 0 }, wallangles;
+		/* assigned a value that is never used
+		vec_t	dist; */
 		trace_t	tr;
 
+		/* MrG{DRGN} no longer needed
 		it_lturret = FindItem("automatic defence turret");	//bugfix
+		*/
 
 		// HAVE ROCKET TURRET
 		if ((numturrets < 3)
@@ -893,11 +904,10 @@ void Bot_Think(edict_t *ent)
 			}
 			else
 			{
-				ent->client->b_nextshot = level.time + 0.3;
+				ent->client->b_nextshot = level.time + 0.3F; /* MrG{DRGN} Explicitly now a float */
 				cmd.buttons = BUTTON_ATTACK;
 			}
 		}
-
 
 		// ITEM
 		if (ent->client->b_nopathitem && visible(ent, ent->client->b_nopathitem))
@@ -909,12 +919,13 @@ void Bot_Think(edict_t *ent)
 			{
 				ent->client->b_waittime = 0;
 				VectorSubtract(ent->client->b_nopathitem->s.origin, ent->s.origin, dir);
-				//dist = VectorLength(dir);
+				/* MrG{DRGN} assigned a value that is never used
+				dist = VectorLength(dir); */
 				Bot_Aim(ent, ent->client->b_nopathitem->s.origin, angles);
 
-				if(SaveMoveDir(ent, RUN_SPEED, 0, angles))
+				if (SaveMoveDir(ent, RUN_SPEED, 0, angles))
 				{
-					if(CheckFall(ent, RUN_SPEED, 0, angles)
+					if (CheckFall(ent, RUN_SPEED, 0, angles)
 						|| random() < 0.3)
 						Bot_Move(ent, &cmd);
 					else
@@ -934,7 +945,7 @@ void Bot_Think(edict_t *ent)
 
 				if (level.time >= ent->client->b_nextrandjump)
 				{
-					if(SaveMoveDir(ent, cmd.forwardmove, cmd.sidemove, angles))
+					if (SaveMoveDir(ent, cmd.forwardmove, cmd.sidemove, angles))
 					{
 						Bot_Jump(ent, &cmd);
 					}
@@ -953,18 +964,20 @@ void Bot_Think(edict_t *ent)
 			VectorCopy(ent->s.origin, oorigin);
 			oorigin[2] += 24;
 
-			tr = gi.trace(oorigin, mins, maxs, dir, ent, MASK_SOLID  | MASK_PLAYERSOLID);
+			/* MrG{DRGN} operator has equivalent nested opperands
+			tr = gi.trace(oorigin, mins, maxs, dir, ent, MASK_SOLID | MASK_PLAYERSOLID);*/
+			tr = gi.trace(oorigin, mins, maxs, dir, ent, MASK_PLAYERSOLID);
 
 			if ((tr.fraction != 1) || tr.startsolid)
 			{
-				if (Q_stricmp(tr.ent->classname,"func_door") == 0
-					|| Q_stricmp(tr.ent->classname,"func_door_secret") == 0)
+				if (Q_strcasecmp(tr.ent->classname, "func_door") == 0
+					|| Q_strcasecmp(tr.ent->classname, "func_door_secret") == 0)
 				{
-					ent->client->b_waittime	= level.time + 2;
+					ent->client->b_waittime = level.time + 2;
 				}
 				else if (&tr.plane)
 				{
-					vectoangles (tr.plane.normal, wallangles);
+					vectoangles(tr.plane.normal, wallangles);
 					if (ent->client->b_rundir == 0)
 						angles[YAW] = wallangles[YAW] + 90 + crandom() * 20;
 					else
@@ -974,10 +987,9 @@ void Bot_Think(edict_t *ent)
 					angles[YAW] += crandom() * 180;
 			}
 
-			
-			if(SaveMoveDir(ent, RUN_SPEED, 0, angles))
+			if (SaveMoveDir(ent, RUN_SPEED, 0, angles))
 			{
-				if(CheckFall(ent, RUN_SPEED, 0, angles)
+				if (CheckFall(ent, RUN_SPEED, 0, angles)
 					|| random() < 0.2)
 					Bot_Move(ent, &cmd);
 				else
@@ -1002,17 +1014,17 @@ finishmove:
 	cmd.msec = 100;
 
 	cmd.angles[PITCH] = ANGLE2SHORT(angles[PITCH]);
-	cmd.angles[YAW]   = ANGLE2SHORT(angles[YAW]);
-	cmd.angles[ROLL]  = ANGLE2SHORT(angles[ROLL]);
+	cmd.angles[YAW] = ANGLE2SHORT(angles[YAW]);
+	cmd.angles[ROLL] = ANGLE2SHORT(angles[ROLL]);
 
 	ClientThink(ent, &cmd);
 
 	ent->nextthink = level.time + FRAMETIME;
 }
 
-int Riding_Plat (edict_t *ent)
+int Riding_Plat(edict_t* ent)
 {
-	vec3_t	dest;
+	vec3_t	dest = { 0 };
 	trace_t	tr;
 
 	VectorCopy(ent->s.origin, dest);
@@ -1026,13 +1038,11 @@ int Riding_Plat (edict_t *ent)
 	return 0;
 }
 
-edict_t *Bot_FindBestWeapon(edict_t *ent)
+edict_t* Bot_FindBestWeapon(edict_t* ent)
 {
-	edict_t	*current = weapon_list;
-	edict_t	*best = NULL;
+	edict_t* current = weapon_list;
+	edict_t* best = NULL;
 	int		dist, bonus = 0, best_dist = 999;
-
-	it_lturret = FindItem("automatic defence turret");	//bugfix
 
 	// go through all weapons on the level
 	// find the closest weapon
@@ -1041,13 +1051,14 @@ edict_t *Bot_FindBestWeapon(edict_t *ent)
 		if (current->avoidtime > level.time)
 			goto next;
 
-		if (!(current->solid == SOLID_TRIGGER))	// is it currently there
+		/* MrG{DRGN} reversed position of ! for clarity */
+		if (current->solid != SOLID_TRIGGER)	// is it currently there
 			goto next;
 
 		if (!current->item)
 			goto next;
 
-		if (!Bot_FindPath (ent, current->s.origin, ent->s.origin))
+		if (!Bot_FindPath(ent, current->s.origin, ent->s.origin))
 			goto next;
 
 		dist = first_pathnode;	// length of path to item
@@ -1061,9 +1072,9 @@ edict_t *Bot_FindBestWeapon(edict_t *ent)
 			// We really really want these !!!
 			bonus = 6;
 
-			if ((current->item->tag == AMMO_RTURRET && ent->client->pers.inventory[ITEM_INDEX(it_rturret)] >= ent->client->pers.max_rturret)
-				|| (current->item->tag == AMMO_LTURRET && ent->client->pers.inventory[ITEM_INDEX(it_lturret)] >= ent->client->pers.max_lturret)
-				|| (current->item->tag == AMMO_VORTEX && ent->client->pers.inventory[ITEM_INDEX(it_vortex)] >= ent->client->pers.max_vortex))
+			if ((current->item->classindex == AM_RTURRET && ent->client->pers.inventory[ITEM_INDEX(it_rturret)] >= ent->client->pers.max_rturret)
+				|| (current->item->classindex == AM_LTURRET && ent->client->pers.inventory[ITEM_INDEX(it_lturret)] >= ent->client->pers.max_lturret)
+				|| (current->item->classindex == AM_VORTEX && ent->client->pers.inventory[ITEM_INDEX(it_vortex)] >= ent->client->pers.max_vortex))
 			{
 				current = current->next_listitem;
 				continue;
@@ -1102,22 +1113,22 @@ edict_t *Bot_FindBestWeapon(edict_t *ent)
 
 		if (dist < best_dist)
 		{
-			best_dist	= dist;
-			best		= current;
+			best_dist = dist;
+			best = current;
 		}
 
-next:
+	next:
 		// try the next weapon
 		current = current->next_listitem;
 	}
-	
+
 	return best;
 }
 
-edict_t *Bot_FindBestHealth(edict_t *ent)
+edict_t* Bot_FindBestHealth(edict_t* ent)
 {
-	edict_t	*current = health_list;
-	edict_t	*best = NULL;
+	edict_t* current = health_list;
+	edict_t* best = NULL;
 	int		dist, bonus = 0, best_dist = 999;
 
 	// go through all health packs on the level
@@ -1132,7 +1143,7 @@ edict_t *Bot_FindBestHealth(edict_t *ent)
 		if (!current->item)
 			goto next;
 
-		if (!Bot_FindPath (ent, current->s.origin, ent->s.origin))	//is there a path to that item
+		if (!Bot_FindPath(ent, current->s.origin, ent->s.origin))	//is there a path to that item
 			goto next;
 
 		dist = first_pathnode;	// length of path to item
@@ -1150,29 +1161,29 @@ edict_t *Bot_FindBestHealth(edict_t *ent)
 		}
 		else if (current->item == it_health)/* MrG{DRGN} was missing current->item == */
 		{
-			// Not too bad !
+			// Not to bad !
 			bonus = 0;
 		}
-		
+
 		dist = dist - bonus;
 
 		if (dist < best_dist)
 		{
-			best_dist	= dist;
-			best		= current;
+			best_dist = dist;
+			best = current;
 		}
 
-next:
+	next:
 		// try the next health pack
 		current = current->next_listitem;
 	}
 	return best;
 }
 
-edict_t *Bot_FindBestPowerup(edict_t *ent)
+edict_t* Bot_FindBestPowerup(edict_t* ent)
 {
-	edict_t	*current = powerup_list;
-	edict_t	*best = NULL;
+	edict_t* current = powerup_list;
+	edict_t* best = NULL;
 	int		dist, bonus = 0, best_dist = 999;
 
 	// go through all powerups on the level
@@ -1188,74 +1199,75 @@ edict_t *Bot_FindBestPowerup(edict_t *ent)
 			goto next;
 
 		// don't go for stuff the bot can't use yet or that just isn't worth it
-		if (current->item != FindItemByClassname("item_quad")	
-			&& current->item != FindItemByClassname("item_invulnerability")
-			&& current->item != FindItemByClassname("item_tech1")
-			&& current->item != FindItemByClassname("item_tech2")
-			&& current->item != FindItemByClassname("item_tech3")
-			&& current->item != FindItemByClassname("item_tech4")
-			&& current->item != FindItemByClassname("item_invisibility")
-			&& current->item != FindItemByClassname("item_power_shield")
-			&& current->item != FindItemByClassname("item_armor_body")
-			&& current->item != FindItemByClassname("item_armor_jacket")
-			&& current->item != FindItemByClassname("item_armor_combat")
-			&& current->item != FindItemByClassname("item_adrenaline"))
+		if (current->item != it_quaddamage
+			&& current->item != it_invulnerability
+			&& current->item != it_tech1
+			&& current->item != it_tech2
+			&& current->item != it_tech3
+			&& current->item != it_tech4
+			&& current->item != it_invisibility
+			&& current->item != FindItemByClassindex(AR_POWER_SHIELD)
+			&& current->item != FindItemByClassindex(AR_POWER_SCREEN) /* MrG{DRGN} added */
+			&& current->item != FindItemByClassindex(AR_BODY)
+			&& current->item != FindItemByClassindex(AR_JACKET)
+			&& current->item != FindItemByClassindex(AR_COMBAT)
+			&& current->item != it_adrenaline)
 			goto next;
 
-		if ((ent->health < (ent->max_health - 20)) && FindItemByClassname("item_adrenaline"))
+		if ((ent->health < (ent->max_health - 20)) && it_adrenaline)
 			goto next;
 
 		// check if it's a tech and if we already have one
-		if (current->item == FindItem("Power Amplifier")
-			|| current->item == FindItem("Time Accel")
-			|| current->item == FindItem("Autodoc")
-			|| current->item == FindItem("Disruptor Shield"))
+		if (current->item == it_tech2
+			|| current->item == it_tech3
+			|| current->item == it_tech4
+			|| current->item == it_tech1)
 		{
-			if ( ent->client->pers.inventory[ITEM_INDEX(FindItem("Power Amplifier"))]
-				|| ent->client->pers.inventory[ITEM_INDEX(FindItem("Time Accel"))]
-				|| ent->client->pers.inventory[ITEM_INDEX(FindItem("Autodoc"))]
-				|| ent->client->pers.inventory[ITEM_INDEX(FindItem("Disruptor Shield"))])
+			if (ent->client->pers.inventory[ITEM_INDEX(it_tech2)]
+				|| ent->client->pers.inventory[ITEM_INDEX(it_tech3)]
+				|| ent->client->pers.inventory[ITEM_INDEX(it_tech4)]
+				|| ent->client->pers.inventory[ITEM_INDEX(it_tech1)])
 				goto next;
 		}
 
-		if (!Bot_FindPath (ent, current->s.origin, ent->s.origin))
+		if (!Bot_FindPath(ent, current->s.origin, ent->s.origin))
 			goto next;
 
-		
 		dist = first_pathnode;	// length of path to item
 
 		// add bonuses to the dist
-		if (current->item == FindItemByClassname("item_quad")
-			|| current->item == FindItemByClassname("item_invulnerability")
-			|| current->item == FindItemByClassname("item_invisibility")
-			|| current->item == FindItemByClassname("item_tech1")
-			|| current->item == FindItemByClassname("item_tech2")
-			|| current->item == FindItemByClassname("item_tech3")
-			|| current->item == FindItemByClassname("item_tech4"))
+		if ((current->item == it_quaddamage)
+			|| current->item == it_invulnerability
+			|| current->item == it_invisibility
+			|| current->item == it_tech1
+			|| current->item == it_tech2
+			|| current->item == it_tech3
+			|| current->item == it_tech4)
 		{
 			// We really really want these !!!
 			bonus = 6;
 		}
-		else if (current->item == FindItemByClassname("item_power_shield")
-			|| current->item == FindItemByClassname("item_armor_body")
-			|| current->item == FindItemByClassname("item_armor_jacket")
-			|| current->item == FindItemByClassname("item_armor_combat"))
+		else if (current->item == FindItemByClassindex(AR_POWER_SHIELD) /* MrG{DRGN} added */
+			|| current->item == FindItemByClassindex(AR_POWER_SCREEN)
+			|| current->item == FindItemByClassindex(AR_BODY)
+			|| current->item == FindItemByClassindex(AR_JACKET)
+			|| current->item == FindItemByClassindex(AR_COMBAT))
 		{
 			// We really want these !!
 			bonus = 4;
 		}
-		else if (current->item == FindItemByClassname("item_adrenaline")
-			|| current->item == FindItemByClassname("item_bandolier")
-			|| current->item == FindItemByClassname("item_pack")
-			|| current->item == FindItemByClassname("item_jet"))
+		else if (current->item == it_adrenaline
+			|| current->item == it_bandolier
+			|| current->item == it_pack
+			|| current->item == it_jetpack)
 		{
 			// Not to bad !
 			bonus = 2;
 		}
 		else if (current->item == it_grapple
-			|| current->item == FindItemByClassname("item_silencer")
-			|| current->item == FindItemByClassname("item_breather")
-			|| current->item == FindItemByClassname("item_enviro"))
+			|| current->item == it_silencer
+			|| current->item == it_breather
+			|| current->item == it_enviro)
 		{
 			// ok !
 			bonus = 0;
@@ -1267,21 +1279,21 @@ edict_t *Bot_FindBestPowerup(edict_t *ent)
 
 		if (dist < best_dist)
 		{
-			best_dist	= dist;
-			best		= current;
+			best_dist = dist;
+			best = current;
 		}
 
-next:
+	next:
 		// try the next powerup
 		current = current->next_listitem;
 	}
 	return best;
 }
 
-edict_t *Bot_FindBestAmmo(edict_t *ent)
+edict_t* Bot_FindBestAmmo(edict_t* ent)
 {
-	edict_t	*current = ammo_list;
-	edict_t	*best = NULL;
+	edict_t* current = ammo_list;
+	edict_t* best = NULL;
 	int		dist, best_dist = 999;
 
 	// go through all ammo packs on the level
@@ -1296,52 +1308,54 @@ edict_t *Bot_FindBestAmmo(edict_t *ent)
 		if (!current->item)
 			goto next;
 
-		if (current->item->tag == AMMO_SHELLS	// some ammo isn't worth calculating a path it can be picked up as a closeitem
-			|| current->item->tag == AMMO_EXPLOSIVESHELLS
-			|| current->item->tag == AMMO_BULLETS
-			|| current->item->tag == AMMO_LASERGRENADES)
+		if (current->item->classindex == AM_SHELLS	// some ammo isn't worth calculating a path it can be picked up as a closeitem
+			|| current->item->classindex == AM_EXPLOSIVESHELLS
+			/* MrG{DRGN} this should never be in game, but might be used by node creation if it looks at the entities in the mapfile, and not the substitue spawn replacements */
+			|| current->item->classindex == AM_BULLETS
+			/* END */
+			|| current->item->classindex == AM_LASERGRENADES)
 			goto next;
 
-		if(!Bot_CanPickupAmmo(ent, current))
+		if (!Bot_CanPickupAmmo(ent, current))
 			goto next;
 
-		if (!Bot_FindPath (ent, current->s.origin, ent->s.origin))
+		if (!Bot_FindPath(ent, current->s.origin, ent->s.origin))
 			goto next;
 
 		dist = first_pathnode;	// length of path to item
 
 		if (dist < best_dist)
 		{
-			best_dist	= dist;
-			best		= current;
+			best_dist = dist;
+			best = current;
 		}
 
-next:
+	next:
 		// try the next ammo pack
 		current = current->next_listitem;
 	}
 	return best;
 }
 
-int Bot_CalcPath (edict_t *ent, vec3_t target, vec3_t source)
+int Bot_CalcPath(edict_t* ent, vec3_t target, vec3_t source)
 {
 	int sn, tn, i;
 
 	// can't reach our current target
-	if( ( tn = Bot_FindNodeAtEnt(target) ) < 0)
+	if ((tn = Bot_FindNodeAtEnt(target)) < 0)
 	{
 		ent->client->b_currentnode = -1;
 		return 0;
 	}
 
-	if( (sn = Bot_FindNodeAtEnt(source) ) >= 0)
+	if ((sn = Bot_FindNodeAtEnt(source)) >= 0)
 	{
-		if(Bot_ShortestPath(sn, tn))
+		if (Bot_ShortestPath(sn, tn))
 		{
 			ent->client->b_currentnode = first_pathnode;
-			ent->client->b_nodetime	= level.time + 2;
+			ent->client->b_nodetime = level.time + 2;
 
-			for (i = 0; i < 100;i++)
+			for (i = 0; i < 100; i++)
 				ent->client->b_path[i] = path_buffer[i];
 
 			//nprintf(PRINT_HIGH,"Found path from %d to %d! %d is the first node!\n", sn, tn, path_buffer[first_pathnode]);
@@ -1355,26 +1369,25 @@ int Bot_CalcPath (edict_t *ent, vec3_t target, vec3_t source)
 	return 1;
 }
 
-int Bot_FindPath (edict_t *ent, vec3_t target, vec3_t source)
+int Bot_FindPath(edict_t* ent, vec3_t target, vec3_t source)
 {
 	int sn, tn;
 
 	// can't reach our current target
-	if( ( tn = Bot_FindNodeAtEnt(target) ) < 0)
-	   return 0;
-
-
-	if( ( sn = Bot_FindNodeAtEnt(source) ) < 0 )
+	if ((tn = Bot_FindNodeAtEnt(target)) < 0)
 		return 0;
 
-	if(Bot_ShortestPath(sn, tn))
+	if ((sn = Bot_FindNodeAtEnt(source)) < 0)
+		return 0;
+
+	if (Bot_ShortestPath(sn, tn))
 		return 1;
 	return 0;
 }
 
-void Bot_Aim(edict_t *ent, vec3_t target, vec3_t angles)
+void Bot_Aim(edict_t* ent, vec3_t target, vec3_t angles)
 {
-	vec3_t dir, ideala;
+	vec3_t dir = { 0 }, ideala;
 	float	ideal;
 	float	current;
 	float	move;
@@ -1389,18 +1402,57 @@ void Bot_Aim(edict_t *ent, vec3_t target, vec3_t angles)
 	}
 
 	vectoangles(dir, ideala);
-	angles[PITCH] = ideala[PITCH];
-	angles[ROLL] = ideala[ROLL];
-	
-	current = anglemod(ent->client->v_angle[YAW]);
 
-	ideal = ideala[YAW];
-
-	if (current == ideal)
-		return;
-
-	move = ideal - current;
+	/* MrG{DRGN} now (20 degrees per frame base, + 5 degrees per level)
 	speed = 90;
+	*/
+	speed = ent->yaw_speed;
+	/* END */
+	for (int i = 0; i < 2; i++)
+	{
+		current = anglemod(ent->client->v_angle[i]);
+		ideal = ideala[i];
+
+		if (current == ideal)
+			continue;
+
+		move = ideal - current;
+		speed = ent->yaw_speed;
+
+		if (ideal > current)
+		{
+			if (move >= 180)
+				move = move - 360;
+		}
+		else
+		{
+			if (move <= -180)
+				move = move + 360;
+		}
+		if (move > 0)
+		{
+			if (move > speed)
+				move = speed;
+		}
+		else
+		{
+			if (move < -speed)
+				move = -speed;
+		}
+
+		angles[i] = anglemod(current + move);
+
+		if (ent->client->BlindTime > 0)
+		{
+			angles[YAW] += (random() * 16 - 8) * ent->client->BlindTime;
+		}
+		if (ent->client->PoisonTime > 0)
+		{
+			angles[YAW] += (random() * 16 - 8) * ent->client->PoisonTime;
+		}
+	}
+
+	/*
 	if (ideal > current)
 	{
 		if (move >= 180)
@@ -1421,60 +1473,63 @@ void Bot_Aim(edict_t *ent, vec3_t target, vec3_t angles)
 		if (move < -speed)
 			move = -speed;
 	}
-	
-	angles[YAW] = anglemod (current + move);
-
-	if (ent->client->BlindTime > 0)
-	{
-		angles[YAW] += (random() * 16 - 8) * ent->client->BlindTime;
-	}
-	if (ent->client->PoisonTime > 0)
-	{
-		angles[YAW] += (random() * 16 - 8) * ent->client->PoisonTime;
-	}
+	*/
 }
 
-void Bot_Attack(edict_t *ent, usercmd_t *cmd, vec3_t angles, vec3_t target)
+void Bot_Attack(edict_t* ent, usercmd_t* cmd, vec3_t angles, vec3_t target)
 {
-	vec3_t	dir, t_angles;
-	gitem_t	*weapon;
+	vec3_t	dir = { 0 }, t_angles;
+	gitem_t* weapon;
+	int temp_level = (6 - ent->client->b_botlevel); /*MrG{DRGN} Arithmetic overflow: shut up code analysis about */
 
 	if (ent->enemy->deadflag == DEAD_DEAD)
 		ent->enemy = NULL;
-	
+
 	if (ent->enemy)
-	{	
+	{
+
 		// fire
 		if (level.time >= ent->client->b_nextshot)
 		{
 			weapon = ent->client->pers.weapon;
 			if (!weapon)
 				return;
+			/* MrG{DRGN} ty Paril! */
+			// if the enemy is above us, aim for their head
+			if (target[2] - ent->s.origin[2] > 8)
+				target[2] += ent->enemy->viewheight;
+			// aim explosives at feet
+			/* MrG{DRGN}
+			else if ((Q_strcasecmp(weapon->classname, "weapon_rocketlauncher") == 0) || (ent->enemy->client &&(ent->enemy->client ->ps.pmove.pm_flags & PMF_DUCKED)))*/
+			else if ((weapon->classindex == W_ROCKETLAUNCHER) || (ent->enemy->client && (ent->enemy->client->ps.pmove.pm_flags & PMF_DUCKED)))
+				target[2] -= 12;
 
-			if (Q_stricmp(weapon->classname, "weapon_rocketlauncher") == 0)
-				target[2] -= 10;
+			/* END */
 
 			VectorSubtract(target, ent->s.origin, dir);
 			vectoangles(dir, t_angles);
 
 			angles[0] = t_angles[0];
 
-			if (Q_stricmp(weapon->classname, "weapon_hyperblaster") == 0)
+			/* MrG{DRGN}
+			if (Q_strcasecmp(weapon->classname, "weapon_hyperblaster") == 0)*/
+			if (weapon->classindex == W_HYPERBLASTER)
 			{
-				angles[YAW] += crandom() * (ent->client->b_botlevel)/2;
-				angles[PITCH] += crandom() * (ent->client->b_botlevel)/2;		
-			}
-			else if (Q_stricmp(weapon->classname, "weapon_rocketlauncher") == 0
-				|| Q_stricmp(weapon->classname, "weapon_hominglauncher") == 0)
+				angles[YAW] += crandom() * (ent->client->b_botlevel) / 2;
+				angles[PITCH] += crandom() * (ent->client->b_botlevel) / 2;
+			}/* MrG{DRGN}
+			else if (Q_strcasecmp(weapon->classname, "weapon_rocketlauncher") == 0
+				|| Q_strcasecmp(weapon->classname, "weapon_hominglauncher") == 0) */
+			else if (weapon->classindex == W_ROCKETLAUNCHER
+				|| weapon->classindex == W_HOMINGLAUNCHER)
 			{
-				angles[YAW] += crandom() * (6.0 - ent->client->b_botlevel) * 0.2;
-				angles[PITCH] += crandom() * (6.0 - ent->client->b_botlevel) * 0.2;
-
+				angles[YAW] += crandom() * (temp_level) * 0.2F;/* MrG{DRGN} explicit float */
+				angles[PITCH] += crandom() * (temp_level) * 0.2F;/* MrG{DRGN} explicit float */
 			}
 			else
 			{
-				angles[YAW] += crandom() * (6.0 - ent->client->b_botlevel) * 0.2;
-				angles[PITCH] += crandom() * (6.0 - ent->client->b_botlevel) * 0.2;
+				angles[YAW] += crandom() * (temp_level) * 0.2F;/* MrG{DRGN} explicit float */
+				angles[PITCH] += crandom() * (temp_level) * 0.2F;/* MrG{DRGN} explicit float */
 			}
 
 			cmd->buttons = BUTTON_ATTACK;
@@ -1493,8 +1548,12 @@ void Bot_Attack(edict_t *ent, usercmd_t *cmd, vec3_t angles, vec3_t target)
 	}
 }
 
-void bot_pain(edict_t *ent, edict_t *other, float kickback, int damage)
+void bot_pain(edict_t* ent, edict_t* other, float kickback, int damage)
 {
+	/* MrG{DRGN} sanity check*/
+	if (!ent)
+		return;
+
 	if ((ent != other))
 	{
 		if (other->client && (other->client->invisible_framenum > level.framenum) && random() < 0.3)	//invisible
@@ -1513,12 +1572,12 @@ void bot_pain(edict_t *ent, edict_t *other, float kickback, int damage)
 	player_pain(ent, other, kickback, damage);
 }
 
-void Bot_Move(edict_t *ent, usercmd_t *cmd)
+void Bot_Move(edict_t* ent, usercmd_t* cmd)
 {
 	cmd->forwardmove = RUN_SPEED;
 }
 
-void Bot_Strafe(edict_t *ent, usercmd_t *cmd, int strafedir, short speed, vec3_t angles)
+void Bot_Strafe(edict_t* ent, usercmd_t* cmd, int strafedir, short speed, vec3_t angles)
 {
 	if (strafedir == 0)
 	{
@@ -1526,7 +1585,7 @@ void Bot_Strafe(edict_t *ent, usercmd_t *cmd, int strafedir, short speed, vec3_t
 		{
 			cmd->sidemove = speed;
 		}
-		else if (SaveMoveDir(ent, 0, (short) -speed, angles))
+		else if (SaveMoveDir(ent, 0, (short)-speed, angles))
 		{
 			cmd->sidemove = -speed;
 			ent->client->b_strafedir = 1;
@@ -1537,7 +1596,7 @@ void Bot_Strafe(edict_t *ent, usercmd_t *cmd, int strafedir, short speed, vec3_t
 
 	if (strafedir == 1)
 	{
-		if (SaveMoveDir(ent, 0, (short) -speed, angles))
+		if (SaveMoveDir(ent, 0, (short)-speed, angles))
 		{
 			cmd->sidemove = -speed;
 		}
@@ -1551,17 +1610,17 @@ void Bot_Strafe(edict_t *ent, usercmd_t *cmd, int strafedir, short speed, vec3_t
 	}
 }
 
-void Bot_Jump(edict_t *ent, usercmd_t *cmd)
+void Bot_Jump(edict_t* ent, usercmd_t* cmd)
 {
 	cmd->upmove = RUN_SPEED;
 }
 
-void Bot_FindEnemy(edict_t *self)
+void Bot_FindEnemy(edict_t* self)
 {
-	edict_t		*newenemy = NULL;
+	edict_t* newenemy = NULL;
 	int			i;
 	float		bestdist = 9999;
-	vec3_t		dir;
+	vec3_t		dir = { 0 };
 	vec_t		dist;
 
 	for (i = 0; i < numturrets; i++)
@@ -1607,6 +1666,8 @@ void Bot_FindEnemy(edict_t *self)
 			continue;
 		if (players[i]->client->camera)
 			continue;
+		if (players[i]->movetype == MOVETYPE_NOCLIP)/* MrG{DRGN} don't target unjoined players */
+			return;
 		if ((players[i]->client->invisible_framenum > level.framenum) && random() > 0.01)	//invisible
 			continue;
 
@@ -1622,22 +1683,22 @@ void Bot_FindEnemy(edict_t *self)
 			{
 				if (lightsoff->value == 1)
 				{
-					if(!infront2(self, players[i]))	
+					if (!infront2(self, players[i]))
 						continue;
 				}
 				else if (lightsoff->value > 1)
 				{
-					if(!infront3(self, players[i]))	
+					if (!infront3(self, players[i]))
 						continue;
 				}
 				else
 				{
-					if(!infront(self, players[i]))	
+					if (!infront(self, players[i]))
 						continue;
 				}
 			}
 			else
-				nprintf(PRINT_HIGH,"%s heard %s!\n", self->client->pers.netname, players[i]->client->pers.netname);
+				nprintf(PRINT_HIGH, "%s heard %s!\n", self->client->pers.netname, players[i]->client->pers.netname);
 		}
 
 		if (dist < bestdist)
@@ -1650,10 +1711,10 @@ void Bot_FindEnemy(edict_t *self)
 	self->enemy = newenemy;
 }
 
-edict_t *Bot_FindCloseItem(edict_t *ent)
+edict_t* Bot_FindCloseItem(edict_t* ent)
 {
-	edict_t	*newitem = NULL, *best = NULL;
-	vec3_t		dir;
+	edict_t* newitem = NULL, * best = NULL;
+	vec3_t		dir = { 0 };
 	vec_t		dist, bestdist = 99999;
 
 	while ((newitem = findradius(newitem, ent->s.origin, 90)) != NULL)
@@ -1684,15 +1745,15 @@ edict_t *Bot_FindCloseItem(edict_t *ent)
 	}
 
 	if (best)
-		nprintf(PRINT_HIGH,"%s is going for the %s close to his/her way.\n", ent->client->pers.netname, best->classname);
+		nprintf(PRINT_HIGH, "%s is going for the %s close to his/her way.\n", ent->client->pers.netname, best->classname);
 
 	return best;
 }
 
-edict_t *Bot_FindItem(edict_t *ent)
+edict_t* Bot_FindItem(edict_t* ent)
 {
-	edict_t	*newitem = NULL, *best = NULL;
-	vec3_t		dir;
+	edict_t* newitem = NULL, * best = NULL;
+	vec3_t		dir = { 0 };
 	vec_t		dist, bestdist = 99999;
 
 	while ((newitem = findradius(newitem, ent->s.origin, 500)) != NULL)
@@ -1704,7 +1765,7 @@ edict_t *Bot_FindItem(edict_t *ent)
 			continue;
 		if (random() < 0.1)
 			continue;
-		if(!Bot_CanPickupItem(ent, newitem))
+		if (!Bot_CanPickupItem(ent, newitem))
 			continue;
 		if (gi.pointcontents(newitem->s.origin) & (CONTENTS_LAVA | CONTENTS_SLIME))
 			continue;
@@ -1724,9 +1785,9 @@ edict_t *Bot_FindItem(edict_t *ent)
 	return best;
 }
 
-void Bot_FindActivator(edict_t *ent)
+void Bot_FindActivator(edict_t* ent)
 {
-	edict_t	*activator = NULL;
+	edict_t* activator = NULL;
 
 	while ((activator = findradius(activator, ent->s.origin, 300)) != NULL)
 	{
@@ -1741,19 +1802,19 @@ void Bot_FindActivator(edict_t *ent)
 		if (activator->avoidtime > level.time)
 			continue;
 
-		if (Q_stricmp(activator->classname, "misc_teleporter") == 0
+		if (Q_strcasecmp(activator->classname, "misc_teleporter") == 0
 			&& visible(ent, activator))
 		{
 			ent->client->b_activator = activator;
 			break;
 		}
-		if (Q_stricmp(activator->classname, "func_button") == 0
+		if (Q_strcasecmp(activator->classname, "func_button") == 0
 			&& visible(ent, activator))
 		{
 			ent->client->b_activator = activator;
 			break;
 		}
-		if (Q_stricmp(activator->classname, "func_door") == 0
+		if (Q_strcasecmp(activator->classname, "func_door") == 0
 			&& visible(ent, activator))
 		{
 			ent->client->b_activator = activator;
@@ -1762,20 +1823,20 @@ void Bot_FindActivator(edict_t *ent)
 	}
 }
 
-void Bot_ProjectileAvoidance (edict_t *self, usercmd_t *cmd, vec3_t angles)
+void Bot_ProjectileAvoidance(edict_t* self, usercmd_t* cmd, vec3_t angles)
 {
-	edict_t	*blip = NULL;
+	edict_t* blip = NULL;
 
 	while ((blip = findradius(blip, self->s.origin, 150)) != NULL)
 	{
-		if (Q_stricmp(blip->classname, "arrow") == 0
-				|| Q_stricmp(blip->classname, "poison_arrow") == 0
-				|| Q_stricmp(blip->classname, "explosive_arrow") == 0
-				|| Q_stricmp(blip->classname, "flashgrenade") == 0
-				|| Q_stricmp(blip->classname, "lasermine") == 0
-				|| Q_stricmp(blip->classname, "poisongrenade") == 0
-				|| Q_stricmp(blip->classname, "proxymine") == 0
-				|| Q_stricmp(blip->classname, "bfg blast") == 0)
+		if (Q_strcasecmp(blip->classname, "arrow") == 0
+			|| Q_strcasecmp(blip->classname, "poison_arrow") == 0
+			|| Q_strcasecmp(blip->classname, "explosive_arrow") == 0
+			|| Q_strcasecmp(blip->classname, "flashgrenade") == 0
+			|| Q_strcasecmp(blip->classname, "lasermine") == 0
+			|| Q_strcasecmp(blip->classname, "poisongrenade") == 0
+			|| Q_strcasecmp(blip->classname, "proxymine") == 0
+			|| Q_strcasecmp(blip->classname, "bfg blast") == 0)
 		{
 			if (!visible(self, blip))
 				continue;
@@ -1783,15 +1844,15 @@ void Bot_ProjectileAvoidance (edict_t *self, usercmd_t *cmd, vec3_t angles)
 				continue;
 
 			Bot_Strafe(self, cmd, self->client->b_strafedir, STRAFE_SPEED, angles);
-			self->client->b_strafechange = level.time + 0.5;
+			self->client->b_strafechange = level.time + 0.5F; /* MrG{DRGN} Explicitly now a float */
 			break;
 		}
-		if (Q_stricmp(blip->classname, "rocket") == 0
-			|| Q_stricmp(blip->classname, "homing") == 0
-			|| Q_stricmp(blip->classname, "buzz") == 0
-			|| Q_stricmp(blip->classname, "turret_rocket") == 0
-			|| Q_stricmp(blip->classname, "grenade") == 0
-			|| Q_stricmp(blip->classname, "hgrenade") == 0)
+		if (Q_strcasecmp(blip->classname, "rocket") == 0
+			|| Q_strcasecmp(blip->classname, "homing") == 0
+			|| Q_strcasecmp(blip->classname, "buzz") == 0
+			|| Q_strcasecmp(blip->classname, "turret_rocket") == 0
+			|| Q_strcasecmp(blip->classname, "grenade") == 0
+			|| Q_strcasecmp(blip->classname, "hgrenade") == 0)
 		{
 			if (!visible(self, blip))
 				continue;
@@ -1799,27 +1860,26 @@ void Bot_ProjectileAvoidance (edict_t *self, usercmd_t *cmd, vec3_t angles)
 				continue;
 
 			Bot_Strafe(self, cmd, self->client->b_strafedir, STRAFE_SPEED, angles);
-			self->client->b_strafechange = level.time + 0.5;
+			self->client->b_strafechange = level.time + 0.5F; /* MrG{DRGN} Explicitly now a float */
 			Bot_Jump(self, cmd);
 			break;
 		}
-
 	}
 }
 
-qboolean SaveMoveDir(edict_t *self, short forwardmove, short sidemove, vec3_t angles)
+qboolean SaveMoveDir(edict_t* self, short forwardmove, short sidemove, vec3_t angles)
 {
-	vec3_t	new_origin;	//origin after move
+	vec3_t	new_origin = { 0 };	//origin after move
 	vec3_t	forward, right, up;
-	vec3_t	trace_end;
-	vec3_t  mins = {-3, -3, -3},maxs = {3, 3, 3};
+	vec3_t	trace_end = { 0 };
+	vec3_t  mins = { -3, -3, -3 }, maxs = { 3, 3, 3 };
 	trace_t	tr;
 
-	if(forwardmove == 0 && sidemove == 0)
+	if (forwardmove == 0 && sidemove == 0)
 		return true;
 
 	AngleVectors(angles, forward, right, up);
-	VectorCopy (self->s.origin, new_origin);
+	VectorCopy(self->s.origin, new_origin);
 
 	if (forwardmove)
 	{
@@ -1828,39 +1888,39 @@ qboolean SaveMoveDir(edict_t *self, short forwardmove, short sidemove, vec3_t an
 	}
 	if (sidemove)
 	{
-		VectorScale(right, sidemove * FRAMETIME , right);
+		VectorScale(right, sidemove * FRAMETIME, right);
 		VectorAdd(new_origin, right, new_origin);
 	}
-	
-	VectorCopy (new_origin, trace_end);
+
+	VectorCopy(new_origin, trace_end);
 	trace_end[2] -= 600;
 
 	tr = gi.trace(new_origin, mins, maxs, trace_end, self, MASK_SOLID | MASK_WATER);
 
 	if ((tr.fraction == 1)
-			|| (tr.contents & (CONTENTS_LAVA | CONTENTS_SLIME))
-			|| (tr.plane.normal[2] < 0.3))
+		|| (tr.contents & (CONTENTS_LAVA | CONTENTS_SLIME))
+		|| (tr.plane.normal[2] < 0.3))
 	{
 		self->velocity[0] = 0;
 		self->velocity[1] = 0;
-		return false;	
-	}	
-	return true;	
+		return false;
+	}
+	return true;
 }
 
-qboolean Node_FallMove(edict_t *self, short forwardmove, short sidemove, vec3_t angles)
+qboolean Node_FallMove(edict_t* self, short forwardmove, short sidemove, vec3_t angles)
 {
-	vec3_t	new_origin;	//origin after move
+	vec3_t	new_origin = { 0 };	//origin after move
 	vec3_t	forward, right, up;
-	vec3_t	trace_end;
-	vec3_t  mins = {-3, -3, -3},maxs = {3, 3, 3};
+	vec3_t	trace_end = { 0 };
+	vec3_t  mins = { -3, -3, -3 }, maxs = { 3, 3, 3 };
 	trace_t	tr;
 
-	if(forwardmove == 0 && sidemove == 0)
+	if (forwardmove == 0 && sidemove == 0)
 		return false;
 
 	AngleVectors(angles, forward, right, up);
-	VectorCopy (self->s.origin, new_origin);
+	VectorCopy(self->s.origin, new_origin);
 
 	if (forwardmove)
 	{
@@ -1869,35 +1929,35 @@ qboolean Node_FallMove(edict_t *self, short forwardmove, short sidemove, vec3_t 
 	}
 	if (sidemove)
 	{
-		VectorScale(right, sidemove * FRAMETIME , right);
+		VectorScale(right, sidemove * FRAMETIME, right);
 		VectorAdd(new_origin, right, new_origin);
 	}
-	
-	VectorCopy (new_origin, trace_end);
+
+	VectorCopy(new_origin, trace_end);
 	trace_end[2] -= 600;
 
 	tr = gi.trace(new_origin, mins, maxs, trace_end, self, MASK_SOLID | MASK_WATER);
 
 	if ((tr.fraction == 1) || (tr.plane.normal[2] < 0.3))
 	{
-		return true;	
-	}	
-	return false;	
+		return true;
+	}
+	return false;
 }
 
-qboolean Node_LavaMove(edict_t *self, short forwardmove, short sidemove, vec3_t angles)
+qboolean Node_LavaMove(edict_t* self, short forwardmove, short sidemove, vec3_t angles)
 {
-	vec3_t	new_origin;	//origin after move
+	vec3_t	new_origin = { 0 };	//origin after move
 	vec3_t	forward, right, up;
-	vec3_t	trace_end;
-	vec3_t  mins = {-3, -3, -3},maxs = {3, 3, 3};
+	vec3_t	trace_end = { 0 };
+	vec3_t  mins = { -3, -3, -3 }, maxs = { 3, 3, 3 };
 	trace_t	tr;
 
-	if(forwardmove == 0 && sidemove == 0)
+	if (forwardmove == 0 && sidemove == 0)
 		return false;
 
 	AngleVectors(angles, forward, right, up);
-	VectorCopy (self->s.origin, new_origin);
+	VectorCopy(self->s.origin, new_origin);
 
 	if (forwardmove)
 	{
@@ -1906,31 +1966,31 @@ qboolean Node_LavaMove(edict_t *self, short forwardmove, short sidemove, vec3_t 
 	}
 	if (sidemove)
 	{
-		VectorScale(right, sidemove * FRAMETIME , right);
+		VectorScale(right, sidemove * FRAMETIME, right);
 		VectorAdd(new_origin, right, new_origin);
 	}
-	
-	VectorCopy (new_origin, trace_end);
+
+	VectorCopy(new_origin, trace_end);
 	trace_end[2] -= 600;
 
 	tr = gi.trace(new_origin, mins, maxs, trace_end, self, MASK_SOLID | MASK_WATER);
 
 	if (tr.contents & (CONTENTS_LAVA | CONTENTS_SLIME))
 	{
-		return true;	
-	}	
-	return false;	
+		return true;
+	}
+	return false;
 }
 
-qboolean CheckFall(edict_t *self, short forwardmove, short sidemove, vec3_t angles)
+qboolean CheckFall(edict_t* self, short forwardmove, short sidemove, vec3_t angles)
 {
-	vec3_t	new_origin;	//origin after move
+	vec3_t	new_origin = { 0 };	//origin after move
 	vec3_t	forward, right, up;
-	vec3_t	drop_dest;	//drop destination
-	vec3_t  mins = {0, 0, 0},maxs = {0, 0, 0};
+	vec3_t	drop_dest = { 0 };	//drop destination
+	vec3_t  mins = { 0, 0, 0 }, maxs = { 0, 0, 0 };
 	trace_t	tr;
 
-	if(forwardmove == 0 && sidemove == 0)
+	if (forwardmove == 0 && sidemove == 0)
 		return true;
 
 	AngleVectors(angles, forward, right, up);
@@ -1940,9 +2000,9 @@ qboolean CheckFall(edict_t *self, short forwardmove, short sidemove, vec3_t angl
 	if (forwardmove > 10)
 		VectorScale(forward, forwardmove * FRAMETIME, forward);
 	if (sidemove > 10)
-		VectorScale(right, sidemove * FRAMETIME , right);
+		VectorScale(right, sidemove * FRAMETIME, right);
 
-	VectorCopy (self->s.origin, new_origin);
+	VectorCopy(self->s.origin, new_origin);
 
 	if (forwardmove > 10)
 	{
@@ -1956,75 +2016,81 @@ qboolean CheckFall(edict_t *self, short forwardmove, short sidemove, vec3_t angl
 		new_origin[1] += right[1];
 		new_origin[2] += right[2];
 	}
-	
-	VectorCopy (new_origin, drop_dest);
+
+	VectorCopy(new_origin, drop_dest);
 	drop_dest[2] -= 150;
 
 	tr = gi.trace(new_origin, mins, maxs, drop_dest, self, MASK_SOLID | MASK_WATER);
 
 	if ((tr.fraction == 1)
-			|| (tr.contents & (CONTENTS_LAVA | CONTENTS_SLIME)))
+		|| (tr.contents & (CONTENTS_LAVA | CONTENTS_SLIME)))
 	{
 		self->velocity[0] = 0;
 		self->velocity[1] = 0;
-		return false;	
-	}	
-	return true;	
+		return false;
+	}
+	return true;
 }
 
-void Bot_Wave (edict_t *ent, int i, float time)
+void Bot_Wave(edict_t* ent, int i, float time)
 {
 	if (ent->client->fakedeath > 0)
 		return;
 
-	if (!(ent->health > 0))
+	if (ent->health <= 0) /* MrG{DRGN}  was !ent-health >0 */
 		return;
 
 	// can't wave when ducked
 	if (ent->client->ps.pmove.pm_flags & PMF_DUCKED)
 		return;
 
+	/* MrG{DRGN} This won't work like this!
 	if (ent->client->anim_priority == (ANIM_DEATH || ANIM_PAIN))
-		return;
+		return; */
+	if ((ent->client->anim_priority == ANIM_DEATH) || (ent->client->anim_priority == ANIM_PAIN))
+		return;	/* MrG{DRGN} fixed */
 
 	ent->client->anim_priority = ANIM_WAVE;
 
 	switch (i)
 	{
 	case 0:
-		cprintf2 (ent, PRINT_HIGH, "flipoff\n");
-		ent->s.frame = FRAME_flip01-1;
+		cprintf2(ent, PRINT_HIGH, "flipoff\n");
+		ent->s.frame = FRAME_flip01 - 1;
 		ent->client->anim_end = FRAME_flip12;
 		break;
 	case 1:
-		cprintf2 (ent, PRINT_HIGH, "salute\n");
-		ent->s.frame = FRAME_salute01-1;
+		cprintf2(ent, PRINT_HIGH, "salute\n");
+		ent->s.frame = FRAME_salute01 - 1;
 		ent->client->anim_end = FRAME_salute11;
 		break;
 	case 2:
-		cprintf2 (ent, PRINT_HIGH, "taunt\n");
-		ent->s.frame = FRAME_taunt01-1;
+		cprintf2(ent, PRINT_HIGH, "taunt\n");
+		ent->s.frame = FRAME_taunt01 - 1;
 		ent->client->anim_end = FRAME_taunt17;
 		break;
 	case 3:
-		cprintf2 (ent, PRINT_HIGH, "wave\n");
-		ent->s.frame = FRAME_wave01-1;
+		cprintf2(ent, PRINT_HIGH, "wave\n");
+		ent->s.frame = FRAME_wave01 - 1;
 		ent->client->anim_end = FRAME_wave11;
 		break;
 	case 4:
 	default:
-		cprintf2 (ent, PRINT_HIGH, "point\n");
-		ent->s.frame = FRAME_point01-1;
+		cprintf2(ent, PRINT_HIGH, "point\n");
+		ent->s.frame = FRAME_point01 - 1;
 		ent->client->anim_end = FRAME_point12;
 		break;
 	}
 	ent->client->b_pausetime = level.time + time;
 }
 
+static char	BotSayBuff[0x2000];
+
 void Bot_Say(edict_t* ent, qboolean team, char* fmt, ...)
 {
 	int i;
-	char	bigbuffer[0x1000];
+	/* int		len;
+	MrG{DRGN} unused! */
 	va_list		argptr;
 	edict_t* cl_ent;
 
@@ -2032,29 +2098,34 @@ void Bot_Say(edict_t* ent, qboolean team, char* fmt, ...)
 		return;
 
 	va_start(argptr, fmt);
-	(void)vsprintf(bigbuffer, fmt, argptr);
+	/*len = vsprintf (bigbuffer,fmt,argptr);MrG{DRGN} use vsnprintf */
+	vsnprintf(BotSayBuff, sizeof(BotSayBuff), fmt, argptr);
 	va_end(argptr);
 
 	if (dedicated->value)
-		gi.cprintf(NULL, PRINT_CHAT, bigbuffer);
+		gi.cprintf(NULL, PRINT_CHAT, BotSayBuff);
 
 	for (i = 0; i < maxclients->value; i++)
 	{
 		cl_ent = g_edicts + 1 + i;
-		if (!cl_ent->inuse || (Q_stricmp(cl_ent->classname, "bot") == 0))
+
+		/* MrG{DRGN}
+		if (!cl_ent->inuse || (Q_strcasecmp(cl_ent->classname, "bot") == 0)) */
+		if (!cl_ent->inuse || cl_ent->bot_player)
 			continue;
 
 		if (team && !TeamMembers(ent, cl_ent))
 			continue;
 
-		gi.cprintf(cl_ent, PRINT_CHAT, bigbuffer);
+		gi.cprintf(cl_ent, PRINT_CHAT, BotSayBuff);
 	}
 }
 
-qboolean Bot_CanJump(edict_t *ent)
+
+qboolean Bot_CanJump(edict_t* ent)
 {
 	trace_t	tr;
-	vec3_t	dest;
+	vec3_t	dest = { 0 };
 
 	VectorCopy(ent->s.origin, dest);
 	dest[2] += 1;
@@ -2067,12 +2138,12 @@ qboolean Bot_CanJump(edict_t *ent)
 	return 0;
 }
 
-qboolean Bot_CanStrafe(edict_t *ent, short forwardmove, short sidemove)
+qboolean Bot_CanStrafe(edict_t* ent, short forwardmove, short sidemove)
 {
 	trace_t	tr;
-	vec3_t	dest, right, forward;
+	vec3_t	dest = { 0 }, right, forward;
 
-	if(forwardmove == 0 && sidemove == 0)
+	if (forwardmove == 0 && sidemove == 0)
 		return true;
 
 	AngleVectors(ent->s.angles, forward, right, NULL);
@@ -2082,7 +2153,7 @@ qboolean Bot_CanStrafe(edict_t *ent, short forwardmove, short sidemove)
 	if (forwardmove > 10)
 		VectorScale(forward, forwardmove * FRAMETIME, forward);
 	if (sidemove > 10)
-		VectorScale(right, sidemove * FRAMETIME , right);
+		VectorScale(right, sidemove * FRAMETIME, right);
 
 	VectorAdd(ent->s.origin, forward, dest);
 	VectorAdd(dest, right, dest);

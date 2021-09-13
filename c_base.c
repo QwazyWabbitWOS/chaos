@@ -1,12 +1,17 @@
 ﻿#include "g_local.h"
-#include "c_base.h"
-#include "c_botai.h"
 #include "c_botnav.h"
 #include "c_cam.h"
 #include "m_player.h"
 
+void Cmd_Say_f(edict_t* ent, qboolean team, qboolean arg0);
+void ClientBeginDeathmatch(edict_t* ent);
+void TossClientWeapon(edict_t* self);
+void ThrowUpNow(edict_t* self);
+void ClientCommand2(edict_t* ent);
+void FakeDeath(edict_t* self);
 void Drop_Weapon(edict_t* ent, gitem_t* item);
 void Cmd_Hook_f(edict_t* ent);
+void Toggle_Scanner(edict_t* ent);
 qboolean ClientConnect(edict_t* ent, char* userinfo);
 void ClientDisconnect(edict_t* ent);
 void ClientBegin(edict_t* ent);
@@ -41,6 +46,11 @@ qboolean infront(edict_t* self, edict_t* other)
 	float	dot;
 	vec3_t	forward;
 
+	/* MrG{DRGN} sanity check */
+	if (!self || !other)
+		return false;
+	/* END */
+
 	AngleVectors(self->s.angles, forward, NULL, NULL);
 	VectorSubtract(other->s.origin, self->s.origin, vec);
 	VectorNormalize(vec);
@@ -55,6 +65,11 @@ void ShowGun(edict_t* ent)	//vwep
 {
 	int		nIndex;
 	char* pszIcon;
+
+	/* MrG{DRGN} sanity check */
+	if (!ent)
+		return;
+	/* END */
 
 	if (!ent->client->pers.weapon)
 	{
@@ -117,11 +132,16 @@ void ShowGun(edict_t* ent)	//vwep
 
 	// Set new weapon model.
 	ent->s.skinnum |= (nIndex << 8);
-	ent->s.modelindex2 = 255;
+	ent->s.modelindex2 = (MAX_MODELS - 1); /* MrG{DRGN} no Magic Number 255 */
 }
 
 qboolean TouchingLadder(edict_t* self)
 {
+	/* MrG{DRGN} sanity check */
+	if (!self)
+		return false;
+	/* END */
+
 	vec3_t org = { 0 };
 
 	VectorCopy(self->s.origin, org);
@@ -155,7 +175,6 @@ qboolean TouchingLadder(edict_t* self)
 	return false;
 }
 
-// Clears the maplist and turns off rotation
 void ClearMaplist(void)
 {
 	int i;
@@ -257,15 +276,16 @@ void GetSettings()
 	blindtime = gi.cvar("blindtime", "20", CVAR_SERVERINFO);
 	poisontime = gi.cvar("poisontime", "15", CVAR_SERVERINFO);
 	lasertime = gi.cvar("lasertime", "60", CVAR_SERVERINFO);
-	proxytime = gi.cvar("proxytime", "60", CVAR_SERVERINFO);
+	proxytime = gi.cvar("proxytime", "60", CVAR_SERVERINFO); /* MrG{DRGN} this was mistakenly also controlled by lasertime.*/
 	defence_turret_ammo = gi.cvar("defence_turret_ammo", "1000", CVAR_SERVERINFO);
 	rocket_turret_ammo = gi.cvar("rocket_turret_ammo", "90", CVAR_SERVERINFO);
 	lasermine_health = gi.cvar("lasermine_health", "150", CVAR_LATCH);
-	// FWP Set ex arrow strngth and radius from server var
+	// FWP Set ex arrow strength and radius from server var
 	ex_arrow_damage = gi.cvar("ex_arrow_damage", "80", CVAR_LATCH);
 	ex_arrow_radius = gi.cvar("ex_arrow_radius", "200", CVAR_LATCH);
 
 	dntg = gi.cvar("dntg", "1", CVAR_SERVERINFO);
+	cosg = gi.cvar("cosg", "0", CVAR_SERVERINFO);
 	start_invulnerable_time = gi.cvar("start_invulnerable_time", "3", CVAR_SERVERINFO);
 	lightsoff = gi.cvar("lightsoff", "0", CVAR_SERVERINFO);
 	botchat = gi.cvar("botchat", "1", CVAR_SERVERINFO);
@@ -377,9 +397,14 @@ void GetSettings()
 
 qboolean infront2(edict_t* self, edict_t* other)
 {
-	vec3_t	vec;
+	vec3_t	vec = { 0 };
 	float	dot;
 	vec3_t	forward;
+
+	/* MrG{DRGN} sanity check */
+	if (!self || !other)
+		return false;
+	/* END */
 
 	AngleVectors(self->s.angles, forward, NULL, NULL);
 	VectorSubtract(other->s.origin, self->s.origin, vec);
@@ -397,6 +422,11 @@ qboolean infront3(edict_t* self, edict_t* other)
 	float	dot;
 	vec3_t	forward;
 
+	/* MrG{DRGN} sanity check */
+	if (!self || !other)
+		return false;
+	/* END */
+
 	AngleVectors(self->s.angles, forward, NULL, NULL);
 	VectorSubtract(other->s.origin, self->s.origin, vec);
 	VectorNormalize(vec);
@@ -412,6 +442,11 @@ qboolean infront4(edict_t* self, edict_t* other)
 	vec3_t	vec = { 0 };
 	float	dot;
 	vec3_t	forward;
+
+	/* MrG{DRGN} sanity check */
+	if (!self || !other)
+		return false;
+	/* END */
 
 	AngleVectors(self->s.angles, forward, NULL, NULL);
 	VectorSubtract(other->s.origin, self->s.origin, vec);
@@ -447,7 +482,6 @@ void PreCacheAll()
 	gi.imageindex("scanner/scan16");
 	gi.imageindex("scanner/scan17");
 	gi.imageindex("scanner/scan18");
-
 	gi.imageindex("a_eshells");
 	gi.imageindex("a_arrows");
 	gi.imageindex("a_grockets");
@@ -477,7 +511,6 @@ void PreCacheAll()
 	gi.imageindex("w_xlauncher");
 	gi.imageindex("w_sword");
 	gi.imageindex("w_chainsaw");
-
 	//models
 	gi.modelindex("models/weapons/v_sword/tris.md2");
 	gi.modelindex("models/weapons/g_sword/tris.md2");
@@ -523,7 +556,7 @@ void PreCacheAll()
 	gi.modelindex("models/objects/earrow/tris.md2");
 	gi.modelindex("models/objects/gflash/tris.md2");
 	gi.modelindex("models/objects/gpoison/tris.md2");
-	gi.modelindex("models/objects/hgevilpr/tris.md2");
+	//gi.modelindex("models/objects/hgevilpr/tris.md2");
 	gi.modelindex("models/objects/hgflash/tris.md2");
 	gi.modelindex("models/objects/hglaser/tris.md2");
 	gi.modelindex("models/objects/hgpoison/tris.md2");
@@ -698,13 +731,19 @@ void LoadMOTD(void)
 
 void FakeDeath(edict_t* self)
 {
-	int i;
 	vec3_t              mins = { -16, -16, -24 };
 	vec3_t              maxs = { 16, 16, 32 };
 
-	if (Q_stricmp(self->classname, "camera") == 0)
+	/* MrG{DRGN} sanity check */
+	if (!self)
 		return;
+	/* END */
 
+	/* MrG{DRGN} replaced with integer comparision
+	if (Q_strcasecmp (self->classname, "camera") == 0)
+	*/
+	if (self->classindex == CAMPLAYER || self->movetype == MOVETYPE_NOCLIP)/* MrG{DRGN} if you haven't joined a team yet. you can't fakedeath! */
+		return;
 
 	if (self->client->fakedeath == 0)	//fake
 	{
@@ -729,8 +768,7 @@ void FakeDeath(edict_t* self)
 		self->s.angles[0] = 0;
 		self->s.angles[2] = 0;
 
-		self->s.sound = 0;
-		self->client->weapon_sound = 0;
+
 
 		self->maxs[2] = -8;
 
@@ -742,17 +780,25 @@ void FakeDeath(edict_t* self)
 		CTFDeadDropFlag(self);
 		CTFDeadDropTech(self);
 
+		self->s.sound = 0;
+		self->client->weapon_sound = 0;
 		self->client->quad_framenum = 0;
 		self->client->invincible_framenum = 0;
 		self->client->invisible_framenum = 0;
 		self->client->breather_framenum = 0;
 		self->client->enviro_framenum = 0;
 		self->client->jet_framenum = 0;
+		self->client->flashlightactive = 0;
+		if (self->client->flashlight)
+		{
+			self->client->flashlight->think = G_FreeEdict;
+			G_FreeEdict(self->client->flashlight);
+		}
 
 		// start a death animation
 		self->client->anim_priority = ANIM_DEATH;
 
-		i = 0;
+		int i = 0; /* MrG{DRGN} moved here */
 		if (random() < 0.33)
 			i = 1;
 		if (random() < 0.33)
@@ -783,15 +829,10 @@ void FakeDeath(edict_t* self)
 		else
 			gi.sound(self, CHAN_VOICE, gi.soundindex("misc/fakedeath.wav"), 1, ATTN_NORM, 0);
 
-		self->s.modelindex = 255;
+		self->s.modelindex = (MAX_MODELS - 1); /* MrG{DRGN} no Magic Number 255 */
 		self->deadflag = DEAD_DEAD;
 
-		self->client->flashlightactive = 0;
-		if (self->client->flashlight)
-		{
-			self->client->flashlight->think = G_FreeEdict;
-			G_FreeEdict(self->client->flashlight);
-		}
+
 
 		gi.linkentity(self);
 	}
@@ -811,7 +852,7 @@ void FakeDeath(edict_t* self)
 		VectorClear(self->velocity);
 		VectorClear(self->avelocity);
 
-		if (deathmatch->value && ((int)dmflags->value & DF_FIXED_FOV))
+		if (/* MrG{DRGN} always DM deathmatch->value && */((int)dmflags->value & DF_FIXED_FOV))
 		{
 			self->client->ps.fov = 90;
 		}
@@ -827,7 +868,7 @@ void FakeDeath(edict_t* self)
 		self->client->ps.gunindex = gi.modelindex(self->client->pers.weapon->view_model);
 
 		self->s.effects = 0;
-		self->s.modelindex = 255;
+		self->s.modelindex = (MAX_MODELS - 1); /* MrG{DRGN} no Magic Number 255 */
 
 		self->s.origin[2] += 1;  // make sure off ground
 
@@ -849,23 +890,26 @@ void FakeDeath(edict_t* self)
 		// force the current weapon up
 		self->client->newweapon = self->client->pers.weapon;
 		ChangeWeapon(self);
-
 	}
 }
 
 void FlashLightThink(edict_t* ent)
 {
-	vec3_t start, end, endp, offset;
+	vec3_t start, end, endp, offset = { 0 };
 	vec3_t forward, right, up;
 	trace_t tr;
 
+	/* MrG{DRGN} sanity check */
+	if (!ent)
+		return;
+	/* END */
 	if (!ent->owner ||
 		!ent->owner->client)
 		return;
 
 	AngleVectors(ent->owner->client->v_angle, forward, right, up);
 
-	VectorSet(offset, 24, 6, ent->owner->viewheight - 7);
+	VectorSet(offset, 24, 6, ent->owner->viewheight - 7.0F); /* MrG{DRGN} Explicitly now a float */
 	G_ProjectSource(ent->owner->s.origin, offset, forward, right, start);
 	VectorMA(start, 8192, forward, end);
 
@@ -881,7 +925,7 @@ void FlashLightThink(edict_t* ent)
 	VectorCopy(tr.endpos, ent->s.origin);
 
 	gi.linkentity(ent);
-	ent->nextthink = level.time + 0.1;
+	ent->nextthink = level.time + 0.1F; /* MrG{DRGN} Explicitly now a float */
 }
 
 void T_RadiusDamage2(edict_t* attacker, vec3_t position, float damage, float radius, int mod)
@@ -897,7 +941,7 @@ void T_RadiusDamage2(edict_t* attacker, vec3_t position, float damage, float rad
 			continue;
 
 		VectorSubtract(ent->s.origin, position, v);
-		points = damage - 0.5f * VectorLength(v);
+		points = damage - 0.5F * VectorLength(v); /* MrG{DRGN} Explicitly now a float */
 		//		if (ent == attacker)
 			//	points = points * 0.5;
 		if (points > 0)
@@ -927,7 +971,7 @@ edict_t* findradius2(edict_t* from, vec3_t org, float rad)	//find all entities
 		//if (from->solid != SOLID_NOT)
 		//	continue;
 		for (j = 0; j < 3; j++)
-			eorg[j] = org[j] - (from->s.origin[j] + (from->mins[j] + from->maxs[j]) * 0.5f);
+			eorg[j] = org[j] - (from->s.origin[j] + (from->mins[j] + from->maxs[j]) * 0.5F); /* MrG{DRGN} Explicitly now a float */
 		if (VectorLength(eorg) > rad)
 			continue;
 		return from;
@@ -936,52 +980,62 @@ edict_t* findradius2(edict_t* from, vec3_t org, float rad)	//find all entities
 	return NULL;
 }
 
+static char	BPrint2Buff[0x2000]; /*  MrG{DRGN} move this here  and reduce the size*/
+
 void bprintf2(int printlevel, char* fmt, ...)
 {
 	int i;
-	char	bigbuffer[0x1000];
+	/*  MrG{DRGN} unused!
+	char	bigbuffer[0x10000];
+	int		len; */
 	va_list		argptr;
 	edict_t* cl_ent;
 
 	va_start(argptr, fmt);
-	(void)vsprintf(bigbuffer, fmt, argptr);
+	/*len = vsprintf (bigbuffer,fmt,argptr);MrG{DRGN} use vsnprintf */
+	vsnprintf(BPrint2Buff, sizeof(BPrint2Buff), fmt, argptr);
 	va_end(argptr);
 
 	if (dedicated->value)
-		gi.cprintf(NULL, printlevel, bigbuffer);
+		gi.cprintf(NULL, printlevel, BPrint2Buff);
 
 	for (i = 0; i < maxclients->value; i++)
 	{
 		cl_ent = g_edicts + 1 + i;
-		if (!cl_ent->inuse || (Q_stricmp(cl_ent->classname, "bot") == 0))
+
+		if (!cl_ent->inuse || cl_ent->bot_player) /* MrG{DRGN} */
 			continue;
 
-		gi.cprintf(cl_ent, printlevel, bigbuffer);
+		gi.cprintf(cl_ent, printlevel, BPrint2Buff);
 	}
 }
+static char	CPrint2Buff[0x2000]; /*  MrG{DRGN} move this here  and reduce the size*/
 
 void cprintf2(edict_t* ent, int printlevel, char* fmt, ...)
 {
-	char	bigbuffer[0x1000];
+	//char	bigbuffer[0x10000];
+	/* int		len;  MrG{DRGN} unused! */
 	va_list		argptr;
 
-	if (!ent)
+	if (!ent || ent->bot_player)/* MrG{DRGN} */
 		return;
 
 	va_start(argptr, fmt);
-	(void)vsprintf(bigbuffer, fmt, argptr);
+	/*len = vsprintf (bigbuffer,fmt,argptr);MrG{DRGN} use vsnprintf */
+	vsnprintf(CPrint2Buff, sizeof(CPrint2Buff), fmt, argptr);
 	va_end(argptr);
 
-	if (ent->inuse && (Q_stricmp(ent->classname, "bot") != 0))
+	if (ent->inuse) /* MrG{DRGN} */
 	{
-		gi.cprintf(ent, printlevel, bigbuffer);
+		gi.cprintf(ent, printlevel, CPrint2Buff);
 	}
 }
-
+static char	NPrintBuff[0x2000]; /*  MrG{DRGN} move this here  and reduce the size*/
 void nprintf(int printlevel, char* fmt, ...)
 {
 	int i;
-	char	bigbuffer[0x1000];
+	//char	bigbuffer[0x10000];
+	/* int		len;  MrG{DRGN} unused! */
 	va_list		argptr;
 	edict_t* cl_ent;
 
@@ -989,16 +1043,18 @@ void nprintf(int printlevel, char* fmt, ...)
 		return;
 
 	va_start(argptr, fmt);
-	(void)vsprintf(bigbuffer, fmt, argptr);
+	/*len = vsprintf (bigbuffer,fmt,argptr);MrG{DRGN} use vsnprintf */
+	vsnprintf(NPrintBuff, sizeof(NPrintBuff), fmt, argptr);
 	va_end(argptr);
 
 	for (i = 0; i < maxclients->value; i++)
 	{
 		cl_ent = g_edicts + 1 + i;
-		if (!cl_ent->inuse || (Q_stricmp(cl_ent->classname, "bot") == 0))
+
+		if (!cl_ent->inuse || cl_ent->bot_player)
 			continue;
 
-		gi.cprintf(cl_ent, printlevel, bigbuffer);
+		gi.cprintf(cl_ent, printlevel, NPrintBuff);
 	}
 }
 
@@ -1051,48 +1107,26 @@ void ThrowUpNow(edict_t* self)
 		gi.sound(self, CHAN_VOICE, gi.soundindex("misc/vomit4.wav"), 1, ATTN_NORM, 0);
 }
 
-void Toggle_Scanner(edict_t* ent)
-{
-	if (!ent->client)
-		return;
-	if (ent->health <= 0)
-		return;
-
-	if (ent->client->scanneractive <= 0)
-	{
-		if (ent->client->pers.inventory[ITEM_INDEX(it_cells)] == 0)
-		{
-			cprintf2(ent, PRINT_HIGH, "You don't have enough cells to run your scanner!\n");
-			return;
-		}
-		cprintf2(ent, PRINT_HIGH, "Scanner ON\n");
-		ent->client->scanneractive = 1;
-		ent->client->showinventory = 0;
-		ent->client->showscores = 0;
-	}
-	else
-	{
-		ent->client->scanneractive = 0;
-		cprintf2(ent, PRINT_HIGH, "Scanner OFF\n");
-	}
-}
-
 void Teleport_Think(edict_t* ent)
 {
 	ent->s.frame += 1;
 	if (ent->s.frame > 9)
 		ent->s.frame = 0;
 
-	ent->nextthink = level.time + 0.1f;
+	ent->nextthink = level.time + 0.1F; /* MrG{DRGN} Explicitly now a float */
 }
 
 void Teleport(edict_t* ent)
 {
 	edict_t* telep = NULL;
-	vec3_t spawn_origin;
+	vec3_t spawn_origin = { 0 };
 
+	/* MrG{DRGN} sanity check */
 	if (!ent || !ent->client)
+	{
 		return;
+	}
+	/* END */
 
 	if (ent->client->teleporter)	//teleport
 	{
@@ -1136,13 +1170,14 @@ void Teleport(edict_t* ent)
 		telep->owner = ent;
 		telep->solid = SOLID_BBOX;
 		telep->classname = "selfteleporter";
+		telep->classindex = SELFTELEPORTER;
 		telep->s.event = EV_ITEM_RESPAWN;
 		telep->s.renderfx = RF_TRANSLUCENT;
 		telep->s.effects |= EF_FLAG2;
 		telep->clipmask = MASK_SHOT;
 		VectorClear(telep->mins);
 		VectorClear(telep->maxs);
-		telep->owner = ent;
+		/*	telep->owner = ent; redundant reassignment! */
 
 		telep->movetype = MOVETYPE_FLYMISSILE;
 		telep->model = "models/objects/selftp/tris.md2";
@@ -1150,10 +1185,9 @@ void Teleport(edict_t* ent)
 		VectorCopy(ent->s.origin, telep->s.origin);
 		telep->s.origin[2] -= 10;
 		telep->think = Teleport_Think;
-		telep->nextthink = level.time + 0.1;
+		telep->nextthink = level.time + 0.1F; /* MrG{DRGN} Explicitly now a float */
 
 		gi.linkentity(telep);
-
 		ent->client->teleporter = telep;
 
 		gi.sound(telep, CHAN_VOICE, gi.soundindex("misc/placetelep.wav"), 1, ATTN_NORM, 0);
@@ -1386,8 +1420,9 @@ void Use_Class9(edict_t* ent)
 
 void Use_Class0(edict_t* ent)
 {
+	/* MrG{DRGN} no longer needed
 	it_lturret = FindItem("automatic defence turret");	//bugfix
-
+	*/
 	if (ent->client->pers.weapon == it_bfg)
 	{
 		if (ent->client->pers.inventory[ITEM_INDEX(it_vortex)] > 0)
@@ -1404,7 +1439,7 @@ void Use_Class0(edict_t* ent)
 		else if (ent->client->pers.inventory[ITEM_INDEX(it_lturret)] > 0)
 			ent->client->newweapon = it_lturret;
 		else if (ent->client->pers.inventory[ITEM_INDEX(it_bfg)] > 0
-			&& ent->client->pers.inventory[ITEM_INDEX(it_cells)] > 0)
+			&& ent->client->pers.inventory[ITEM_INDEX(it_cells)] > 49) /* MrG{DRGN} was 0 */
 			ent->client->newweapon = it_bfg;
 	}
 	else if (ent->client->pers.weapon == it_rturret)
@@ -1412,7 +1447,7 @@ void Use_Class0(edict_t* ent)
 		if (ent->client->pers.inventory[ITEM_INDEX(it_lturret)] > 0)
 			ent->client->newweapon = it_lturret;
 		else if (ent->client->pers.inventory[ITEM_INDEX(it_bfg)] > 0
-			&& ent->client->pers.inventory[ITEM_INDEX(it_cells)] > 0)
+			&& ent->client->pers.inventory[ITEM_INDEX(it_cells)] > 49) /* MrG{DRGN} was 0 */
 			ent->client->newweapon = it_bfg;
 		else if (ent->client->pers.inventory[ITEM_INDEX(it_vortex)] > 0)
 			ent->client->newweapon = it_vortex;
@@ -1420,7 +1455,7 @@ void Use_Class0(edict_t* ent)
 	else if (ent->client->pers.weapon == it_lturret)
 	{
 		if (ent->client->pers.inventory[ITEM_INDEX(it_bfg)] > 0
-			&& ent->client->pers.inventory[ITEM_INDEX(it_cells)] > 0)
+			&& ent->client->pers.inventory[ITEM_INDEX(it_cells)] > 49) /* MrG{DRGN} was 0 */
 			ent->client->newweapon = it_bfg;
 		else if (ent->client->pers.inventory[ITEM_INDEX(it_vortex)] > 0)
 			ent->client->newweapon = it_vortex;
@@ -1430,7 +1465,7 @@ void Use_Class0(edict_t* ent)
 	else
 	{
 		if (ent->client->pers.inventory[ITEM_INDEX(it_bfg)] > 0
-			&& ent->client->pers.inventory[ITEM_INDEX(it_cells)] > 0)
+			&& ent->client->pers.inventory[ITEM_INDEX(it_cells)] > 49) /* MrG{DRGN} was 0 */
 			ent->client->newweapon = it_bfg;
 		else if (ent->client->pers.inventory[ITEM_INDEX(it_vortex)] > 0)
 			ent->client->newweapon = it_vortex;
@@ -1492,6 +1527,35 @@ void Use_Grenades(edict_t* ent)
 	}
 }
 
+
+/* MrG{DRGN} for testing */
+void ED_CallSpawn(edict_t* ent);
+void Cmd_Spawn_f(edict_t* ent)
+{
+	char* param = NULL;
+	edict_t* spawn = NULL;
+
+
+	param = gi.argv(1);
+
+	if (param && strlen(param))
+	{
+		vec3_t forward;
+		spawn = G_Spawn();
+		spawn->classname = param;
+		AngleVectors(ent->s.angles, forward, NULL, NULL);
+		VectorMA(ent->s.origin, 256, forward, spawn->s.origin);
+		spawn->s.origin[2] += 32;
+		/* spawn->s.angles[3] = (0,0,0); */
+		VectorCopy(ent->s.angles, spawn->s.angles);
+		ED_CallSpawn(spawn);
+		gi.unlinkentity(spawn);
+		KillBox(spawn);
+		gi.linkentity(spawn);
+		spawn->s.renderfx |= RF_IR_VISIBLE;
+	}
+}
+/* END */
 ///------------------------------------------------------------------------------------------
 /// Command handling
 ///------------------------------------------------------------------------------------------
@@ -1505,8 +1569,10 @@ void ClientCommand2(edict_t* ent)
 
 	cmd = gi.argv(0);
 
-	if (!Q_stricmp(cmd, "grapple"))
+	if (!Q_strcasecmp(cmd, "grapple"))
 	{
+		if (ent->classindex == CAMPLAYER || ent->movetype == MOVETYPE_NOCLIP)/* MrG{DRGN} if you haven't joined a team yet. you can't use the hook! */
+			return;
 		if (ent->health <= 0)
 			return;
 		if (ent->client->fakedeath > 0)
@@ -1516,12 +1582,13 @@ void ClientCommand2(edict_t* ent)
 			Cmd_Hook_f(ent);
 		else
 		{
-			if (Q_stricmp(ent->classname, "bot") != 0)
+			if (!ent->bot_player)/* MrG{DRGN} */
 				gi.centerprintf(ent, "\nYou don't have a grappling hook!\n");//MATTHIAS
+
 			return;
 		}
 	}
-	else if (Q_stricmp(cmd, "class2") == 0)
+	else if (Q_strcasecmp(cmd, "class2") == 0)
 	{
 		if (ent->health <= 0)
 			return;
@@ -1529,7 +1596,7 @@ void ClientCommand2(edict_t* ent)
 			return;
 		Use_Class2(ent);
 	}
-	else if (Q_stricmp(cmd, "class3") == 0)
+	else if (Q_strcasecmp(cmd, "class3") == 0)
 	{
 		if (ent->health <= 0)
 			return;
@@ -1537,7 +1604,7 @@ void ClientCommand2(edict_t* ent)
 			return;
 		Use_Class3(ent);
 	}
-	else if (Q_stricmp(cmd, "class4") == 0)
+	else if (Q_strcasecmp(cmd, "class4") == 0)
 	{
 		if (ent->health <= 0)
 			return;
@@ -1545,7 +1612,7 @@ void ClientCommand2(edict_t* ent)
 			return;
 		Use_Class4(ent);
 	}
-	else if (Q_stricmp(cmd, "class5") == 0)
+	else if (Q_strcasecmp(cmd, "class5") == 0)
 	{
 		if (ent->health <= 0)
 			return;
@@ -1553,7 +1620,7 @@ void ClientCommand2(edict_t* ent)
 			return;
 		Use_Class5(ent);
 	}
-	else if (Q_stricmp(cmd, "class6") == 0)
+	else if (Q_strcasecmp(cmd, "class6") == 0)
 	{
 		if (ent->health <= 0)
 			return;
@@ -1561,7 +1628,7 @@ void ClientCommand2(edict_t* ent)
 			return;
 		Use_Class6(ent);
 	}
-	else if (Q_stricmp(cmd, "class7") == 0)
+	else if (Q_strcasecmp(cmd, "class7") == 0)
 	{
 		if (ent->health <= 0)
 			return;
@@ -1569,7 +1636,7 @@ void ClientCommand2(edict_t* ent)
 			return;
 		Use_Class7(ent);
 	}
-	else if (Q_stricmp(cmd, "class8") == 0)
+	else if (Q_strcasecmp(cmd, "class8") == 0)
 	{
 		if (ent->health <= 0)
 			return;
@@ -1577,7 +1644,7 @@ void ClientCommand2(edict_t* ent)
 			return;
 		Use_Class8(ent);
 	}
-	else if (Q_stricmp(cmd, "class9") == 0)
+	else if (Q_strcasecmp(cmd, "class9") == 0)
 	{
 		if (ent->health <= 0)
 			return;
@@ -1585,7 +1652,7 @@ void ClientCommand2(edict_t* ent)
 			return;
 		Use_Class9(ent);
 	}
-	else if (Q_stricmp(cmd, "class0") == 0)
+	else if (Q_strcasecmp(cmd, "class0") == 0)
 	{
 		if (ent->health <= 0)
 			return;
@@ -1593,7 +1660,7 @@ void ClientCommand2(edict_t* ent)
 			return;
 		Use_Class0(ent);
 	}
-	else if (Q_stricmp(cmd, "grenades") == 0)
+	else if (Q_strcasecmp(cmd, "grenades") == 0)
 	{
 		if (ent->health <= 0)
 			return;
@@ -1601,8 +1668,10 @@ void ClientCommand2(edict_t* ent)
 			return;
 		Use_Grenades(ent);
 	}
-	else if (Q_stricmp(cmd, "throwup") == 0)
+	else if (Q_strcasecmp(cmd, "throwup") == 0)
 	{
+		if (ent->classindex == CAMPLAYER || ent->movetype == MOVETYPE_NOCLIP)/* MrG{DRGN} if you haven't joined a team yet. you can't puke! */
+			return;
 		if (ent->health <= 0)
 			return;
 		if (ent->client->fakedeath > 0)
@@ -1613,7 +1682,7 @@ void ClientCommand2(edict_t* ent)
 			ent->client->nextvomit = level.time + 1;
 		}
 	}
-	else if (Q_stricmp(cmd, "zoom") == 0)
+	else if (Q_strcasecmp(cmd, "zoom") == 0)
 	{
 		int zoomtype = atoi(gi.argv(1));
 
@@ -1632,29 +1701,31 @@ void ClientCommand2(edict_t* ent)
 			else ent->client->ps.fov = 90;
 		}
 	}
-	else if (Q_stricmp(cmd, "camera") == 0)
+	else if (Q_strcasecmp(cmd, "camera") == 0)
 	{
-		if (Q_stricmp(gi.argv(1), "0") == 0)	//cam off
+		if (Q_strcasecmp(gi.argv(1), "0") == 0)	//cam off
 		{
 			if (ent->client->camera)
 			{
-				char name[MAX_INFO_KEY], skin[MAX_INFO_KEY], hand[MAX_INFO_KEY];
+				char name[MAX_INFO_KEY], skin[MAX_INFO_KEY], hand[MAX_INFO_KEY], fov[MAX_INFO_KEY]; /* MrG{DRGN} fix for camera not returning players fov to normal*/
 
-				Com_sprintf(name, sizeof name, Info_ValueForKey(ent->client->pers.userinfo, "name"));
-				Com_sprintf(skin, sizeof skin, Info_ValueForKey(ent->client->pers.userinfo, "skin"));
-				Com_sprintf(hand, sizeof hand, Info_ValueForKey(ent->client->pers.userinfo, "hand"));
+				Com_Printf(name, Info_ValueForKey(ent->client->pers.userinfo, "name"));
+				Com_Printf(skin, Info_ValueForKey(ent->client->pers.userinfo, "skin"));
+				Com_Printf(hand, Info_ValueForKey(ent->client->pers.userinfo, "hand"));
+				Com_Printf(fov, Info_ValueForKey(ent->client->pers.userinfo, "fov"));/* MrG{DRGN} "" */
 
 				ClientDisconnect(ent);
 				ClientConnect(ent, ent->client->pers.userinfo);
 				Info_SetValueForKey(ent->client->pers.userinfo, "name", name);
 				Info_SetValueForKey(ent->client->pers.userinfo, "skin", skin);
 				Info_SetValueForKey(ent->client->pers.userinfo, "hand", hand);
+				Info_SetValueForKey(ent->client->pers.userinfo, "fov", fov); /* MrG{DRGN} "" */
 
 				ClientBegin(ent);
 				cprintf2(ent, PRINT_HIGH, "Camera OFF!\n");
 			}
 		}
-		else if (Q_stricmp(gi.argv(1), "1") == 0)	//intelli mode
+		else if (Q_strcasecmp(gi.argv(1), "1") == 0)	//intelli mode
 		{
 			if (!ent->client->camera)
 				CreateCamera(ent);
@@ -1662,7 +1733,7 @@ void ClientCommand2(edict_t* ent)
 			ent->client->cammode = 1;
 			cprintf2(ent, PRINT_HIGH, "IntelliCam Mode!\n");
 		}
-		else if (Q_stricmp(gi.argv(1), "2") == 0)	//chase cam mode
+		else if (Q_strcasecmp(gi.argv(1), "2") == 0)	//chase cam mode
 		{
 			if (!ent->client->camera)
 				CreateCamera(ent);
@@ -1670,7 +1741,7 @@ void ClientCommand2(edict_t* ent)
 			ent->client->cammode = 2;
 			cprintf2(ent, PRINT_HIGH, "ChaseCam Mode!\n");
 		}
-		else if (Q_stricmp(gi.argv(1), "3") == 0)	// birdview chase cam
+		else if (Q_strcasecmp(gi.argv(1), "3") == 0)	// birdview chase cam
 		{
 			if (!ent->client->camera)
 				CreateCamera(ent);
@@ -1678,7 +1749,7 @@ void ClientCommand2(edict_t* ent)
 			ent->client->cammode = 3;
 			cprintf2(ent, PRINT_HIGH, "Birdview ChaseCam Mode!\n");
 		}
-		else if (Q_stricmp(gi.argv(1), "4") == 0)	// TV cam mode
+		else if (Q_strcasecmp(gi.argv(1), "4") == 0)	// TV cam mode
 		{
 			if (!ent->client->camera)
 				CreateCamera(ent);
@@ -1687,44 +1758,39 @@ void ClientCommand2(edict_t* ent)
 			cprintf2(ent, PRINT_HIGH, "TV-Cam Mode!\n");
 		}
 	}
-	else if (Q_stricmp(cmd, "pathdebug") == 0)
+	else if (Q_strcasecmp(cmd, "pathdebug") == 0)
 	{
 		if (!ent->client->b_target)
 		{
-			if (!ent->client->b_target)
-			{
-				ent->client->b_target = G_Spawn();
-
-				ent->client->b_target->movetype = MOVETYPE_NONE;
-				ent->client->b_target->solid = SOLID_NOT;
-				ent->client->b_target->s.modelindex = gi.modelindex("models/objects/gibs/skull/tris.md2");
-				VectorCopy(ent->s.origin, ent->client->b_target->s.origin);
-
-
-				gi.linkentity(ent->client->b_target);
-			}
-
+			ent->client->b_target = G_Spawn();
+			ent->client->b_target->movetype = MOVETYPE_NONE;
+			ent->client->b_target->solid = SOLID_NOT;
+			ent->client->b_target->s.modelindex = gi.modelindex("models/objects/gibs/skull/tris.md2");
+			VectorCopy(ent->s.origin, ent->client->b_target->s.origin);
+			gi.linkentity(ent->client->b_target);
 			cprintf2(ent, PRINT_HIGH, "Pathdebug ON!\n");
 		}
 		else
 		{
-			if (ent->client->b_target)
-			{
-				G_FreeEdict(ent->client->b_target);
-				ent->client->b_target = NULL;
-			}
+			G_FreeEdict(ent->client->b_target);
+			ent->client->b_target = NULL;
 			cprintf2(ent, PRINT_HIGH, "Pathdebug OFF!\n");
 		}
+
+
 	}
-	else if (Q_stricmp(cmd, "scanner") == 0)
+	else if (Q_strcasecmp(cmd, "scanner") == 0)
 	{
+		if (ent->classindex == CAMPLAYER || ent->movetype == MOVETYPE_NOCLIP)/* MrG{DRGN} if you haven't joined a team yet. you can't puke! */
+			return;
+
 		Toggle_Scanner(ent);
 	}
-	else if (Q_stricmp(cmd, "placenode") == 0)
+	else if (Q_strcasecmp(cmd, "placenode") == 0)
 	{
 		if (dntg->value)
 		{
-			vec3_t	end, spot;
+			vec3_t	end = { 0 }, spot = { 0 };
 			trace_t	tr;
 
 			//check if node is in air
@@ -1765,8 +1831,11 @@ void ClientCommand2(edict_t* ent)
 		else
 			cprintf2(ent, PRINT_HIGH, "Dynamic Node Table Generation is off activate it with <set dntg 1>!\n");
 	}
-	else if (Q_stricmp(cmd, "belt") == 0)
+	else if (Q_strcasecmp(cmd, "belt") == 0)
 	{
+		if (ent->classindex == CAMPLAYER || ent->movetype == MOVETYPE_NOCLIP)/* MrG{DRGN} if you haven't joined a team yet. you can't puke! */
+			return;
+
 		if (ent->client->fakedeath > 0)
 			return;
 		if (ent->health <= 0)
@@ -1793,8 +1862,11 @@ void ClientCommand2(edict_t* ent)
 			}
 		}
 	}
-	else if (Q_stricmp(cmd, "flashlight") == 0)
+	else if (Q_strcasecmp(cmd, "flashlight") == 0)
 	{
+		if (ent->classindex == CAMPLAYER || ent->movetype == MOVETYPE_NOCLIP)/* MrG{DRGN} if you haven't joined a team yet. you can't use the flashlight! */
+			return;
+
 		if (ent->client->fakedeath > 0)
 			return;
 		if (ent->health <= 0)
@@ -1808,7 +1880,7 @@ void ClientCommand2(edict_t* ent)
 		}
 		else
 		{
-			vec3_t  start, forward, right, end;
+			vec3_t  start, forward, right, end = { 0 };
 
 			ent->client->flashlightactive = true;
 
@@ -1819,12 +1891,13 @@ void ClientCommand2(edict_t* ent)
 
 			ent->client->flashlight = G_Spawn();
 			ent->client->flashlight->think = FlashLightThink;
-			ent->client->flashlight->nextthink = level.time + 0.1;
+			ent->client->flashlight->nextthink = level.time + 0.1F; /* MrG{DRGN} Explicitly now a float */
 			ent->client->flashlight->s.effects = EF_HYPERBLASTER;
 			ent->client->flashlight->s.modelindex = gi.modelindex("models/objects/dummy/tris.md2");
 			ent->client->flashlight->solid = SOLID_NOT;
 			ent->client->flashlight->owner = ent;
 			ent->client->flashlight->classname = "flashlight";
+			ent->client->flashlight->classindex = FLASHLIGHT;
 			ent->client->flashlight->movetype = MOVETYPE_NOCLIP;
 			ent->client->flashlight->clipmask = MASK_SHOT;
 			VectorCopy(end, ent->client->flashlight->s.origin);
@@ -1834,8 +1907,10 @@ void ClientCommand2(edict_t* ent)
 			cprintf2(ent, PRINT_HIGH, "Flashlight ON\n");
 		}
 	}
-	else if (Q_stricmp(cmd, "teleport") == 0)
+	else if (Q_strcasecmp(cmd, "teleport") == 0)
 	{
+		if (ent->classindex == CAMPLAYER || ent->movetype == MOVETYPE_NOCLIP)/* MrG{DRGN} if you haven't joined a team yet. you can't teleport! */
+			return;
 		if (ent->health <= 0)
 			return;
 		if (ent->client->fakedeath > 0)
@@ -1858,8 +1933,10 @@ void ClientCommand2(edict_t* ent)
 			}
 		}
 	}
-	else if (Q_stricmp(cmd, "kamikaze") == 0)
+	else if (Q_strcasecmp(cmd, "kamikaze") == 0)
 	{
+		if (ent->classindex == CAMPLAYER || ent->movetype == MOVETYPE_NOCLIP)/* MrG{DRGN} if you haven't joined a team yet. you can't puke! */
+			return;
 		if (ent->health <= 0)
 			return;
 		if (ent->client->kamikazetime != 0)
@@ -1879,8 +1956,10 @@ void ClientCommand2(edict_t* ent)
 		ent->s.effects = EF_ROCKET;
 		gi.sound(ent, CHAN_VOICE, gi.soundindex("misc/kamikaze.wav"), 1, ATTN_NORM, 0);
 	}
-	else if (Q_stricmp(cmd, "togglegrenades") == 0)
+	else if (Q_strcasecmp(cmd, "togglegrenades") == 0)
 	{
+		if (ent->classindex == CAMPLAYER || ent->movetype == MOVETYPE_NOCLIP)/* MrG{DRGN} if you haven't joined a team yet. you can't toggle nades */
+			return;
 		if (ent->client->grenadesactive == 1)
 		{
 			ent->client->grenadesactive = 0;
@@ -1892,18 +1971,20 @@ void ClientCommand2(edict_t* ent)
 			ent->client->grenadesactive = 1;
 		}
 	}
-	else if (Q_stricmp(cmd, "fakedeath") == 0)
+	else if (Q_strcasecmp(cmd, "fakedeath") == 0)
 	{
 		if (ent->health <= 0)
 			return;
 
 		FakeDeath(ent);
 	}
-	else if (Q_stricmp(cmd, "kick") == 0)
+	else if (Q_strcasecmp(cmd, "kick") == 0)
 	{
 		edict_t* blip = NULL;
 		vec3_t	forward;
 
+		if (ent->classindex == CAMPLAYER || ent->movetype == MOVETYPE_NOCLIP)/* MrG{DRGN} if you haven't joined a team yet. you can't kick */
+			return;
 		if (ent->client->fakedeath > 0)
 			return;
 		if (ent->health <= 0)
@@ -1911,61 +1992,90 @@ void ClientCommand2(edict_t* ent)
 
 		while ((blip = findradius2(blip, ent->s.origin, 100)) != NULL)
 		{
+			/*if (blip->client
+				|| blip->item
+				|| Q_strcasecmp(blip->classname, "bolt") == 0
+				|| Q_strcasecmp(blip->classname, "arrow") == 0
+				|| Q_strcasecmp(blip->classname, "grenade") == 0
+				|| Q_strcasecmp(blip->classname, "hgrenade") == 0
+				|| Q_strcasecmp(blip->classname, "flashgrenade") == 0
+				|| Q_strcasecmp(blip->classname, "lasermine") == 0
+				|| Q_strcasecmp(blip->classname, "poisongrenade") == 0
+				|| Q_strcasecmp(blip->classname, "proxymine") == 0
+				|| Q_strcasecmp(blip->classname, "rocket") == 0
+				|| Q_strcasecmp(blip->classname, "homing") == 0
+				|| Q_strcasecmp(blip->classname, "buzz") == 0
+				|| Q_strcasecmp(blip->classname, "bfg blast") == 0
+				|| Q_strcasecmp(blip->classname, "item_flag_team1") == 0 // MrG{DRGN} to kick, or not to kick... that is the question? left here on mistake by prior coder!
+				|| Q_strcasecmp(blip->classname, "item_flag_team2") == 0// MrG{DRGN} to kick, or not to kick... that is the question?
+
+				|| Q_strcasecmp(blip->classname, "bodyque") == 0)
+
+				if (Q_strcasecmp(blip->classname, "laser_turret_base") != 0 // MrG{DRGN} This doesn't exist! Should have simply been "turret_base".
+					&& Q_strcasecmp(blip->classname, "rocket_turret_base") != 0 // MrG{DRGN} This doesn't exist! Should have simply been "turret_base".
+					&& Q_strcasecmp(blip->classname, "laser_turret") != 0
+					&& Q_strcasecmp(blip->classname, "rocket_turret") != 0
+					&& Q_strcasecmp(blip->classname, "item_flag_team1") != 0 // MrG{DRGN} Not kickable!
+					&& Q_strcasecmp(blip->classname, "item_flag_team2") != 0) // MrG{DRGN} Not kickable!
+					*/
+					/* MrG{DRGN} much faster than a string comparison!*/
 			if (blip->client
 				|| blip->item
-				|| Q_stricmp(blip->classname, "bolt") == 0
-				|| Q_stricmp(blip->classname, "arrow") == 0
-				|| Q_stricmp(blip->classname, "grenade") == 0
-				|| Q_stricmp(blip->classname, "hgrenade") == 0
-				|| Q_stricmp(blip->classname, "flashgrenade") == 0
-				|| Q_stricmp(blip->classname, "lasermine") == 0
-				|| Q_stricmp(blip->classname, "poisongrenade") == 0
-				|| Q_stricmp(blip->classname, "proxymine") == 0
-				|| Q_stricmp(blip->classname, "rocket") == 0
-				|| Q_stricmp(blip->classname, "homing") == 0
-				|| Q_stricmp(blip->classname, "buzz") == 0
-				|| Q_stricmp(blip->classname, "bfg blast") == 0
-				|| Q_stricmp(blip->classname, "item_flag_team1") == 0
-				|| Q_stricmp(blip->classname, "item_flag_team2") == 0
-				|| Q_stricmp(blip->classname, "bodyque") == 0)
+				|| blip->classindex == BOLT
+				|| blip->classindex == ARROW
+				|| blip->classindex == GRENADE
+				|| blip->classindex == HGRENADE
+				|| blip->classindex == FLASHGRENADE
+				|| blip->classindex == LASERMINE
+				|| blip->classindex == PGRENADE
+				|| blip->classindex == PROXYMINE
+				|| blip->classindex == ROCKET
+				|| blip->classindex == HOMING
+				|| blip->classindex == BUZZ
+				|| blip->classindex == BFG_BLAST
+				|| blip->classindex == ITEM_FLAG_TEAM1
+				|| blip->classindex == ITEM_FLAG_TEAM2
+				|| blip->classindex == BODYQUE
+				|| blip->classindex == GIBHEAD)
 
-				if (Q_stricmp(blip->classname, "laser_turret_base") != 0
-					&& Q_stricmp(blip->classname, "rocket_turret_base") != 0
-					&& Q_stricmp(blip->classname, "laser_turret") != 0
-					&& Q_stricmp(blip->classname, "rocket_turret") != 0
-					&& Q_stricmp(blip->classname, "item_flag_team1") != 0
-					&& Q_stricmp(blip->classname, "item_flag_team2") != 0)
+				if (blip->classindex != TBASE
+					&& blip->classindex != LTURRET
+					&& blip->classindex != RTURRET
+					&& blip->classindex != ITEM_FLAG_TEAM1
+					&& blip->classindex != ITEM_FLAG_TEAM2)
 				{
-					if (blip == ent)
-						continue;
-					if (!visible(ent, blip))
-						continue;
-					if (!infront(ent, blip))
-						continue;
+					{
+						if (blip == ent)
+							continue;
+						if (!visible(ent, blip))
+							continue;
+						if (!infront(ent, blip))
+							continue;
 
-					AngleVectors(ent->client->v_angle, forward, NULL, NULL);
+						AngleVectors(ent->client->v_angle, forward, NULL, NULL);
 
-					VectorScale(forward, 400, blip->velocity);
-					blip->velocity[2] = 400;
+						VectorScale(forward, 400, blip->velocity);
+						blip->velocity[2] = 400;
 
-					gi.sound(ent, CHAN_ITEM, gi.soundindex("misc/kick.wav"), 1, ATTN_NORM, 0);
+						gi.sound(ent, CHAN_ITEM, gi.soundindex("misc/kick.wav"), 1, ATTN_NORM, 0);
 
-					if (blip->client && blip->client->camera)
-						ent->client->b_waittime = level.time + 3;
+						if (blip->client && blip->client->camera)
+							ent->client->b_waittime = level.time + 3;
 
-					return;
-				}
+						return;
+					}
+				}/* MrG{DRGN} END */
 		}
 	}
-	else if (Q_stricmp(cmd, "load_nodes") == 0)
+	else if (Q_strcasecmp(cmd, "load_nodes") == 0)
 	{
 		Bot_LoadNodes();
 	}
-	else if (Q_stricmp(cmd, "save_nodes") == 0)
+	else if (Q_strcasecmp(cmd, "save_nodes") == 0)
 	{
 		Bot_SaveNodes();
 	}
-	else if (Q_stricmp(cmd, "nums") == 0)
+	else if (Q_strcasecmp(cmd, "nums") == 0)
 	{
 		cprintf2(ent, PRINT_HIGH, "numplayers=%d\n", numplayers);
 		cprintf2(ent, PRINT_HIGH, "numbots=%d\n", numbots);
@@ -1975,7 +2085,7 @@ void ClientCommand2(edict_t* ent)
 		cprintf2(ent, PRINT_HIGH, "blue_base=%d\n", blue_base);
 		cprintf2(ent, PRINT_HIGH, "numturrets=%d\n", numturrets);
 	}
-	else if (Q_stricmp(cmd, "join_team") == 0)
+	else if (Q_strcasecmp(cmd, "join_team") == 0)
 	{
 		int team = atoi(gi.argv(1));
 
@@ -1991,7 +2101,7 @@ void ClientCommand2(edict_t* ent)
 			ent->client->resp.team = team;
 		}
 	}
-	else if (Q_stricmp(cmd, "playerlist") == 0)
+	else if (Q_strcasecmp(cmd, "playerlist") == 0)
 	{
 		int		i;
 
@@ -2002,7 +2112,7 @@ void ClientCommand2(edict_t* ent)
 					cprintf2(ent, PRINT_HIGH, "%d: %s\n", i, players[i]->client->pers.netname);
 		}
 	}
-	else if (Q_stricmp(cmd, "turretlist") == 0)
+	else if (Q_strcasecmp(cmd, "turretlist") == 0)
 	{
 		int		i;
 
@@ -2012,13 +2122,12 @@ void ClientCommand2(edict_t* ent)
 				cprintf2(ent, PRINT_HIGH, "turret %d active\n", i);
 		}
 	}
-	else if (Q_stricmp(cmd, "weaponlist") == 0)
+	else if (Q_strcasecmp(cmd, "weaponlist") == 0)
 	{
 		edict_t* current = NULL;
 
 		current = weapon_list;	// start with the head
 
-
 		//go through all items in the list
 		while (current)
 		{
@@ -2026,13 +2135,12 @@ void ClientCommand2(edict_t* ent)
 			current = current->next_listitem;	//go to next item in list
 		}
 	}
-	else if (Q_stricmp(cmd, "healthlist") == 0)
+	else if (Q_strcasecmp(cmd, "healthlist") == 0)
 	{
 		edict_t* current = NULL;
 
 		current = health_list;	// start with the head
 
-
 		//go through all items in the list
 		while (current)
 		{
@@ -2040,13 +2148,12 @@ void ClientCommand2(edict_t* ent)
 			current = current->next_listitem;	//go to next item in list
 		}
 	}
-	else if (Q_stricmp(cmd, "ammolist") == 0)
+	else if (Q_strcasecmp(cmd, "ammolist") == 0)
 	{
 		edict_t* current = NULL;
 
 		current = ammo_list;	// start with the head
 
-
 		//go through all items in the list
 		while (current)
 		{
@@ -2054,20 +2161,30 @@ void ClientCommand2(edict_t* ent)
 			current = current->next_listitem;	//go to next item in list
 		}
 	}
-	else if (Q_stricmp(cmd, "poweruplist") == 0)
+	else if (Q_strcasecmp(cmd, "poweruplist") == 0)
 	{
 		edict_t* current = NULL;
 
 		current = powerup_list;	// start with the head
 
-
 		//go through all items in the list
 		while (current)
 		{
 			cprintf2(ent, PRINT_HIGH, "%s\n", current->classname);
 			current = current->next_listitem;	//go to next item in list
 		}
+	}/* MrG{DRGN} for debugging */
+	else if (Q_strcasecmp(cmd, "spawn") == 0)
+	{
+		Cmd_Spawn_f(ent);
+		return;
 	}
+
+	else if (Q_strcasecmp(cmd, "gameversion") == 0)
+	{
+		gi.cprintf(ent, PRINT_HIGH, "%s : %s : %s\n", GAMEVERSION, __DATE__, __TIME__);
+	}
+	/* END */
 	else
 		Cmd_Say_f(ent, false, true);
 }

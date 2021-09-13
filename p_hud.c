@@ -1,9 +1,8 @@
 #include "g_local.h"
-#include "c_base.h"
 
-void Bot_Respawn(edict_t *ent);
-qboolean Jet_Active( edict_t *ent );
-void ShowScanner(edict_t *ent,char *layout);
+void Bot_Respawn(edict_t* ent);
+qboolean Jet_Active(edict_t* ent);
+void ShowScanner(edict_t* ent, char* layout);
 
 /*
 ======================================================================
@@ -13,15 +12,21 @@ INTERMISSION
 ======================================================================
 */
 
-void MoveClientToIntermission (edict_t *ent)
+void MoveClientToIntermission(edict_t* ent)
 {
-	if (Q_stricmp (ent->classname, "bot") != 0)
+	if (Q_strcasecmp(ent->classname, "bot") != 0)
 		ent->client->showscores = true;
-	VectorCopy (level.intermission_origin, ent->s.origin);
-	ent->client->ps.pmove.origin[0] = level.intermission_origin[0]*8;
-	ent->client->ps.pmove.origin[1] = level.intermission_origin[1]*8;
-	ent->client->ps.pmove.origin[2] = level.intermission_origin[2]*8;
-	VectorCopy (level.intermission_angle, ent->client->ps.viewangles);
+	VectorCopy(level.intermission_origin, ent->s.origin);
+	/* MrG{DRGN}
+	ent->client->ps.pmove.origin[0] = level.intermission_origin[0] * 8;
+	ent->client->ps.pmove.origin[1] = level.intermission_origin[1] * 8;
+	ent->client->ps.pmove.origin[2] = level.intermission_origin[2] * 8;
+	*/
+	ent->client->ps.pmove.origin[0] = COORD2SHORT(level.intermission_origin[0]);
+	ent->client->ps.pmove.origin[1] = COORD2SHORT(level.intermission_origin[1]);
+	ent->client->ps.pmove.origin[2] = COORD2SHORT(level.intermission_origin[2]);
+	/* END */
+	VectorCopy(level.intermission_angle, ent->client->ps.viewangles);
 	ent->client->ps.pmove.pm_type = PM_FREEZE;
 	ent->client->ps.gunindex = 0;
 	ent->client->ps.blend[3] = 0;
@@ -46,38 +51,37 @@ void MoveClientToIntermission (edict_t *ent)
 
 	// add the layout
 
-	if (deathmatch->value || coop->value)
+	if (deathmatch->value)
 	{
-		if (Q_stricmp (ent->classname, "bot") != 0)
+		if (Q_strcasecmp(ent->classname, "bot") != 0)
 		{
-			DeathmatchScoreboardMessage (ent, NULL);
-			gi.unicast (ent, true);
+			DeathmatchScoreboardMessage(ent, NULL);
+			gi.unicast(ent, true);
 		}
 	}
-
 }
 
-void ClientDisconnect (edict_t *ent);
-qboolean ClientConnect (edict_t *ent, char *userinfo);
-void ClientBegin (edict_t *ent);
+void ClientDisconnect(edict_t* ent);
+qboolean ClientConnect(edict_t* ent, char* userinfo);
+void ClientBegin(edict_t* ent);
 
-void BeginIntermission (edict_t *targ)
+void BeginIntermission(edict_t* targ)
 {
-	int		i, n;
-	edict_t	*ent, *client;
+	int		i /*, n*/; /* MrG{DRGN} unused */
+	edict_t* ent, * client;
 
 	if (level.intermissiontime)
 		return;		// allready activated
 
 //ZOID
-	if (deathmatch->value && ctf->value)
+	if ((deathmatch->value) || ctf->value)
 		CTFCalcScores();
-//ZOID
+	//ZOID
 
 	game.autosaved = false;
 
 	// respawn any dead clients
-	for (i=0 ; i<maxclients->value ; i++)
+	for (i = 0; i < maxclients->value; i++)
 	{
 		client = g_edicts + 1 + i;
 		if (!client->inuse)
@@ -96,11 +100,11 @@ void BeginIntermission (edict_t *targ)
 			Info_SetValueForKey(client->client->pers.userinfo, "skin", skin);
 			Info_SetValueForKey(client->client->pers.userinfo, "hand", hand);
 
-			ClientBegin (client);
+			ClientBegin(client);
 		}
 		if (client->health <= 0)
 		{
-			if (Q_stricmp (client->classname, "bot") == 0)
+			if (Q_strcasecmp(client->classname, "bot") == 0)
 				Bot_Respawn(client);
 			else
 				respawn(client);
@@ -110,14 +114,15 @@ void BeginIntermission (edict_t *targ)
 	level.intermissiontime = level.time;
 	level.changemap = targ->map;
 
+	/* MrG{DRGN} none of this gets used in Chaos, so I commented it out!
 	if (strstr(level.changemap, "*"))
 	{
 		if (coop->value)
 		{
-			for (i=0 ; i<maxclients->value ; i++)
+			for (i = 0; i < maxclients->value; i++)
 			{
 				client = g_edicts + 1 + i;
-				if (!client->inuse || !client->client)
+				if (!client->inuse)
 					continue;
 				// strip players of all keys between units
 				for (n = 0; n < MAX_ITEMS; n++)
@@ -133,9 +138,18 @@ void BeginIntermission (edict_t *targ)
 		if (!deathmatch->value)
 		{
 			level.exitintermission = 1;		// go immediately to the next level
+			numbots = 0;
+			numplayers = 0;
+			numturrets = 0;
+			numblue = 0;
+			numred = 0;
+			vortex_pointer = NULL;
+			vortexstate = 0;
+			blue_base = -1;
+			red_base = -1;
 			return;
 		}
-	}
+	}*/
 
 	level.exitintermission = 0;
 

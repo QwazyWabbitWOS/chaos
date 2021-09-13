@@ -1,16 +1,17 @@
 #include "g_local.h"
-#include "c_base.h"
 #include "c_botnav.h"
-#include "c_botai.h"
-#include "stdlog.h"
 #include "gslog.h"
 
 typedef struct
 {
+	unsigned int classindex; /* MrG{DRGN} */
 	char* name;
 	void	(*spawn)(edict_t* ent);
 } spawn_t;
 
+void PreCacheAll(void);	//MATTHIAS
+void LoadMOTD(void);
+void Load_BotChat(void);
 
 void SP_item_health(edict_t* self);
 void SP_item_health_small(edict_t* self);
@@ -63,9 +64,11 @@ void SP_target_blaster(edict_t* ent);
 void SP_target_crosslevel_trigger(edict_t* ent);
 void SP_target_crosslevel_target(edict_t* ent);
 void SP_target_laser(edict_t* self);
+#if 0 /*MrG{DRGN} non-deathmatch stuff!*/
 void SP_target_help(edict_t* ent);
-void SP_target_actor(edict_t* ent);
+
 void SP_target_lightramp(edict_t* self);
+#endif
 void SP_target_earthquake(edict_t* ent);
 void SP_target_character(edict_t* ent);
 void SP_target_string(edict_t* ent);
@@ -84,11 +87,9 @@ void SP_point_combat(edict_t* self);
 void SP_misc_explobox(edict_t* self);
 void SP_misc_banner(edict_t* self);
 void SP_misc_satellite_dish(edict_t* self);
-void SP_misc_actor(edict_t* self);
 void SP_misc_gib_arm(edict_t* self);
 void SP_misc_gib_leg(edict_t* self);
 void SP_misc_gib_head(edict_t* self);
-void SP_misc_insane(edict_t* self);
 void SP_misc_deadsoldier(edict_t* self);
 void SP_misc_viper(edict_t* self);
 void SP_misc_viper_bomb(edict_t* self);
@@ -101,155 +102,120 @@ void SP_misc_eastertank(edict_t* self);
 void SP_misc_easterchick(edict_t* self);
 void SP_misc_easterchick2(edict_t* self);
 
-
 void SP_monster_commander_body(edict_t* self);
 
-void SP_turret_breach(edict_t* self);
-void SP_turret_base(edict_t* self);
-void SP_turret_driver(edict_t* self);
 
-
+unsigned int getClassindexFromClassname(char* classname);
+/* MrG{DRGN} added classindex field */
 spawn_t	spawns[] = {
-	{"item_health", SP_item_health},
-	{"item_health_small", SP_item_health_small},
-	{"item_health_large", SP_item_health_large},
-	{"item_health_mega", SP_item_health_mega},
+	{ITEM_HEALTH, "item_health", SP_item_health},
+	{ITEM_HEALTH_SMALL, "item_health_small", SP_item_health_small},
+	{ITEM_HEALTH_LARGE, "item_health_large", SP_item_health_large},
+	{ITEM_HEALTH_MEGA, "item_health_mega", SP_item_health_mega},
 
-	{"info_player_start", SP_info_player_start},
-	{"info_player_deathmatch", SP_info_player_deathmatch},
-	{"info_player_coop", SP_info_player_coop},
-	{"info_player_intermission", SP_info_player_intermission},
+	{INFO_PLAYER_START, "info_player_start", SP_info_player_start},
+	{INFO_PLAYER_DEATHMATCH, "info_player_deathmatch", SP_info_player_deathmatch},
+	{INFO_PLAYER_COOP, "info_player_coop", SP_info_player_coop},
+	{INFO_PLAYER_INTERMISSION, "info_player_intermission", SP_info_player_intermission},
 	//ZOID
-		{"info_player_team1", SP_info_player_team1},
-		{"info_player_team2", SP_info_player_team2},
-		//ZOID
+	{INFO_PLAYER_TEAM1, "info_player_team1", SP_info_player_team1},
+	{INFO_PLAYER_TEAM2, "info_player_team2", SP_info_player_team2},
+	//ZOID
 
-			{"func_plat", SP_func_plat},
-			{"func_button", SP_func_button},
-			{"func_door", SP_func_door},
-			{"func_door_secret", SP_func_door_secret},
-			{"func_door_rotating", SP_func_door_rotating},
-			{"func_rotating", SP_func_rotating},
-			{"func_train", SP_func_train},
-			{"func_water", SP_func_water},
-			{"func_conveyor", SP_func_conveyor},
-			{"func_areaportal", SP_func_areaportal},
-			{"func_clock", SP_func_clock},
-			{"func_wall", SP_func_wall},
-			{"func_object", SP_func_object},
-			{"func_timer", SP_func_timer},
-			{"func_explosive", SP_func_explosive},
-			{"func_killbox", SP_func_killbox},
+	{FUNC_PLAT, "func_plat", SP_func_plat},
+	{FUNC_BUTTON,"func_button", SP_func_button},
+	{FUNC_DOOR, "func_door", SP_func_door},
+	{FUNC_DOOR_SECRET, "func_door_secret", SP_func_door_secret},
+	{FUNC_DOOR_ROTATING, "func_door_rotating", SP_func_door_rotating},
+	{FUNC_ROTATING, "func_rotating", SP_func_rotating},
+	{FUNC_TRAIN, "func_train", SP_func_train},
+	{FUNC_WATER, "func_water", SP_func_water},
+	{FUNC_CONVEYOR, "func_conveyor", SP_func_conveyor},
+	{FUNC_AREAPORTAL, "func_areaportal", SP_func_areaportal},
+	{FUNC_CLOCK, "func_clock", SP_func_clock},
+	{FUNC_WALL, "func_wall", SP_func_wall},
+	{FUNC_OBJECT, "func_object", SP_func_object},
+	{FUNC_TIMER, "func_timer", SP_func_timer},
+	{FUNC_EXPLOSIVE, "func_explosive", SP_func_explosive},
+	{FUNC_KILLBOX, "func_killbox", SP_func_killbox},
 
-			{"trigger_always", SP_trigger_always},
-			{"trigger_once", SP_trigger_once},
-			{"trigger_multiple", SP_trigger_multiple},
-			{"trigger_relay", SP_trigger_relay},
-			{"trigger_push", SP_trigger_push},
-			{"trigger_hurt", SP_trigger_hurt},
-			{"trigger_key", SP_trigger_key},
-			{"trigger_counter", SP_trigger_counter},
-			{"trigger_elevator", SP_trigger_elevator},
-			{"trigger_gravity", SP_trigger_gravity},
-			{"trigger_monsterjump", SP_trigger_monsterjump},
+	{TRIGGER_ALWAYS, "trigger_always", SP_trigger_always},
+	{TRIGGER_ONCE, "trigger_once", SP_trigger_once},
+	{TRIGGER_MULTIPLE, "trigger_multiple", SP_trigger_multiple},
+	{TRIGGER_RELAY, "trigger_relay", SP_trigger_relay},
+	{TRIGGER_PUSH, "trigger_push", SP_trigger_push},
+	{TRIGGER_HURT, "trigger_hurt", SP_trigger_hurt},
+	{TRIGGER_KEY, "trigger_key", SP_trigger_key},
+	{TRIGGER_COUNTER, "trigger_counter", SP_trigger_counter},
+	{TRIGGER_ELEVATOR, "trigger_elevator", SP_trigger_elevator},
+	{TRIGGER_GRAVITY, "trigger_gravity", SP_trigger_gravity},
+	{TRIGGER_MONSTERJUMP, "trigger_monsterjump", SP_trigger_monsterjump},
+	{TARGET_TEMP_ENTITY, "target_temp_entity", SP_target_temp_entity},
+	{TARGET_SPEAKER, "target_speaker", SP_target_speaker},
+	{TARGET_EXPLOSION, "target_explosion", SP_target_explosion},
+	{TARGET_CHANGELEVEL, "target_changelevel", SP_target_changelevel},
 
-			{"target_temp_entity", SP_target_temp_entity},
-			{"target_speaker", SP_target_speaker},
-			{"target_explosion", SP_target_explosion},
-			{"target_changelevel", SP_target_changelevel},
-			{"target_secret", SP_target_secret},
-			{"target_goal", SP_target_goal},
-			{"target_splash", SP_target_splash},
-			{"target_spawner", SP_target_spawner},
-			{"target_blaster", SP_target_blaster},
-			{"target_crosslevel_trigger", SP_target_crosslevel_trigger},
-			{"target_crosslevel_target", SP_target_crosslevel_target},
-			{"target_laser", SP_target_laser},
-			{"target_help", SP_target_help},
-		#if 0 // remove monster code
-			{"target_actor", SP_target_actor},
-		#endif
-			{"target_lightramp", SP_target_lightramp},
-			{"target_earthquake", SP_target_earthquake},
-			{"target_character", SP_target_character},
-			{"target_string", SP_target_string},
+#if 0 /* MrG{DRGN} these things free in deathmatch anyway */
+	{TARGET_SECRET, "target_secret", SP_target_secret},
+	{TARGET_GOAL, "target_goal", SP_target_goal},
+#endif
 
-			{"worldspawn", SP_worldspawn},
-			{"viewthing", SP_viewthing},
+	{TARGET_SPLASH, "target_splash", SP_target_splash},
+	{TARGET_SPAWNER, "target_spawner", SP_target_spawner},
+	{TARGET_BLASTER, "target_blaster", SP_target_blaster},
+	{TARGET_CROSSLEVEL_TRIGGER, "target_crosslevel_trigger", SP_target_crosslevel_trigger},
+	{TARGET_CROSSLEVEL_TARGET, "target_crosslevel_target", SP_target_crosslevel_target},
+	{TARGET_LASER, "target_laser", SP_target_laser},
 
-			{"light", SP_light},
-			{"light_mine1", SP_light_mine1},
-			{"light_mine2", SP_light_mine2},
-			{"info_null", SP_info_null},
-			{"func_group", SP_info_null},
-			{"info_notnull", SP_info_notnull},
-			{"path_corner", SP_path_corner},
-			{"point_combat", SP_point_combat},
+#if 0
+	{TARGET_HELP, "target_help", SP_target_help},
+	{TARGET_LIGHTRAMP, "target_lightramp", SP_target_lightramp},
+#endif
 
-			{"misc_explobox", SP_misc_explobox},
-			{"misc_banner", SP_misc_banner},
-			//ZOID
-				{"misc_ctf_banner", SP_misc_ctf_banner},
-				{"misc_ctf_small_banner", SP_misc_ctf_small_banner},
-				//ZOID
-					{"misc_satellite_dish", SP_misc_satellite_dish},
-				#if 0 // remove monster code
-					{"misc_actor", SP_misc_actor},
-				#endif
-					{"misc_gib_arm", SP_misc_gib_arm},
-					{"misc_gib_leg", SP_misc_gib_leg},
-					{"misc_gib_head", SP_misc_gib_head},
-				#if 0 // remove monster code
-					{"misc_insane", SP_misc_insane},
-				#endif
-					{"misc_deadsoldier", SP_misc_deadsoldier},
-					{"misc_viper", SP_misc_viper},
-					{"misc_viper_bomb", SP_misc_viper_bomb},
-					{"misc_bigviper", SP_misc_bigviper},
-					{"misc_strogg_ship", SP_misc_strogg_ship},
-					{"misc_teleporter", SP_misc_teleporter},
-					{"misc_teleporter_dest", SP_misc_teleporter_dest},
-					//ZOID
-						{"trigger_teleport", SP_trigger_teleport},
-						{"info_teleport_destination", SP_info_teleport_destination},
-						//ZOID
-							{"misc_blackhole", SP_misc_blackhole},
-							{"misc_eastertank", SP_misc_eastertank},
-							{"misc_easterchick", SP_misc_easterchick},
-							{"misc_easterchick2", SP_misc_easterchick2},
+	{TARGET_EARTHQUAKE, "target_earthquake", SP_target_earthquake},
+	{TARGET_CHARACTER, "target_character", SP_target_character},
+	{TARGET_STRING, "target_string", SP_target_string},
 
-						#if 0 // remove monster code
-							{"monster_berserk", SP_monster_berserk},
-							{"monster_gladiator", SP_monster_gladiator},
-							{"monster_gunner", SP_monster_gunner},
-							{"monster_infantry", SP_monster_infantry},
-							{"monster_soldier_light", SP_monster_soldier_light},
-							{"monster_soldier", SP_monster_soldier},
-							{"monster_soldier_ss", SP_monster_soldier_ss},
-							{"monster_tank", SP_monster_tank},
-							{"monster_tank_commander", SP_monster_tank},
-							{"monster_medic", SP_monster_medic},
-							{"monster_flipper", SP_monster_flipper},
-							{"monster_chick", SP_monster_chick},
-							{"monster_parasite", SP_monster_parasite},
-							{"monster_flyer", SP_monster_flyer},
-							{"monster_brain", SP_monster_brain},
-							{"monster_floater", SP_monster_floater},
-							{"monster_hover", SP_monster_hover},
-							{"monster_mutant", SP_monster_mutant},
-							{"monster_supertank", SP_monster_supertank},
-							{"monster_boss2", SP_monster_boss2},
-							{"monster_boss3_stand", SP_monster_boss3_stand},
-							{"monster_jorg", SP_monster_jorg},
+	{WORLDSPAWN, "worldspawn", SP_worldspawn},
+	{VIEWTHING, "viewthing", SP_viewthing},
 
-							{"monster_commander_body", SP_monster_commander_body},
+	{LIGHT, "light", SP_light},
+	{LIGHT_MINE1, "light_mine1", SP_light_mine1},
+	{LIGHT_MINE2, "light_mine2", SP_light_mine2},
+	{INFO_NULL, "info_null", SP_info_null},
+	{INFO_NULL, "func_group", SP_info_null},
+	{INFO_NOTNULL, "info_notnull", SP_info_notnull},
+	{PATH_CORNER, "path_corner", SP_path_corner},
+	{POINT_COMBAT, "point_combat", SP_point_combat},
 
-							{"turret_breach", SP_turret_breach},
-							{"turret_base", SP_turret_base},
-							{"turret_driver", SP_turret_driver},
-						#endif
+	{MISC_EXPLOBOX, "misc_explobox", SP_misc_explobox},
+	{MISC_BANNER, "misc_banner", SP_misc_banner},
+	//ZOID
+	{MISC_CTF_BANNER, "misc_ctf_banner", SP_misc_ctf_banner},
+	{MISC_CTF_SMALL_BANNER, "misc_ctf_small_banner", SP_misc_ctf_small_banner},
+	//ZOID
+	{MISC_SATELLITE_DISH, "misc_satellite_dish", SP_misc_satellite_dish},
+	{MISC_GIB_ARM, "misc_gib_arm", SP_misc_gib_arm},
+	{MISC_GIB_LEG, "misc_gib_leg", SP_misc_gib_leg},
+	{MISC_GIB_HEAD, "misc_gib_head", SP_misc_gib_head},
+	{MISC_DEADSOLDIER, "misc_deadsoldier", SP_misc_deadsoldier},
+	{MISC_VIPER, "misc_viper", SP_misc_viper},
+	{MISC_VIPER_BOMB, "misc_viper_bomb", SP_misc_viper_bomb},
+	{MISC_BIGVIPER, "misc_bigviper", SP_misc_bigviper},
+	{MISC_STROGG_SHIP, "misc_strogg_ship", SP_misc_strogg_ship},
+	{MISC_TELEPORTER, "misc_teleporter", SP_misc_teleporter},
+	{MISC_TELEPORTER_DEST, "misc_teleporter_dest", SP_misc_teleporter_dest},
+	//ZOID
+	{TRIGGER_TELEPORT, "trigger_teleport", SP_trigger_teleport},
+	{INFO_TELEPORT_DESTINATION, "info_teleport_destination", SP_info_teleport_destination},
+	//ZOID
+	{ MISC_BLACKHOLE, "misc_blackhole", SP_misc_blackhole},
+	{ MISC_EASTERTANK, "misc_eastertank", SP_misc_eastertank},
+	{ MISC_EASTERCHICK, "misc_easterchick", SP_misc_easterchick},
+	{ MISC_EASTERCHICK2, "misc_easterchick2", SP_misc_easterchick2},
+	{MONSTER_COMMANDER_BODY,"monster_commander_body",SP_monster_commander_body },
 
-							{NULL, NULL}
+	{ENT_NULL, NULL, NULL}
 };
 
 /*
@@ -259,7 +225,109 @@ ED_CallSpawn
 Finds the spawn function for the entity and calls it
 ===============
 */
+
+
+unsigned int getClassindexFromClassname(char* classname) {
+	spawn_t* s;
+	gitem_t* item;
+	int		i;
+
+	for (i = 0, item = itemlist; i < game.num_items; i++, item++) {
+		if (!item->classname)
+			continue;
+		if (!strcmp(item->classname, classname)) {	// found it
+			return item->classindex;
+		}
+	}
+	for (s = spawns; s->name; s++) {
+		if (!strcmp(s->name, classname)) {	// found it
+			return s->classindex;
+		}
+	}
+	return 0;
+}
+
+char* getClassnameFromClassindex(unsigned int classindex) {
+	spawn_t* s;
+	gitem_t* item;
+	int		i;
+
+	for (i = 0, item = itemlist; i < game.num_items; i++, item++) {
+		if (!item->classname)
+			continue;
+		if (item->classindex == classindex) {	// found it
+			return item->classname;
+		}
+	}
+	for (s = spawns; s->name; s++) {
+		if (s->classindex == classindex) // found it
+			return s->name;
+	}
+	return NULL;
+}
+
 void ED_CallSpawn(edict_t* ent)
+{
+	spawn_t* s;
+	gitem_t* item;
+	int		i;
+
+	/* If this fails, edict is freed. */
+	if (!ent)
+		return;
+
+	if (!ent->classname)
+	{
+		gi.dprintf("ED_CallSpawn: NULL classname\n");
+		G_FreeEdict(ent);
+		return;
+	}
+	if (!ent->classname) {
+		ent->classname = getClassnameFromClassindex(ent->classindex);
+	}
+	else {
+		ent->classindex = getClassindexFromClassname(ent->classname);
+	}
+
+	if (!ent->classname) {
+		gi.dprintf("ED_CallSpawn: NULL classname and invalid classindex %d\n", ent->classindex);
+		return;
+	}
+
+	if (!ent->classindex) {
+		ent->classindex = getClassindexFromClassname(ent->classname);
+	}
+	if (!ent->classindex) {
+		//gi.dprintf("ED_CallSpawn: No classindex and invalid classname %s\n", ent->classname);
+		return;
+	}
+	// check item spawn functions
+	for (i = 0, item = itemlist; i < game.num_items; i++, item++)
+	{
+		if (!item->classname)
+			continue;
+		if (!strcmp(item->classname, ent->classname))
+		{	// found it
+			item->classindex = getClassindexFromClassname(item->classname);
+			SpawnItem(ent, item);
+			return;
+		}
+	}
+
+	// check normal spawn functions
+	for (s = spawns; s->name; s++)
+	{
+		if (!strcmp(s->name, ent->classname))
+		{	// found it
+			s->spawn(ent);
+			return;
+		}
+	}
+	//MATTHIAS
+	gi.dprintf("%s doesn't have a spawn function\n", ent->classname);
+}
+/*
+void ED_CallSpawn_Old(edict_t* ent)
 {
 	spawn_t* s;
 	gitem_t* item;
@@ -294,13 +362,13 @@ void ED_CallSpawn(edict_t* ent)
 	}
 	//MATTHIAS
 	//gi.dprintf ("%s doesn't have a spawn function\n", ent->classname);
-}
+}*/
 
 /*
 =============
 ED_NewString
 =============
-*/
+
 char* ED_NewString(char* string)
 {
 	char* newb, * new_p;
@@ -308,13 +376,38 @@ char* ED_NewString(char* string)
 
 	l = strlen(string) + 1;
 
-	newb = gi.TagMalloc(l, TAG_LEVEL);
+		newb = gi.TagMalloc(l, TAG_LEVEL);
 
-	new_p = newb;
+		new_p = newb;
 
-	for (i = 0; i < l; i++)
+		for (i = 0; i < l; i++)
+		{
+			if (string[i] == '\\' && i < l - 1)
+			{
+				i++;
+				if (string[i] == 'n')
+					*new_p++ = '\n';
+				else
+					*new_p++ = '\\';
+			}
+			else
+				*new_p++ = string[i];
+		}
+
+		return newb;
+	}
+	*/
+
+static char* ED_NewString(const char* string)
+{
+	int l = (int)strlen(string) + 1;
+	char* newb = (char*)gi.TagMalloc(l, TAG_LEVEL);
+	char* new_p = newb;
+
+	for (int i = 0; i < l; i++)
 	{
-		if (string[i] == '\\' && i < l - 1)
+		/* check for special chars and convert them */
+		if (string[i] == '\\' && l - 1 > i) /* MrG{DRGN} The variable 'i' was used as an array index before it is checked that is within limits. This can mean that the array might be accessed out of bounds. */
 		{
 			i++;
 			if (string[i] == 'n')
@@ -328,10 +421,6 @@ char* ED_NewString(char* string)
 
 	return newb;
 }
-
-
-
-
 /*
 ===============
 ED_ParseField
@@ -345,12 +434,12 @@ void ED_ParseField(char* key, char* value, edict_t* ent)
 	field_t* f;
 	byte* b;
 	float	v;
-	vec3_t	vec;
+	vec3_t	vec = { 0 };
 
 	for (f = fields; f->name; f++)
 	{
-		if (!Q_stricmp(f->name, key))
-		{	// found it
+		if (!(f->flags & FFL_NOSPAWN) && !Q_strcasecmp(f->name, key))
+		{	/* found it */
 			if (f->flags & FFL_SPAWNTEMP)
 				b = (byte*)&st;
 			else
@@ -383,6 +472,13 @@ void ED_ParseField(char* key, char* value, edict_t* ent)
 				break;
 			case F_IGNORE:
 				break;
+				/* MrG{DREGN} added */
+			case F_GSTRING:
+			case F_EDICT:
+			case F_ITEM:
+			case F_CLIENT:
+				break;
+				/* END */
 			default:
 				break;
 			}
@@ -391,6 +487,7 @@ void ED_ParseField(char* key, char* value, edict_t* ent)
 	}
 	gi.dprintf("%s is not a field\n", key);
 }
+
 
 /*
 ====================
@@ -413,7 +510,7 @@ char* ED_ParseEdict(char* data, edict_t* ent)
 	while (1)
 	{
 		// parse key
-		com_token = COM_Parse(&data);
+		com_token = COM_Parse((const char**)&data);
 		if (com_token[0] == '}')
 			break;
 		if (!data)
@@ -421,8 +518,8 @@ char* ED_ParseEdict(char* data, edict_t* ent)
 
 		strncpy(keyname, com_token, sizeof(keyname) - 1);
 
-		// parse value	
-		com_token = COM_Parse(&data);
+		// parse value
+		com_token = COM_Parse((const char**)&data);
 		if (!data)
 			gi.error("ED_ParseEntity: EOF without closing brace");
 
@@ -444,7 +541,6 @@ char* ED_ParseEdict(char* data, edict_t* ent)
 
 	return data;
 }
-
 
 /*
 ================
@@ -532,6 +628,10 @@ void SpawnEntities(char* mapname, char* entities, char* spawnpoint)
 	int			i;
 	float		skill_level;
 
+#ifdef DEBUG
+	LOGPRINTF("SpawnEntites\n");
+#endif
+
 	skill_level = floor(skill->value);
 	if (skill_level < 0)
 		skill_level = 0;
@@ -569,26 +669,34 @@ void SpawnEntities(char* mapname, char* entities, char* spawnpoint)
 	// parse ents
 	while (1)
 	{
-		// parse the opening brace	
-		com_token = COM_Parse(&entities);
+		// parse the opening brace
+		com_token = COM_Parse((const char**)&entities);
 		if (!entities)
 			break;
-		if (com_token[0] != '{') {
+		if (com_token[0] != '{')
 			gi.error("ED_LoadFromFile: found %s when expecting {", com_token);
-			return; //QW// never executes.
-		}
 
 		if (!ent)
 			ent = g_edicts;
 		else
 			ent = G_Spawn();
+
+
+		if (!ent)/* MrG{DRGN} sanitiy check*/
+		{
+			gi.error("%s failed parsing entities.\n", __func__);
+			return;
+		}
+
 		entities = ED_ParseEdict(entities, ent);
 
 		// yet another map hack
-		if (!Q_stricmp(level.mapname, "command") && !Q_stricmp(ent->classname, "trigger_once") && !Q_stricmp(ent->model, "*27"))
+
+		if (!Q_strcasecmp(level.mapname, "command") && !Q_strcasecmp(ent->classname, "trigger_once") && !Q_strcasecmp(ent->model, "*27"))
 			ent->spawnflags &= ~SPAWNFLAG_NOT_HARD;
 
 		// remove things (except the world) from different skill levels or deathmatch
+
 		if (ent != g_edicts)
 		{
 			if (ent->spawnflags & SPAWNFLAG_NOT_DEATHMATCH)
@@ -620,7 +728,6 @@ void SpawnEntities(char* mapname, char* entities, char* spawnpoint)
 	CTFSetupTechSpawn();
 }
 
-
 //===================================================================
 
 #if 0
@@ -649,7 +756,7 @@ endif
 char* dm_statusbar =
 "yb	-24 "
 
-// health
+//health
 "xv	0 "
 "hnum "
 "xv	50 "
@@ -697,7 +804,7 @@ char* dm_statusbar =
 "pic 9 "
 "endif "
 
-//  help / weapon icon 
+//  help / weapon icon
 "if 11 "
 "xv 148 "
 "pic 11 "
@@ -725,7 +832,6 @@ char* dm_statusbar =
 "endif "
 ;
 
-
 /*QUAKED worldspawn (0 0 0) ?
 
 Only used for the world.
@@ -738,10 +844,20 @@ Only used for the world.
 */
 void SP_worldspawn(edict_t * ent)
 {
+
 	ent->movetype = MOVETYPE_PUSH;
 	ent->solid = SOLID_BSP;
 	ent->inuse = true;			// since the world doesn't use G_Spawn()
 	ent->s.modelindex = 1;		// world model is always index 1
+	ent->classindex = WORLDSPAWN; /* MrG{DRGN} */
+	ent->classname = "worldspawn";
+	/* MrG{DRGN}
+	* this will create a different series of random numbers on every map load
+	* by using current time as a seed for the  random generator
+	*/
+	//srand(time(0));
+	srand((unsigned int)(time(0)));
+	/* END */
 
 	//---------------
 
@@ -751,17 +867,18 @@ void SP_worldspawn(edict_t * ent)
 	SetItemNames();
 
 	if (st.nextmap)
-		Com_strcpy(level.nextmap, sizeof level.nextmap, st.nextmap);
-
+		/*	MrG{DRGN} destination safe strcpy replacement*/
+		Com_strcpy(level.nextmap, sizeof(level.nextmap), st.nextmap);
 	// make some data visible to the server
 
 	if (ent->message && ent->message[0])
 	{
 		gi.configstring(CS_NAME, ent->message);
-		strncpy(level.level_name, ent->message, sizeof level.level_name - 1);
+
+		strncpy(level.level_name, ent->message, sizeof(level.level_name));
 	}
 	else
-		strncpy(level.level_name, level.mapname, sizeof level.level_name);
+		strncpy(level.level_name, level.mapname, sizeof(level.level_name));
 
 	if (st.sky && st.sky[0])
 		gi.configstring(CS_SKY, st.sky);
@@ -778,6 +895,14 @@ void SP_worldspawn(edict_t * ent)
 	gi.configstring(CS_MAXCLIENTS, va("%i", (int)(maxclients->value)));
 
 	// status bar program
+
+
+
+	//---------------
+	if (!st.gravity)
+		gi.cvar_set("sv_gravity", "800");
+	else
+		gi.cvar_set("sv_gravity", st.gravity);
 
 	if (ctf->value)
 	{
@@ -796,106 +921,10 @@ void SP_worldspawn(edict_t * ent)
 	else
 		gi.configstring(CS_STATUSBAR, dm_statusbar);
 
-	//---------------
 
 
-	// help icon for statusbar
-	gi.imageindex("i_help");
-	level.pic_health = gi.imageindex("i_health");
-	gi.imageindex("help");
-	gi.imageindex("field_3");
-
-	if (!st.gravity)
-		gi.cvar_set("sv_gravity", "800");
-	else
-		gi.cvar_set("sv_gravity", st.gravity);
-
-	snd_fry = gi.soundindex("player/fry.wav");	// standing in lava / slime
-
-	PrecacheItem(FindItem("AK42 Assault Pistol"));
-
-	gi.soundindex("player/lava1.wav");
-	gi.soundindex("player/lava2.wav");
-
-	gi.soundindex("misc/pc_up.wav");
-	gi.soundindex("misc/talk1.wav");
-
-	gi.soundindex("misc/udeath.wav");
-
-	// gibs
-	gi.soundindex("items/respawn1.wav");
-
-	// sexed sounds
-	gi.soundindex("*death1.wav");
-	gi.soundindex("*death2.wav");
-	gi.soundindex("*death3.wav");
-	gi.soundindex("*death4.wav");
-	gi.soundindex("*fall1.wav");
-	gi.soundindex("*fall2.wav");
-	gi.soundindex("*gurp1.wav");		// drowning damage
-	gi.soundindex("*gurp2.wav");
-	gi.soundindex("*jump1.wav");		// player jump
-	gi.soundindex("*pain25_1.wav");
-	gi.soundindex("*pain25_2.wav");
-	gi.soundindex("*pain50_1.wav");
-	gi.soundindex("*pain50_2.wav");
-	gi.soundindex("*pain75_1.wav");
-	gi.soundindex("*pain75_2.wav");
-	gi.soundindex("*pain100_1.wav");
-	gi.soundindex("*pain100_2.wav");
-
-	//-------------------
-
-	gi.soundindex("player/gasp1.wav");		// gasping for air
-	gi.soundindex("player/gasp2.wav");		// head breaking surface, not gasping
-
-	gi.soundindex("player/watr_in.wav");	// feet hitting water
-	gi.soundindex("player/watr_out.wav");	// feet leaving water
-
-	gi.soundindex("player/watr_un.wav");	// head going underwater
-
-	gi.soundindex("player/u_breath1.wav");
-	gi.soundindex("player/u_breath2.wav");
-
-	gi.soundindex("items/pkup.wav");		// bonus item pickup
-	gi.soundindex("world/land.wav");		// landing thud
-	gi.soundindex("misc/h2ohit1.wav");		// landing splash
-
-	gi.soundindex("items/damage.wav");
-	gi.soundindex("items/protect.wav");
-	gi.soundindex("items/protect4.wav");
-	gi.soundindex("weapons/noammo.wav");
-
-	sm_meat_index = gi.modelindex("models/objects/gibs/sm_meat/tris.md2");
-	sm_meat_index = gi.modelindex("models/objects/gibs/sm_gib1/tris.md2");
-	sm_meat_index = gi.modelindex("models/objects/gibs/sm_gib2/tris.md2");
-	sm_meat_index = gi.modelindex("models/objects/gibs/sm_gib3/tris.md2");
-	sm_meat_index = gi.modelindex("models/objects/gibs/sm_gib4/tris.md2");
-	sm_meat_index = gi.modelindex("models/objects/gibs/sm_gib5/tris.md2");
-	gi.modelindex("models/objects/gibs/arm/tris.md2");
-	gi.modelindex("models/objects/gibs/bone/tris.md2");
-	gi.modelindex("models/objects/gibs/bone2/tris.md2");
-	gi.modelindex("models/objects/gibs/chest/tris.md2");
-	gi.modelindex("models/objects/gibs/skull/tris.md2");
-
-	// VWEP STUFF
-
-	gi.modelindex("#w_ak42.md2");
-	gi.modelindex("#w_sword.md2");
-	gi.modelindex("#w_chainsaw.md2");
-	gi.modelindex("#w_sshotgun.md2");
-	gi.modelindex("#w_bow.md2");
-	gi.modelindex("#w_airfist.md2");
-	gi.modelindex("#a_grenades1.md2");
-	gi.modelindex("#w_glauncher1.md2");
-	gi.modelindex("#w_xlauncher.md2");
-	gi.modelindex("#w_rlauncher.md2");
-	gi.modelindex("#w_hyperblaster.md2");
-	gi.modelindex("#w_railgun.md2");
-	gi.modelindex("#w_buzzsaw.md2");
-	gi.modelindex("#w_bfg.md2");
-	gi.modelindex("#a_vortex.md2");
-	gi.modelindex("#a_rturret.md2");
+	PrecacheItem(it_ak42);
+	PreCacheAll();
 
 	if (lightsoff->value == 0)
 	{

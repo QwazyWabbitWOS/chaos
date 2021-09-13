@@ -138,6 +138,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="classes.h" />
+    <ClInclude Include="classindex.h" />
     <ClInclude Include="c_base.h" />
     <ClInclude Include="c_botai.h" />
     <ClInclude Include="c_botnav.h" />

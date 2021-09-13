@@ -1944,8 +1944,6 @@ void ClientDisconnect (edict_t *ent)
 	else if (ent->client->resp.ctf_team == 2)
 		numblue--;
 
-	bprintf2 (PRINT_HIGH, "%s disconnected\n", ent->client->pers.netname);
-
 //ZOID
 	CTFDeadDropFlag(ent);
 	CTFDeadDropTech(ent);
@@ -1966,6 +1964,7 @@ void ClientDisconnect (edict_t *ent)
 
 	playernum = ent-g_edicts-1;
 	gi.configstring (CS_PLAYERSKINS+playernum, "");
+	bprintf2(PRINT_HIGH, "%s disconnected\n", ent->client->pers.netname);
 }
 
 
