@@ -131,7 +131,7 @@ void AngleMove_Done(edict_t* ent)
 
 void AngleMove_Final(edict_t* ent)
 {
-	vec3_t	move;
+	vec3_t	move = { 0 };
 
 	if (ent->moveinfo.state == STATE_UP)
 		VectorSubtract(ent->moveinfo.end_angles, ent->s.angles, move);
@@ -152,7 +152,7 @@ void AngleMove_Final(edict_t* ent)
 
 void AngleMove_Begin(edict_t* ent)
 {
-	vec3_t	destdelta;
+	vec3_t	destdelta = { 0 };
 	float	len;
 	float	traveltime;
 	float	frames;

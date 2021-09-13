@@ -137,6 +137,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="b_log.h" />
     <ClInclude Include="classes.h" />
     <ClInclude Include="classindex.h" />
     <ClInclude Include="c_base.h" />
@@ -160,6 +161,7 @@
     <None Include="Makefile" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="b_log.c" />
     <ClCompile Include="c_base.c" />
     <ClCompile Include="c_botai.c" />
     <ClCompile Include="c_botmisc.c" />

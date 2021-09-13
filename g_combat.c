@@ -13,7 +13,7 @@ explosions and melee attacks.
 */
 qboolean CanDamage(edict_t* targ, edict_t* inflictor)
 {
-	vec3_t	dest;
+	vec3_t	dest = { 0 };
 	trace_t	trace;
 
 	// bmodels need special checking because their origin is 0,0,0
@@ -164,7 +164,7 @@ static int CheckPowerArmor(edict_t* ent, vec3_t point, vec3_t normal, int damage
 
 	if (power_armor_type == POWER_ARMOR_SCREEN)
 	{
-		vec3_t		vec;
+		vec3_t		vec = { 0 };
 		float		dot;
 		vec3_t		forward;
 
@@ -432,8 +432,8 @@ void T_RadiusDamage(edict_t* inflictor, edict_t* attacker, float damage, edict_t
 {
 	float	points;
 	edict_t* ent = NULL;
-	vec3_t	v;
-	vec3_t	dir;
+	vec3_t	v = { 0 };
+	vec3_t	dir = { 0 };
 
 	while ((ent = findradius(ent, inflictor->s.origin, radius)) != NULL)
 	{

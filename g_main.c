@@ -28,9 +28,9 @@ cvar_t* maxclients;
 cvar_t* maxentities;
 cvar_t* g_select_empty;
 cvar_t* dedicated;
-cvar_t	*game_dir;
-cvar_t	*g_maplistfile;
-cvar_t	*g_maplistmode;
+cvar_t* game_dir;
+cvar_t* g_maplistfile;
+cvar_t* g_maplistmode;
 
 cvar_t* sv_maxvelocity;
 cvar_t* sv_gravity;
@@ -82,7 +82,6 @@ void  ShutdownGame(void)
 	gi.FreeTags(TAG_GAME);
 
 }
-
 
 /*
 =================
@@ -206,20 +205,17 @@ void EndDMLevel(void)
 	}
 	else if (maplist.mlflag > 0)
 	{
+		switch (maplist.mlflag)
 		{
-			switch (maplist.mlflag)
-			{
-			case ML_ROTATE_SEQ:
-				i = (maplist.currentmap + 1) % maplist.nummaps;
-				break;
-			case ML_ROTATE_RANDOM:
-				i = (int)(random() * maplist.nummaps);
-				break;
-			default:
-				i = maplist.currentmap;
-			}
+		case ML_ROTATE_SEQ:
+			i = (maplist.currentmap + 1) % maplist.nummaps;
+			break;
+		case ML_ROTATE_RANDOM:
+			i = (int)(random() * maplist.nummaps);
+			break;
+		default:
+			i = maplist.currentmap;
 		}
-
 		maplist.currentmap = i;
 
 		if (maplist.ctf[i] == '1')
