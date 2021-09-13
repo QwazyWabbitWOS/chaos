@@ -88,9 +88,9 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <LanguageStandard_C>stdc17</LanguageStandard_C>
       <CompileAs>CompileAsC</CompileAs>
       <DisableSpecificWarnings>4996;5105;%(DisableSpecificWarnings)</DisableSpecificWarnings>
+      <LanguageStandard_C>stdc17</LanguageStandard_C>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -102,9 +102,9 @@
     <ClCompile>
       <WarningLevel>Level4</WarningLevel>
       <PreprocessorDefinitions>WIN32;NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <LanguageStandard_C>stdc17</LanguageStandard_C>
       <CompileAs>CompileAsC</CompileAs>
       <DisableSpecificWarnings>4996;5105;%(DisableSpecificWarnings)</DisableSpecificWarnings>
+      <LanguageStandard_C>stdc17</LanguageStandard_C>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -118,9 +118,9 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <LanguageStandard_C>stdc17</LanguageStandard_C>
       <CompileAs>CompileAsC</CompileAs>
       <DisableSpecificWarnings>4996;5105;%(DisableSpecificWarnings)</DisableSpecificWarnings>
+      <LanguageStandard_C>stdc17</LanguageStandard_C>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -136,9 +136,9 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <LanguageStandard_C>stdc17</LanguageStandard_C>
       <CompileAs>CompileAsC</CompileAs>
       <DisableSpecificWarnings>4996;5105;%(DisableSpecificWarnings)</DisableSpecificWarnings>
+      <LanguageStandard_C>stdc17</LanguageStandard_C>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
