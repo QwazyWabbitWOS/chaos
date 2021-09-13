@@ -10,7 +10,7 @@
 BUILD_DEBUG_DIR=debug
 BUILD_RELEASE_DIR=release
 
-CC=gccgcc -std=c18 -Wall -Wpedantic
+CC=gccgcc -std=c11 -Wall -Wpedantic
 
 # Base Flags
 # If you want to add a CFLAG to be included in both the
