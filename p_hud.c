@@ -196,21 +196,20 @@ void BeginIntermission(edict_t* targ)
 	red_base = -1;
 }
 
-
 /*
 ==================
 DeathmatchScoreboardMessage
 
 ==================
 */
-void DeathmatchScoreboardMessage(edict_t* ent, edict_t* killer)
+void DeathmatchScoreboardMessage(edict_t* ent, edict_t* killer /* MrG{DRGN} can be NULL */)
 {
 	char	entry[1024];
 	char	string[1400];
-	size_t	stringlength;
+	size_t	stringlength;/* MrG{DRGN} was int stringlength. This resolves possible loss of data */
 	int		i;
-	size_t	j;
-	int		k;
+	int j;
+	int	k;
 	int		sorted[MAX_CLIENTS];
 	int		sortedscores[MAX_CLIENTS];
 	int		score, total;
@@ -219,6 +218,12 @@ void DeathmatchScoreboardMessage(edict_t* ent, edict_t* killer)
 	edict_t* cl_ent;
 	char* tag;
 
+	/* MrG{DRGN} sanity check */
+	if (!ent)
+	{
+		return;
+	}
+	/* END */
 
 	if (ent->client->showscores || ent->client->showinventory)
 		if (ent->client->scanneractive > 0)
@@ -226,7 +231,6 @@ void DeathmatchScoreboardMessage(edict_t* ent, edict_t* killer)
 
 	if (ent->client->showscores)
 	{
-
 		if (ctf->value) {
 			CTFScoreboardMessage(ent, killer);
 			return;
@@ -283,10 +287,11 @@ void DeathmatchScoreboardMessage(edict_t* ent, edict_t* killer)
 			{
 				Com_sprintf(entry, sizeof(entry),
 					"xv %i yv %i picn %s ", x + 32, y, tag);
-				j = strlen(entry);
+				j = (int)strlen(entry); /* MrG{DRGN} changed to fix conversion from 'size_t' to 'int', possible loss of data*/
 				if (stringlength + j > 1024)
 					break;
-				strcpy(string + stringlength, entry);
+				/*	MrG{DRGN} destination safe strcpy replacement */
+				Com_strcpy(string + stringlength, sizeof(string), entry);
 				stringlength += j;
 			}
 
@@ -294,10 +299,11 @@ void DeathmatchScoreboardMessage(edict_t* ent, edict_t* killer)
 			Com_sprintf(entry, sizeof(entry),
 				"client %i %i %i %i %i %i ",
 				x, y, sorted[i], cl->resp.score, cl->ping, (level.framenum - cl->resp.enterframe) / 600);
-			j = strlen(entry);
+			j = (int)strlen(entry); /* MrG{DRGN} changed to fix conversion from 'size_t' to 'int', possible loss of data*/
 			if (stringlength + j > 1024)
 				break;
-			strcpy(string + stringlength, entry);
+			/*	MrG{DRGN} destination safe strcpy replacement */
+			Com_strcpy(string + stringlength, sizeof(string), entry);
 			stringlength += j;
 		}
 	}
@@ -312,7 +318,6 @@ void DeathmatchScoreboardMessage(edict_t* ent, edict_t* killer)
 	gi.WriteString(string);
 }
 
-
 /*
 ==================
 DeathmatchScoreboard
@@ -326,7 +331,6 @@ void DeathmatchScoreboard(edict_t* ent)
 	DeathmatchScoreboardMessage(ent, ent->enemy);
 	gi.unicast(ent, true);
 }
-
 
 /*
 ==================
@@ -358,14 +362,13 @@ void Cmd_Score_f(edict_t* ent)
 	DeathmatchScoreboard(ent);
 }
 
-
-/*
+/* MrG{DRGN} no longer used, was never actually reached in code.
 ==================
 HelpComputer
 
 Draw help computer.
 ==================
-*/
+
 void HelpComputer(edict_t* ent)
 {
 	char	string[1024];
@@ -400,8 +403,7 @@ void HelpComputer(edict_t* ent)
 	gi.WriteByte(svc_layout);
 	gi.WriteString(string);
 	gi.unicast(ent, true);
-}
-
+}*/
 
 /*
 ==================
@@ -412,22 +414,21 @@ Display the current help message
 */
 void Cmd_Help_f(edict_t* ent)
 {
-
 	//FWP Avoid crashing if ent->classname undefined
 	if (!ent->classname)
 		return;
 
-	// this is for backwards compatability
+	/* this is for backwards compatibility */
 
 	if (strcmp(ent->classname, "bot") == 0) //MATTHIAS
 		return;
 
-	if (deathmatch->value)
+	/* MrG{DRGN} always DM if (deathmatch->value) */
 	{
 		Cmd_Score_f(ent);
 		return;
 	}
-
+	/* MrG{DRGN} Unreachable code
 	ent->client->showinventory = false;
 	ent->client->showscores = false;
 
@@ -440,8 +441,9 @@ void Cmd_Help_f(edict_t* ent)
 	ent->client->showhelp = true;
 	ent->client->resp.helpchanged = 0;
 	HelpComputer(ent);
-}
 
+	END */
+}
 
 //=======================================================================
 
@@ -453,8 +455,7 @@ G_SetStats
 void G_SetStats(edict_t* ent)
 {
 	gitem_t* item;
-	int			index;
-	int			cells = 0;
+	int			index, cells = 0; /* MrG{DRGN} initialized */
 	int			power_armor_type;
 
 	//
@@ -484,12 +485,12 @@ void G_SetStats(edict_t* ent)
 	power_armor_type = PowerArmorType(ent);
 	if (power_armor_type)
 	{
-		cells = ent->client->pers.inventory[ITEM_INDEX(FindItem("cells"))];
+		cells = ent->client->pers.inventory[ITEM_INDEX(it_cells)];/* MrG{DRGN}*/
 		if (cells == 0)
 		{	// ran out of cells for power armor
 			ent->flags &= ~FL_POWER_ARMOR;
 			gi.sound(ent, CHAN_ITEM, gi.soundindex("misc/power2.wav"), 1, ATTN_NORM, 0);
-			power_armor_type = 0;;
+			power_armor_type = 0;
 		}
 	}
 
@@ -580,21 +581,21 @@ void G_SetStats(edict_t* ent)
 	//
 	ent->client->ps.stats[STAT_LAYOUTS] = 0;
 
-	if (deathmatch->value)
+	/* MrG{DRGN} always DM if (deathmatch->value) */
 	{
 		if (ent->client->pers.health <= 0 || level.intermissiontime
 			|| ent->client->showscores || ent->client->scanneractive > 0)
 			ent->client->ps.stats[STAT_LAYOUTS] |= 1;
 		if (ent->client->showinventory && ent->client->pers.health > 0)
 			ent->client->ps.stats[STAT_LAYOUTS] |= 2;
-	}
+	}/*
 	else
 	{
 		if (ent->client->showscores || ent->client->showhelp)
 			ent->client->ps.stats[STAT_LAYOUTS] |= 1;
 		if (ent->client->showinventory && ent->client->pers.health > 0)
 			ent->client->ps.stats[STAT_LAYOUTS] |= 2;
-	}
+	}*/
 
 	//
 	// frags

@@ -819,7 +819,7 @@ void SP_func_button(edict_t* ent)
 	ent->solid = SOLID_BSP;
 	ent->classindex = FUNC_BUTTON; /* MrG{DRGN} */
 	gi.setmodel(ent, ent->model);
-
+	
 	if (ent->sounds != 1)
 		ent->moveinfo.sound_start = gi.soundindex("switches/butn2.wav");
 

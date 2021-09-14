@@ -4,7 +4,6 @@
 #include "c_botai.h"
 #include "c_cam.h"
 #include "m_player.h"
-#include "stdlog.h"
 #include "gslog.h"
 
 ///------------------------------------------------------------------------------------------
@@ -140,8 +139,9 @@ void Bot_Create(int accuracy_level, int team, char* name, char* skin)
 	int       i;
 	char      userinfo[MAX_INFO_STRING];
 	edict_t* bot = NULL; /* MrG{DRGN} initialized */
+	int mcv = (int)maxclients->value;/* MrG{DRGN} check once */
 
-	for (i = maxclients->value; i > 0; i--)
+	for (i = (mcv); i > 0; i--) /* MrG{DRGN} use here */
 	{
 		bot = g_edicts + i + 1;
 		if (!bot->inuse)
@@ -478,7 +478,7 @@ void bot_die(edict_t* self, edict_t* inflictor, edict_t* attacker, int damage, v
 				break;
 			}
 			gi.sound(self, CHAN_VOICE, gi.soundindex(va("*death%i.wav", (rand() % 4) + 1)), 1, ATTN_NORM, 0);
-			self->s.modelindex = (PLAYER_MODEL); /* MrG{DRGN} no Magic Number 255 */
+			self->s.modelindex = PLAYER_MODEL; /* MrG{DRGN} no Magic Number 255 */
 		}
 	}
 

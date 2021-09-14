@@ -823,7 +823,7 @@ void FakeDeath(edict_t* self)
 		else
 			gi.sound(self, CHAN_VOICE, gi.soundindex("misc/fakedeath.wav"), 1, ATTN_NORM, 0);
 
-		self->s.modelindex = (PLAYER_MODEL); /* MrG{DRGN} no Magic Number 255 */
+		self->s.modelindex = PLAYER_MODEL; /* MrG{DRGN} no Magic Number 255 */
 		self->deadflag = DEAD_DEAD;
 
 
@@ -862,7 +862,7 @@ void FakeDeath(edict_t* self)
 		self->client->ps.gunindex = gi.modelindex(self->client->pers.weapon->view_model);
 
 		self->s.effects = 0;
-		self->s.modelindex = (PLAYER_MODEL); /* MrG{DRGN} no Magic Number 255 */
+		self->s.modelindex = PLAYER_MODEL; /* MrG{DRGN} no Magic Number 255 */
 
 		self->s.origin[2] += 1;  // make sure off ground
 

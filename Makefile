@@ -1,8 +1,11 @@
-#
+# 
 # Makefile				Chaotic Dreams Makefile
 #
 # Major'Trips'
 # Sat May 22 00:08:36 CDT 1999
+#
+# MrG{DRGN}
+# Sat Nov 21 2020 added b_log.c
 #
 #	This file was originally part of the Quake2 3.20 source tree.
 #	I simply barrowed it for inclusion here.
@@ -10,7 +13,7 @@
 BUILD_DEBUG_DIR=debug
 BUILD_RELEASE_DIR=release
 
-CC=gccgcc -std=c11 -Wall -Wpedantic
+CC=gcc -std=c11 -Wall -Wpedantic
 
 # Base Flags
 # If you want to add a CFLAG to be included in both the
@@ -61,6 +64,7 @@ all: build_debug build_release
 targets: $(TARGETS)
 
 GAME_OBJS = \
+	$(BUILDDIR)/b_log.o \
 	$(BUILDDIR)/c_base.o \
 	$(BUILDDIR)/c_botai.o \
 	$(BUILDDIR)/c_botmisc.o \
@@ -96,6 +100,8 @@ GAME_OBJS = \
 $(BUILDDIR)/game$(ARCH).$(SHLIBEXT) : $(GAME_OBJS)
 	$(CC) $(SHLIBLDFLAGS) $(CFLAGS) -o $@ $(GAME_OBJS)
 
+$(BUILDDIR)/b_log.o : b_log.c
+	$(DO_SHLIB_CC)
 
 $(BUILDDIR)/c_base.o : c_base.c
 	$(DO_SHLIB_CC)

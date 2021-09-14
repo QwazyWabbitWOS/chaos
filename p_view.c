@@ -82,7 +82,7 @@ void P_DamageFeedback(edict_t* player)
 		return;		// didn't take any damage
 
 	// start a pain animation if still in the player model
-	if (client->anim_priority < ANIM_PAIN && player->s.modelindex == (PLAYER_MODEL)) /* MrG{DRGN} no Magic Number 255 */
+	if (client->anim_priority < ANIM_PAIN && player->s.modelindex == PLAYER_MODEL) /* MrG{DRGN} no Magic Number 255 */
 	{
 		static int		i;
 
@@ -1031,7 +1031,7 @@ void G_SetClientFrame(edict_t* ent)
 	}
 	/* END */
 
-	if (ent->s.modelindex != (PLAYER_MODEL)) /* MrG{DRGN} no Magic Number 255 */
+	if (ent->s.modelindex != PLAYER_MODEL) /* MrG{DRGN} no Magic Number 255 */
 		return;		// not in the player model
 
 	client = ent->client;

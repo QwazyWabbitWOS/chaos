@@ -481,7 +481,7 @@ void SP_light(edict_t* self)
 		else
 			gi.configstring(CS_LIGHTS + self->style, "m");
 	}
-
+	
 }
 
 /*QUAKED func_wall (0 .5 .8) ? TRIGGER_SPAWN TOGGLE START_ON ANIMATED ANIMATED_FAST
