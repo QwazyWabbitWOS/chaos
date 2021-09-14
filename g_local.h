@@ -1,4 +1,4 @@
-// g_local.h -- local definitions for game module
+﻿// g_local.h -- local definitions for game module
 #pragma once
 
 #include "q_shared.h"
@@ -1211,11 +1211,12 @@ cvar_t* dntg;
 cvar_t* lasermine_health;
 cvar_t* ex_arrow_damage;
 cvar_t* ex_arrow_radius;
-cvar_t* cosg; // FWP Debugging var, core on shutdown game
+//cvar_t* cosg; // FWP Debugging var, core on shutdown game
 
 cvar_t* start_invulnerable_time;
 int		red_base, blue_base;	//node at red/blue flag
-
+cvar_t* drop_tech;	/* MrG{DRGN} tech drop prevention */
+cvar_t* weapon_kick; /* MrG{DRGN} kickable weapons toggle */
 //#define CHAOS_RETAIL
 
 //ZOID

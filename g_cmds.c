@@ -458,19 +458,21 @@ void Cmd_Drop_f(edict_t* ent)
 	char* s;
 
 	//ZOID--special case for tech powerups
-	if (Q_stricmp(gi.args(), "tech") == 0 && (it = CTFWhat_Tech(ent)) != NULL) {
+	if (Q_stricmp(gi.args(), "tech") == 0 && (it = CTFWhat_Tech(ent)) != NULL)
+	{
 		it->drop(ent, it);
 		return;
 	}
 	//ZOID
-
 	s = gi.args();
 	it = FindItem(s);
+
 	if (!it)
 	{
 		cprintf2(ent, PRINT_HIGH, "unknown item: %s\n", s);
 		return;
 	}
+
 	if (!it->drop)
 	{
 		cprintf2(ent, PRINT_HIGH, "Item is not dropable.\n");
@@ -1056,7 +1058,16 @@ void ClientCommand(edict_t* ent)
 	if (Q_stricmp(cmd, "use") == 0)
 		Cmd_Use_f(ent);
 	else if (Q_stricmp(cmd, "drop") == 0)
-		Cmd_Drop_f(ent);
+	{
+		/* MrG{DRGN} tech drop prevention */
+		if ((Q_stricmp(gi.args(), "tech") == 0) && (!drop_tech->value))
+		{
+			cprintf2(ent, PRINT_HIGH, "Tech drop is disabled by the admin!\n");
+			return;
+		}
+		else
+			Cmd_Drop_f(ent);
+	}
 	else if (Q_stricmp(cmd, "give") == 0)
 		Cmd_Give_f(ent);
 	else if (Q_stricmp(cmd, "god") == 0)

@@ -284,10 +284,13 @@ void GetSettings()
 	ex_arrow_radius = gi.cvar("ex_arrow_radius", "200", CVAR_LATCH);
 
 	dntg = gi.cvar("dntg", "1", CVAR_SERVERINFO);
-	cosg = gi.cvar("cosg", "0", CVAR_SERVERINFO);
+	//cosg = gi.cvar("cosg", "0", CVAR_SERVERINFO);	  Frederico's null ptr thing
 	start_invulnerable_time = gi.cvar("start_invulnerable_time", "3", CVAR_SERVERINFO);
 	lightsoff = gi.cvar("lightsoff", "0", CVAR_SERVERINFO);
 	botchat = gi.cvar("botchat", "1", CVAR_SERVERINFO);
+
+	drop_tech = gi.cvar("drop_tech", "1", CVAR_LATCH); /* MrG{DRGN} tech drop prevention */
+	weapon_kick = gi.cvar("weapon_kick", "1", CVAR_LATCH); /* MrG{DRGN} kickable weapons toggle */
 
 	ban_sword = gi.cvar("ban_sword", "0", CVAR_LATCH);
 	ban_chainsaw = gi.cvar("ban_chainsaw", "0", CVAR_LATCH);
@@ -1522,34 +1525,7 @@ void Use_Grenades(edict_t* ent)
 }
 
 
-/* MrG{DRGN} for testing */
-void ED_CallSpawn(edict_t* ent);
-void Cmd_Spawn_f(edict_t* ent)
-{
-	char* param = NULL;
-	edict_t* spawn = NULL;
 
-
-	param = gi.argv(1);
-
-	if (param && strlen(param))
-	{
-		vec3_t forward;
-		spawn = G_Spawn();
-		spawn->classname = param;
-		AngleVectors(ent->s.angles, forward, NULL, NULL);
-		VectorMA(ent->s.origin, 256, forward, spawn->s.origin);
-		spawn->s.origin[2] += 32;
-		/* spawn->s.angles[3] = (0,0,0); */
-		VectorCopy(ent->s.angles, spawn->s.angles);
-		ED_CallSpawn(spawn);
-		gi.unlinkentity(spawn);
-		KillBox(spawn);
-		gi.linkentity(spawn);
-		spawn->s.renderfx |= RF_IR_VISIBLE;
-	}
-}
-/* END */
 ///------------------------------------------------------------------------------------------
 /// Command handling
 ///------------------------------------------------------------------------------------------
@@ -1986,6 +1962,9 @@ void ClientCommand2(edict_t* ent)
 
 		while ((blip = findradius2(blip, ent->s.origin, 100)) != NULL)
 		{
+			if ((blip->classindex >= W_BLASTER && blip->classindex <= W_BFG) && (!weapon_kick->value))
+				return;
+
 			/*if (blip->client
 				|| blip->item
 				|| Q_stricmp(blip->classname, "bolt") == 0
@@ -2013,6 +1992,8 @@ void ClientCommand2(edict_t* ent)
 					&& Q_stricmp(blip->classname, "item_flag_team2") != 0) // MrG{DRGN} Not kickable!
 					*/
 					/* MrG{DRGN} much faster than a string comparison!*/
+
+
 			if (blip->client
 				|| blip->item
 				|| blip->classindex == BOLT
@@ -2045,6 +2026,7 @@ void ClientCommand2(edict_t* ent)
 							continue;
 						if (!infront(ent, blip))
 							continue;
+
 
 						AngleVectors(ent->client->v_angle, forward, NULL, NULL);
 
@@ -2167,13 +2149,7 @@ void ClientCommand2(edict_t* ent)
 			cprintf2(ent, PRINT_HIGH, "%s\n", current->classname);
 			current = current->next_listitem;	//go to next item in list
 		}
-	}/* MrG{DRGN} for debugging */
-	else if (Q_stricmp(cmd, "spawn") == 0)
-	{
-		Cmd_Spawn_f(ent);
-		return;
 	}
-
 	else if (Q_stricmp(cmd, "gameversion") == 0)
 	{
 		gi.cprintf(ent, PRINT_HIGH, "%s : %s : %s\n", GAMEVERSION, __DATE__, __TIME__);
