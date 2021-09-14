@@ -1211,7 +1211,7 @@ cvar_t* dntg;
 cvar_t* lasermine_health;
 cvar_t* ex_arrow_damage;
 cvar_t* ex_arrow_radius;
-//cvar_t* cosg; // FWP Debugging var, core on shutdown game
+
 
 cvar_t* start_invulnerable_time;
 int		red_base, blue_base;	//node at red/blue flag

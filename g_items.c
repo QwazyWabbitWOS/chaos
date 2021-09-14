@@ -182,21 +182,19 @@ void DoRespawn(edict_t* ent)
 		//in ctf, when we are weapons stay, only the master of a team of weapons
 		//is spawned
 		if (ctf->value &&
-			((int)dmflags->value & DF_WEAPONS_STAY) && master->item && (master->item->flags & IT_WEAPON))
+			((int)dmflags->value & DF_WEAPONS_STAY) &&
+			master->item && (master->item->flags & IT_WEAPON))
 			ent = master;
 		else {
-			//ZOID
+			count = 0;
+			for (ent = master; ent; ent = ent->chain)
+				count++;
 
-			for (count = 0, ent = master; ent; ent = ent->chain, count++)
-				;
-			/* MrG{DRGN}  let's not potentially divide by 0
-			choice = rand() % count;
-			 */
 			choice = count ? rand() % count : 0;
-			/* END */
 
-			for (count = 0, ent = master; count < choice; ent = ent->chain, count++)
-				;
+			count = 0;
+			for (ent = master; count < choice; ent = ent->chain)
+				count++;
 		}
 	}
 	//MATTHIAS - Weapon/Item exchange
