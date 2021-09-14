@@ -75,9 +75,6 @@ void G_RunFrame(void);
 
 void  ShutdownGame(void)
 {
-	/*NrG{DRGN} not sure what Frederico was trying to accomplish here
-	int* ptr; */
-
 	gi.dprintf("==== Shutdown Chaos DM Lives ====\n");
 
 	sl_GameEnd(&gi, level);	// StdLog - Mark Davies
@@ -85,16 +82,11 @@ void  ShutdownGame(void)
 	gi.FreeTags(TAG_GAME);
 
 #ifdef _WIN32
-	OutputDebugString("ShutdownGame() called.\n");
+	OutputDebugString("ShutdownGame() was called.\n");
 	_CrtMemDumpAllObjectsSince(&startup1);
 	_CrtMemDumpStatistics(&startup1);
 	_CrtDumpMemoryLeaks();
 #endif
-	/*NrG{DRGN} not sure what Frederico was trying to accomplish here
-	if (cosg->value > 0) {
-		ptr = 0;
-		*ptr = 0;
-	}	*/
 }
 
 /*

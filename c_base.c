@@ -284,7 +284,6 @@ void GetSettings()
 	ex_arrow_radius = gi.cvar("ex_arrow_radius", "200", CVAR_LATCH);
 
 	dntg = gi.cvar("dntg", "1", CVAR_SERVERINFO);
-	cosg = gi.cvar("cosg", "0", CVAR_SERVERINFO);
 	start_invulnerable_time = gi.cvar("start_invulnerable_time", "3", CVAR_SERVERINFO);
 	lightsoff = gi.cvar("lightsoff", "0", CVAR_SERVERINFO);
 	botchat = gi.cvar("botchat", "1", CVAR_SERVERINFO);
