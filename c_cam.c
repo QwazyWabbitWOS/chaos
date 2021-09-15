@@ -523,7 +523,7 @@ void RepositionAtPlayer(edict_t* ent)
 			tr.endpos[2] += 4;
 	}
 
-	if (abs(tr.endpos[0] - ent->s.origin[0]) > 12)
+	if (fabs(tr.endpos[0] - ent->s.origin[0]) > 12)
 	{
 		if (tr.endpos[0] > ent->s.origin[0])
 		{
@@ -539,7 +539,7 @@ void RepositionAtPlayer(edict_t* ent)
 		ent->s.origin[0] = tr.endpos[0];
 	}
 
-	if (abs(tr.endpos[1] - ent->s.origin[1]) > 12)
+	if (fabs(tr.endpos[1] - ent->s.origin[1]) > 12)
 	{
 		if (tr.endpos[1] > ent->s.origin[1])
 		{
@@ -555,7 +555,7 @@ void RepositionAtPlayer(edict_t* ent)
 		ent->s.origin[1] = tr.endpos[1];
 	}
 
-	if (abs(tr.endpos[2] - ent->s.origin[2]) > 10)
+	if (fabs(tr.endpos[2] - ent->s.origin[2]) > 10)
 	{
 		if (tr.endpos[2] > ent->s.origin[2])
 		{

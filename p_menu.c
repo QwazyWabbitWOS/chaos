@@ -1,4 +1,4 @@
-#include "g_local.h"
+﻿#include "g_local.h"
 
 void PMenu_Open(edict_t* ent, pmenu_t* entries, int cur, int num)
 {
@@ -90,7 +90,7 @@ void PMenu_Update(edict_t* ent)
 		else
 			x = 64;
 
-		sprintf(string + strlen(string), "xv %u ",
+		sprintf(string + strlen(string), "xv %i ",/* MrG{DRGN} this is okay as %i, after QW's casting */
 			x - ((hnd->cur == i) ? 8 : 0));
 
 		if (hnd->cur == i)
