@@ -10,75 +10,73 @@
 /// Command handling
 ///------------------------------------------------------------------------------------------
 #define MAX_BOTS ((int)maxclients->value -2)
-void Svcmd_addbots_f()	// adds "num" bots.
+
+void Svcmd_addbots_f(void)	// adds "num" bots.
 {
-	int		i, num, skill_level, team;
+	int		i, num, bot_skill, team;
 	char	name[64], model[128];
 
-	// sv addbots <amount> <skill_level> <team> <name> <model/skin>
+	// sv addbots <amount> <skill> <team> <name> <model/skin>
 
 	num = atoi(gi.argv(2));
-	skill_level = atoi(gi.argv(3));
+	bot_skill = atoi(gi.argv(3));
 	team = atoi(gi.argv(4));
-	/*	MrG{DRGN} destination safe strcpy replacement*/
-	Com_strcpy(name, sizeof(name), gi.argv(5));
+	Com_strcpy(name, sizeof name, gi.argv(5));
 
-	if (skill_level == 0)
-		skill_level = 3;
+	if (bot_skill == 0)
+		bot_skill = 3;
 
 	if (num == 0)	// spawn 0 bots ???
 		return;
 	else if (num == 1)
 	{
-		if (numbots >= MAX_BOTS)
+		if (numbots >= 10)
 		{
-			gi.cprintf(NULL, PRINT_HIGH, "You can't spawn more than %i Havoc-Bots!\n", MAX_BOTS);
+			gi.cprintf(NULL, PRINT_HIGH, "You can't spawn more than 10 Havoc-Bots!\n");
 			return;
 		}
 
 		// set the model
 		if (Q_stricmp(gi.argv(6), "") == 0)
 		{
-			Com_Printf(model, Get_RandomBotSkin());
+			Com_sprintf(model, sizeof model, Get_RandomBotSkin());
 		}
 		else
-			Com_Printf(model, gi.argv(6));
+			Com_sprintf(model, sizeof model, gi.argv(6));
 
 		// set the name
 		if (Q_stricmp(name, "") == 0
 			|| Q_stricmp(name, " ") == 0)
 		{
-			/*	MrG{DRGN} destination safe strcpy replacement */
-			Com_strcpy(name, sizeof(name), (strchr(model, '/') + 1));
+			Com_strcpy(name, sizeof name, (strchr(model, '/') + 1));
 		}
 
-		Bot_Create(skill_level, team, name, model);
+		Bot_Create(bot_skill, team, name, model);
 	}
 	else
 	{
 		for (i = 0; i < num; i++)
 		{
-			if (numbots >= MAX_BOTS)
+			if (numbots >= 10)
 			{
-				gi.cprintf(NULL, PRINT_HIGH, "You can't spawn more than %i Havoc-Bots!\n", MAX_BOTS);
+				gi.cprintf(NULL, PRINT_HIGH, "You can't spawn more than 10 Havoc-Bots!\n");
 				return;
 			}
 
 			// set the model
 			if (Q_stricmp(gi.argv(6), "") == 0)
 			{
-				Com_Printf(model, Get_RandomBotSkin());
+				Com_sprintf(model, sizeof model, Get_RandomBotSkin());
 			}
 			else
-				Com_Printf(model, gi.argv(6));
+				Com_sprintf(model, sizeof model, gi.argv(6));
 
 			// set the name
-			/*	MrG{DRGN} destination safe strcpy replacement*/
-			Com_strcpy(name, sizeof(name), (strchr(model, '/') + 1));
+			Com_strcpy(name, sizeof name, (strchr(model, '/') + 1));
 
 			//char *_strupr( char *string );
 
-			Bot_Create(skill_level, team, name, model);
+			Bot_Create(bot_skill, team, name, model);
 		}
 	}
 }
