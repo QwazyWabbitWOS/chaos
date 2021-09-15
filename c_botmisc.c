@@ -9,74 +9,69 @@
 ///------------------------------------------------------------------------------------------
 /// Command handling
 ///------------------------------------------------------------------------------------------
-#define MAX_BOTS ((int)maxclients->value -2)
-void Svcmd_addbots_f()	// adds "num" bots.
+
+// Adds "num" bots with specified skill, team, name and model/skin.
+// sv addbots <amount> <skill> <team> <name> <model/skin>
+void Svcmd_addbots_f(void)
 {
 	int		i, num, bot_skill, team;
 	char	name[64], model[128];
+	int		max_bots;
 
-	// sv addbots <amount> <bot_skill> <team> <name> <model/skin>
-
-	num = atoi(gi.argv(2));
-	bot_skill = atoi(gi.argv(3));
-	team = atoi(gi.argv(4));
-	/*	MrG{DRGN} destination safe strcpy replacement*/
-	Com_strcpy(name, sizeof(name), gi.argv(5));
+	num = atoi(gi.argv(2)); // quantity
+	bot_skill = atoi(gi.argv(3)); // skill
+	team = atoi(gi.argv(4)); // team number
+	Com_strcpy(name, sizeof name, gi.argv(5)); // name
+	max_bots = ((int)maxclients->value - 2);
 
 	if (bot_skill == 0)
 		bot_skill = 3;
 
-	if (num == 0)	// spawn 0 bots ???
-		return;
-	else if (num == 1)
+	if (num == 0) //QW// if num is 0 or no args given, print instructions.
 	{
-		if (numbots >= MAX_BOTS)
-		{
-			gi.cprintf(NULL, PRINT_HIGH, "You can't spawn more than %i Havoc-Bots!\n", MAX_BOTS);
-			return;
-		}
+		gi.cprintf(NULL, PRINT_HIGH, "sv addbots <amount> <skill> <team> <name> <model/skin>\n");
+		return;
+	}
 
+	else if (num == 1) //QW// adding single bot accepts optional name model/skin
+	{
 		// set the model
 		if (Q_stricmp(gi.argv(6), "") == 0)
 		{
-			Com_Printf(model, Get_RandomBotSkin());
+			Com_sprintf(model, sizeof model, Get_RandomBotSkin());
 		}
 		else
-			Com_Printf(model, gi.argv(6));
+			Com_sprintf(model, sizeof model, gi.argv(6)); // specific model
 
 		// set the name
-		if (Q_stricmp(name, "") == 0
-			|| Q_stricmp(name, " ") == 0)
+		if (Q_stricmp(name, "") == 0 || Q_stricmp(name, " ") == 0)
 		{
-			/*	MrG{DRGN} destination safe strcpy replacement */
-			Com_strcpy(name, sizeof(name), (strchr(model, '/') + 1));
+			// if no name, it's the skin of the model
+			Com_strcpy(name, sizeof name, (strchr(model, '/') + 1));
 		}
 
 		Bot_Create(bot_skill, team, name, model);
 	}
-	else
+	else // num > 1, accept only models, names will be place holder.
 	{
 		for (i = 0; i < num; i++)
 		{
-			if (numbots >= MAX_BOTS)
+			if (numbots >= max_bots)
 			{
-				gi.cprintf(NULL, PRINT_HIGH, "You can't spawn more than %i Havoc-Bots!\n", MAX_BOTS);
+				gi.cprintf(NULL, PRINT_HIGH, "You can't spawn more than %i Havoc-Bots!\n", max_bots);
 				return;
 			}
 
-			// set the model
+			// set the model, random if no argv
 			if (Q_stricmp(gi.argv(6), "") == 0)
 			{
-				Com_Printf(model, Get_RandomBotSkin());
+				Com_sprintf(model, sizeof model, Get_RandomBotSkin());
 			}
 			else
-				Com_Printf(model, gi.argv(6));
+				Com_sprintf(model, sizeof model, gi.argv(6));
 
-			// set the name
-			/*	MrG{DRGN} destination safe strcpy replacement*/
-			Com_strcpy(name, sizeof(name), (strchr(model, '/') + 1));
-
-			//char *_strupr( char *string );
+			//QW// Can this be right?? 
+			Com_strcpy(name, sizeof name, (strchr(model, '/') + 1));
 
 			Bot_Create(bot_skill, team, name, model);
 		}
