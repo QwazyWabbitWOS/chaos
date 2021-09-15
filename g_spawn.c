@@ -21,8 +21,7 @@ void SP_item_health_mega(edict_t* self);
 void SP_info_player_start(edict_t* ent);
 void SP_info_player_deathmatch(edict_t* ent);
 void SP_info_player_coop(edict_t* ent);
-/* MrG{DRGN} unused
-void SP_info_player_intermission(edict_t* ent);		  */
+void SP_info_player_intermission(edict_t* ent);
 
 void SP_func_plat(edict_t* ent);
 void SP_func_rotating(edict_t* ent);
