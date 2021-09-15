@@ -70,7 +70,7 @@ void Svcmd_addbots_f(void)
 			else
 				Com_sprintf(model, sizeof model, gi.argv(6));
 
-			//QW// Can this be right?? 
+			//QW// Can this be right??
 			Com_strcpy(name, sizeof name, (strchr(model, '/') + 1));
 
 			Bot_Create(bot_skill, team, name, model);
@@ -1226,8 +1226,12 @@ qboolean Bot_CanPickupItem(edict_t* ent, edict_t* eitem)
 		|| item == FindItemByClassindex(ITEM_FLAG_TEAM2))
 		return 0;
 
+	/* MrG{DRGN} Tweak Havoc bot health hunting routine
 	if (item == FindItem("Health") && ent->health >= ent->max_health)
+		return 0; */
+	if (item == FindItem("Health") && ent->health >= ent->max_health && (!item->classindex == (ITEM_HEALTH_MEGA | ITEM_HEALTH_SMALL)))
 		return 0;
+	/* END */
 
 	if (item == it_tech2
 		|| item == it_tech3
