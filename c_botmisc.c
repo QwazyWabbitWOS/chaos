@@ -12,19 +12,19 @@
 #define MAX_BOTS ((int)maxclients->value -2)
 void Svcmd_addbots_f()	// adds "num" bots.
 {
-	int		i, num, skill_level, team;
+	int		i, num, bot_skill, team;
 	char	name[64], model[128];
 
-	// sv addbots <amount> <skill_level> <team> <name> <model/skin>
+	// sv addbots <amount> <bot_skill> <team> <name> <model/skin>
 
 	num = atoi(gi.argv(2));
-	skill_level = atoi(gi.argv(3));
+	bot_skill = atoi(gi.argv(3));
 	team = atoi(gi.argv(4));
 	/*	MrG{DRGN} destination safe strcpy replacement*/
 	Com_strcpy(name, sizeof(name), gi.argv(5));
 
-	if (skill_level == 0)
-		skill_level = 3;
+	if (bot_skill == 0)
+		bot_skill = 3;
 
 	if (num == 0)	// spawn 0 bots ???
 		return;
@@ -52,7 +52,7 @@ void Svcmd_addbots_f()	// adds "num" bots.
 			Com_strcpy(name, sizeof(name), (strchr(model, '/') + 1));
 		}
 
-		Bot_Create(skill_level, team, name, model);
+		Bot_Create(bot_skill, team, name, model);
 	}
 	else
 	{
@@ -78,7 +78,7 @@ void Svcmd_addbots_f()	// adds "num" bots.
 
 			//char *_strupr( char *string );
 
-			Bot_Create(skill_level, team, name, model);
+			Bot_Create(bot_skill, team, name, model);
 		}
 	}
 }

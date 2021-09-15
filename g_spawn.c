@@ -21,7 +21,8 @@ void SP_item_health_mega(edict_t* self);
 void SP_info_player_start(edict_t* ent);
 void SP_info_player_deathmatch(edict_t* ent);
 void SP_info_player_coop(edict_t* ent);
-void SP_info_player_intermission(edict_t* ent);
+/* MrG{DRGN} unused
+void SP_info_player_intermission(edict_t* ent);		  */
 
 void SP_func_plat(edict_t* ent);
 void SP_func_rotating(edict_t* ent);
@@ -626,19 +627,19 @@ void SpawnEntities(char* mapname, char* entities, char* spawnpoint)
 	int			inhibit;
 	char* com_token;
 	int			i;
-	float		skill_level;
+	float		bot_skill;
 
 #ifdef DEBUG
 	LOGPRINTF("SpawnEntites\n");
 #endif
 
-	skill_level = floor(skill->value);
-	if (skill_level < 0)
-		skill_level = 0;
-	if (skill_level > 3)
-		skill_level = 3;
-	if (skill->value != skill_level)
-		gi.cvar_forceset("skill", va("%f", skill_level));
+	bot_skill = floor(skill->value);
+	if (bot_skill < 0)
+		bot_skill = 0;
+	if (bot_skill > 3)
+		bot_skill = 3;
+	if (skill->value != bot_skill)
+		gi.cvar_forceset("skill", va("%f", bot_skill));
 
 	SaveClientData();
 
