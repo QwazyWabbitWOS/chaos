@@ -404,6 +404,7 @@ void fire_turretrocket(edict_t* self, vec3_t start, vec3_t dir, float speed)
 	rocket->dmg_radius = 160;
 	rocket->s.sound = gi.soundindex("weapons/turret/rockfly.wav");
 	rocket->classname = "turret_rocket";
+	rocket->classindex = RT_ROCKET;
 
 	gi.linkentity(rocket);
 }

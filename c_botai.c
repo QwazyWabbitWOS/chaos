@@ -1829,14 +1829,23 @@ void Bot_ProjectileAvoidance(edict_t* self, usercmd_t* cmd, vec3_t angles)
 
 	while ((blip = findradius(blip, self->s.origin, 150)) != NULL)
 	{
-		if (Q_stricmp(blip->classname, "arrow") == 0
+		if (
+			/* MrG{DRGN} classname to classindex
+			Q_stricmp(blip->classname, "arrow") == 0
 			|| Q_stricmp(blip->classname, "poison_arrow") == 0
 			|| Q_stricmp(blip->classname, "explosive_arrow") == 0
 			|| Q_stricmp(blip->classname, "flashgrenade") == 0
 			|| Q_stricmp(blip->classname, "lasermine") == 0
 			|| Q_stricmp(blip->classname, "poisongrenade") == 0
 			|| Q_stricmp(blip->classname, "proxymine") == 0
-			|| Q_stricmp(blip->classname, "bfg blast") == 0)
+			|| Q_stricmp(blip->classname, "bfg blast") == 0 */
+			blip->classindex == ARROW
+			|| blip->classindex == EXARROW
+			|| blip->classindex == FLASHGRENADE
+			|| blip->classindex == LASERMINE
+			|| blip->classindex == PGRENADE
+			|| blip->classindex == PROXYMINE
+			|| blip->classindex == BFG_BLAST)
 		{
 			if (!visible(self, blip))
 				continue;
@@ -1847,12 +1856,20 @@ void Bot_ProjectileAvoidance(edict_t* self, usercmd_t* cmd, vec3_t angles)
 			self->client->b_strafechange = level.time + 0.5F; /* MrG{DRGN} Explicitly now a float */
 			break;
 		}
-		if (Q_stricmp(blip->classname, "rocket") == 0
+		if (
+			/* MrG{DRGN} classname to classindex
+			Q_stricmp(blip->classname, "rocket") == 0
 			|| Q_stricmp(blip->classname, "homing") == 0
 			|| Q_stricmp(blip->classname, "buzz") == 0
 			|| Q_stricmp(blip->classname, "turret_rocket") == 0
 			|| Q_stricmp(blip->classname, "grenade") == 0
-			|| Q_stricmp(blip->classname, "hgrenade") == 0)
+			|| Q_stricmp(blip->classname, "hgrenade") == 0)	  */
+			blip->classindex == ROCKET
+			|| blip->classindex == HOMING
+			|| blip->classindex == BUZZ
+			|| blip->classindex == RT_ROCKET
+			|| blip->classindex == GRENADE
+			|| blip->classindex == HGRENADE)
 		{
 			if (!visible(self, blip))
 				continue;
