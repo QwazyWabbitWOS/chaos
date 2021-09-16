@@ -16,13 +16,12 @@ void Svcmd_addbots_f(void)
 {
 	int		i, num, bot_skill, team;
 	char	name[64], model[128];
-	int		max_bots;
 
 	num = atoi(gi.argv(2)); // quantity
 	bot_skill = atoi(gi.argv(3)); // skill
 	team = atoi(gi.argv(4)); // team number
 	Com_strcpy(name, sizeof name, gi.argv(5)); // name
-	max_bots = ((int)maxclients->value - 2);
+	int max_bots = ((int)maxclients->value - 2);  // reserve slots
 
 	if (bot_skill == 0)
 		bot_skill = 3;
@@ -30,6 +29,12 @@ void Svcmd_addbots_f(void)
 	if (num == 0) //QW// if num is 0 or no args given, print instructions.
 	{
 		gi.cprintf(NULL, PRINT_HIGH, "sv addbots <amount> <skill> <team> <name> <model/skin>\n");
+		return;
+	}
+
+	if (num > max_bots)
+	{
+		gi.cprintf(NULL, PRINT_HIGH, "You can't spawn more than %i Havoc-Bots!\n", max_bots);
 		return;
 	}
 
@@ -56,12 +61,6 @@ void Svcmd_addbots_f(void)
 	{
 		for (i = 0; i < num; i++)
 		{
-			if (numbots >= max_bots)
-			{
-				gi.cprintf(NULL, PRINT_HIGH, "You can't spawn more than %i Havoc-Bots!\n", max_bots);
-				return;
-			}
-
 			// set the model, random if no argv
 			if (Q_stricmp(gi.argv(6), "") == 0)
 			{
@@ -70,7 +69,6 @@ void Svcmd_addbots_f(void)
 			else
 				Com_sprintf(model, sizeof model, gi.argv(6));
 
-			//QW// Can this be right??
 			Com_strcpy(name, sizeof name, (strchr(model, '/') + 1));
 
 			Bot_Create(bot_skill, team, name, model);
