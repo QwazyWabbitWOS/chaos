@@ -134,8 +134,7 @@ qboolean Bot_StandingUnderPlat(edict_t* ent)
 
 	tr = gi.trace(ent->s.origin, NULL, NULL, end, NULL, MASK_SOLID);
 
-	/* MrG{DRGN}
-	if (tr.ent && (Q_stricmp(tr.ent->classname, "func_plat") == 0)) */
+	/* MrG{DRGN} classindex instead of classname */
 	if (tr.ent && (tr.ent->classindex == FUNC_PLAT))
 		return true;
 	return false;
@@ -357,9 +356,7 @@ void Bot_Think(edict_t* ent)
 						else
 							Bot_BestCloseWeapon(ent);
 					}
-					/* MrG{DRGN}
-					else if (Q_stricmp(ent->client->pers.weapon->classname, "weapon_sword") == 0
-						|| Q_stricmp(ent->client->pers.weapon->classname, "weapon_chainsaw") == 0)*/
+					/* MrG{DRGN} classindex instead of classname */
 					else if ((ent->client->pers.weapon->classindex == W_SWORD)
 						|| (ent->client->pers.weapon->classindex == W_CHAINSAW))
 					{
@@ -697,8 +694,7 @@ void Bot_Think(edict_t* ent)
 						//find the plat
 						while ((plat = findradius2(plat, nodes[ent->client->b_path[n]].origin, 300)) != NULL)
 						{
-							/*
-							if (Q_stricmp(plat->classname, "func_plat") == 0)*/
+							/* MrG{DRGN} classindex instead of classname */
 							if (plat->classindex == FUNC_PLAT)
 							{
 								//nprintf(PRINT_HIGH,"Found plat!\n");
@@ -706,8 +702,7 @@ void Bot_Think(edict_t* ent)
 							}
 						}
 
-						/* MrG{DRGN}
-						if (plat && (Q_stricmp(plat->classname, "func_plat") == 0)) */
+						/* MrG{DRGN} classindex instead of classname */
 						if (plat && plat->classindex == FUNC_PLAT)
 						{
 							if (plat->moveinfo.state == STATE_BOTTOM)
@@ -1499,8 +1494,8 @@ void Bot_Attack(edict_t* ent, usercmd_t* cmd, vec3_t angles, vec3_t target)
 			if (target[2] - ent->s.origin[2] > 8)
 				target[2] += ent->enemy->viewheight;
 			// aim explosives at feet
-			/* MrG{DRGN}
-			else if ((Q_stricmp(weapon->classname, "weapon_rocketlauncher") == 0) || (ent->enemy->client &&(ent->enemy->client ->ps.pmove.pm_flags & PMF_DUCKED)))*/
+
+			/* MrG{DRGN} classindex instead of classname */
 			else if ((weapon->classindex == W_ROCKETLAUNCHER) || (ent->enemy->client && (ent->enemy->client->ps.pmove.pm_flags & PMF_DUCKED)))
 				target[2] -= 12;
 
@@ -1511,15 +1506,12 @@ void Bot_Attack(edict_t* ent, usercmd_t* cmd, vec3_t angles, vec3_t target)
 
 			angles[0] = t_angles[0];
 
-			/* MrG{DRGN}
-			if (Q_stricmp(weapon->classname, "weapon_hyperblaster") == 0)*/
+			/* MrG{DRGN} classindex instead of classname */
 			if (weapon->classindex == W_HYPERBLASTER)
 			{
 				angles[YAW] += crandom() * (ent->client->b_botlevel) / 2;
 				angles[PITCH] += crandom() * (ent->client->b_botlevel) / 2;
-			}/* MrG{DRGN}
-			else if (Q_stricmp(weapon->classname, "weapon_rocketlauncher") == 0
-				|| Q_stricmp(weapon->classname, "weapon_hominglauncher") == 0) */
+			}/* MrG{DRGN} classindex instead of classname */
 			else if (weapon->classindex == W_ROCKETLAUNCHER
 				|| weapon->classindex == W_HOMINGLAUNCHER)
 			{
@@ -1828,18 +1820,8 @@ void Bot_ProjectileAvoidance(edict_t* self, usercmd_t* cmd, vec3_t angles)
 	edict_t* blip = NULL;
 
 	while ((blip = findradius(blip, self->s.origin, 150)) != NULL)
-	{
-		if (
-			/* MrG{DRGN} classname to classindex
-			Q_stricmp(blip->classname, "arrow") == 0
-			|| Q_stricmp(blip->classname, "poison_arrow") == 0
-			|| Q_stricmp(blip->classname, "explosive_arrow") == 0
-			|| Q_stricmp(blip->classname, "flashgrenade") == 0
-			|| Q_stricmp(blip->classname, "lasermine") == 0
-			|| Q_stricmp(blip->classname, "poisongrenade") == 0
-			|| Q_stricmp(blip->classname, "proxymine") == 0
-			|| Q_stricmp(blip->classname, "bfg blast") == 0 */
-			blip->classindex == ARROW
+	{		/* MrG{DRGN} classindex instead of classname */
+		if (blip->classindex == ARROW
 			|| blip->classindex == EXARROW
 			|| blip->classindex == FLASHGRENADE
 			|| blip->classindex == LASERMINE
@@ -1855,16 +1837,8 @@ void Bot_ProjectileAvoidance(edict_t* self, usercmd_t* cmd, vec3_t angles)
 			Bot_Strafe(self, cmd, self->client->b_strafedir, STRAFE_SPEED, angles);
 			self->client->b_strafechange = level.time + 0.5F; /* MrG{DRGN} Explicitly now a float */
 			break;
-		}
-		if (
-			/* MrG{DRGN} classname to classindex
-			Q_stricmp(blip->classname, "rocket") == 0
-			|| Q_stricmp(blip->classname, "homing") == 0
-			|| Q_stricmp(blip->classname, "buzz") == 0
-			|| Q_stricmp(blip->classname, "turret_rocket") == 0
-			|| Q_stricmp(blip->classname, "grenade") == 0
-			|| Q_stricmp(blip->classname, "hgrenade") == 0)	  */
-			blip->classindex == ROCKET
+		}	/* MrG{DRGN} classindex instead of classname */
+		if (blip->classindex == ROCKET
 			|| blip->classindex == HOMING
 			|| blip->classindex == BUZZ
 			|| blip->classindex == RT_ROCKET

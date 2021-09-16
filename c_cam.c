@@ -612,23 +612,7 @@ void FindNewTVSpot(edict_t* ent)
 			continue;
 		if (dummy->client
 			|| dummy->item
-			/*  MrG{DRGN}
-			|| Q_stricmp(dummy->classname, "bolt") == 0
-			|| Q_stricmp(dummy->classname, "grenade") == 0
-			|| Q_stricmp(dummy->classname, "hgrenade") == 0
-			|| Q_stricmp(dummy->classname, "flashgrenade") == 0
-			|| Q_stricmp(dummy->classname, "lasermine") == 0
-			|| Q_stricmp(dummy->classname, "poisongrenade") == 0
-			|| Q_stricmp(dummy->classname, "proxymine") == 0
-			|| Q_stricmp(dummy->classname, "rocket") == 0
-			|| Q_stricmp(dummy->classname, "homing") == 0
-			|| Q_stricmp(dummy->classname, "buzz") == 0
-			|| Q_stricmp(dummy->classname, "bfg blast") == 0
-			|| Q_stricmp(dummy->classname, "item_flag_team1") == 0
-			|| Q_stricmp(dummy->classname, "item_flag_team2") == 0
-			|| Q_stricmp(dummy->classname, "info_player_deathmatch") == 0
-			|| Q_stricmp(dummy->classname, "bodyque") == 0)
-			*/
+			/* MrG{DRGN} classindex instead of classname */
 			|| dummy->classindex == BOLT
 			|| dummy->classindex == ARROW
 			|| dummy->classindex == GRENADE

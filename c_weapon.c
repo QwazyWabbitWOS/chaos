@@ -625,11 +625,7 @@ void LaserTurret_Think(edict_t* ent)
 		//search enemy
 		while ((blip = findradius(blip, ent->s.origin, 1000)) != NULL)
 		{
-			/* MrG{DRGN}
-			if (blip->client
-				|| Q_stricmp(blip->classname, "proxmine") == 0                typo here should be proxymine!
-				|| Q_stricmp(blip->classname, "laser_turret") == 0
-				|| Q_stricmp(blip->classname, "rocket_turret") == 0)*/
+			/* MrG{DRGN} classindex instead of classname */
 			if (blip->client
 				|| (blip->classindex == PROXYMINE)
 				|| (blip->classindex == LTURRET)
@@ -817,11 +813,7 @@ void RocketTurret_Think(edict_t* ent)
 		//search enemy
 		while ((blip = findradius(blip, ent->s.origin, 1000)) != NULL)
 		{
-			/* MrG{DRGN}
-			if (blip->client
-				|| Q_stricmp(blip->classname, "proxymine") == 0
-				|| Q_stricmp(blip->classname, "laser_turret") == 0
-				|| Q_stricmp(blip->classname, "rocket_turret") == 0)*/
+			/* MrG{DRGN} classindex instead of classname */
 			if (blip->client
 				|| (blip->classindex == PROXYMINE)
 				|| (blip->classindex == LTURRET)
@@ -940,12 +932,7 @@ void Turret_Touch(edict_t* ent, edict_t* other, cplane_t* plane, csurface_t* sur
 		ent->count = -1;	//state
 		ent->nextthink = level.time + 1;
 
-		/* MrG{DRGN}
-		if (Q_stricmp(ent->classname, "laser_turret") == 0)
-			ent->think = LaserTurret_Think;
-		else if (Q_stricmp(ent->classname, "rocket_turret") == 0)
-			ent->think = RocketTurret_Think;
-		*/
+		/* MrG{DRGN} classindex instead of classname */
 		if (ent->classindex == LTURRET)
 			ent->think = LaserTurret_Think;
 		else if (ent->classindex == RTURRET)
@@ -1589,24 +1576,25 @@ void fire_air(edict_t* self, vec3_t start, vec3_t dir)
 	{
 		if ((blip->client && !blip->client->camera)
 			|| blip->item
-			|| Q_stricmp(blip->classname, "bolt") == 0
-			|| Q_stricmp(blip->classname, "arrow") == 0
-			|| Q_stricmp(blip->classname, "poison_arrow") == 0
-			|| Q_stricmp(blip->classname, "explosive_arrow") == 0
-			|| Q_stricmp(blip->classname, "grenade") == 0
-			|| Q_stricmp(blip->classname, "hgrenade") == 0
-			|| Q_stricmp(blip->classname, "flashgrenade") == 0
-			|| Q_stricmp(blip->classname, "lasermine") == 0
-			|| Q_stricmp(blip->classname, "poisongrenade") == 0
-			|| Q_stricmp(blip->classname, "proxymine") == 0
-			|| Q_stricmp(blip->classname, "rocket") == 0
-			|| Q_stricmp(blip->classname, "turret_rocket") == 0
-			|| Q_stricmp(blip->classname, "homing") == 0
-			|| Q_stricmp(blip->classname, "buzz") == 0
-			|| Q_stricmp(blip->classname, "bfg blast") == 0
-			|| Q_stricmp(blip->classname, "item_flag_team1") == 0
-			|| Q_stricmp(blip->classname, "item_flag_team2") == 0
-			|| Q_stricmp(blip->classname, "bodyque") == 0)
+			/* MrG{DRGN} classindex instead of classname */
+			|| blip->classindex == BOLT
+			|| blip->classindex == ARROW
+			|| blip->classindex == PARROW
+			|| blip->classindex == EXARROW
+			|| blip->classindex == GRENADE
+			|| blip->classindex == HGRENADE
+			|| blip->classindex == FLASHGRENADE
+			|| blip->classindex == LASERMINE
+			|| blip->classindex == PGRENADE
+			|| blip->classindex == PROXYMINE
+			|| blip->classindex == ROCKET
+			|| blip->classindex == RT_ROCKET
+			|| blip->classindex == HOMING
+			|| blip->classindex == BUZZ
+			|| blip->classindex == BFG_BLAST
+			|| blip->classindex == ITEM_FLAG_TEAM1
+			|| blip->classindex == ITEM_FLAG_TEAM2
+			|| blip->classindex == BODYQUE)
 		{
 			if (blip == self)
 				continue;
@@ -1614,9 +1602,12 @@ void fire_air(edict_t* self, vec3_t start, vec3_t dir)
 				continue;
 			if (!infront(self, blip))
 				continue;
-
+			/* MrG{DRGN} classname to classindex
 			if (Q_stricmp(blip->classname, "item_flag_team1") == 0
 				|| Q_stricmp(blip->classname, "item_flag_team2") == 0)
+				continue;  */
+			if (blip->classindex == ITEM_FLAG_TEAM1
+				|| blip->classindex == ITEM_FLAG_TEAM2)
 				continue;
 
 			VectorSubtract(blip->s.origin, self->s.origin, blipdir);
@@ -4796,8 +4787,11 @@ int Valid_Target(edict_t* ent, edict_t* blip)
 		 * Note:  This currently has no support for Proxies and Turrets
 		 * 	  and I doubt it will ever really be needed for them.
 		 */
+		 /* MrG{DRGN} classindex instead of classname  avoids that overhead */
+		/*
 		switch (blip->classname[0])
 		{
+
 		case 'a':
 			if (Q_stricmp(blip->classname, "arrow") == 0)
 				return true;
@@ -4864,7 +4858,36 @@ int Valid_Target(edict_t* ent, edict_t* blip)
 		default:
 			return false;
 			break;
-		}
+		}  */
+
+		if (blip->classindex == ARROW
+			|| blip->classindex == BOLT
+			|| blip->classindex == BUZZ
+			|| blip->classindex == BFG_BLAST
+			|| blip->classindex == BLACKHOLESTUFF
+			|| blip->classindex == EXARROW
+			|| blip->classindex == FLASHGRENADE
+			|| blip->classindex == GRENADE
+			|| blip->classindex == GIB
+			|| blip->classindex == HGRENADE
+			|| blip->classindex == HOMING
+			|| blip->classindex == LASERMINE
+			|| blip->classindex == LTURRET
+			|| blip->classindex == PGRENADE
+			|| blip->classindex == PARROW
+			|| blip->classindex == PROXYMINE
+			|| blip->classindex == ROCKET
+			|| blip->classindex == RTURRET
+			|| blip->classindex == RT_ROCKET)
+			return true;
+		else
+			if (blip->classindex == blip->classindex == ITEM_FLAG_TEAM1
+				|| blip->classindex == ITEM_FLAG_TEAM2
+				|| blip->classindex == ITEM_TECH1
+				|| blip->classindex == ITEM_TECH2
+				|| blip->classindex == ITEM_TECH3
+				|| blip->classindex == ITEM_TECH4)
+				return false;
 	}
 
 	/*

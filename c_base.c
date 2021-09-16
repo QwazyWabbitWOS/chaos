@@ -736,9 +736,7 @@ void FakeDeath(edict_t* self)
 		return;
 	/* END */
 
-	/* MrG{DRGN} replaced with integer comparision
-	if (Q_stricmp (self->classname, "camera") == 0)
-	*/
+	/* MrG{DRGN} classindex instead of classname */
 	if (self->classindex == CAMPLAYER || self->movetype == MOVETYPE_NOCLIP)/* MrG{DRGN} if you haven't joined a team yet. you can't fakedeath! */
 		return;
 
@@ -1964,36 +1962,7 @@ void ClientCommand2(edict_t* ent)
 		{
 			if ((blip->classindex >= W_BLASTER && blip->classindex <= W_BFG) && (!weapon_kick->value))
 				return;
-
-			/*if (blip->client
-				|| blip->item
-				|| Q_stricmp(blip->classname, "bolt") == 0
-				|| Q_stricmp(blip->classname, "arrow") == 0
-				|| Q_stricmp(blip->classname, "grenade") == 0
-				|| Q_stricmp(blip->classname, "hgrenade") == 0
-				|| Q_stricmp(blip->classname, "flashgrenade") == 0
-				|| Q_stricmp(blip->classname, "lasermine") == 0
-				|| Q_stricmp(blip->classname, "poisongrenade") == 0
-				|| Q_stricmp(blip->classname, "proxymine") == 0
-				|| Q_stricmp(blip->classname, "rocket") == 0
-				|| Q_stricmp(blip->classname, "homing") == 0
-				|| Q_stricmp(blip->classname, "buzz") == 0
-				|| Q_stricmp(blip->classname, "bfg blast") == 0
-				|| Q_stricmp(blip->classname, "item_flag_team1") == 0 // MrG{DRGN} to kick, or not to kick... that is the question? left here on mistake by prior coder!
-				|| Q_stricmp(blip->classname, "item_flag_team2") == 0// MrG{DRGN} to kick, or not to kick... that is the question?
-
-				|| Q_stricmp(blip->classname, "bodyque") == 0)
-
-				if (Q_stricmp(blip->classname, "laser_turret_base") != 0 // MrG{DRGN} This doesn't exist! Should have simply been "turret_base".
-					&& Q_stricmp(blip->classname, "rocket_turret_base") != 0 // MrG{DRGN} This doesn't exist! Should have simply been "turret_base".
-					&& Q_stricmp(blip->classname, "laser_turret") != 0
-					&& Q_stricmp(blip->classname, "rocket_turret") != 0
-					&& Q_stricmp(blip->classname, "item_flag_team1") != 0 // MrG{DRGN} Not kickable!
-					&& Q_stricmp(blip->classname, "item_flag_team2") != 0) // MrG{DRGN} Not kickable!
-					*/
-					/* MrG{DRGN} much faster than a string comparison!*/
-
-
+			/* MrG{DRGN} classindex instead of classname */
 			if (blip->client
 				|| blip->item
 				|| blip->classindex == BOLT

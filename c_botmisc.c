@@ -1224,9 +1224,13 @@ qboolean Bot_CanPickupItem(edict_t* ent, edict_t* eitem)
 		|| item == FindItemByClassindex(ITEM_FLAG_TEAM2))
 		return 0;
 
-	/* MrG{DRGN} Tweak Havoc bot health hunting routine	*/
+	/* MrG{DRGN} Tweak Havoc bot health hunting routine
 	if (item == FindItem("Health") && ent->health >= ent->max_health)
+		return 0; */
+	if (item == FindItem("Health") && ent->health >= ent->max_health && !(item->classindex == (ITEM_HEALTH_MEGA | ITEM_HEALTH_SMALL)))
+
 		return 0;
+	/* END */
 
 	if (item == it_tech2
 		|| item == it_tech3
@@ -1449,19 +1453,22 @@ void AddItemToList(edict_t* ent)
 	if (!ent->item->pickup)
 		return;
 
-	if (Q_stricmp(ent->classname, "item_armor_shard") == 0	//don't add armor shards to our list!!!
-		|| Q_stricmp(ent->classname, "item_flag_team1") == 0	//don't add ctf flags to our list!
-		|| Q_stricmp(ent->classname, "item_flag_team2") == 0
-		|| Q_stricmp(ent->classname, "freed") == 0
-		|| Q_stricmp(ent->classname, "item_health_small") == 0) //don't add mini health packs to our list!
+	// Don't add these to the list!
+	/* MrG{DRGN} classindex instead of classname */
+	if (ent->classindex == AR_SHARD
+		|| ent->classindex == ITEM_FLAG_TEAM1
+		|| ent->classindex == ITEM_FLAG_TEAM2
+		|| ent->classindex == FREED
+		|| ent->classindex == ITEM_HEALTH_SMALL)
 		return;
 
 	//find the list head
+	/* MrG{DRGN} classindex instead of classname */
 	if (ent->item->pickup == Pickup_Weapon
 		|| ent->item->pickup == Pickup_NoAmmoWeapon
-		|| Q_stricmp(ent->classname, "ammo_vortex") == 0
-		|| Q_stricmp(ent->classname, "ammo_laserturret") == 0
-		|| Q_stricmp(ent->classname, "ammo_rocketturret") == 0
+		|| ent->classindex == AM_VORTEX
+		|| ent->classindex == AM_LTURRET
+		|| ent->classindex == AM_RTURRET
 		)
 	{
 		if (!weapon_list)	//list is empty so the first item becomes the head
@@ -1527,14 +1534,22 @@ void RemoveFromList(edict_t* ent)
 	if (!ent->item->pickup)
 		return;
 
+	/* MrG{DRGN} classindex vs classname
 	if (Q_stricmp(ent->classname, "item_armor_shard") == 0
 		|| Q_stricmp(ent->classname, "item_flag_team1") == 0
 		|| Q_stricmp(ent->classname, "item_flag_team2") == 0
 		|| Q_stricmp(ent->classname, "freed") == 0
 		|| Q_stricmp(ent->classname, "item_health_small") == 0)
+		return;	 */
+	if (ent->classindex == AR_SHARD
+		|| ent->classindex == ITEM_FLAG_TEAM1
+		|| ent->classindex == ITEM_FLAG_TEAM2
+		|| ent->classindex == FREED
+		|| ent->classindex == ITEM_HEALTH_SMALL)
 		return;
+	/* END */
 
-	//find the list head
+   //find the list head
 	if (ent->item->pickup == Pickup_Weapon)
 	{
 		if (!weapon_list)	//list is empty
