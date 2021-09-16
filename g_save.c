@@ -1,4 +1,4 @@
-#include "g_local.h"
+﻿#include "g_local.h"
 #include "gslog.h"
 
 //MATTHIAS
@@ -173,9 +173,8 @@ void InitGame(void)
 	}
 
 	//This game.dll only supports deathmatch
-	if (!deathmatch->value)
-	{
-		gi.dprintf("Forcing deathmatch.\n"); /* MrG{DRGN} added newline */
+	if (!deathmatch->value) {
+		gi.dprintf("Forcing deathmatch.");
 		gi.cvar_set("deathmatch", "1");
 	}
 	//force coop off

@@ -1,4 +1,4 @@
-#include "g_local.h"
+﻿#include "g_local.h"
 
 void InitTrigger(edict_t* self)
 {
@@ -121,7 +121,7 @@ void SP_trigger_multiple(edict_t* ent)
 
 	if (!VectorCompare(ent->s.angles, vec3_origin))
 		G_SetMovedir(ent->s.angles, ent->movedir);
-	ent->classindex = TRIGGER_MULTIPLE ; /* MrG{DRGN} */
+	ent->classindex = TRIGGER_MULTIPLE; /* MrG{DRGN} */
 	gi.setmodel(ent, ent->model);
 	gi.linkentity(ent);
 }
@@ -210,11 +210,10 @@ void trigger_key_use(edict_t* self, edict_t* other, edict_t* activator)
 	}
 
 	gi.sound(activator, CHAN_AUTO, gi.soundindex("misc/keyuse.wav"), 1, ATTN_NORM, 0);
-	/* MrG{DRGN}  Always DM
 	if (coop->value)
 	{
 		int		player;
-		edict_t	*ent;
+		edict_t* ent;
 
 		if (strcmp(self->item->classname, "key_power_cube") == 0)
 		{
@@ -250,7 +249,7 @@ void trigger_key_use(edict_t* self, edict_t* other, edict_t* activator)
 			}
 		}
 	}
-	else*/
+	else
 	{
 		activator->client->pers.inventory[index]--;
 	}

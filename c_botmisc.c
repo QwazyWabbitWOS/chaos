@@ -219,13 +219,13 @@ void Bot_Spawn(edict_t* ent)
 	client_persistant_t  pers;
 	client_respawn_t     resp = { 0 };
 
-	/* MrG{DRGN}  Always DM
+
 	if (!deathmatch->value)
 	{
 		gi.dprintf("Must be in Deathmatch to spawn as Bot!\n");
 		return;
 	}
-	*/
+
 	SelectSpawnPoint(ent, origin, angles);
 
 	index = ent - g_edicts - 1;

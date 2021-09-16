@@ -1138,10 +1138,9 @@ qboolean Pickup_Powerup(edict_t* ent, edict_t* other)
 	if ((skill->value == 1 && quantity >= 2) || (skill->value >= 2 && quantity >= 1))
 		return false;
 
-	/* MrG{DRGN}  Always DM
 	if ((coop->value) && (ent->item->flags & IT_STAY_COOP) && (quantity > 0))
 		return false;
-	*/
+
 	// LETHAL : start
 	if (ent->item == it_grapple)
 	{
@@ -1657,7 +1656,7 @@ qboolean Pickup_Key(edict_t* ent, edict_t* other)
 		return false;
 	}
 	/* END */
-	/* MrG{DRGN}  Always DM
+
 	if (coop->value)
 	{
 		if (strcmp(ent->classname, "key_power_cube") == 0)
@@ -1675,7 +1674,7 @@ qboolean Pickup_Key(edict_t* ent, edict_t* other)
 		}
 		return true;
 	}
-	*/
+
 	other->client->pers.inventory[ITEM_INDEX(ent->item)]++;
 	return true;
 }
@@ -1780,11 +1779,11 @@ qboolean Pickup_Ammo(edict_t* ent, edict_t* other)
 
 	if (weapon && !oldcount)
 	{
-		if (other->client->pers.weapon != ent->item && ( /* MrG{DRGN}  Always DM !deathmatch->value || */other->client->pers.weapon == it_ak42))
+		if (other->client->pers.weapon != ent->item && (!deathmatch->value || other->client->pers.weapon == FindItem("AK42 Assault Pistol")))
 			other->client->newweapon = ent->item;
 	}
 
-	if (!(ent->spawnflags & (DROPPED_ITEM | DROPPED_PLAYER_ITEM))/* MrG{DRGN} always DM  && (deathmatch->value)*/)
+	if (!(ent->spawnflags & (DROPPED_ITEM | DROPPED_PLAYER_ITEM)) && (deathmatch->value))
 		SetRespawn(ent, 30);
 
 	if (strcmp(other->classname, "bot") == 0)	//MATTHIAS
@@ -2174,7 +2173,7 @@ void Touch_Item(edict_t* ent, edict_t* other, cplane_t* plane, csurface_t* surf)
 	if (!taken)
 		return;
 
-	if (!(/* MrG{DRGN}  Always DM (coop->value) && */ (ent->item->flags & IT_STAY_COOP)) || (ent->spawnflags & (DROPPED_ITEM | DROPPED_PLAYER_ITEM)))
+	if (!((coop->value) && (ent->item->flags & IT_STAY_COOP)) || (ent->spawnflags & (DROPPED_ITEM | DROPPED_PLAYER_ITEM)))
 	{
 		if (ent->flags & FL_RESPAWN)
 			ent->flags &= ~FL_RESPAWN;
@@ -3817,7 +3816,7 @@ always owned, never in the world
 														NULL,
 														NULL,
 														NULL,
-														Weapon_Machinegun,
+														NULL,
 														"misc/w_pkup.wav",
 														NULL, 0,/* MrG{DRGN don't bother they don't exist*/
 														NULL,/* MrG{DRGN don't bother they don't exist*/
@@ -3834,8 +3833,8 @@ always owned, never in the world
 														 "weapons/machgf1b.wav weapons/machgf2b.wav weapons/machgf3b.wav weapons/machgf4b.wav weapons/machgf5b.wav"
 														 */
 														 ""
-													},
 
+													},
 	/*QUAKED weapon_chaingun (.3 .3 1) (-16 -16 -16) (16 16 16)
 	*/
 	{

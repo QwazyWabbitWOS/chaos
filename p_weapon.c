@@ -1,4 +1,4 @@
-// g_weapon.c
+﻿// g_weapon.c
 
 #include "g_local.h"
 #include "m_player.h"
@@ -153,21 +153,21 @@ qboolean Pickup_Weapon(edict_t* ent, edict_t* other)
 
 		if (!(ent->spawnflags & DROPPED_PLAYER_ITEM))
 		{
-			/* MrG{DRGN} always DM if (deathmatch->value) */
+			if (deathmatch->value)
 			{
 				if ((int)(dmflags->value) & DF_WEAPONS_STAY)
 					ent->flags |= FL_RESPAWN;
 				else
 					SetRespawn(ent, 30);
-			}/*
+			}
 			if (coop->value)
-				ent->flags |= FL_RESPAWN; */
+				ent->flags |= FL_RESPAWN;
 		}
 	}
 
 	if (other->client->pers.weapon != ent->item &&
 		(other->client->pers.inventory[index] == 1) &&
-		(/* MrG{DRGN}  Always DM  !deathmatch->value || */ other->client->pers.weapon == it_ak42))
+		(!deathmatch->value || other->client->pers.weapon == FindItem("AK42 Assault Pistol")))
 		other->client->newweapon = ent->item;
 
 	if (strcmp(other->classname, "bot") == 0)
@@ -224,23 +224,23 @@ qboolean Pickup_NoAmmoWeapon(edict_t* ent, edict_t* other)
 	{
 		if (!(ent->spawnflags & DROPPED_PLAYER_ITEM))
 		{
-			/* MrG{DRGN} always DM if (deathmatch->value) */
+			if (deathmatch->value)
 			{
 				if ((int)(dmflags->value) & DF_WEAPONS_STAY)
 					ent->flags |= FL_RESPAWN;
 				else
 					SetRespawn(ent, 30);
 			}
-			/*
+
 			if (coop->value)
 				ent->flags |= FL_RESPAWN;
-				*/
+
 		}
 	}
 
 	if (other->client->pers.weapon != ent->item &&
 		(other->client->pers.inventory[index] == 1) &&
-		(/* MrG{DRGN}  Always DM !deathmatch->value || */other->client->pers.weapon == it_ak42))
+		(!deathmatch->value || other->client->pers.weapon == FindItem("AK42 Assault Pistol")))
 		other->client->newweapon = ent->item;
 
 	if (strcmp(other->classname, "bot") == 0)
@@ -578,9 +578,9 @@ static void Weapon_Generic2(edict_t* ent, int FRAME_ACTIVATE_LAST, int FRAME_FIR
 	}
 	/* END */
 
-	if (((ent->s.modelindex != PLAYER_MODEL && ent->client->invisible != true )||(ent->deadflag))) // vwep /* MrG{DRGN} no Magic Number 255 */
+	if (((ent->s.modelindex != PLAYER_MODEL && ent->client->invisible != true) || (ent->deadflag))) // vwep /* MrG{DRGN} no Magic Number 255 */
 		return; // not on client, so VWep animations could do wacky things
-	
+
 	if (ent->client->weaponstate == WEAPON_DROPPING)
 	{
 		if (ent->client->ps.gunframe == FRAME_DEACTIVATE_LAST)
@@ -774,7 +774,7 @@ void weapon_grenade_fire(edict_t* ent, qboolean held)
 	P_ProjectSource(ent->client, ent->s.origin, offset, forward, right, start);
 
 	timer = ent->client->grenade_time - level.time;
-	speed =(int)( GRENADE_MINSPEED + (GRENADE_TIMER - timer) * ((GRENADE_MAXSPEED - GRENADE_MINSPEED) / GRENADE_TIMER));
+	speed = (int)(GRENADE_MINSPEED + (GRENADE_TIMER - timer) * ((GRENADE_MAXSPEED - GRENADE_MINSPEED) / GRENADE_TIMER));
 	fire_grenade2(ent, start, forward, damage, speed, timer, radius, held);
 
 	//vwep
@@ -1228,8 +1228,10 @@ MACHINEGUN / CHAINGUN
 ======================================================================
 */
 
+/* MrG{DRGN} never in chaos!
 void Machinegun_Fire(edict_t* ent)
 {
+
 	int	i;
 	vec3_t		start;
 	vec3_t		forward, right;
@@ -1237,13 +1239,6 @@ void Machinegun_Fire(edict_t* ent)
 	int			damage = 8;
 	int			kick = 2;
 	vec3_t		offset;
-
-	/* MrG{DRGN} sanity check*/
-	if (!ent)
-	{
-		return;
-	}
-	/* END */
 
 	if (!(ent->client->buttons & BUTTON_ATTACK))
 	{
@@ -1277,25 +1272,25 @@ void Machinegun_Fire(edict_t* ent)
 
 	for (i = 1; i < 3; i++)
 	{
-		ent->client->kick_origin[i] = crandom() * 0.35F; /* MrG{DRGN} explicit float */
-		ent->client->kick_angles[i] = crandom() * 0.7F; /* MrG{DRGN} explicit float */
+		ent->client->kick_origin[i] = crandom() * 0.35F;
+		ent->client->kick_angles[i] = crandom() * 0.7F;
 	}
-	ent->client->kick_origin[0] = crandom() * 0.35F; /* MrG{DRGN} explicit float */
-	ent->client->kick_angles[0] = ent->client->machinegun_shots * -1.5F; /* MrG{DRGN} explicit float */
+	ent->client->kick_origin[0] = crandom() * 0.35F;
+	ent->client->kick_angles[0] = ent->client->machinegun_shots * -1.5F;
 
 	// raise the gun as it is firing
-	/* MrG{DRGN}  Always DM
+
 	if (!deathmatch->value)
 	{
 		ent->client->machinegun_shots++;
 		if (ent->client->machinegun_shots > 9)
 			ent->client->machinegun_shots = 9;
-	}*/
+	}
 
 	// get start / end positions
 	VectorAdd(ent->client->v_angle, ent->client->kick_angles, angles);
 	AngleVectors(angles, forward, right, NULL);
-	VectorSet(offset, 0, 8, ent->viewheight - 8.0F); /* MrG{DRGN} fix conversion from int to vec_t */
+	VectorSet(offset, 0, 8, ent->viewheight - 8.0F);
 	P_ProjectSource(ent->client, ent->s.origin, offset, forward, right, start);
 	fire_bullet(ent, start, forward, damage, kick, DEFAULT_BULLET_HSPREAD, DEFAULT_BULLET_VSPREAD, MOD_MACHINEGUN);
 
@@ -1308,6 +1303,7 @@ void Machinegun_Fire(edict_t* ent)
 
 	if (!((int)dmflags->value & DF_INFINITE_AMMO))
 		ent->client->pers.inventory[ent->client->ammo_index]--;
+
 }
 
 void Weapon_Machinegun(edict_t* ent)
@@ -1316,10 +1312,12 @@ void Weapon_Machinegun(edict_t* ent)
 	static int	fire_frames[] = { 4, 5, 0 };
 
 	Weapon_Generic(ent, 3, 5, 45, 49, pause_frames, fire_frames, Machinegun_Fire);
+
 }
 
 void Chaingun_Fire(edict_t* ent)
 {
+
 	int			i;
 	int			shots;
 	vec3_t		start;
@@ -1329,19 +1327,12 @@ void Chaingun_Fire(edict_t* ent)
 	int			damage;
 	int			kick = 2;
 
-	/* MrG{DRGN} sanity check*/
-	if (!ent)
-	{
-		return;
-	}
-	/* END */
-
-	/* MrG{DRGN} always DM if (deathmatch->value) */
+	if (deathmatch->value)
 	damage = 6;
-	/* MrG{DRGN} always DM
+
 	else
 	damage = 8;
-	*/
+
 
 	if (ent->client->ps.gunframe == 5)
 		gi.sound(ent, CHAN_AUTO, gi.soundindex("weapons/chngnu1a.wav"), 1, ATTN_IDLE, 0);
@@ -1406,16 +1397,16 @@ void Chaingun_Fire(edict_t* ent)
 
 	for (i = 0; i < 3; i++)
 	{
-		ent->client->kick_origin[i] = crandom() * 0.35F; /* MrG{DRGN} explicit float */
-		ent->client->kick_angles[i] = crandom() * 0.7F; /* MrG{DRGN} explicit float */
+		ent->client->kick_origin[i] = crandom() * 0.35F;
+		ent->client->kick_angles[i] = crandom() * 0.7F;
 	}
 
 	for (i = 0; i < shots; i++)
 	{
 		// get start / end positions
 		AngleVectors(ent->client->v_angle, forward, right, up);
-		r = 7 + crandom() * 4.0F; /* MrG{DRGN} explicit float */
-		u = crandom() * 4.0F; /* MrG{DRGN} explicit float */
+		r = 7 + crandom() * 4.0F;
+		u = crandom() * 4.0F;
 		VectorSet(offset, 0, r, u + ent->viewheight - 8);
 		P_ProjectSource(ent->client, ent->s.origin, offset, forward, right, start);
 
@@ -1432,6 +1423,7 @@ void Chaingun_Fire(edict_t* ent)
 
 	if (!((int)dmflags->value & DF_INFINITE_AMMO))
 		ent->client->pers.inventory[ent->client->ammo_index] -= shots;
+
 }
 
 void Weapon_Chaingun(edict_t* ent)
@@ -1440,7 +1432,8 @@ void Weapon_Chaingun(edict_t* ent)
 	static int	fire_frames[] = { 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 0 };
 
 	Weapon_Generic(ent, 4, 31, 61, 64, pause_frames, fire_frames, Chaingun_Fire);
-}
+
+}	*/
 
 /*
 ======================================================================
@@ -1485,13 +1478,12 @@ void weapon_shotgun_fire(edict_t* ent)
 		kick *= 4;
 	}
 
-	/* MrG{DRGN} always DM if (deathmatch->value) */
-	fire_shotgun(ent, start, forward, damage, kick, 500, 500, DEFAULT_DEATHMATCH_SHOTGUN_COUNT, MOD_SHOTGUN);
-	/* MrG{DRGN} always DM
-		else
-		fire_shotgun (ent, start, forward, damage, kick, 500, 500, DEFAULT_SHOTGUN_COUNT, MOD_SHOTGUN);
-		*/
-		// send muzzle flash
+	if (deathmatch->value)
+		fire_shotgun(ent, start, forward, damage, kick, 500, 500, DEFAULT_DEATHMATCH_SHOTGUN_COUNT, MOD_SHOTGUN);
+	else
+		fire_shotgun(ent, start, forward, damage, kick, 500, 500, DEFAULT_SHOTGUN_COUNT, MOD_SHOTGUN);
+
+	// send muzzle flash
 	gi.WriteByte(svc_muzzleflash);
 	gi.WriteShort(ent - g_edicts);
 	gi.WriteByte(MZ_SHOTGUN | is_silenced);
@@ -1595,19 +1587,18 @@ void weapon_railgun_fire(edict_t* ent)
 	}
 	/* END */
 
-	/* MrG{DRGN} always DM
-	if (deathmatch->value) */
+
+	if (deathmatch->value)
 	{	// normal damage is too extreme in dm
 		damage = 100;
 		kick = 200;
 	}
-	/* MrG{DRGN} always DM
+
 	else
 	{
 		damage = 150;
 		kick = 250;
 	}
-	*/
 
 	if (is_quad)
 	{
@@ -1667,13 +1658,10 @@ void weapon_bfg_fire(edict_t* ent)
 	}
 	/* END */
 
-	/* MrG{DRGN} always DM
-	if (deathmatch->value) */
-	damage = 200;
-	/* MrG{DRGN} always DM
+	if (deathmatch->value)
+		damage = 200;
 	else
 		damage = 500;
-	*/
 
 	if (ent->client->ps.gunframe == 9)
 	{

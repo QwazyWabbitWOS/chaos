@@ -67,7 +67,7 @@ void ClientBegin(edict_t* ent);
 
 void BeginIntermission(edict_t* targ)
 {
-	int		i /*, n*/; /* MrG{DRGN} unused */
+	int		i, n;
 	edict_t* ent, * client;
 
 	if (level.intermissiontime)
@@ -114,7 +114,7 @@ void BeginIntermission(edict_t* targ)
 	level.intermissiontime = level.time;
 	level.changemap = targ->map;
 
-	/* MrG{DRGN} none of this gets used in Chaos, so I commented it out!
+
 	if (strstr(level.changemap, "*"))
 	{
 		if (coop->value)
@@ -149,7 +149,7 @@ void BeginIntermission(edict_t* targ)
 			red_base = -1;
 			return;
 		}
-	}*/
+	}
 
 	level.exitintermission = 0;
 
@@ -423,7 +423,7 @@ void Cmd_Help_f(edict_t* ent)
 	if (strcmp(ent->classname, "bot") == 0) //MATTHIAS
 		return;
 
-	/* MrG{DRGN} always DM if (deathmatch->value) */
+	if (deathmatch->value)
 	{
 		Cmd_Score_f(ent);
 		return;
@@ -581,21 +581,21 @@ void G_SetStats(edict_t* ent)
 	//
 	ent->client->ps.stats[STAT_LAYOUTS] = 0;
 
-	/* MrG{DRGN} always DM if (deathmatch->value) */
+	if (deathmatch->value)
 	{
 		if (ent->client->pers.health <= 0 || level.intermissiontime
 			|| ent->client->showscores || ent->client->scanneractive > 0)
 			ent->client->ps.stats[STAT_LAYOUTS] |= 1;
 		if (ent->client->showinventory && ent->client->pers.health > 0)
 			ent->client->ps.stats[STAT_LAYOUTS] |= 2;
-	}/*
+	}
 	else
 	{
 		if (ent->client->showscores || ent->client->showhelp)
 			ent->client->ps.stats[STAT_LAYOUTS] |= 1;
 		if (ent->client->showinventory && ent->client->pers.health > 0)
 			ent->client->ps.stats[STAT_LAYOUTS] |= 2;
-	}*/
+	}
 
 	//
 	// frags

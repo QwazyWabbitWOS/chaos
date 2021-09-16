@@ -22,7 +22,6 @@ void SP_misc_teleporter_dest(edict_t* ent);
 // we use carnal knowledge of the maps to fix the coop spot targetnames to match
 // that of the nearest named single player spot
 
-/* MrG{DRGN} unused
 static void SP_FixCoopSpots(edict_t* self)
 {
 
@@ -49,7 +48,7 @@ static void SP_FixCoopSpots(edict_t* self)
 			return;
 		}
 	}
-}*/
+}
 
 // now if that one wasn't ugly enough for you then try this one on for size
 // some maps don't have any coop spots at all, so we need to create them
@@ -109,12 +108,12 @@ potential spawning position for deathmatch games
 */
 void SP_info_player_deathmatch(edict_t* self)
 {
-	/* MrG{DRGN}  Always DM
+
 	if (!deathmatch->value)
 	{
-		G_FreeEdict (self);
+		G_FreeEdict(self);
 		return;
-	}*/
+	}
 	SP_misc_teleporter_dest(self);
 }
 
@@ -124,10 +123,6 @@ potential spawning position for coop games
 
 void SP_info_player_coop(edict_t* self)
 {
-
-	G_FreeEdict(self);
-	return;
-	/* MrG{DRGN} unused TODO: remove this function
 	if (!coop->value)
 	{
 		G_FreeEdict(self);
@@ -153,7 +148,7 @@ void SP_info_player_coop(edict_t* self)
 		self->think = SP_FixCoopSpots;
 		self->nextthink = level.time + FRAMETIME;
 	}
-	*/
+
 }
 
 
@@ -209,7 +204,7 @@ void ClientObituary(edict_t* self, edict_t* inflictor, edict_t* attacker)
 	char* message2;
 	qboolean	ff;
 
-	/*MrG{DRGN} always DM if (deathmatch->value) */
+	if (deathmatch->value)
 	{
 		ff = meansOfDeath & MOD_FRIENDLY_FIRE;
 		mod = meansOfDeath & ~MOD_FRIENDLY_FIRE;
@@ -484,7 +479,7 @@ void ClientObituary(edict_t* self, edict_t* inflictor, edict_t* attacker)
 			if (message)
 			{
 				bprintf2(PRINT_MEDIUM, "%s %s %s%s\n", self->client->pers.netname, message, attacker->client->pers.netname, message2);
-				/* MrG{DRGN} always DM if (deathmatch->value) */
+				if (deathmatch->value)
 				{
 					if (ff)
 						attacker->client->resp.score--;
@@ -559,7 +554,7 @@ void ClientObituary(edict_t* self, edict_t* inflictor, edict_t* attacker)
 					{
 						bprintf2(PRINT_MEDIUM, "%s %s\n", self->client->pers.netname, message);
 
-						/* MrG{DRGN} always DM if (deathmatch->value) */
+						if (deathmatch->value)
 						{
 							/* MrG{DRGN} Duplicate branches!
 							if (ff)
@@ -585,7 +580,7 @@ void ClientObituary(edict_t* self, edict_t* inflictor, edict_t* attacker)
 					if (message)
 					{
 						bprintf2(PRINT_MEDIUM, "%s %s %s%s\n", self->client->pers.netname, message, attacker->owner->client->pers.netname, message2);
-						/* MrG{DRGN} always DM if (deathmatch->value) */
+						if (deathmatch->value)
 						{
 							if (ff)
 								attacker->owner->client->resp.score--;
@@ -615,7 +610,7 @@ void ClientObituary(edict_t* self, edict_t* inflictor, edict_t* attacker)
 						if (message)
 						{
 							bprintf2(PRINT_MEDIUM, "%s %s\n", self->client->pers.netname, message);
-							/* MrG{DRGN} always DM if (deathmatch->value) */
+							if (deathmatch->value)
 							{
 								/* MrG{DRGN} Duplicate branches!
 							if (ff)
@@ -637,7 +632,7 @@ void ClientObituary(edict_t* self, edict_t* inflictor, edict_t* attacker)
 						if (message)
 						{
 							bprintf2(PRINT_MEDIUM, "%s %s %s%s\n", self->client->pers.netname, message, attacker->owner->owner->client->pers.netname, message2);
-							/* MrG{DRGN} always DM if (deathmatch->value) */
+							if (deathmatch->value)
 							{
 								if (ff)
 									attacker->owner->owner->client->resp.score--;
@@ -654,8 +649,8 @@ void ClientObituary(edict_t* self, edict_t* inflictor, edict_t* attacker)
 	}
 
 	bprintf2(PRINT_MEDIUM, "%s died.\n", self->client->pers.netname);
-	/* MrG{DRGN} always DM if (deathmatch->value) */
-	self->client->resp.score--;
+	if (deathmatch->value)
+		self->client->resp.score--;
 }
 
 void Touch_Item(edict_t* ent, edict_t* other, cplane_t* plane, csurface_t* surf);
@@ -668,10 +663,9 @@ void TossClientWeapon(edict_t* self)
 	qboolean	quad;
 	float		spread;
 
-	/* MrG{DRGN}  Always DM
 	if (!deathmatch->value)
 		return;
-	 */
+
 
 	item = self->client->pers.weapon;
 	if (!self->client->pers.inventory[self->client->ammo_index])
@@ -803,7 +797,7 @@ void player_die(edict_t* self, edict_t* inflictor, edict_t* attacker, int damage
 		TossClientWeapon(self);
 
 		CTFDeadDropTech(self);
-		if (/* MrG{DRGN} always DM if (deathmatch->value) */ !self->client->showscores)
+		if ((deathmatch->value) && !self->client->showscores)
 			Cmd_Help_f(self);		// show scores
 	}
 
@@ -1165,10 +1159,10 @@ void SaveClientData(void)
 		game.clients[i].pers.health = ent->health;
 		game.clients[i].pers.max_health = ent->max_health;
 		game.clients[i].pers.powerArmorActive = (ent->flags & FL_POWER_ARMOR);
-		/* MrG{DRGN}  Always DM
+
 		if (coop->value)
 			game.clients[i].pers.score = ent->client->resp.score;
-			*/
+
 	}
 }
 
@@ -1178,10 +1172,10 @@ void FetchClientEntData(edict_t* ent)
 	ent->max_health = ent->client->pers.max_health;
 	if (ent->client->pers.powerArmorActive)
 		ent->flags |= FL_POWER_ARMOR;
-	/* MrG{DRGN}  Always DM
+
 	if (coop->value)
 		ent->client->resp.score = ent->client->pers.score;
-		*/
+
 }
 
 /*
@@ -1379,18 +1373,16 @@ void	SelectSpawnPoint(edict_t* ent, vec3_t origin, vec3_t angles)
 {
 	edict_t* spot = NULL;
 
-	/* MrG{DRGN}  Always DM if (deathmatch->value)*/
-//ZOID
-	if (ctf->value)
-		spot = SelectCTFSpawnPoint(ent);
-	else
+	if (deathmatch->value)
 		//ZOID
-		spot = SelectDeathmatchSpawnPoint();
-	/* MrG{DRGN}  Always DM
-else if (coop->value)
-	spot = SelectCoopSpawnPoint (ent);
-*/
-// find a single player start spot
+		if (ctf->value)
+			spot = SelectCTFSpawnPoint(ent);
+		else
+			//ZOID
+			spot = SelectDeathmatchSpawnPoint();
+	else if (coop->value)
+		spot = SelectCoopSpawnPoint(ent);
+	// find a single player start spot
 	if (!spot)
 	{
 		while ((spot = G_Find(spot, FOFS(classname), "info_player_start")) != NULL)
@@ -1499,8 +1491,8 @@ void respawn(edict_t* self)
 		Bot_Respawn(self);
 		return;
 	}
-	/* MrG{DRGN}  Always DM
-	if (deathmatch->value || coop->value) */
+
+	if (deathmatch->value || coop->value)
 	{
 		CopyToBodyQue(self);
 		PutClientInServer(self);
@@ -1516,10 +1508,10 @@ void respawn(edict_t* self)
 
 		return;
 	}
-	/*
+
 	// restart the entire server
 	gi.AddCommandString("menu_loadgame\n");
-	*/
+
 }
 
 //==============================================================
@@ -1641,7 +1633,7 @@ void PutClientInServer(edict_t* ent)
 	client->ps.pmove.pm_flags &= ~PMF_NO_PREDICTION;
 	//ZOID
 
-	if (/* MrG{DRGN} always DM (deathmatch->value) */((int)dmflags->value & DF_FIXED_FOV))
+	if ((deathmatch->value) && ((int)dmflags->value & DF_FIXED_FOV))
 	{
 		client->ps.fov = 90;
 	}

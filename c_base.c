@@ -847,7 +847,7 @@ void FakeDeath(edict_t* self)
 		VectorClear(self->velocity);
 		VectorClear(self->avelocity);
 
-		if (/* MrG{DRGN} always DM deathmatch->value && */((int)dmflags->value & DF_FIXED_FOV))
+		if (((int)dmflags->value & DF_FIXED_FOV))
 		{
 			self->client->ps.fov = 90;
 		}

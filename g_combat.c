@@ -1,4 +1,4 @@
-// g_combat.c
+﻿// g_combat.c
 
 #include "g_local.h"
 #include "c_cam.h"
@@ -274,7 +274,7 @@ void T_Damage(edict_t* targ, edict_t* inflictor, edict_t* attacker, vec3_t dir, 
 	// friendly fire avoidance
 	// if enabled you can't hurt teammates (but you can hurt yourself)
 	// knockback still occurs
-	if ((targ != attacker) && ((/* MrG{DRGN}  Always DM deathmatch->value && */((int)(dmflags->value) & (DF_MODELTEAMS | DF_SKINTEAMS))) /* MrG{DRGN}  Always DM || coop->value*/))
+	if ((targ != attacker) && ((deathmatch->value && ((int)(dmflags->value) & (DF_MODELTEAMS | DF_SKINTEAMS))) || coop->value))
 	{
 		if (OnSameTeam(targ, attacker))
 		{
@@ -408,7 +408,7 @@ void T_Damage(edict_t* targ, edict_t* inflictor, edict_t* attacker, vec3_t dir, 
 	else if (take)
 	{
 		if (targ->pain)
-			targ->pain(targ, attacker,(float) knockback, take); /* MrG{DRGN} (float) */
+			targ->pain(targ, attacker, (float)knockback, take); /* MrG{DRGN} (float) */
 	}
 
 	// add to the damage inflicted on a player this frame
