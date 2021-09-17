@@ -205,13 +205,13 @@ DeathmatchScoreboardMessage
 void DeathmatchScoreboardMessage(edict_t* ent, edict_t* killer /* MrG{DRGN} can be NULL */)
 {
 	char	entry[1024];
-	char	string[1400];
+	char	string[1400] = { 0 };
 	size_t	stringlength;/* MrG{DRGN} was int stringlength. This resolves possible loss of data */
 	int		i;
 	int j;
 	int	k;
-	int		sorted[MAX_CLIENTS];
-	int		sortedscores[MAX_CLIENTS];
+	int		sorted[MAX_CLIENTS] = { 0 };
+	int		sortedscores[MAX_CLIENTS] = { 0 };
 	int		score, total;
 	int		x, y;
 	gclient_t* cl;

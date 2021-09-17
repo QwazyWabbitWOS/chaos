@@ -220,8 +220,11 @@ void EndDMLevel(void)
 			i = (int)(random() * maplist.nummaps);
 			break;
 		default:
+			maplist.mlflag = ML_OFF;
 			i = maplist.currentmap;
+			break;
 		}
+
 		maplist.currentmap = i;
 
 		if (maplist.ctf[i] == '1')

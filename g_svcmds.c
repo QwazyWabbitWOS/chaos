@@ -23,7 +23,7 @@ void Svcmd_sequential_f(void)
 {
 	if (maplist.nummaps > 0)  // does a maplist exist? 
 	{
-		maplist.mlflag = 1; //sequential
+		maplist.mlflag = ML_ROTATE_SEQ;
 		maplist.currentmap = -1;
 		gi.cprintf(NULL, PRINT_HIGH, "Sequential map rotation ON!\n\n");
 		EndDMLevel();
@@ -37,7 +37,7 @@ void Svcmd_random_f(void)
 {
 	if (maplist.nummaps > 0)  // does a maplist exist? 
 	{
-		maplist.mlflag = 2; //random
+		maplist.mlflag = ML_ROTATE_RANDOM;
 		maplist.currentmap = -1;
 		gi.cprintf(NULL, PRINT_HIGH, "Random map rotation ON!\n\n");
 		EndDMLevel();
