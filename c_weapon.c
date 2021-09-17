@@ -4881,7 +4881,7 @@ int Valid_Target(edict_t* ent, edict_t* blip)
 			|| blip->classindex == RT_ROCKET)
 			return true;
 		else
-			if (blip->classindex == blip->classindex == ITEM_FLAG_TEAM1
+			if (blip->classindex == ITEM_FLAG_TEAM1
 				|| blip->classindex == ITEM_FLAG_TEAM2
 				|| blip->classindex == ITEM_TECH1
 				|| blip->classindex == ITEM_TECH2
