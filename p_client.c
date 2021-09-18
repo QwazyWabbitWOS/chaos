@@ -296,6 +296,14 @@ void ClientObituary(edict_t* self, edict_t* inflictor, edict_t* attacker)
 			case MOD_BFG_BLAST:
 				message = "should have used a smaller gun";
 				break;
+				/* MrG{DRGN} handle self kills for these */
+			case MOD_VORTEX:
+				message = "became one with the void";
+				break;
+			case MOD_KAMIKAZE:
+				message = "joined the divine wind";
+				break;
+				/* END */
 			default:
 				if (IsFemale(self))
 					message = "killed herself";
