@@ -25,6 +25,7 @@ void ClearMaplist(void);
 void LoadMaplist(char* filename);
 void LoadMOTD(void);
 void PreCacheAll(void);	//MATTHIAS
+void GetSettings(void);
 
 // Weapon banning console variables
 

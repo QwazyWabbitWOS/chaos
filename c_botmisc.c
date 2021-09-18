@@ -1328,10 +1328,6 @@ int Bot_CanPickupArmor(edict_t* self, edict_t* ent)
 			return 1;
 		}
 	}
-	/* MrG{DRGN} unreachable code
-	return 0;
-	*/
-
 }
 
 qboolean Bot_CanReachSpotDirectly(edict_t* ent, vec3_t target)

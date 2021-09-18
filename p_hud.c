@@ -198,18 +198,18 @@ void BeginIntermission(edict_t* targ)
 
 /*
 ==================
-DeathmatchScoreboardMessage
-
+Collect and sort the scores. Display top 12 players.
+Tag killee and killer with appropriate plaques.
 ==================
 */
 void DeathmatchScoreboardMessage(edict_t* ent, edict_t* killer /* MrG{DRGN} can be NULL */)
 {
 	char	entry[1024];
 	char	string[1400] = { 0 };
-	size_t	stringlength;/* MrG{DRGN} was int stringlength. This resolves possible loss of data */
+	size_t	stringlength;
 	int		i;
-	int j;
-	int	k;
+	int		j;
+	int		k;
 	int		sorted[MAX_CLIENTS] = { 0 };
 	int		sortedscores[MAX_CLIENTS] = { 0 };
 	int		score, total;
@@ -218,12 +218,8 @@ void DeathmatchScoreboardMessage(edict_t* ent, edict_t* killer /* MrG{DRGN} can 
 	edict_t* cl_ent;
 	char* tag;
 
-	/* MrG{DRGN} sanity check */
 	if (!ent)
-	{
 		return;
-	}
-	/* END */
 
 	if (ent->client->showscores || ent->client->showinventory)
 		if (ent->client->scanneractive > 0)
@@ -285,30 +281,26 @@ void DeathmatchScoreboardMessage(edict_t* ent, edict_t* killer /* MrG{DRGN} can 
 				tag = NULL;
 			if (tag)
 			{
-				Com_sprintf(entry, sizeof(entry),
+				Com_sprintf(entry, sizeof entry,
 					"xv %i yv %i picn %s ", x + 32, y, tag);
-				j = (int)strlen(entry); /* MrG{DRGN} changed to fix conversion from 'size_t' to 'int', possible loss of data*/
-				if (stringlength + j > 1024)
+				j = (int)strlen(entry);
+				if (stringlength + j > sizeof entry)
 					break;
-				/*	MrG{DRGN} destination safe strcpy replacement */
-				Com_strcpy(string + stringlength, sizeof(string), entry);
+				strcpy(string + stringlength, entry); //QW// Can't use Com_strcpy here.
 				stringlength += j;
 			}
 
 			// send the layout
-			Com_sprintf(entry, sizeof(entry),
+			Com_sprintf(entry, sizeof entry,
 				"client %i %i %i %i %i %i ",
 				x, y, sorted[i], cl->resp.score, cl->ping, (level.framenum - cl->resp.enterframe) / 600);
-			j = (int)strlen(entry); /* MrG{DRGN} changed to fix conversion from 'size_t' to 'int', possible loss of data*/
-			if (stringlength + j > 1024)
+			j = (int)strlen(entry);
+			if (stringlength + j > sizeof entry)
 				break;
-			/*	MrG{DRGN} destination safe strcpy replacement */
-			Com_strcpy(string + stringlength, sizeof(string), entry);
+			strcpy(string + stringlength, entry);  //QW// Can't use Com_strcpy here.
 			stringlength += j;
 		}
 	}
-	else	//MATTHIAS
-		*string = 0;
 
 	// Scanner active ?
 	if (ent->client->scanneractive > 0)

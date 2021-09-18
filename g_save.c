@@ -1,10 +1,6 @@
 ﻿#include "g_local.h"
 #include "gslog.h"
 
-//MATTHIAS
-void GetSettings(void);
-void ClearMaplist();
-
 field_t fields[] = {
 	{"classindex", FOFS(classindex), F_INT}, /* MrG{DRGN} */
 	{"classname", FOFS(classname), F_LSTRING},
