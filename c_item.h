@@ -6,7 +6,7 @@
 #define SCANNER_UNIT                   32
 #define SCANNER_RANGE                  64
 #define SCANNER_UPDATE_FREQ            3
-#define SAFE_STRCAT(org,add,maxlen)    if ((strlen(org) + strlen(add)) < maxlen)    Com_strcat(org, sizeof(org),add); /*	MrG{DRGN} destination safe strcat replacement */
+#define SAFE_STRCAT(org,add,maxlen)    if ((strlen(org) + strlen(add)) < maxlen)    strcat(org, add); 
 #define LAYOUT_MAX_LENGTH              1400
 
 qboolean Jet_Active(edict_t* ent);
