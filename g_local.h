@@ -577,6 +577,20 @@ typedef struct
 extern	field_t fields[];
 extern	gitem_t	itemlist[];
 
+
+//
+// g_spawn.c
+//
+void SpawnEntities(char* mapname, char* entities, char* spawnpoint);
+//
+// g_save.c
+//
+void ReadGame(char* filename);
+void WriteGame(char* filename, qboolean autosave);
+void ReadLevel(char* filename);
+void WriteLevel(char* filename);
+void InitGame(void);
+
 //
 // g_cmds.c
 //
@@ -787,6 +801,7 @@ void G_RunEntity(edict_t* ent);
 //
 void SaveClientData(void);
 void FetchClientEntData(edict_t* ent);
+void G_RunFrame(void);
 
 //============================================================================
 

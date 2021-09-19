@@ -56,19 +56,6 @@ void Svcmd_killbot_f(char* name);
 
 cvar_t* sv_cheats;
 
-void SpawnEntities(char* mapname, char* entities, char* spawnpoint);
-void ClientUserinfoChanged(edict_t* ent, char* userinfo);
-void ClientDisconnect(edict_t* ent);
-void ClientBegin(edict_t* ent);
-void ClientCommand(edict_t* ent);
-/* MrG{DRGN} unused void RunEntity(edict_t* ent); */
-void ReadGame(char* filename);
-void WriteGame(char* filename, qboolean autosave);
-void ReadLevel(char* filename);
-void WriteLevel(char* filename);
-void InitGame(void);
-void G_RunFrame(void);
-
 //===================================================================
 
 void  ShutdownGame(void)
