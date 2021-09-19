@@ -14,8 +14,6 @@ float	bobmove;
 int		bobcycle;		// odd cycles are right foot going forward
 float	bobfracsin;		// sin(bobfrac*M_PI)
 
-void ThrowUpNow(edict_t* self);
-
 /*
 ===============
 SV_CalcRoll

@@ -2,44 +2,7 @@
 #include "g_local.h"
 #include "c_botnav.h"
 #include "c_botai.h"
-qboolean	Pickup_Weapon(edict_t* ent, edict_t* other);
-qboolean	Pickup_NoAmmoWeapon(edict_t* ent, edict_t* other);
-void		Use_Weapon(edict_t* ent, gitem_t* inv);
-void		Drop_Weapon(edict_t* ent, gitem_t* inv);
-void		Use_Jet(edict_t* ent, gitem_t* item);	//MATTHIAS
-void		Use_Invisibility(edict_t* ent, gitem_t* item);	//MATTHIAS
-qboolean	Jet_Active(edict_t* ent);
-void		AddItemToList(edict_t* ent);	//MATTHIAS
 
-void Weapon_AK42(edict_t* ent);
-void Weapon_Shotgun(edict_t* ent);
-void Weapon_SuperShotgun(edict_t* ent);
-void Weapon_HyperBlaster(edict_t* ent);
-void Weapon_RocketLauncher(edict_t* ent);
-void Weapon_Grenade(edict_t* ent);
-void Weapon_GrenadeLauncher(edict_t* ent);
-void Weapon_Railgun(edict_t* ent);
-void Weapon_BFG(edict_t* ent);
-
-// MATTHIAS
-void Weapon_FlashGrenade(edict_t* ent);
-void Weapon_LaserGrenade(edict_t* ent);
-void Weapon_PoisonGrenade(edict_t* ent);
-void Weapon_ProxyMineLauncher(edict_t* ent);
-void Weapon_FlashGrenadeLauncher(edict_t* ent);
-void Weapon_PoisonGrenadeLauncher(edict_t* ent);
-void Weapon_ExplosiveSuperShotgun(edict_t* ent);
-void Weapon_Sword(edict_t* ent);
-void Weapon_Chainsaw(edict_t* ent);
-void Weapon_Crossbow(edict_t* ent);
-void Weapon_ExplosiveCrossbow(edict_t* ent);
-void Weapon_PoisonCrossbow(edict_t* ent);
-void Weapon_Airfist(edict_t* ent);
-void Weapon_HomingLauncher(edict_t* ent);
-void Weapon_Buzzsaw(edict_t* ent);
-void Weapon_Vortex(edict_t* ent);
-void Weapon_LaserTurret(edict_t* ent);
-void Weapon_RocketTurret(edict_t* ent);
 
 gitem_armor_t jacketarmor_info = { 25,  50, .30F, .00F, ARMOR_JACKET }; /* MrG{DRGN} added  F, as this was causing truncation from double to float.*/
 gitem_armor_t combatarmor_info = { 50, 100, .60F, .30F, ARMOR_COMBAT }; /* MrG{DRGN} added  F, as this was causing truncation from double to float.*/
@@ -5559,3 +5522,4 @@ void SetItemNames(void)
 	it_scanner = FindItemByClassindex(PU_SCANNER);
 	/* MrG{DRGN} TODO: Missing? */
 }
+

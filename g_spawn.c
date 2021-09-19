@@ -96,7 +96,6 @@ void SP_misc_viper_bomb(edict_t* self);
 void SP_misc_bigviper(edict_t* self);
 void SP_misc_strogg_ship(edict_t* self);
 void SP_misc_teleporter(edict_t* self);
-void SP_misc_teleporter_dest(edict_t* self);
 void SP_misc_blackhole(edict_t* self);
 void SP_misc_eastertank(edict_t* self);
 void SP_misc_easterchick(edict_t* self);

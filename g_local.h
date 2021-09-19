@@ -642,6 +642,9 @@ gitem_t* GetItemByIndex(int index);
 qboolean Add_Ammo(edict_t* ent, gitem_t* item, int count);
 void Touch_Item(edict_t* ent, edict_t* other, cplane_t* plane, csurface_t* surf);
 void DoRespawn(edict_t* ent); /* MrG{DRGN} added this prototype */
+void		Use_Weapon(edict_t* ent, gitem_t* inv);
+void		Drop_Weapon(edict_t* ent, gitem_t* inv);
+
 
 //
 // g_utils.c
@@ -705,7 +708,7 @@ qboolean CheckFlood(edict_t* ent);
 void ThrowClientHead(edict_t* self, int damage);
 void ThrowGib(edict_t* self, char* gibname, int damage, int type);
 void BecomeExplosion1(edict_t* self);
-
+void SP_misc_teleporter_dest(edict_t* ent);
 //
 // g_ai.c
 qboolean infront(edict_t* self, edict_t* other);
@@ -724,7 +727,9 @@ void fire_grenade2(edict_t* self, vec3_t start, vec3_t aimdir, int damage, int s
 void fire_rocket(edict_t* self, vec3_t start, vec3_t dir, int damage, int speed, float damage_radius, int radius_damage);
 void fire_rail(edict_t* self, vec3_t start, vec3_t aimdir, int damage, int kick);
 void fire_bfg(edict_t* self, vec3_t start, vec3_t dir, int damage, int speed, float damage_radius);
-
+void rocket_touch(edict_t* ent, edict_t* other, cplane_t* plane, csurface_t* surf);
+void Grenade_Touch(edict_t* ent, edict_t* other, cplane_t* plane, csurface_t* surf);
+void Grenade_Explode(edict_t* ent);
 //
 // p_client.c
 //
@@ -776,11 +781,23 @@ void DeathmatchScoreboardMessage(edict_t* ent, edict_t* killer);
 void ClientBegin(edict_t* ent);
 
 //
-// g_pweapon.c
+// p_weapon.c
 //
 void PlayerNoise(edict_t* who, vec3_t where, int type);
 void P_ProjectSource(gclient_t* client, vec3_t point, vec3_t distance, vec3_t forward, vec3_t right, vec3_t result);
 void Weapon_Generic(edict_t* ent, int FRAME_ACTIVATE_LAST, int FRAME_FIRE_LAST, int FRAME_IDLE_LAST, int FRAME_DEACTIVATE_LAST, int* pause_frames, int* fire_frames, void (*fire)(edict_t* ent));
+qboolean	Pickup_Weapon(edict_t* ent, edict_t* other);
+qboolean	Pickup_NoAmmoWeapon(edict_t* ent, edict_t* other);
+void NoAmmoWeaponChange(edict_t* ent);
+void Blaster_Fire(edict_t* ent, vec3_t g_offset, int damage, qboolean hyper, int effect);
+void Weapon_Shotgun(edict_t* ent);
+void Weapon_SuperShotgun(edict_t* ent);
+void Weapon_HyperBlaster(edict_t* ent);
+void Weapon_RocketLauncher(edict_t* ent);
+void Weapon_Grenade(edict_t* ent);
+void Weapon_GrenadeLauncher(edict_t* ent);
+void Weapon_Railgun(edict_t* ent);
+void Weapon_BFG(edict_t* ent);
 
 //
 // m_move.c
@@ -803,6 +820,11 @@ void SaveClientData(void);
 void FetchClientEntData(edict_t* ent);
 void G_RunFrame(void);
 
+/* MrG{DRGN} include once here, rather than in multiple files */
+#include "c_base.h"
+#include "c_item.h"
+#include "c_weapon.h"
+/* END*/
 //============================================================================
 
 // client_t->anim_priority
@@ -1248,9 +1270,7 @@ int		red_base, blue_base;	//node at red/blue flag
 cvar_t* drop_tech;	/* MrG{DRGN} tech drop prevention */
 cvar_t* weapon_kick; /* MrG{DRGN} kickable weapons toggle */
 //#define CHAOS_RETAIL
-
-//ZOID
+  //ZOID
 #include "g_ctf.h"
-/* MrG{DRGN} include once here, rather than in multiple files */
-#include "c_base.h"
-#include "c_item.h"
+
+/* End of g_local.h */

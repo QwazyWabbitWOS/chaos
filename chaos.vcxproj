@@ -127,14 +127,12 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="b_log.h" />
-    <ClInclude Include="classes.h" />
     <ClInclude Include="classindex.h" />
     <ClInclude Include="c_base.h" />
     <ClInclude Include="c_botai.h" />
     <ClInclude Include="c_botnav.h" />
     <ClInclude Include="c_item.h" />
     <ClInclude Include="c_weapon.h" />
-    <ClInclude Include="effects.h" />
     <ClInclude Include="game.h" />
     <ClInclude Include="gslog.h" />
     <ClInclude Include="g_ctf.h" />

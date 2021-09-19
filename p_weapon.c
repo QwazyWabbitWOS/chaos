@@ -1110,32 +1110,7 @@ void Blaster_Fire(edict_t* ent, vec3_t g_offset, int damage, qboolean hyper, int
 	PlayerNoise(ent, start, PNOISE_WEAPON);
 }
 
-void Weapon_AK42_Fire(edict_t* ent)
-{
-	int		damage;
 
-	/* MrG{DRGN} sanity check*/
-	if (!ent)
-	{
-		return;
-	}
-	/* END */
-	if (ent->client->fakedeath != 0)
-		return;
-
-	damage = 20;
-
-	Blaster_Fire(ent, vec3_origin, damage, false, EF_BLASTER);
-	ent->client->ps.gunframe++;
-}
-
-void Weapon_AK42(edict_t* ent)
-{
-	static int	pause_frames[] = { 19, 32, 0 };
-	static int	fire_frames[] = { 5, 0 };
-
-	Weapon_Generic(ent, 4, 8, 52, 55, pause_frames, fire_frames, Weapon_AK42_Fire);
-}
 
 void Weapon_HyperBlaster_Fire(edict_t* ent)
 {

@@ -30,12 +30,6 @@
     <ClInclude Include="c_weapon.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="classes.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="effects.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="g_ctf.h">
       <Filter>Header Files</Filter>
     </ClInclude>

@@ -10,6 +10,9 @@ qboolean infront2(edict_t* self, edict_t* other);
 qboolean infront3(edict_t* self, edict_t* other);
 qboolean infront4(edict_t* self, edict_t* other);
 qboolean TouchingLadder(edict_t* self);
+//HAVOC
+void AddItemToList(edict_t* tech);
+void RemoveFromList(edict_t* tech);
 void		Bot_InitNodes(void);
 qboolean	Bot_LoadNodes(void);
 qboolean	Bot_SaveNodes(void);
@@ -108,3 +111,4 @@ gitem_t
 /*MrG{DRGN} never in game, but always posessed! */
 * it_belt, * it_flashlight, * it_scanner;
 /* MrG{DRGN} TODO: Missing? */
+

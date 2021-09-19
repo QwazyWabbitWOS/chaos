@@ -1465,9 +1465,7 @@ void CTFScoreboardMessage(edict_t* ent, edict_t* killer)
 /*------------------------------------------------------------------------*/
 /* TECH																	  */
 /*------------------------------------------------------------------------*/
-//HAVOC
-void AddItemToList(edict_t* tech);
-void RemoveFromList(edict_t* tech);
+
 /*/
 void CTFHasTech(edict_t* who)
 {
