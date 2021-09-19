@@ -2,7 +2,6 @@
 
 void Bot_Respawn(edict_t* ent);
 qboolean Jet_Active(edict_t* ent);
-void ShowScanner(edict_t* ent, char* layout);
 
 /*
 ======================================================================
@@ -71,9 +70,9 @@ void BeginIntermission(edict_t* targ)
 	edict_t* ent, * client;
 
 	if (level.intermissiontime)
-		return;		// allready activated
+		return;		// already activated
 
-//ZOID
+	//ZOID
 	if ((deathmatch->value) || ctf->value)
 		CTFCalcScores();
 	//ZOID
@@ -122,7 +121,7 @@ void BeginIntermission(edict_t* targ)
 			for (i = 0; i < maxclients->value; i++)
 			{
 				client = g_edicts + 1 + i;
-				if (!client->inuse)
+				if (!client->inuse || !client->client)
 					continue;
 				// strip players of all keys between units
 				for (n = 0; n < MAX_ITEMS; n++)
