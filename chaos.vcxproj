@@ -140,6 +140,7 @@
     <ClInclude Include="g_ctf.h" />
     <ClInclude Include="g_local.h" />
     <ClInclude Include="m_player.h" />
+    <ClInclude Include="performance.h" />
     <ClInclude Include="p_menu.h" />
     <ClInclude Include="q_shared.h" />
     <ClInclude Include="stdlog.h" />
@@ -175,6 +176,7 @@
     <ClCompile Include="g_utils.c" />
     <ClCompile Include="g_weapon.c" />
     <ClCompile Include="m_move.c" />
+    <ClCompile Include="performance.c" />
     <ClCompile Include="p_client.c" />
     <ClCompile Include="p_hud.c" />
     <ClCompile Include="p_menu.c" />
