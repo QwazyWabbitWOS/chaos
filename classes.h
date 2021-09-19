@@ -7,7 +7,7 @@
  *         
  *                     - Lethal, May 27th 1999
  *
- */
+ 
  
 #define ITEM_CROSSBOW         1          // Crossbow
 #define ITEM_GRENADE          2          // Grenade
@@ -38,3 +38,7 @@
 #define ITEM_BUZZ_AMMO        27         // Buzzsaw Ammo
 #define ITEM_PROXY            28         // Proxy mines
 #define ITEM_BELT             29         // Anti-Grav Belt
+
+
+
+	MrG{DRGN}	Unused for now	*/

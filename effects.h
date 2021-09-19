@@ -5,7 +5,7 @@
  *
  *                  - Lethal, May 27th 1999
  *
- */
+ 
 
 #define EFFECT_EXPLOSIVE 1      // explosive effect
 #define EFFECT_POISON    2      // poisonous effect
@@ -22,3 +22,5 @@
 #define EFFECT_ANTI_GRAV 4096   // anti-gravity effect
 #define EFFECT_LASER     8192   // laser effect
 #define EFFECT_LIGHTNING 16384  // lightning effect
+
+	MrG{DRGN}	Unused for now	*/

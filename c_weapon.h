@@ -12,3 +12,4 @@ void Grenade_Explode(edict_t* ent);
 void target_laser_on(edict_t* self);
 void target_laser_off(edict_t* self);
 void target_laser_think(edict_t* self);
+int Valid_Target(edict_t* ent, edict_t* blip);

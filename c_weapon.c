@@ -7,10 +7,6 @@
 #define GRENADE_MINSPEED			400
 #define GRENADE_MAXSPEED			800
 
-void FakeDeath(edict_t* self);
-void fire_lead(edict_t* self, vec3_t start, vec3_t aimdir, int damage, int kick, int te_impact, int hspread, int vspread, int mod);
-int Valid_Target(edict_t* ent, edict_t* blip);
-
 /*
  * Chainsaw
  */
