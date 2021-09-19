@@ -1,3 +1,5 @@
+#pragma once
+
 #define	GRAPPLE_OFF			0
 #define	GRAPPLE_INAIR		1
 #define	GRAPPLE_ATTACHED	2		//attached without grow/shrink
@@ -14,4 +16,5 @@ qboolean Jet_AvoidGround(edict_t* ent);
 void Jet_BecomeExplosion(edict_t* ent, int damage);
 void Jet_ApplyJet(edict_t* ent, usercmd_t* ucmd);
 
+void ShowScanner(edict_t * ent, char* layout);
 void Scanner_Think(edict_t* ent);

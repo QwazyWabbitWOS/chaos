@@ -711,15 +711,17 @@ void fire_rail(edict_t* self, vec3_t start, vec3_t aimdir, int damage, int kick)
 void fire_bfg(edict_t* self, vec3_t start, vec3_t dir, int damage, int speed, float damage_radius);
 
 //
-// g_client.c
+// p_client.c
 //
-void respawn(edict_t* self);
-void BeginIntermission(edict_t* targ);
+void respawn(edict_t* ent);
+void SelectSpawnPoint(edict_t* ent, vec3_t origin, vec3_t angles);
 void PutClientInServer(edict_t* ent);
 void InitClientPersistant(gclient_t* client);
 void InitClientResp(gclient_t* client);
 void InitBodyQue(void);
 void ClientBeginServerFrame(edict_t* ent);
+void TossClientWeapon(edict_t* ent);
+
 
 //
 // g_player.c
@@ -741,6 +743,7 @@ void ClientEndServerFrame(edict_t* ent);
 // p_hud.c
 //
 void Cmd_Score_f(edict_t* ent);
+void BeginIntermission(edict_t* targ);
 void MoveClientToIntermission(edict_t* ent);
 void G_SetStats(edict_t* ent);
 void ValidateSelectedItem(edict_t* ent);
@@ -1223,3 +1226,4 @@ cvar_t* weapon_kick; /* MrG{DRGN} kickable weapons toggle */
 #include "g_ctf.h"
 /* MrG{DRGN} include once here, rather than in multiple files */
 #include "c_base.h"
+#include "c_item.h"
