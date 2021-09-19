@@ -49,3 +49,4 @@ int RecalculateCurrentNode(edict_t* ent);
 void		Bot_PlaceNode(vec3_t spot, int flag, int duckflag);
 void		Bot_CalcNode(edict_t* self, int nindex);
 int			Bot_ShortestPath(int source, int target);
+qboolean Bot_CanReachSpotDirectly(edict_t* ent, vec3_t target);

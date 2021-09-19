@@ -2,7 +2,6 @@
 #include "c_base.h"
 #include "c_botnav.h"
 
-qboolean Bot_CanReachSpotDirectly(edict_t* ent, vec3_t target);
 
 /*
 Init the note table system

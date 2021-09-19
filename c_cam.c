@@ -3,7 +3,6 @@
 
 #define CAMERA_SWITCH_TIME  15
 
-qboolean visible2(vec3_t spot1, vec3_t spot2);
 
 void CreateCamera(edict_t* ent)
 {

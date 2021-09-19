@@ -1,7 +1,6 @@
 ﻿#include "g_local.h"
 #include "stdlog.h"
 
-void ClientBeginDeathmatch(edict_t* ent);
 
 typedef struct ctfgame_s
 {

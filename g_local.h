@@ -798,7 +798,7 @@ void Weapon_Grenade(edict_t* ent);
 void Weapon_GrenadeLauncher(edict_t* ent);
 void Weapon_Railgun(edict_t* ent);
 void Weapon_BFG(edict_t* ent);
-
+void weapon_grenade_fire(edict_t* ent, qboolean held);
 //
 // m_move.c
 //
