@@ -3,10 +3,6 @@
 #include "c_cam.h"
 #include "m_player.h"
 
-void ThrowUpNow(edict_t* self);
-void Drop_Weapon(edict_t* ent, gitem_t* item);
-void Cmd_Hook_f(edict_t* ent);
-
 ///------------------------------------------------------------------------------------------
 /// Misc functions
 ///------------------------------------------------------------------------------------------

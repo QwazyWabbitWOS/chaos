@@ -27,6 +27,10 @@ void LoadMOTD(void);
 void PreCacheAll(void);	//MATTHIAS
 void GetSettings(void);
 void FakeDeath(edict_t* self);
+void ThrowUpNow(edict_t* self);
+void Drop_Weapon(edict_t* ent, gitem_t* item);
+void Cmd_Hook_f(edict_t* ent);
+
 
 // Weapon banning console variables
 

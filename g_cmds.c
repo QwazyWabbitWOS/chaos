@@ -1,8 +1,6 @@
 ﻿#include "g_local.h"
 #include "m_player.h"
 
-void ClientCommand2(edict_t* ent);	//MATTHIAS
-
 char* ClientTeam(edict_t* ent)
 {
 	char* p;

@@ -14,8 +14,6 @@ void		AddItemToList(edict_t* ent);	//MATTHIAS
 void Weapon_AK42(edict_t* ent);
 void Weapon_Shotgun(edict_t* ent);
 void Weapon_SuperShotgun(edict_t* ent);
-void Weapon_Machinegun(edict_t* ent);
-void Weapon_Chaingun(edict_t* ent);
 void Weapon_HyperBlaster(edict_t* ent);
 void Weapon_RocketLauncher(edict_t* ent);
 void Weapon_Grenade(edict_t* ent);

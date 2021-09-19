@@ -1,9 +1,7 @@
 ﻿#include "g_local.h"
 #include "m_player.h"
-#include "c_item.h"
 #include "c_botai.h"
 #include "c_botnav.h"
-#include "c_cam.h"
 #include "stdlog.h"
 #include "gslog.h"
 
