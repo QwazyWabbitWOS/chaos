@@ -1894,7 +1894,7 @@ static void CTFSay_Team_Location(edict_t* who, char* buf)
 	edict_t* what = NULL;
 	edict_t* hot = NULL;
 	float hotdist = 999999, newdist;
-	vec3_t v;
+	vec3_t v = { 0 };
 	int hotindex = 999;
 	int i;
 	gitem_t* item;
@@ -2068,8 +2068,8 @@ static void CTFSay_Team_Sight(edict_t* who, char* buf)
 	int i;
 	edict_t* targ;
 	int n = 0;
-	char s[1024];
-	char s2[1024];
+	char s[1024] = { 0 };
+	char s2[1024] = { 0 };
 
 	*s = *s2 = 0;
 	for (i = 1; i <= maxclients->value; i++) {

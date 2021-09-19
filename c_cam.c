@@ -170,7 +170,7 @@ edict_t* ClosestVisible(edict_t* ent)
 	return best;
 }
 
-edict_t* BestViewPlayer()
+edict_t* BestViewPlayer(void)
 {
 	edict_t* best = NULL;
 	int	views, bestviews = -1, i;
@@ -195,7 +195,7 @@ edict_t* BestViewPlayer()
 	return best;
 }
 
-edict_t* GetFirstValidPlayer()
+edict_t* GetFirstValidPlayer(void)
 {
 	int i;
 
@@ -211,7 +211,7 @@ edict_t* GetFirstValidPlayer()
 	return NULL;
 }
 
-edict_t* GetRandomValidPlayer()
+edict_t* GetRandomValidPlayer(void)
 {
 	int i;
 
@@ -229,7 +229,7 @@ edict_t* GetRandomValidPlayer()
 	return NULL;
 }
 
-int  FirstValidPlayer()
+int  FirstValidPlayer(void)
 {
 	int i;
 
@@ -245,7 +245,7 @@ int  FirstValidPlayer()
 	return -1;
 }
 
-int LastValidPlayer()
+int LastValidPlayer(void)
 {
 	int i;
 
@@ -712,7 +712,7 @@ void CameraThink(edict_t* ent, usercmd_t* ucmd)
 					ent->last_move_time = 0;
 				}
 			}
-			else if ((ent->client->pTarget = BestViewPlayer(ent)) != NULL)
+			else if ((ent->client->pTarget = BestViewPlayer()) != NULL)
 			{
 				RepositionAtPlayer(ent);
 				PointCamAtPlayer(ent);
@@ -734,7 +734,7 @@ void CameraThink(edict_t* ent, usercmd_t* ucmd)
 
 		if (ent->client->pTarget == NULL)
 		{
-			ent->client->pTarget = BestViewPlayer(ent);
+			ent->client->pTarget = BestViewPlayer();
 		}
 	}
 	break;
@@ -776,11 +776,11 @@ void CameraThink(edict_t* ent, usercmd_t* ucmd)
 					PointCamAtPlayer(ent);
 				}
 				else	// go to next valid player
-					ent->client->pTarget = GetRandomValidPlayer(ent->client->pTarget);
+					ent->client->pTarget = GetRandomValidPlayer();
 			}
 		}
 		else
-			ent->client->pTarget = GetFirstValidPlayer(ent);
+			ent->client->pTarget = GetFirstValidPlayer();
 	}
 	}
 }

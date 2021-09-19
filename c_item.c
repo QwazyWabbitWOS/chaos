@@ -197,7 +197,7 @@ void Jet_ApplyRolling(edict_t* ent, vec3_t right)
 void Jet_ApplyJet(edict_t* ent, usercmd_t* ucmd)
 {
 	static float direction;
-	vec3_t acc;
+	vec3_t acc = { 0 };
 	vec3_t forward, right;
 	int    i;
 
@@ -265,7 +265,7 @@ void ShowScanner(edict_t* ent, char* layout)
 	edict_t* player = g_edicts;
 	int     i;
 	char    stats[64] = { 0 }; /* MrG{DRGN} initialized */
-	vec3_t  v;
+	vec3_t  v = { 0 };
 
 	/* MrG{DRGN} sanity check*/
 	if (!ent)
@@ -490,8 +490,11 @@ void Grapple_Reset(edict_t* ent)
 
 void Grapple_DrawCable(edict_t* ent)
 {
-	vec3_t	offset, start, end, f, r;
-	vec3_t	dir;
+	vec3_t	offset = { 0 };
+	vec3_t	start;
+	vec3_t	end = { 0 };
+	vec3_t	f, r;
+	vec3_t	dir = { 0 };
 	float	distance;
 
 	/* MrG{DRGN} sanity check*/
@@ -526,7 +529,8 @@ void Grapple_DrawCable(edict_t* ent)
 
 void Grapple_Touch(edict_t* ent, edict_t* other, cplane_t* plane, csurface_t* surf)
 {
-	vec3_t	offset, start;
+	vec3_t	offset = { 0 };
+	vec3_t	start;
 	vec3_t	forward, right;
 	vec3_t	chainvec;		// chain's vector
 
@@ -578,7 +582,10 @@ void Grapple_Touch(edict_t* ent, edict_t* other, cplane_t* plane, csurface_t* su
 
 void Grapple_Think(edict_t* ent)
 {
-	vec3_t	offset, start, dir, f, r, playerv;
+	vec3_t	offset = { 0 };
+	vec3_t	start;
+	vec3_t	dir = { 0 };
+	vec3_t	f, r, playerv;
 	vec_t len;
 	float f1, f2;			// restrainment forces
 
@@ -668,7 +675,8 @@ void Grapple_Think(edict_t* ent)
 void Grapple_Fire(edict_t* ent)
 {
 	edict_t* hook;
-	vec3_t	offset, start, f, r;
+	vec3_t	offset = { 0 };
+	vec3_t	start, f, r;
 
 	/* MrG{DRGN} sanity check*/
 	if (!ent)

@@ -256,7 +256,7 @@ void LoadMaplist(char* filename)
 	gi.cprintf(NULL, PRINT_HIGH, "Map rotation is %s mode %i\n\n", maplist.mlflag ? "ON" : "OFF", maplist.mlflag);
 }
 
-void GetSettings()
+void GetSettings(void)
 {
 	node_debug = gi.cvar("node_debug", "0", CVAR_USERINFO);
 	blindtime = gi.cvar("blindtime", "20", CVAR_SERVERINFO);
@@ -447,7 +447,7 @@ qboolean infront4(edict_t* self, edict_t* other)
 	return false;
 }
 
-void PreCacheAll()
+void PreCacheAll(void)
 {
 	//pics
 	gi.imageindex("scanner/dot");

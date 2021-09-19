@@ -12,7 +12,7 @@ void	Svcmd_Test_f(void)
 /* FWP Move to next map in the current rotation */
 
 // Force the next map in queue
-void Svcmd_nextmap_f()
+void Svcmd_nextmap_f(void)
 {
 	bprintf2(PRINT_HIGH, "Advancing to next level.\n");
 	EndDMLevel();
