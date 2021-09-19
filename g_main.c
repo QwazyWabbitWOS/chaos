@@ -57,8 +57,6 @@ void Svcmd_killbot_f(char* name);
 cvar_t* sv_cheats;
 
 void SpawnEntities(char* mapname, char* entities, char* spawnpoint);
-void ClientThink(edict_t* ent, usercmd_t* cmd);
-qboolean ClientConnect(edict_t* ent, char* userinfo);
 void ClientUserinfoChanged(edict_t* ent, char* userinfo);
 void ClientDisconnect(edict_t* ent);
 void ClientBegin(edict_t* ent);

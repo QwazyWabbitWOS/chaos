@@ -721,7 +721,17 @@ void InitClientPersistant(gclient_t* client);
 void InitClientResp(gclient_t* client);
 void InitBodyQue(void);
 void ClientBeginServerFrame(edict_t* ent);
+void ClientBeginDeathmatch(edict_t* ent);
 void TossClientWeapon(edict_t* ent);
+void ClientUserinfoChanged(edict_t* ent, char* userinfo);
+qboolean ClientConnect(edict_t* ent, char* userinfo);
+void CopyToBodyQue(edict_t* ent);
+void ClientThink(edict_t* ent, usercmd_t* ucmd);
+void ClientDisconnect(edict_t* ent);
+void ClientObituary(edict_t* self, edict_t* inflictor, edict_t* attacker);
+void Use_Plat(edict_t* ent, edict_t* other, edict_t* activator);
+void trigger_elevator_use(edict_t* self, edict_t* other, edict_t* activator);
+void door_use(edict_t* self, edict_t* other, edict_t* activator);
 
 
 //
@@ -749,6 +759,7 @@ void MoveClientToIntermission(edict_t* ent);
 void G_SetStats(edict_t* ent);
 void ValidateSelectedItem(edict_t* ent);
 void DeathmatchScoreboardMessage(edict_t* ent, edict_t* killer);
+void ClientBegin(edict_t* ent);
 
 //
 // g_pweapon.c

@@ -3,18 +3,9 @@
 #include "c_cam.h"
 #include "m_player.h"
 
-void Cmd_Say_f(edict_t* ent, qboolean team, qboolean arg0);
-void ClientBeginDeathmatch(edict_t* ent);
-void TossClientWeapon(edict_t* self);
 void ThrowUpNow(edict_t* self);
-void ClientCommand2(edict_t* ent);
-void FakeDeath(edict_t* self);
 void Drop_Weapon(edict_t* ent, gitem_t* item);
 void Cmd_Hook_f(edict_t* ent);
-void Toggle_Scanner(edict_t* ent);
-qboolean ClientConnect(edict_t* ent, char* userinfo);
-void ClientDisconnect(edict_t* ent);
-void ClientBegin(edict_t* ent);
 
 ///------------------------------------------------------------------------------------------
 /// Misc functions

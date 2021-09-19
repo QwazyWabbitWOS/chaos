@@ -17,4 +17,5 @@ void Jet_BecomeExplosion(edict_t* ent, int damage);
 void Jet_ApplyJet(edict_t* ent, usercmd_t* ucmd);
 
 void ShowScanner(edict_t * ent, char* layout);
+void Toggle_Scanner(edict_t * ent);
 void Scanner_Think(edict_t* ent);

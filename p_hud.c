@@ -1,7 +1,5 @@
 ﻿#include "g_local.h"
-
-void Bot_Respawn(edict_t* ent);
-qboolean Jet_Active(edict_t* ent);
+#include "c_botai.h"
 
 /*
 ======================================================================
@@ -61,7 +59,6 @@ void MoveClientToIntermission(edict_t* ent)
 }
 
 void ClientDisconnect(edict_t* ent);
-qboolean ClientConnect(edict_t* ent, char* userinfo);
 void ClientBegin(edict_t* ent);
 
 void BeginIntermission(edict_t* targ)

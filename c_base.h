@@ -26,6 +26,7 @@ void LoadMaplist(char* filename);
 void LoadMOTD(void);
 void PreCacheAll(void);	//MATTHIAS
 void GetSettings(void);
+void FakeDeath(edict_t* self);
 
 // Weapon banning console variables
 

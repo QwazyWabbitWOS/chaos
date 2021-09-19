@@ -41,18 +41,6 @@
 char* chat_text[NUM_CHATSECTIONS][MAX_LINES_PER_SECTION];
 int		chat_linecount[NUM_CHATSECTIONS];
 
-//Quake 2 functions
-void SelectSpawnPoint(edict_t* ent, vec3_t origin, vec3_t angles);
-void ClientUserinfoChanged(edict_t* ent, char* userinfo);
-qboolean ClientConnect(edict_t* ent, char* userinfo);
-void CopyToBodyQue(edict_t* ent);
-void ClientThink(edict_t* ent, usercmd_t* ucmd);
-void ClientDisconnect(edict_t* ent);
-void ClientObituary(edict_t* self, edict_t* inflictor, edict_t* attacker);
-void TossClientWeapon(edict_t* self);
-void Use_Plat(edict_t* ent, edict_t* other, edict_t* activator);
-void trigger_elevator_use(edict_t* self, edict_t* other, edict_t* activator);
-void door_use(edict_t* self, edict_t* other, edict_t* activator);
 
 //Bot functions
 void Svcmd_addbots_f(void);
