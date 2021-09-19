@@ -1170,7 +1170,7 @@ void Weapon_HyperBlaster_Fire(edict_t* ent)
 		}
 		else
 		{
-			rotation = (ent->client->ps.gunframe - 5.0F) * 2.0F * M_PI / 6.0F;  /* MrG{DRGN} changed these to explicit floats */
+			rotation = (ent->client->ps.gunframe - 5.0) * 2.0 * M_PI / 6.0;
 			offset[0] = -4 * sinf(rotation); /* MrG{DRGN} use float version */
 			offset[1] = 0;
 			offset[2] = 4 * cosf(rotation); /* MrG{DRGN} use float version */

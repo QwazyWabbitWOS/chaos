@@ -11,6 +11,7 @@
 #define CRTDBG_MAP_ALLOC
 #include <crtdbg.h>
 _CrtMemState startup1;	// memory diagnostics
+#include "performance.h"
 #else
 #define OutputDebugString	//not doing Windows
 #endif
