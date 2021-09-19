@@ -117,7 +117,7 @@ void Jet_BecomeExplosion(edict_t* ent, int damage)
 void Jet_ApplyLifting(edict_t* ent)
 {
 	float         delta;
-	vec3_t        new_origin;
+	vec3_t        new_origin = { 0 };
 	trace_t       trace;
 	int           time = 24;
 	float         amplitude = 2.0;
@@ -129,7 +129,7 @@ void Jet_ApplyLifting(edict_t* ent)
 	}
 	/* END */
 
-	delta = sinf((float)((level.framenum % time) * (360 / time)) / 180 * M_PI) * amplitude;/* MrG{DRGN} use sinf not sin to calculate the delta, since it's a float */
+	delta = sinf((float)((level.framenum % time) * (360.0f / time)) / 180 * M_PI) * amplitude;/* MrG{DRGN} use sinf not sin to calculate the delta, since it's a float */
 	delta = (float)((int)(delta * 8)) / 8;
 
 	VectorCopy(ent->s.origin, new_origin);
@@ -261,6 +261,7 @@ void Jet_ApplyJet(edict_t* ent, usercmd_t* ucmd)
 
 void ShowScanner(edict_t* ent, char* layout)
 {
+
 	edict_t* player = g_edicts;
 	int     i;
 	char    stats[64] = { 0 }; /* MrG{DRGN} initialized */
