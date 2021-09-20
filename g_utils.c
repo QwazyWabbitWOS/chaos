@@ -404,7 +404,7 @@ edict_t* G_Spawn(void)
 	{
 		// the first couple seconds of server time can involve a lot of
 		// freeing and allocating, so relax the replacement policy
-		if (!e->inuse && (e->freetime < 2 || level.time - e->freetime > 0.5F)) /* Explicit float */
+		if (!e->inuse && (e->freetime < 2 || level.time - e->freetime > 0.5f))
 		{
 			G_InitEdict(e);
 			return e;

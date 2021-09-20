@@ -110,7 +110,10 @@ is loaded.
 */
 void InitGame(void)
 {
-	int j;
+
+#ifdef	_WIN32
+	_CrtMemCheckpoint(&startup1);
+#endif
 
 	sl_Logging(&gi, "chaos");	// StdLog - Mark Davies (Only required to set patch name)
 
@@ -163,7 +166,7 @@ void InitGame(void)
 	GetSettings();
 
 	//clear path buffer
-	for (j = 0; j < 100; j++)
+	for (int j = 0; j < 100; j++)
 	{
 		path_buffer[j] = -1;
 	}
