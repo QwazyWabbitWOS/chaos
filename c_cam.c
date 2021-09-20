@@ -74,6 +74,7 @@ void CreateCamera(edict_t* ent)
 	ent->s.modelindex = 0;
 	ent->s.modelindex2 = 0;
 	ent->s.modelindex3 = 0;
+	ent->s.modelindex4 = 0;
 	ent->s.frame = 0;
 
 	ent->client->showscores = false;
