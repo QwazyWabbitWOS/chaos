@@ -30,7 +30,7 @@ static void LogWrite(const char* format, va_list* pmarker, int dated)
 {
 	time_t now;
 	char timestring[64];
-	FILE* fp = 0;
+	FILE* fp = NULL;
 	fp = fopen(f_szLogFile, "a+");
 	if (!fp)
 		return;
@@ -55,7 +55,7 @@ static void LogSpecial(const char* format, ...)
 {
 	time_t now;
 	char timestring[64];
-	FILE* fp = 0;
+	FILE* fp = NULL;
 
 	fp = fopen(f_szLogFile, "a+");
 

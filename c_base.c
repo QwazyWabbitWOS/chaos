@@ -50,7 +50,7 @@ qboolean infront(edict_t* self, edict_t* other)
 
 void ShowGun(edict_t* ent)	//vwep
 {
-	int		nIndex;
+	int		nIndex = 0;
 	char* pszIcon;
 
 	/* MrG{DRGN} sanity check */
@@ -66,7 +66,6 @@ void ShowGun(edict_t* ent)	//vwep
 
 	// Determine the weapon's precache index.
 
-	nIndex = 0;
 	pszIcon = ent->client->pers.weapon->icon;
 
 	if (strcmp(pszIcon, "w_ak42") == 0)
@@ -206,8 +205,6 @@ void LoadMaplist(char* filename)
 	}
 
 	ClearMaplist();
-
-	i = 0;
 
 	while ((!feof(fp)) && (i < MAX_MAPS))
 	{
