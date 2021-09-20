@@ -1,5 +1,5 @@
 ﻿#include "g_local.h"
-#include "c_item.h"
+
 
 void Use_Invisibility(edict_t* ent, gitem_t* item)
 {
