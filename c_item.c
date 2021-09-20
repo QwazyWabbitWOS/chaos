@@ -707,7 +707,7 @@ void Grapple_Fire(edict_t* ent)
 	hook->angle = 0;
 	hook->touch = Grapple_Touch;
 	hook->think = Grapple_Think;
-	hook->nextthink = level.time + 0.1;
+	hook->nextthink = level.time + FRAMETIME;
 
 	if (ent->client->quad_framenum > level.framenum)
 		hook->dmg = 60;

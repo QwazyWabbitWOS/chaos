@@ -421,7 +421,7 @@ void fire_turretrocket(edict_t* self, vec3_t start, vec3_t dir, float speed)
 	rocket->s.modelindex = gi.modelindex("models/objects/t_rocket/tris.md2");
 	rocket->owner = self;
 	rocket->touch = rocket_touch;
-	rocket->nextthink = level.time + 0.1;
+	rocket->nextthink = level.time + FRAMETIME;
 	rocket->think = Turret_Rocket_Think;
 	rocket->dmg = 30;
 	rocket->radius_dmg = 40;
@@ -591,7 +591,7 @@ void LaserTurret_Think(edict_t* ent)
 	}
 	/* END */
 
-	ent->nextthink = level.time + 0.1;
+	ent->nextthink = level.time + FRAMETIME;
 	ent->touch = NULL;
 
 	if (!ent->groundentity)
@@ -781,7 +781,7 @@ void RocketTurret_Think(edict_t* ent)
 	}
 	/* END */
 
-	ent->nextthink = level.time + 0.1;
+	ent->nextthink = level.time + FRAMETIME;
 	ent->touch = NULL;
 
 	if (!ent->groundentity)
@@ -1570,7 +1570,7 @@ void airstuff_touch(edict_t* self, edict_t* other, cplane_t* plane, csurface_t* 
 	}
 	/* END */
 
-	self->nextthink = level.time + .1;
+	self->nextthink = level.time + FRAMETIME;
 	self->think = G_FreeEdict;
 	self->movetype = MOVETYPE_NONE;
 }
@@ -2607,7 +2607,7 @@ void homing_think(edict_t* ent)
 		VectorScale(targetdir, speed, ent->velocity);
 	}
 
-	ent->nextthink = level.time + .1;
+	ent->nextthink = level.time + FRAMETIME;
 }
 
 void fire_homing(edict_t* self, vec3_t start, vec3_t dir, int damage, int speed, float damage_radius, int radius_damage)
@@ -4077,7 +4077,7 @@ void Proxy_Die(edict_t* self, edict_t* inflictor, edict_t* attacker, int damage,
 	}
 	/* END */
 	self->takedamage = DAMAGE_NO;
-	self->nextthink = level.time + 0.1;
+	self->nextthink = level.time + FRAMETIME;
 	self->think = Proxy_Explode;
 }
 
@@ -4232,7 +4232,7 @@ void EvilProxy_Think(edict_t* ent)
 	}
 	/* END */
 
-	ent->nextthink = level.time + 0.1;
+	ent->nextthink = level.time + FRAMETIME;
 
 	if (level.time > ent->delay)
 	{
@@ -4655,7 +4655,7 @@ void BlackHole_Think(edict_t* ent)
 		return;
 	}
 
-	ent->nextthink = level.time + .1;
+	ent->nextthink = level.time + FRAMETIME;
 
 	//animate black hole
 	ent->s.frame += 1;
@@ -4935,7 +4935,7 @@ void Vortex_Think(edict_t* ent)
 	}
 	/* END */
 
-	ent->nextthink = level.time + .1;
+	ent->nextthink = level.time + FRAMETIME;
 
 	if (vortexstate == VORTEX_FIRED)
 	{
@@ -4975,7 +4975,7 @@ void Vortex_Think(edict_t* ent)
 		VectorClear(black->maxs);
 		black->s.modelindex = gi.modelindex("models/objects/avortex/tris.md2");
 		black->owner = ent->owner;
-		black->nextthink = level.time + 0.1;
+		black->nextthink = level.time + FRAMETIME;
 		black->think = BlackHole_Think;
 		black->classname = "blackhole";
 		black->classindex = BLACKHOLE;
@@ -5115,7 +5115,7 @@ void Vortex_Touch(edict_t* ent, edict_t* other, cplane_t* plane, csurface_t* sur
 		ent->delay = level.time + 3;
 		ent->solid = SOLID_NOT;
 		ent->movetype = MOVETYPE_FLYMISSILE;
-		ent->nextthink = level.time + 0.1;
+		ent->nextthink = level.time + FRAMETIME;
 		ent->think = Vortex_Think;
 		ent->touch = NULL;
 	}

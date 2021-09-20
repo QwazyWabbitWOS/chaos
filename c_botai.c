@@ -225,7 +225,7 @@ void Bot_Think(edict_t* ent)
 
 		ent->client->flashlight = G_Spawn();
 		ent->client->flashlight->think = FlashLightThink;
-		ent->client->flashlight->nextthink = level.time + 0.1F; /* MrG{DRGN} Explicitly now a float */
+		ent->client->flashlight->nextthink = level.time + FRAMETIME;
 		ent->client->flashlight->s.effects = EF_HYPERBLASTER;
 		ent->client->flashlight->s.modelindex = gi.modelindex("models/objects/dummy/tris.md2");
 		ent->client->flashlight->solid = SOLID_NOT;

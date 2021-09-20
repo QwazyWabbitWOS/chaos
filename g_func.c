@@ -551,17 +551,17 @@ void SP_func_plat(edict_t* ent)
 	if (!ent->speed)
 		ent->speed = 20;
 	else
-		ent->speed *= 0.1F; /* MrG{DRGN} added  F, as this was causing truncation from double to float.*/
+		ent->speed *= FRAMETIME;
 
 	if (!ent->accel)
 		ent->accel = 5;
 	else
-		ent->accel *= 0.1F; /* MrG{DRGN} added  F, as this was causing truncation from double to float.*/
+		ent->accel *= FRAMETIME;
 
 	if (!ent->decel)
 		ent->decel = 5;
 	else
-		ent->decel *= 0.1F; /* MrG{DRGN} added  F, as this was causing truncation from double to float.*/
+		ent->decel *= FRAMETIME;
 
 	if (!ent->dmg)
 		ent->dmg = 2;

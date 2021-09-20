@@ -1046,7 +1046,7 @@ void DoRespawn(edict_t* ent)
 		}
 
 		VectorCopy(ent->spawnorigin, ent->s.origin);
-		ent->nextthink = level.time + 0.1;
+		ent->nextthink = level.time + FRAMETIME;
 		ent->think = droptofloor;
 
 		if (newit == 1)

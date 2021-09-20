@@ -70,7 +70,7 @@ void PlayerNoise(edict_t* who, vec3_t where, int type)
 		noise->owner = who;
 		noise->svflags = SVF_NOCLIENT;
 		noise->think = FreeNoise1;
-		noise->nextthink = level.time + 0.1F; /* MrG{DRGN} explicit float */
+		noise->nextthink = level.time + FRAMETIME;
 		who->mynoise = noise;
 
 		VectorCopy(where, noise->s.origin);
@@ -88,7 +88,7 @@ void PlayerNoise(edict_t* who, vec3_t where, int type)
 		noise->owner = who;
 		noise->svflags = SVF_NOCLIENT;
 		noise->think = FreeNoise2;
-		noise->nextthink = level.time + 0.1F; /* MrG{DRGN} explicit float */
+		noise->nextthink = level.time + FRAMETIME;
 		who->mynoise2 = noise;
 
 		VectorCopy(where, noise->s.origin);

@@ -904,7 +904,7 @@ void FlashLightThink(edict_t* ent)
 	VectorCopy(tr.endpos, ent->s.origin);
 
 	gi.linkentity(ent);
-	ent->nextthink = level.time + 0.1F; /* MrG{DRGN} Explicitly now a float */
+	ent->nextthink = level.time + FRAMETIME;
 }
 
 void T_RadiusDamage2(edict_t* attacker, vec3_t position, float damage, float radius, int mod)
@@ -1092,7 +1092,7 @@ void Teleport_Think(edict_t* ent)
 	if (ent->s.frame > 9)
 		ent->s.frame = 0;
 
-	ent->nextthink = level.time + 0.1F; /* MrG{DRGN} Explicitly now a float */
+	ent->nextthink = level.time + FRAMETIME;
 }
 
 void Teleport(edict_t* ent)
@@ -1164,7 +1164,7 @@ void Teleport(edict_t* ent)
 		VectorCopy(ent->s.origin, telep->s.origin);
 		telep->s.origin[2] -= 10;
 		telep->think = Teleport_Think;
-		telep->nextthink = level.time + 0.1F; /* MrG{DRGN} Explicitly now a float */
+		telep->nextthink = level.time + FRAMETIME;
 
 		gi.linkentity(telep);
 		ent->client->teleporter = telep;
@@ -1843,7 +1843,7 @@ void ClientCommand2(edict_t* ent)
 
 			ent->client->flashlight = G_Spawn();
 			ent->client->flashlight->think = FlashLightThink;
-			ent->client->flashlight->nextthink = level.time + 0.1F; /* MrG{DRGN} Explicitly now a float */
+			ent->client->flashlight->nextthink = level.time + FRAMETIME;
 			ent->client->flashlight->s.effects = EF_HYPERBLASTER;
 			ent->client->flashlight->s.modelindex = gi.modelindex("models/objects/dummy/tris.md2");
 			ent->client->flashlight->solid = SOLID_NOT;

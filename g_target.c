@@ -436,7 +436,7 @@ void target_laser_think(edict_t* self)
 			if (self->owner)
 			{
 				self->owner->think = G_FreeEdict;
-				self->owner->nextthink = level.time + 0.1F;/* MrG{DRGN} type conversion */
+				self->owner->nextthink = level.time + FRAMETIME;
 			}
 
 			gi.WriteByte(svc_temp_entity);
@@ -486,7 +486,7 @@ void target_laser_think(edict_t* self)
 				if (self->owner)
 				{
 					self->owner->think = G_FreeEdict;
-					self->owner->nextthink = level.time + 0.1F;/* MrG{DRGN} type conversion */
+					self->owner->nextthink = level.time + FRAMETIME;
 				}
 				gi.WriteByte(svc_temp_entity);
 				gi.WriteByte(TE_EXPLOSION1);
