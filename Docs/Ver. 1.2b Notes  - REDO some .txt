@@ -1,0 +1,231 @@
+       Will English, aka. MrG's - ChaosDM Lives 1.2b
+
+
+
+//========Chaos DM Lives v1.2b beta - MrG================
+set weapon_kick "0"    // kickable weapons toggle
+set do_respawn "60"    // base item respawn time default
+set do_respawn_rnd "80"// random item respawn time default
+set drop_tech "1"      //*MrG{DRGN} enable/disable tech drops
+set bot_log_only "1"   //bot detection is only logged when set to 1
+set chaos_plus "0"     //enable some new chaos features.
+set telefrag_rail "0"  //enable special railgun mode.
+set tele_fire "1"      //enable some items/weapon fire to travel thru teleporters
+set turprox_fx "1"     // enable new turret & proxy effects
+//========================================================
+
+
+
+
+----------------------version notes ----------------------
+
+* Fixed some uninitialized variables, undeclared function prototypes, reworking
+  of some formulas/equations (replaced  160>>3 with just 20 for example) ... id did some odd things and this is built off an old code release i think)
+- Fixed Sat Dec 13, 2003
+
+* Added simple z-bot/frkq2bot detection/player removal
+- Fixed Sat Dec 13, 2003
+
+* Extended the MAX_MAPS for map rotation to 256 from 64....
+- Fixed Sat Dec 13, 2003
+
+* Performed some code optimization of the weapon code, particularly the Vortex.
+- Fixed Sat Dec 13, 2003
+
+* Added new cvars for kickable weapons, base item respawn time, random item respawn time,
+  enable/disable,zbot logging only, or kicking as well.
+- Fixed Sat Dec 13, 2003
+
+* Added it_ names for the techs. Also added and the TE_ effects from the 3.20 source to
+  temp_event_t in q_shared.h in case we want to add some other effects.
+- Fixed Sun Dec 14, 2003
+
+* Fixed a bug removed by mrg so these don't get exploited on older servers
+- Fixed Sun Dec 14, 2003
+
+* Fixed a bug created in 1.14 release where if you picked up a jetpack it would kill the further respawn of the items in rotation...  was handled.
+- Fixed Mon Dec 15, 2003
+
+* Fixed a bug where a player disconnects with a teleport ball active, the ball was left behind.
+- Fixed Tue Dec 16, 2003
+
+* Fixed a bug where a player disconnects, or goes to camera mode with a grappling hook active, the hook could be left behind.
+- Fixed Tue Dec 16, 2003
+
+* Added more options for the havoc bot skins/models. the moobul/moobull, cow/cow, moobull/warbull, pknight/dragon, pknight/pledge,
+  and pknight/evil as choices in the random selection for them
+- Fixed Tue Dec 16, 2003
+
+* Fixed a bug where explosive arrow MODs where not implimented, and grenade MODs were being used, and added them to gslogs
+- Fixed Wed Dec 17, 2003
+
+* Fixed a bug where only male/female deaths were recorded, (if you weren't a female model you were male) .
+- Fixed Wed Dec 17, 2003
+
+* Performed some small code optimization of the scanner pic selection code,
+- Fixed Thu Dec 18, 2003
+
+* Fixed a bug where a player's grapple would not unhook when using the teleport ball.
+- Fixed Thu Dec 18, 2003
+
+* Fixed a bug where a player's fov was set to 90 upon return from chasecam
+- Fixed Fri Dec 19, 2003
+
+* Fixed two bugs with the kamikaze
+  1. the ammo required (rockets, homers, grenades) was not used up in the explosion,
+  Since the explosion damage, and radius is determined by the amount of these in inventory ammo amounts are set to 0.
+  2. An invulnerable player would die from the kamikaze.
+- Fixed Fri Dec 19, 2003
+
+* Fixed some of the issues with the frkq2bot detection/kicking are hopefully resolved... still problems with erlier versions I suspect more testing needed.
+- Fixed Sun Dec 21, 2003
+
+* Fixed bug where players could turn the jetpack on or off in camera mode... Inventory was not being cleared when switching to camera mode.
+- Fixed Mon Dec 22, 2003
+
+* Updated q_shared.h, and q_shared.c to 3.21 release versions Note that there is a sound called by the ak42 firing MZ_BOOMERGUN, which was later replaced by MZ_IONRIPPER from
+  the xatrix mission packin the quake2 engine . The sound is"sound/weapons/rippfire.wav". This is an Engine side function .
+  For full effect we should add this ,  or an appropriate wav with the same name to the chaos pak0.pak.
+- Fixed Wed Dec 24, 2003
+
+* Updated CTFSay_Team so Chaos specific weapons, and items are now included in the locational macro (%L)
+  - Fixed Fri Dec 26, 2003
+
+* Added glow & trail effect to proxies,and turrets when the owner has quad damage, and or invunlerability active, IF they are invisible they are translucent.
+  - Fixed Sat Dec 27, 2003
+
+* Fixed a bug in void SV_CalcBlend where one of the coders tried to force the client gl_polyblend cvar to 1 by doing gi.cvar_set("gl_polyblend", "1");
+  , but this was not correct.
+- Fixed Sat Dec 27, 2003
+
+* Found a possible cause of an invisible player bug, and inplimented a precautionary, though possibly ineffective fix. This is a
+  rarebug so hard to say.
+- Fixed Sat Dec 27, 2003
+
+* Fixed a bug where a player could kamikaze, select a camera mode before dying , and be stuck with a flashing kami screen
+  - Fixed Mon Dec 29, 2003
+
+* Fixed a chaos specific CTFSay_Team bug similar to the above however this was not the fault of the ctf code,
+but the way bot safe chat was handled.
+  - Fixed Tue Dec 30, 2003
+
+* Removed some unused/empty source files from the project,
+- Fixed Fri Jan 02, 2003
+
+* Added a new cammode closer to player view for testing, as with all camera modes there are some tracking issues,
+- Fixed Fri Jan 02, 2003
+
+* Added new player animations for backwards movement while crouching, and running,
+- Fixed Sat Jan 03, 2003
+
+* Added checks to insure that the maps in random rotation are not played 2 times in a row.
+- Fixed Sun Jan 04, 2003
+
+* Reduced optimized dll size by 4k simply by removing unnneeded checks for deathmatch/coop values!
+  Since Chaos is DM only these checks did nothing but eatup time/space.
+- Fixed Sun Jan 04, 2003
+
+* Eliminated some redundant functions (P_ProjectSource2 was == P_ProjectSource which was already a global function!).
+- Fixed Mon Jan 05, 2003
+
+* Fixed Playerlist cmd, as it would sometimes give an incorrect client number. Also we should make note of the "players" command
+  Still needs testintg
+  - Fixed Mon Jan 05, 2003
+
+* Added a new cammode "camera 6" freeview to player view for testing, added checks against functions being used in camera mode.
+- Fixed Thu Jan 08, 2004
+
+* Restored some code to the sv ml maplist function for skiping to a map # in the rotation. The usage is
+  sv ml goto #.
+- Fixed Fri Jan 09, 2004
+
+* Added new command MODEL for camera testing.Note this is different from the skin, or skins command just for debugging purposes.
+- Fixed Sat Jan 10, 2004
+
+* Removed camera model for free view, and player view camera modes freeview to player view for testing,
+  also eliminated 90% of the hud display for camera modes, for clear screenshots/demos. removed the ability
+  for the vortex to affect the camera in free view mode. Now the vortex can be viewed in safety
+- Fixed Sun Jan 11, 2004
+
+* Added new command CAMLIST to see who is using the camera seperate from all players.
+- Fixed Sun Jan 11, 2004
+
+* Added new cvars for all new chaos options, including telefrag_rail,turret & proxy effects, firing thru teleports,
+   - Fixed Fri Jan 16, 2004
+
+* Seperated the lasertime, and proxytime cvars.... there have been 2 in the code for a awhile but an apparent typo
+  made them set by the same cvar named lasertime
+   - Fixed Mon Jan 19, 2004
+
+* Tweaked new teleporter function a bit for further testing.,
+   - Fixed Mon Jan 19, 2004
+
+* Shortened gameversion name to prevent info string length exceeded error changed some other serverinfocvars to archive, or latch as well,
+   - Fixed Mon Jan 19, 2004
+
+* Forced clients to automatically change map at level end after 30 seconds rather than just hang on the server indefinitely.,
+   - Fixed Fri Jan 23, 2004
+
+* Adjusted Camera 5 to the point where its functional, and added Stats as to who you are caming on the HUD.
+   - Fixed Sun Jan 25, 2004
+
+* Fixed a wide variety of bugs in the ctf spectator modes where you could grapple, kick, kamikaze, etc, and were targeted by proxys bots, homers, turrets, etc.
+   - Fixed Wed Jan 28, 2004
+
+* Replaced Shotgun, Machingun, and Chaingun fire routines in the code with simple prototype place holders
+  for chaos item replacement.
+   - Fixed Wed Jan 28, 2004
+
+* Added new shell effects for the SuperShotgun, and ExplosiveSuperShotgun
+   - Fixed Wed Jan 28, 2004
+
+* Removed telekinetic proxie think function for the time being until furthur development warrants its return.
+   - Fixed Sat Feb 21, 2004
+
+* Fixed instagibing of turrets by railshots with telefrag_rail enabled, and tweaked the code a bit so hopefully the attacker will be teleported to the victims location everytime now...still to be tested.
+   - Fixed Sat Feb 21, 2004
+
+* Changed the new effects for turrets,and proxies a bit, also added additional gibs for the telefrag_rail instagib effect
+   - Fixed Sat Feb 28, 2004
+
+* Added updated codebase server commands to g_svcmds.c as follows
+   /*
+   ==============================================================================
+   PACKET FILTERING
+
+   You can add or remove addresses from the filter list with:
+
+   addip <ip>
+   removeip <ip>
+
+   The ip address is specified in dot format, and any unspecified digits will match any value, so you can specify an entire class C network with "addip 192.246.40".
+   Removeip will only remove an address specified exactly the same way.  You cannot addip a subnet, then removeip a single host.
+
+   listip
+   Prints the current list of filters.
+
+   writeip
+   Dumps "addip <ip>" commands to listip.cfg so it can be execed at a later date.  The filter lists are not saved and restored by default, because I beleive it would cause too much confusion.
+
+   filterban <0 or 1>
+   If 1 (the default), then ip addresses matching the current list will be prohibited from entering the game.  This is the default setting.
+   If 0, then only addresses matching the list will be allowed.  This lets you easily set up a private game, or a game that only allows players from your local network.
+   ==============================================================================
+   */
+   -Fixed Fri March 5 2004
+
+* Fixed a bug in the new freeview cam where the hud still said you were camming an individual player.
+ - Fixed Sat March 20, 2004
+
+* Removed the pointless message telling you that you have a tech in inventory...
+  this is obvious from the HUD, and from how it affects game play.
+ - Fixed Wed April 14, 2004
+
+* Fixed a bug where a slower function was used initialy in the q2 code globaly replaced all occurances of Q_stricmp with Q_stricmp.
+ - Fixed Sat April 17, 2004
+
+* Made some slight optimizations to the HavocBot, and lightsoff code. Not too noticable in gameplay yet I'd wager.
+ - Fixed Tue May 4, 2004
+
+* Eliminated the need for some global functions by combining p_weapon.c, and c_weapon.c thereby eliminating the need for c_weapon.h .
+ - Fixed Sat May 8, 2004

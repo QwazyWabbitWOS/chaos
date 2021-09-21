@@ -149,3 +149,43 @@ These are bugs that have been fixed in Chaotic Dreams
 
 ----- 1.14 release 
 
+1.2b Chao DM Lives - Source code lost
+
+Chaos DM Lives 3.0b
+
+Starting over 09/23/2020
+
+* Fixed a bug where a player could kamikaze, select a camera mode before dying , and be stuck with a flashing kami screen
+
+* Fixed two bugs with the kamikaze 
+  1. the ammo required (rockets, homers, grenades) was not used up in the explosion, 
+  Since the explosion damage, and radius is determined by the amount of these in inventory ammo amounts are set to 0.
+  2. An invulnerable player would die from the kamikaze. 
+
+* Fixed a bug where a player disconnects with a teleport ball active, the ball was left behind. 
+
+* Fixed a bug where a player disconnects, or goes to camera mode with a grappling hook active, the hook could be left behind. 
+
+* Extended the MAX_MAPS for map rotation to 256 from 64.... 
+
+* Updated q_shared.h, and q_shared.c to 3.21 release versions Note that there is a sound called by the ak42 firing MZ_BOOMERGUN, which was later replaced by MZ_IONRIPPER from
+  the xatrix mission pack in the quake2 engine . The sound is"sound/weapons/rippfire.wav". This is an Engine side function .
+
+* Added Explosive arrow MODs, Gibstats, and Arrow_Explode  function.
+
+* Separated the lasertime, and proxytime cvars. They were both by  the lasertime cvar.
+
+* Fixed a bug created in 1.14 release where if you picked up a jetpack it would kill the further respawn of the items 
+  in rotation. 10-21-2020
+
+* Fixed a bug warning you about not having enough cells to run the belt, after you die.
+
+* Fixed a bug in CTFAssignSkin where a player could join a team and appear with the default
+  male/grunt skin by setting his skin to anything with two forward slashes.
+  For example, skin "a/b/c" or even skin "//".	
+
+* Fixed a bug where dead poisoned players still vomit, and dead bodies can be poisoned. - Sunday Nov 29th 2020
+
+* Fixed a bug in CTFSay_Team that could crash servers.
+
+
