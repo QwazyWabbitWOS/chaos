@@ -1882,7 +1882,6 @@ void ClientUserinfoChanged(edict_t* ent, char* userinfo)
 	// check for malformed or illegal info strings
 	if (!Info_Validate(userinfo))
 	{
-		/*	MrG{DRGN} destination safe strcpy replacement */
 		Com_strcpy(userinfo, sizeof(userinfo), "\\name\\badinfo\\skin\\male/grunt");
 	}
 

@@ -131,7 +131,7 @@ void DoRespawn(edict_t* ent)
 	if (ent->team)
 	{
 		edict_t* master;
-		unsigned int	count = 0;
+		unsigned int	count;
 		unsigned int choice;
 
 		master = ent->teammaster;

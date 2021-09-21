@@ -142,7 +142,7 @@ void InitGame(void)
 	gi.cvar("gamename", GAMEVERSION, CVAR_SERVERINFO | CVAR_LATCH);
 	gi.cvar("gamedate", __DATE__, CVAR_SERVERINFO | CVAR_LATCH);
 
-	maxclients = gi.cvar("maxclients", "8", CVAR_SERVERINFO | CVAR_LATCH);
+	maxclients = gi.cvar("maxclients", "24", CVAR_SERVERINFO | CVAR_LATCH);	 /* MrG{DRGN} had defaulted to 8*/
 	deathmatch = gi.cvar("deathmatch", "1", CVAR_LATCH);
 	coop = gi.cvar("coop", "0", CVAR_LATCH);
 	skill = gi.cvar("skill", "1", CVAR_LATCH);
@@ -229,6 +229,7 @@ void InitGame(void)
 
 void WriteGame(char* filename, qboolean autosave)
 {
+	
 	/* Unused */
 }
 

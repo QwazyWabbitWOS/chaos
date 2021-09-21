@@ -125,11 +125,9 @@ void Sys_Error(const char* error, ...) /* MrG{DRGN} changed to const */
 	char		text[1024];
 
 	va_start(argptr, error);
-	/*vsprintf (text, error, argptr); MrG{DRGN} use vsnprintf */
 	vsnprintf(text, sizeof(text), error, argptr);
-
 	va_end(argptr);
-	/*MrG{RGN} printf format error
+	/*MrG{DRGN} printf format error
 	gi.error (ERR_FATAL, "%s", text);
 	*/
 	gi.error("%s", text);
@@ -142,9 +140,7 @@ void Com_Printf(char* msg, ...)
 	char		text[1024];
 
 	va_start(argptr, msg);
-	/*vsprintf (text, msg, argptr); MrG{DRGN} use vsnprintf */
 	vsnprintf(text, sizeof(text), msg, argptr);
-
 	va_end(argptr);
 
 	gi.dprintf("%s", text);

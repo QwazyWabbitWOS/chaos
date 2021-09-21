@@ -302,8 +302,7 @@ void CTFAssignSkin(edict_t* ent, char* s)
 	*/
 	if ((p = strchr(t, '/')) != NULL)
 		p[1] = 0;
-	else
-		/*	MrG{DRGN} destination safe strcpy replacement */
+	else 		
 		Com_strcpy(t, sizeof(t), "male/");
 
 	switch (ent->client->resp.ctf_team) {
@@ -1359,8 +1358,7 @@ void CTFScoreboardMessage(edict_t* ent, edict_t* killer)
 					42 + i * 8);
 #endif
 
-			if (maxsize - len > strlen(entry)) {
-				/*	MrG{DRGN} destination safe strcat replacement */
+			if (maxsize - len > strlen(entry)) {				
 				Com_strcat(string, sizeof(string), entry);
 				len = strlen(string);
 				last[0] = i;
@@ -1396,8 +1394,7 @@ void CTFScoreboardMessage(edict_t* ent, edict_t* killer)
 				sprintf(entry + strlen(entry), "xv 216 yv %d picn sbfctf1 ",
 					42 + i * 8);
 #endif
-			if (maxsize - len > strlen(entry)) {
-				/*	MrG{DRGN} destination safe strcat replacement */
+			if (maxsize - len > strlen(entry)) {				
 				Com_strcat(string, sizeof(string), entry);
 				len = strlen(string);
 				last[1] = i;
@@ -1424,8 +1421,7 @@ void CTFScoreboardMessage(edict_t* ent, edict_t* killer)
 
 			if (!k) {
 				k = 1;
-				sprintf(entry, "xv 0 yv %d string2 \"Spectators\" ", j);
-				/*	MrG{DRGN} destination safe strcat replacement */
+				sprintf(entry, "xv 0 yv %d string2 \"Spectators\" ", j);				
 				Com_strcat(string, sizeof(string), entry);
 				len = strlen(string);
 				j += 8;
@@ -1438,8 +1434,7 @@ void CTFScoreboardMessage(edict_t* ent, edict_t* killer)
 				i, // playernum
 				cl->resp.score,
 				cl->ping > 999 ? 999 : cl->ping);
-			if (maxsize - len > strlen(entry)) {
-				/*	MrG{DRGN} destination safe strcat replacement */
+			if (maxsize - len > strlen(entry)) {  				
 				Com_strcat(string, sizeof(string), entry);
 				len = strlen(string);
 			}
@@ -2518,8 +2513,7 @@ static void old_teleporter_touch(edict_t* self, edict_t* other, cplane_t* plane,
 		return;
 	}
 	/* END */
-
-	if (!other->client)
+	if (!other->client && !tele_fire->value)
 		return;
 	dest = G_Find(NULL, FOFS(targetname), self->target);
 	if (!dest)
@@ -2537,25 +2531,32 @@ static void old_teleporter_touch(edict_t* self, edict_t* other, cplane_t* plane,
 
 		// clear the velocity and hold them in place briefly
 	VectorClear(other->velocity);
-	other->client->ps.pmove.pm_time = 160 >> 3;		// hold time
-	other->client->ps.pmove.pm_flags |= PMF_TIME_TELEPORT;
-
+	if (other->client)
+	{
+		other->client->ps.pmove.pm_time = 160 >> 3;		// hold time
+		other->client->ps.pmove.pm_flags |= PMF_TIME_TELEPORT;
+	}
 	// draw the teleport splash at source and on the player
 	self->enemy->s.event = EV_PLAYER_TELEPORT;
 	other->s.event = EV_PLAYER_TELEPORT;
 
 	// set angles
-	for (i = 0; i < 3; i++)
-		other->client->ps.pmove.delta_angles[i] = ANGLE2SHORT(dest->s.angles[i] - other->client->resp.cmd_angles[i]);
-
+	if (other->client)
+	{
+		for (i = 0; i < 3; i++)
+			other->client->ps.pmove.delta_angles[i] = ANGLE2SHORT(dest->s.angles[i] - other->client->resp.cmd_angles[i]);
+	}
 	other->s.angles[PITCH] = 0;
 	other->s.angles[YAW] = dest->s.angles[YAW];
 	other->s.angles[ROLL] = 0;
-	VectorCopy(dest->s.angles, other->client->ps.viewangles);
-	VectorCopy(dest->s.angles, other->client->v_angle);
-
+	if (other->client)
+	{
+		VectorCopy(dest->s.angles, other->client->ps.viewangles);
+		VectorCopy(dest->s.angles, other->client->v_angle);
+	
 	// give a little forward velocity
 	AngleVectors(other->client->v_angle, forward, NULL, NULL);
+	}
 	VectorScale(forward, 200, other->velocity);
 
 	// kill anything at the destination

@@ -2089,7 +2089,7 @@ void Bot_Say(edict_t* ent, qboolean team, char* fmt, ...)
 		return;
 
 	va_start(argptr, fmt);
-	/*len = vsprintf (bigbuffer,fmt,argptr);MrG{DRGN} use vsnprintf */
+	
 	vsnprintf(BotSayBuff, sizeof(BotSayBuff), fmt, argptr);
 	va_end(argptr);
 

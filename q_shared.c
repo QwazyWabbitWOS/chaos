@@ -884,7 +884,6 @@ void COM_DefaultExtension(char* path, char* extension)
 			return;                 // it has an extension
 		src--;
 	}
-	/*	MrG{DRGN} destination safe strcat replacement*/
 	Com_strcat(path, sizeof(path), extension);
 }
 
@@ -1014,7 +1013,6 @@ char* va(char* format, ...)
 	static char		string[1024];
 
 	va_start(argptr, format);
-	/*	vsprintf (string, format,argptr); MrG{DRGN} use vsnprintf */
 	vsnprintf(string, sizeof(string), format, argptr);
 
 	va_end(argptr);
@@ -1198,7 +1196,6 @@ void Com_sprintf(char* dest, size_t size, char* fmt, ...)
 
 /* MrG{DRGN} TY QW */
 static char	bigbuffer[0x10000];  //QW// For Com_sprintf
-
 /**
  Safer, uses large buffer
  //QW// The big buffer allows us to safely dump
@@ -1381,8 +1378,7 @@ void Info_RemoveKey(char* s, char* key)
 		*o = 0;
 
 		if (!strcmp(key, pkey))
-		{
-			/*	MrG{DRGN} destination safe strcpy replacement */
+		{			
 			Com_strcpy(start, sizeof(start), s);	// remove this part
 			return;
 		}

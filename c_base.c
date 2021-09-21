@@ -302,9 +302,6 @@ void GetSettings(void)
 	lightsoff = gi.cvar("lightsoff", "0", CVAR_SERVERINFO);
 	botchat = gi.cvar("botchat", "1", CVAR_SERVERINFO);
 
-	drop_tech = gi.cvar("drop_tech", "1", CVAR_LATCH); /* MrG{DRGN} tech drop prevention */
-	weapon_kick = gi.cvar("weapon_kick", "1", CVAR_LATCH); /* MrG{DRGN} kickable weapons toggle */
-
 	ban_sword = gi.cvar("ban_sword", "0", CVAR_LATCH);
 	ban_chainsaw = gi.cvar("ban_chainsaw", "0", CVAR_LATCH);
 	ban_supershotgun = gi.cvar("ban_supershotgun", "0", CVAR_LATCH);
@@ -408,6 +405,11 @@ void GetSettings(void)
 	start_silencer = gi.cvar("start_silencer", "0", CVAR_LATCH);
 	start_rebreather = gi.cvar("start_rebreather", "0", CVAR_LATCH);
 	start_environmentsuit = gi.cvar("start_environmentsuit", "0", CVAR_LATCH);
+
+	drop_tech = gi.cvar("drop_tech", "1", CVAR_LATCH); /* MrG{DRGN} tech drop prevention */
+	weapon_kick = gi.cvar("weapon_kick", "1", CVAR_LATCH); /* MrG{DRGN} kickable weapons toggle */
+	tele_fire = gi.cvar("tele_fire", "0", CVAR_LATCH); /* MrG{DRGN} allow certain non-client projectiles to pass through teleporters */
+
 }
 
 qboolean infront2(edict_t* self, edict_t* other)
@@ -1021,14 +1023,11 @@ static char	BPrint2Buff[0x2000]; /*  MrG{DRGN} move this here  and reduce the si
 void bprintf2(int printlevel, char* fmt, ...)
 {
 	int i;
-	/*  MrG{DRGN} unused!
-	char	bigbuffer[0x10000];
-	int		len; */
+	
 	va_list		argptr;
 	edict_t* cl_ent;
 
-	va_start(argptr, fmt);
-	/*len = vsprintf (bigbuffer,fmt,argptr);MrG{DRGN} use vsnprintf */
+	va_start(argptr, fmt);	
 	vsnprintf(BPrint2Buff, sizeof(BPrint2Buff), fmt, argptr);
 	va_end(argptr);
 
@@ -1057,7 +1056,7 @@ void cprintf2(edict_t* ent, int printlevel, char* fmt, ...)
 		return;
 
 	va_start(argptr, fmt);
-	/*len = vsprintf (bigbuffer,fmt,argptr);MrG{DRGN} use vsnprintf */
+	
 	vsnprintf(CPrint2Buff, sizeof(CPrint2Buff), fmt, argptr);
 	va_end(argptr);
 
@@ -1079,7 +1078,7 @@ void nprintf(int printlevel, char* fmt, ...)
 		return;
 
 	va_start(argptr, fmt);
-	/*len = vsprintf (bigbuffer,fmt,argptr);MrG{DRGN} use vsnprintf */
+	
 	vsnprintf(NPrintBuff, sizeof(NPrintBuff), fmt, argptr);
 	va_end(argptr);
 

@@ -865,8 +865,7 @@ void SP_worldspawn(edict_t * ent)
 
 	SetItemNames();
 
-	if (st.nextmap)
-		/*	MrG{DRGN} destination safe strcpy replacement*/
+	if (st.nextmap)		
 		Com_strcpy(level.nextmap, sizeof(level.nextmap), st.nextmap);
 	// make some data visible to the server
 

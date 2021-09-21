@@ -30,7 +30,7 @@ _CrtMemState startup1;	// memory diagnostics
 //ZOID
 
 // the "gameversion" client command will print this plus compile date
-#define	GAMEVERSION	"Chaos DM Lives v3.0b"
+#define	GAMEVERSION	"Chaos DM Lives v3.2b"
 
 // protocol bytes that can be directly added to messages
 #define	svc_muzzleflash		1
@@ -643,8 +643,8 @@ gitem_t* GetItemByIndex(int index);
 qboolean Add_Ammo(edict_t* ent, gitem_t* item, int count);
 void Touch_Item(edict_t* ent, edict_t* other, cplane_t* plane, csurface_t* surf);
 void DoRespawn(edict_t* ent); /* MrG{DRGN} added this prototype */
-void		Use_Weapon(edict_t* ent, gitem_t* inv);
-void		Drop_Weapon(edict_t* ent, gitem_t* inv);
+void	Use_Weapon(edict_t* ent, gitem_t* item);
+void	Drop_Weapon(edict_t* ent, gitem_t* item);
 
 
 //
@@ -734,7 +734,7 @@ void Grenade_Explode(edict_t* ent);
 //
 // p_client.c
 //
-void respawn(edict_t* ent);
+void respawn(edict_t* self);
 void SelectSpawnPoint(edict_t* ent, vec3_t origin, vec3_t angles);
 void PutClientInServer(edict_t* ent);
 void InitClientPersistant(gclient_t* client);
@@ -742,7 +742,7 @@ void InitClientResp(gclient_t* client);
 void InitBodyQue(void);
 void ClientBeginServerFrame(edict_t* ent);
 void ClientBeginDeathmatch(edict_t* ent);
-void TossClientWeapon(edict_t* ent);
+void TossClientWeapon(edict_t* self);
 void ClientUserinfoChanged(edict_t* ent, char* userinfo);
 qboolean ClientConnect(edict_t* ent, char* userinfo);
 void CopyToBodyQue(edict_t* ent);
@@ -1264,12 +1264,17 @@ cvar_t* dntg;
 cvar_t* lasermine_health;
 cvar_t* ex_arrow_damage;
 cvar_t* ex_arrow_radius;
-
-
 cvar_t* start_invulnerable_time;
-int		red_base, blue_base;	//node at red/blue flag
+
+/* MrG{DRGN} Chaos DM Lives cvars */
 cvar_t* drop_tech;	/* MrG{DRGN} tech drop prevention */
 cvar_t* weapon_kick; /* MrG{DRGN} kickable weapons toggle */
+cvar_t* tele_fire; /* MrG{DRGN} allow certain non-client projectiles to pass through teleporters */
+
+/* END */
+
+int		red_base, blue_base;	//node at red/blue flag
+
 //#define CHAOS_RETAIL
   //ZOID
 #include "g_ctf.h"

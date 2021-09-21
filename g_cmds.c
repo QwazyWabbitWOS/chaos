@@ -10,7 +10,7 @@ char* ClientTeam(edict_t* ent)
 
 	if (!ent->client)
 		return value;
-	/*	MrG{DRGN} destination safe strcpy replacement*/
+	
 	Com_strcpy(value, sizeof(value), Info_ValueForKey(ent->client->pers.userinfo, "skin"));
 	p = strchr(value, '/');
 	if (!p)
@@ -34,7 +34,7 @@ qboolean OnSameTeam(edict_t* ent1, edict_t* ent2)
 	if (!((int)(dmflags->value) & (DF_MODELTEAMS | DF_SKINTEAMS)))
 		return false;
 
-	/*	MrG{DRGN} destination safe strcpy replacement*/
+	
 	Com_strcpy(ent1Team, sizeof(ent1Team), ClientTeam(ent1));
 	Com_strcpy(ent2Team, sizeof(ent2Team), ClientTeam(ent2));
 
@@ -828,11 +828,11 @@ void Cmd_Players_f(edict_t* ent)
 			game.clients[index[i]].pers.netname);
 		if (strlen(small) + strlen(large) > sizeof(large) - 100)
 		{	// can't print all of them in one packet
-			/*	MrG{DRGN} destination safe strcat replacement */
+			
 			Com_strcat(large, sizeof(large), "...\n");
 			break;
 		}
-		/*	MrG{DRGN} destination safe strcat replacement */
+		
 		Com_strcat(large, sizeof(large), small);
 
 	}
@@ -957,7 +957,7 @@ void Cmd_Say_f(edict_t* ent, qboolean team, qboolean arg0)
 
 	if (arg0)
 	{
-		/*	MrG{DRGN} destination safe strcat replacement */
+		
 		Com_strcat(text, sizeof(text), gi.argv(0));
 		Com_strcat(text, sizeof(text), " ");
 		Com_strcat(text, sizeof(text), gi.args());
@@ -970,16 +970,14 @@ void Cmd_Say_f(edict_t* ent, qboolean team, qboolean arg0)
 		{
 			p++;
 			p[strlen(p) - 1] = 0;
-		}
-		/*	MrG{DRGN} destination safe strcat replacement */
+		}			  		
 		Com_strcat(text, sizeof(text), p);
 	}
 
 	// don't let text be too long for malicious reasons
 	if (strlen(text) > 150)
 		text[150] = 0;
-
-	/*	MrG{DRGN} destination safe strcat replacement */
+	
 	Com_strcat(text, sizeof(text), "\n");
 
 	if (CheckFlood(ent))/* MrG{DRGN} */

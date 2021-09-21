@@ -11,8 +11,8 @@ qboolean infront3(edict_t* self, edict_t* other);
 qboolean infront4(edict_t* self, edict_t* other);
 qboolean TouchingLadder(edict_t* self);
 //HAVOC
-void AddItemToList(edict_t* tech);
-void RemoveFromList(edict_t* tech);
+void AddItemToList(edict_t* ent);
+void RemoveFromList(edict_t* ent);
 void		Bot_InitNodes(void);
 qboolean	Bot_LoadNodes(void);
 qboolean	Bot_SaveNodes(void);
