@@ -1406,35 +1406,36 @@ void teleporter_touch(edict_t* self, edict_t* other, cplane_t* plane, csurface_t
 		gi.dprintf("Couldn't find destination\n");
 		return;
 	}
-
-	if (!Bot_FindNode(self, 120, TELEPORT_NODE)
-		&& dntg->value)
+	if (other->client)
 	{
-		//start node
-		VectorCopy(other->s.origin, nodeo);
-
-		if (!(other->client->ps.pmove.pm_flags & PMF_DUCKED))
+		if (!Bot_FindNode(self, 120, TELEPORT_NODE)
+			&& dntg->value)
 		{
-			nodeo[2] += 5;
-			Bot_PlaceNode(nodeo, TELEPORT_NODE, 0);
+			//start node
+			VectorCopy(other->s.origin, nodeo);
+
+			if (!(other->client->ps.pmove.pm_flags & PMF_DUCKED))
+			{
+				nodeo[2] += 5;
+				Bot_PlaceNode(nodeo, TELEPORT_NODE, 0);
+			}
+			else
+				Bot_PlaceNode(nodeo, TELEPORT_NODE, 1);
+
+			Bot_CalcNode(other, numnodes);
+
+			//dest node
+			VectorCopy(dest->s.origin, nodeo);
+			nodeo[2] += 20;
+			Bot_PlaceNode(nodeo, NORMAL_NODE, 0);
+			Bot_CalcNode(other, numnodes);
+
+			//connection
+			nodes[numnodes - 1].dist[numnodes] = 1;
+
+			nprintf(PRINT_HIGH, "Teleporter nodes placed and connected!\n");
 		}
-		else
-			Bot_PlaceNode(nodeo, TELEPORT_NODE, 1);
-
-		Bot_CalcNode(other, numnodes);
-
-		//dest node
-		VectorCopy(dest->s.origin, nodeo);
-		nodeo[2] += 20;
-		Bot_PlaceNode(nodeo, NORMAL_NODE, 0);
-		Bot_CalcNode(other, numnodes);
-
-		//connection
-		nodes[numnodes - 1].dist[numnodes] = 1;
-
-		nprintf(PRINT_HIGH, "Teleporter nodes placed and connected!\n");
 	}
-
 	// unlink to make sure it can't possibly interfere with KillBox
 	gi.unlinkentity(other);
 
