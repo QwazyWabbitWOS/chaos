@@ -2095,51 +2095,73 @@ static void CTFSay_Team_Sight(edict_t* who, char* buf)
 
 void CTFSay_Team(edict_t* who, char* msg)
 {
-	char outmsg[1024] = { 0 };
-	char buf[1024] = { 0 };
+	char outmsg[256];
+	char buf[256];
 	int i;
 	char* p;
 	edict_t* cl_ent;
+
+	if (CheckFlood(who))
+		return;
+
+	outmsg[0] = 0;
 
 	if (*msg == '\"') {
 		msg[strlen(msg) - 1] = 0;
 		msg++;
 	}
 
-	for (p = outmsg; *msg && (p - outmsg) < sizeof(outmsg) - 1; msg++) {
+	for (p = outmsg; *msg && (p - outmsg) < sizeof(outmsg) - 2; msg++) {
 		if (*msg == '%') {
 			switch (toupper(*++msg))
 			{
 			case 'L':
 				CTFSay_Team_Location(who, buf);
-				strcpy(p, buf);
-				p += strlen(buf);
+				if (strlen(buf) + (p - outmsg) < sizeof(outmsg) - 2)
+				{
+					strcpy(p, buf);
+					p += strlen(buf);
+				}
 				break;
 			case 'A':
 				CTFSay_Team_Armor(who, buf);
-				strcpy(p, buf);
-				p += strlen(buf);
+				if (strlen(buf) + (p - outmsg) < sizeof(outmsg) - 2)
+				{
+					strcpy(p, buf);
+					p += strlen(buf);
+				}
 				break;
 			case 'H':
 				CTFSay_Team_Health(who, buf);
-				strcpy(p, buf);
-				p += strlen(buf);
+				if (strlen(buf) + (p - outmsg) < sizeof(outmsg) - 2)
+				{
+					strcpy(p, buf);
+					p += strlen(buf);
+				}
 				break;
 			case 'T':
 				CTFSay_Team_Tech(who, buf);
-				strcpy(p, buf);
-				p += strlen(buf);
+				if (strlen(buf) + (p - outmsg) < sizeof(outmsg) - 2)
+				{
+					strcpy(p, buf);
+					p += strlen(buf);
+				}
 				break;
 			case 'W':
 				CTFSay_Team_Weapon(who, buf);
-				strcpy(p, buf);
-				p += strlen(buf);
+				if (strlen(buf) + (p - outmsg) < sizeof(outmsg) - 2)
+				{
+					strcpy(p, buf);
+					p += strlen(buf);
+				}
 				break;
-
 			case 'N':
 				CTFSay_Team_Sight(who, buf);
-				strcpy(p, buf);
-				p += strlen(buf);
+				if (strlen(buf) + (p - outmsg) < sizeof(outmsg) - 2)
+				{
+					strcpy(p, buf);
+					p += strlen(buf);
+				}
 				break;
 
 			default:
@@ -2151,7 +2173,11 @@ void CTFSay_Team(edict_t* who, char* msg)
 	}
 	*p = 0;
 
-	for (i = 0; i < maxclients->value; i++) {
+	if (strlen(outmsg) > 150)
+		outmsg[150] = 0;
+
+	for (i = 0; i < maxclients->value; i++)
+	{
 		cl_ent = g_edicts + 1 + i;
 		if (!cl_ent->inuse)
 			continue;
@@ -2338,11 +2364,12 @@ void CTFShowScores(edict_t* ent, pmenu_t* p)
 }
 
 pmenu_t creditsmenu[] = {
-	{ "*Quake II Chaos DM Lives v2.0b*",	PMENU_ALIGN_CENTER, NULL, NULL },/* MrG{DRGN} */
+	{ "*Quake II Chaos DM Lives v3.2b*",	PMENU_ALIGN_CENTER, NULL, NULL },/* MrG{DRGN} */
 	{ NULL,				PMENU_ALIGN_CENTER, NULL, NULL },/* MrG{DRGN} */
 	{  "*Programming",								PMENU_ALIGN_CENTER, NULL, NULL },/* MrG{DRGN} */
 	{ "Flash (flash@telefragged.com)",					PMENU_ALIGN_CENTER, NULL, NULL },/* MrG{DRGN} */
 	{ "MrG{DRGN} (aggravationq2@hotmail.com)",	PMENU_ALIGN_CENTER, NULL, NULL },/* MrG{DRGN} */
+	{ "QwazyWabbit (gandalf.2004@gmail.com)",	PMENU_ALIGN_CENTER, NULL, NULL },/* MrG{DRGN} */
 	{ "*Level Design", 					PMENU_ALIGN_CENTER, NULL, NULL },
 	{ "Nat (nnp@greennet.net)",			PMENU_ALIGN_CENTER, NULL, NULL },
 	{ "Craig (car188@psu.edu)",			PMENU_ALIGN_CENTER, NULL, NULL },
