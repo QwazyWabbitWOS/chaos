@@ -48,78 +48,107 @@ qboolean infront(edict_t* self, edict_t* other)
 	return false;
 }
 
-void ShowGun(edict_t* ent)	//vwep
-{
-	int		nIndex = 0;
-	char* pszIcon;
+int vwep_index; //QW offset for vwep list.
 
-	/* MrG{DRGN} sanity check */
-	if (!ent)
-		return;
-	/* END */
+// ### Hentai ### BEGIN
+void ShowGun(edict_t* ent)	//QW from WOD:LOX for vwep
+{
+	char heldmodel[128];
+	int n;
 
 	if (!ent->client->pers.weapon)
 	{
+		ent->client->ps.gunindex = 0;		// WI: seems to be missing?
 		ent->s.modelindex2 = 0;
+		gi.dprintf("ShowGun: Oops! Weapon Index missing! %s\n", ent->client->pers.netname);
 		return;
 	}
 
-	// Determine the weapon's precache index.
+	ent->s.modelindex2 = 255;
+	strcpy(heldmodel, "#");	//safe, don't change
+	strcat(heldmodel, ent->client->pers.weapon->icon);
+	strcat(heldmodel, ".md2");
 
-	pszIcon = ent->client->pers.weapon->icon;
-
-	if (strcmp(pszIcon, "w_ak42") == 0)
-		nIndex = 1;
-	else if (strcmp(pszIcon, "w_sword") == 0)
-		nIndex = 2;
-	else if (strcmp(pszIcon, "w_chainsaw") == 0)
-		nIndex = 3;
-	else if (strcmp(pszIcon, "w_sshotgun") == 0
-		|| strcmp(pszIcon, "w_esshotgun") == 0)
-		nIndex = 4;
-	else if (strcmp(pszIcon, "w_bow") == 0
-		|| strcmp(pszIcon, "w_pbow") == 0
-		|| strcmp(pszIcon, "w_ebow") == 0)
-		nIndex = 5;
-	else if (strcmp(pszIcon, "w_airfist") == 0)
-		nIndex = 6;
-	else if (strcmp(pszIcon, "a_grenades1") == 0
-		|| strcmp(pszIcon, "a_fgrenades") == 0
-		|| strcmp(pszIcon, "a_pgrenades") == 0
-		|| strcmp(pszIcon, "a_lmines") == 0)
-		nIndex = 7;
-	else if (strcmp(pszIcon, "w_glauncher1") == 0
-		|| strcmp(pszIcon, "w_flauncher") == 0
-		|| strcmp(pszIcon, "w_plauncher") == 0)
-		nIndex = 8;
-	else if (strcmp(pszIcon, "w_xlauncher") == 0)
-		nIndex = 9;
-	else if (strcmp(pszIcon, "w_rlauncher") == 0
-		|| strcmp(pszIcon, "w_grlauncher") == 0)
-		nIndex = 10;
-	else if (strcmp(pszIcon, "w_hyperblaster") == 0)
-		nIndex = 11;
-	else if (strcmp(pszIcon, "w_railgun") == 0)
-		nIndex = 12;
-	else if (strcmp(pszIcon, "w_buzzsaw") == 0)
-		nIndex = 13;
-	else if (strcmp(pszIcon, "w_bfg") == 0)
-		nIndex = 14;
-	else if (strcmp(pszIcon, "a_vortex") == 0)
-		nIndex = 15;
-	else if (strcmp(pszIcon, "a_rturret") == 0
-		|| strcmp(pszIcon, "a_lturret") == 0)
-		nIndex = 16;
-	else
-		nIndex = 0;
-
-	// Clear previous weapon model.
-	ent->s.skinnum &= 255;
-
-	// Set new weapon model.
-	ent->s.skinnum |= (nIndex << 8);
-	ent->s.modelindex2 = (VWEP_MODEL); /* MrG{DRGN} VWEP_MAX  */
+	// held model is mapped onto the player skinnum
+	n = (gi.modelindex(heldmodel) - vwep_index) << 8;
+	ent->s.skinnum &= 0xFF;
+	ent->s.skinnum |= n;
+	//DbgPrintf("ShowGun: %s skinum 0x%x\n", heldmodel, n);
 }
+// ### Hentai ### END
+
+//void ShowGun(edict_t* ent)	//vwep
+//{
+//	int		nIndex = 0;
+//	char* pszIcon;
+//
+//	/* MrG{DRGN} sanity check */
+//	if (!ent)
+//		return;
+//	/* END */
+//
+//	if (!ent->client->pers.weapon)
+//	{
+//		ent->s.modelindex2 = 0;
+//		return;
+//	}
+//
+//	// Determine the weapon's precache index.
+//
+//	pszIcon = ent->client->pers.weapon->icon;
+//
+//	if (strcmp(pszIcon, "w_ak42") == 0)
+//		nIndex = 1;
+//	else if (strcmp(pszIcon, "w_sword") == 0)
+//		nIndex = 2;
+//	else if (strcmp(pszIcon, "w_chainsaw") == 0)
+//		nIndex = 3;
+//	else if (strcmp(pszIcon, "w_sshotgun") == 0
+//		|| strcmp(pszIcon, "w_esshotgun") == 0)
+//		nIndex = 4;
+//	else if (strcmp(pszIcon, "w_bow") == 0
+//		|| strcmp(pszIcon, "w_pbow") == 0
+//		|| strcmp(pszIcon, "w_ebow") == 0)
+//		nIndex = 5;
+//	else if (strcmp(pszIcon, "w_airfist") == 0)
+//		nIndex = 6;
+//	else if (strcmp(pszIcon, "a_grenades1") == 0
+//		|| strcmp(pszIcon, "a_fgrenades") == 0
+//		|| strcmp(pszIcon, "a_pgrenades") == 0
+//		|| strcmp(pszIcon, "a_lmines") == 0)
+//		nIndex = 7;
+//	else if (strcmp(pszIcon, "w_glauncher1") == 0
+//		|| strcmp(pszIcon, "w_flauncher") == 0
+//		|| strcmp(pszIcon, "w_plauncher") == 0)
+//		nIndex = 8;
+//	else if (strcmp(pszIcon, "w_xlauncher") == 0)
+//		nIndex = 9;
+//	else if (strcmp(pszIcon, "w_rlauncher") == 0
+//		|| strcmp(pszIcon, "w_grlauncher") == 0)
+//		nIndex = 10;
+//	else if (strcmp(pszIcon, "w_hyperblaster") == 0)
+//		nIndex = 11;
+//	else if (strcmp(pszIcon, "w_railgun") == 0)
+//		nIndex = 12;
+//	else if (strcmp(pszIcon, "w_buzzsaw") == 0)
+//		nIndex = 13;
+//	else if (strcmp(pszIcon, "w_bfg") == 0)
+//		nIndex = 14;
+//	else if (strcmp(pszIcon, "a_vortex") == 0)
+//		nIndex = 15;
+//	else if (strcmp(pszIcon, "a_rturret") == 0
+//		|| strcmp(pszIcon, "a_lturret") == 0)
+//		nIndex = 16;
+//	else
+//		nIndex = 0;
+//
+//	// Clear previous weapon model.
+//	ent->s.skinnum &= 255;
+//
+//	// Set new weapon model.
+//	ent->s.skinnum |= (nIndex << 8);
+//	ent->s.modelindex2 = (VWEP_MODEL); /* MrG{DRGN} VWEP_MAX  */
+//}
 
 qboolean TouchingLadder(edict_t* self)
 {
@@ -567,6 +596,34 @@ void PreCacheAll(void)
 	gi.modelindex("models/items/invis/tris.md2");
 	gi.modelindex("models/items/jet/tris.md2");
 
+	// VWEP STUFF This section must be contiguous.
+	vwep_index = gi.modelindex("#w_ak42.md2") - 1;//QW set the base offset for ShowGun.
+	gi.modelindex("#w_sword.md2");
+	gi.modelindex("#w_chainsaw.md2");
+	gi.modelindex("#w_sshotgun.md2");
+	gi.modelindex("#w_bow.md2");
+	gi.modelindex("#w_airfist.md2");
+	gi.modelindex("#a_grenades1.md2");
+	gi.modelindex("#w_glauncher1.md2");
+	gi.modelindex("#w_plauncher.md2");
+	gi.modelindex("#w_xlauncher.md2");
+	gi.modelindex("#w_rlauncher.md2");
+	gi.modelindex("#w_hyperblaster.md2");
+	gi.modelindex("#w_railgun.md2");
+	gi.modelindex("#w_buzzsaw.md2");
+	gi.modelindex("#w_bfg.md2");
+	gi.modelindex("#a_vortex.md2");
+	gi.modelindex("#a_rturret.md2");
+	//The following model files are missing.
+	//gi.modelindex("#w_esshotgun.md2");
+	//gi.modelindex("#a_lturret.md2");
+	//gi.modelindex("#w_pbow.md2");
+	//gi.modelindex("#w_ebow.md2");
+	//gi.modelindex("#a_fgrenades.md2");
+	//gi.modelindex("#a_pgrenades.md2");
+	//gi.modelindex("#a_lmines.md2");
+	//gi.modelindex("#w_flauncher.md2");
+	//gi.modelindex("#w_grlauncher.md2");
 
 	//sound
 	gi.soundindex("hook/hit.wav");

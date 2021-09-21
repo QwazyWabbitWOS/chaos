@@ -415,6 +415,7 @@ extern	game_import_t	gi;
 extern	game_export_t	globals;
 extern	spawn_temp_t	st;
 
+extern	int	vwep_index; //QW// The index for the vwep cached model offset
 extern	int	sm_meat_index;
 extern	int	snd_fry;
 

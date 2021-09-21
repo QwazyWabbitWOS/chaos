@@ -316,7 +316,7 @@ void Bot_Spawn(edict_t* ent)
 
 	ent->s.effects = 0;
 	ent->s.skinnum = index;
-	ent->s.modelindex = (MAX_MODELS - 1); /* MrG{DRGN} no Magic Number 255 */
+	ent->s.modelindex = (PLAYER_MODEL); /* MrG{DRGN} Player model */
 
 	ShowGun(ent); //vwep
 	//ent->s.modelindex2    = 255;

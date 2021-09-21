@@ -469,7 +469,7 @@ void SV_CalcBlend(edict_t* ent)
 	}
 
 	//POISONGRENADE
-	if (ent->client->PoisonTime >= 1)
+	if (ent->client->PoisonTime && ent->client->PoisonTime >= 1)
 	{
 		static float blend = 0.4F; /* MrG{DRGN} added  F, as this was causing truncation from double to float.*/
 		static int updown = 1;
@@ -509,7 +509,7 @@ void SV_CalcBlend(edict_t* ent)
 		gi.cvar_set("gl_polyblend", "1");
 		ent->client->PoisonTime -= 0.1F; /* MrG{DRGN} added  F, as this was causing truncation from double to float.*/
 	}
-	else if ((ent->client->PoisonTime < 1 && ent->client->PoisonTime > 0) || ent->client->pers.health <= 0)	   /* MrG{DRGN} or dead */
+	else if ((ent->client->PoisonTime && ent->client->PoisonTime > 0) || ent->client->pers.health <= 0)	   /* MrG{DRGN} or dead */
 	{
 
 		/* MrG{DRGN} integer comparison vs string comparison.*/

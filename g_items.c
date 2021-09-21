@@ -165,8 +165,8 @@ void DoRespawn(edict_t* ent)
 		item = ent->item;
 		newit = 0;
 
-		if (strcmp(ent->classname, "ammo_shells") == 0
-			|| strcmp(ent->classname, "ammo_explosiveshells") == 0)
+		if (ent->classindex == AM_SHELLS
+			|| ent->classindex == AM_EXPLOSIVESHELLS)
 		{
 			if (random() < 0.3)
 			{
@@ -714,7 +714,7 @@ void DoRespawn(edict_t* ent)
 				return;
 			}
 		}
-		else if (strcmp(ent->classname, "ammo_shells") == 0 && ban_ammo_shells->value > 0)
+		else if (ent->classindex == AM_SHELLS && ban_ammo_shells->value > 0)
 		{
 			if (ban_ammo_explosiveshells->value > 0) //banned,too
 			{
@@ -727,7 +727,7 @@ void DoRespawn(edict_t* ent)
 				ent->classname = "ammo_explosiveshells";
 			}
 		}
-		else if (strcmp(ent->classname, "ammo_explosiveshells") == 0 && ban_ammo_explosiveshells->value > 0)
+		else if (ent->classindex == AM_EXPLOSIVESHELLS && ban_ammo_explosiveshells->value > 0)
 		{
 			if (ban_ammo_shells->value > 0) //banned,too
 			{
@@ -1099,9 +1099,10 @@ qboolean Pickup_Powerup(edict_t* ent, edict_t* other)
 	if ((skill->value == 1 && quantity >= 2) || (skill->value >= 2 && quantity >= 1))
 		return false;
 
+	/* MrG{DRGN}  Always DM
 	if ((coop->value) && (ent->item->flags & IT_STAY_COOP) && (quantity > 0))
 		return false;
-
+	*/
 	// LETHAL : start
 	if (ent->item == it_grapple)
 	{
@@ -1113,7 +1114,7 @@ qboolean Pickup_Powerup(edict_t* ent, edict_t* other)
 			return true;
 		}
 	}
-	/* MrG{DRGN} fix was LETHAL broke (Picking up a jetpack killed the item spawn */
+	/* MrG{DRGN} fix  LETHAL broke (Picking up a jetpack killed the item spawn */
 	if (ent->item == it_jetpack)
 	{
 
@@ -1129,9 +1130,9 @@ qboolean Pickup_Powerup(edict_t* ent, edict_t* other)
 		else
 			other->client->jet_framenum = 0;
 
-		/* MrG{DRGN} too soon
-			return true;
-			*/
+		/* MrG{DRGN} too soon */
+		return true;
+
 
 	}
 
@@ -1617,7 +1618,7 @@ qboolean Pickup_Key(edict_t* ent, edict_t* other)
 		return false;
 	}
 	/* END */
-
+	/* MrG{DRGN}  Always DM
 	if (coop->value)
 	{
 		if (strcmp(ent->classname, "key_power_cube") == 0)
@@ -1635,7 +1636,7 @@ qboolean Pickup_Key(edict_t* ent, edict_t* other)
 		}
 		return true;
 	}
-
+	*/
 	other->client->pers.inventory[ITEM_INDEX(ent->item)]++;
 	return true;
 }
@@ -1740,11 +1741,11 @@ qboolean Pickup_Ammo(edict_t* ent, edict_t* other)
 
 	if (weapon && !oldcount)
 	{
-		if (other->client->pers.weapon != ent->item && (!deathmatch->value || other->client->pers.weapon == FindItem("AK42 Assault Pistol")))
+		if (other->client->pers.weapon != ent->item && ( /* MrG{DRGN}  Always DM !deathmatch->value || */other->client->pers.weapon == it_ak42))
 			other->client->newweapon = ent->item;
 	}
 
-	if (!(ent->spawnflags & (DROPPED_ITEM | DROPPED_PLAYER_ITEM)) && (deathmatch->value))
+	if (!(ent->spawnflags & (DROPPED_ITEM | DROPPED_PLAYER_ITEM))/* MrG{DRGN} always DM  && (deathmatch->value)*/)
 		SetRespawn(ent, 30);
 
 	if (strcmp(other->classname, "bot") == 0)	//MATTHIAS
@@ -2134,7 +2135,7 @@ void Touch_Item(edict_t* ent, edict_t* other, cplane_t* plane, csurface_t* surf)
 	if (!taken)
 		return;
 
-	if (!((coop->value) && (ent->item->flags & IT_STAY_COOP)) || (ent->spawnflags & (DROPPED_ITEM | DROPPED_PLAYER_ITEM)))
+	if (!(/* MrG{DRGN}  Always DM (coop->value) && */ (ent->item->flags & IT_STAY_COOP)) || (ent->spawnflags & (DROPPED_ITEM | DROPPED_PLAYER_ITEM)))
 	{
 		if (ent->flags & FL_RESPAWN)
 			ent->flags &= ~FL_RESPAWN;
@@ -2576,7 +2577,7 @@ void SpawnItem(edict_t* ent, gitem_t* item)
 
 	//MATTHIAS	- Weapon/Item exchange
 
-	if (strcmp(ent->classname, "ammo_shells") == 0)
+	if (ent->classindex == AM_SHELLS)
 	{
 		if (random() < 0.3)
 		{
@@ -3048,7 +3049,7 @@ void SpawnItem(edict_t* ent, gitem_t* item)
 			return;
 		}
 	}
-	else if (strcmp(ent->classname, "ammo_shells") == 0 && ban_ammo_shells->value > 0)
+	else if (ent->classindex == AM_SHELLS && ban_ammo_shells->value > 0)
 	{
 		if (ban_ammo_explosiveshells->value > 0) //banned,too
 		{
@@ -3061,7 +3062,7 @@ void SpawnItem(edict_t* ent, gitem_t* item)
 			ent->classname = "ammo_explosiveshells";
 		}
 	}
-	else if (strcmp(ent->classname, "ammo_explosiveshells") == 0 && ban_ammo_explosiveshells->value > 0)
+	else if (ent->classindex == AM_EXPLOSIVESHELLS && ban_ammo_explosiveshells->value > 0)
 	{
 		if (ban_ammo_shells->value > 0) //banned,too
 		{
@@ -3794,8 +3795,8 @@ always owned, never in the world
 														 "weapons/machgf1b.wav weapons/machgf2b.wav weapons/machgf3b.wav weapons/machgf4b.wav weapons/machgf5b.wav"
 														 */
 														 ""
-
 													},
+
 	/*QUAKED weapon_chaingun (.3 .3 1) (-16 -16 -16) (16 16 16)
 	*/
 	{

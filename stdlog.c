@@ -314,7 +314,7 @@ static int _sl_MaybeOpenFile(game_import_t* gimp)
 
 			if (NULL == StdLogFile)
 			{
-				gimp->error("Couldn't open %s", pName);
+				gimp->error("Couldn't open %s", pName, strerror(errno));
 			}
 		}
 	}

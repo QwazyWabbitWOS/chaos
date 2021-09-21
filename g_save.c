@@ -173,7 +173,7 @@ void InitGame(void)
 
 	//This game.dll only supports deathmatch
 	if (!deathmatch->value) {
-		gi.dprintf("Forcing deathmatch.");
+		gi.dprintf("Forcing deathmatch.\n");
 		gi.cvar_set("deathmatch", "1");
 	}
 	//force coop off

@@ -96,6 +96,7 @@ void SP_misc_viper_bomb(edict_t* self);
 void SP_misc_bigviper(edict_t* self);
 void SP_misc_strogg_ship(edict_t* self);
 void SP_misc_teleporter(edict_t* self);
+void SP_misc_teleporter_dest(edict_t* self);
 void SP_misc_blackhole(edict_t* self);
 void SP_misc_eastertank(edict_t* self);
 void SP_misc_easterchick(edict_t* self);
@@ -363,50 +364,23 @@ void ED_CallSpawn_Old(edict_t* ent)
 	//gi.dprintf ("%s doesn't have a spawn function\n", ent->classname);
 }*/
 
-/*
-=============
-ED_NewString
-=============
-
+//=============
+//ED_NewString
+//=============
 char* ED_NewString(char* string)
 {
 	char* newb, * new_p;
 	int		i, l;
 
-	l = strlen(string) + 1;
+	l = (int)strlen(string) + 1;
 
-		newb = gi.TagMalloc(l, TAG_LEVEL);
+	newb = gi.TagMalloc(l, TAG_LEVEL);
 
-		new_p = newb;
+	new_p = newb;
 
-		for (i = 0; i < l; i++)
-		{
-			if (string[i] == '\\' && i < l - 1)
-			{
-				i++;
-				if (string[i] == 'n')
-					*new_p++ = '\n';
-				else
-					*new_p++ = '\\';
-			}
-			else
-				*new_p++ = string[i];
-		}
-
-		return newb;
-	}
-	*/
-
-static char* ED_NewString(const char* string)
-{
-	int l = (int)strlen(string) + 1;
-	char* newb = (char*)gi.TagMalloc(l, TAG_LEVEL);
-	char* new_p = newb;
-
-	for (int i = 0; i < l; i++)
+	for (i = 0; i < l; i++)
 	{
-		/* check for special chars and convert them */
-		if (string[i] == '\\' && l - 1 > i) /* MrG{DRGN} The variable 'i' was used as an array index before it is checked that is within limits. This can mean that the array might be accessed out of bounds. */
+		if (string[i] == '\\' && i < l - 1)
 		{
 			i++;
 			if (string[i] == 'n')
@@ -420,6 +394,32 @@ static char* ED_NewString(const char* string)
 
 	return newb;
 }
+
+//QW Functionally identical to old code.
+//static char* ED_NewString(const char* string)
+//{
+//	int l = (int)strlen(string) + 1;
+//	char* newb = (char*)gi.TagMalloc(l, TAG_LEVEL);
+//	char* new_p = newb;
+//
+//	for (int i = 0; i < l; i++)
+//	{
+//		/* check for special chars and convert them */
+//		if (string[i] == '\\' && l - 1 > i) /* MrG{DRGN} The variable 'i' was used as an array index before it is checked that is within limits. This can mean that the array might be accessed out of bounds. */
+//		{
+//			i++;
+//			if (string[i] == 'n')
+//				*new_p++ = '\n';
+//			else
+//				*new_p++ = '\\';
+//		}
+//		else
+//			*new_p++ = string[i];
+//	}
+//
+//	return newb;
+//}
+
 /*
 ===============
 ED_ParseField
