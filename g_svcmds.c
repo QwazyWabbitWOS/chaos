@@ -3,9 +3,9 @@
 #include "c_base.h"
 
 
-static void	Svcmd_Test_f(void)
+static void	SVCmd_Test_f(void)
 {
-	gi.cprintf(NULL, PRINT_HIGH, "Svcmd_Test_f()\n");
+	gi.cprintf(NULL, PRINT_HIGH, "SVCmd_Test_f()\n");
 }
 
 /*
@@ -26,7 +26,7 @@ listip
 Prints the current list of filters.
 
 writeip
-Dumps "addip <ip>" commands to listip.cfg so it can be execed at a later date.  The filter lists are not saved and restored by default, because I beleive it would cause too much confusion.
+Dumps "addip <ip>" commands to listip.cfg so it can be extended at a later date.  The filter lists are not saved and restored by default, because I believe it would cause too much confusion.
 
 filterban <0 or 1>
 
@@ -99,10 +99,10 @@ static qboolean StringToFilter(char* s, ipfilter_t* f)
 
 /*
 =================
-SV_FilterPacket
+SVCmd_FilterPacket
 =================
 */
-qboolean SV_FilterPacket(char* from)
+qboolean SVCmd_FilterPacket(char* from)
 {
 	int		i;
 	unsigned	in;
@@ -133,7 +133,11 @@ qboolean SV_FilterPacket(char* from)
 
 /*
 =================
-SV_AddIP_f
+SVCmd_AddIP_f
+sv addip - add addresses from the filter list with:
+sv addip <ip>
+The ip address is specified in dot format, and any unspecified digits will match any value,
+so you can specify an entire class C network with "sv addip 192.246.40".
 =================
 */
 static void SVCmd_AddIP_f(void)
@@ -164,7 +168,11 @@ static void SVCmd_AddIP_f(void)
 
 /*
 =================
-SV_RemoveIP_f
+SVCmd_RemoveIP_f
+sv addip - remove addresses from the filter list with:
+sv removeip <ip>
+sv removeip will only remove an address specified exactly the same way.  
+You cannot addip a subnet, then removeip a single host.
 =================
 */
 static void SVCmd_RemoveIP_f(void)
@@ -195,7 +203,8 @@ static void SVCmd_RemoveIP_f(void)
 
 /*
 =================
-SV_ListIP_f
+SVCmd_ListIP_f  
+sv listip Prints the current list of filters.
 =================
 */
 static void SVCmd_ListIP_f(void)
@@ -213,7 +222,9 @@ static void SVCmd_ListIP_f(void)
 
 /*
 =================
-SV_WriteIP_f
+SVCmd_WriteIP_f
+sv writeip -	Dumps "addip <ip>" commands to listip.cfg so it can be extended at a later date.		
+				The filter lists are not saved and restored by default, because I believe it would cause too much confusion.
 =================
 */
 static void SVCmd_WriteIP_f(void)
@@ -249,18 +260,17 @@ static void SVCmd_WriteIP_f(void)
 	fclose(f);
 }
 
-
 /* FWP Move to next map in the current rotation */
 
 // Force the next map in queue
-void Svcmd_nextmap_f(void)
+void SVCmd_nextmap_f(void)
 {
 	bprintf2(PRINT_HIGH, "Advancing to next level.\n");
 	EndDMLevel();
 }
 
 // Turn on sequential map rotation
-void Svcmd_sequential_f(void)
+void SVCmd_sequential_f(void)
 {
 	if (maplist.nummaps > 0)  // does a maplist exist? 
 	{
@@ -274,7 +284,7 @@ void Svcmd_sequential_f(void)
 }
 
 // Turn on randomized map rotation
-void Svcmd_random_f(void)
+void SVCmd_random_f(void)
 {
 	if (maplist.nummaps > 0)  // does a maplist exist? 
 	{
@@ -289,7 +299,7 @@ void Svcmd_random_f(void)
 	}
 }
 
-void Svcmd_goto_f(char *mapnum)
+void SVCmd_goto_f(char *mapnum)
 {
 	char command[MAX_QPATH] = { 0 };
 
@@ -316,7 +326,7 @@ void Svcmd_goto_f(char *mapnum)
 		gi.cprintf(NULL, PRINT_HIGH, "You have to load a maplist first!\n\n");
 }
 
-void Svcmd_show_f(void)
+void SVCmd_show_f(void)
 {
 	if (maplist.nummaps > 0)  // does a maplist exist? 
 	{
@@ -353,14 +363,22 @@ void ServerCommand(void)
 	char* cmd;
 
 	cmd = gi.argv(1);
-	if (Q_stricmp(cmd, "test") == 0)
+	if (Q_strcasecmp(cmd, "test") == 0)
 		Svcmd_Test_f();
+	else if (Q_strcasecmp(cmd, "addip") == 0)
+		SVCmd_AddIP_f();
+	else if (Q_strcasecmp(cmd, "removeip") == 0)
+		SVCmd_RemoveIP_f();
+	else if (Q_strcasecmp(cmd, "listip") == 0)
+		SVCmd_ListIP_f();
+	else if (Q_strcasecmp(cmd, "writeip") == 0)
+		SVCmd_WriteIP_f();
 	else if (Q_stricmp(cmd, "addbots") == 0)
-		Svcmd_addbots_f();
+		SVCmd_addbots_f();
 	else if (Q_stricmp(cmd, "killbot") == 0)
-		Svcmd_killbot_f(gi.argv(2));
+		SVCmd_killbot_f(gi.argv(2));
 	else if (Q_stricmp(cmd, "nextmap") == 0)
-		Svcmd_nextmap_f();
+		SVCmd_nextmap_f();
 	else if (Q_stricmp(cmd, "ml") == 0)
 	{
 		if (Q_stricmp(gi.argv(2), "0") == 0)	//map rotation off
@@ -369,19 +387,19 @@ void ServerCommand(void)
 		}
 		else if (Q_stricmp(gi.argv(2), "1") == 0)	//start sequential rotation
 		{
-			Svcmd_sequential_f();
+			SVCmd_sequential_f();
 		}
 		else if (Q_stricmp(gi.argv(2), "2") == 0)	//start random rotation
 		{
-			Svcmd_random_f();
+			SVCmd_random_f();
 		}
 		else if (Q_stricmp(gi.argv(2), "goto") == 0)	//jump to map X in list
 		{
-			Svcmd_goto_f(gi.argv(3));
+			SVCmd_goto_f(gi.argv(3));
 		}
 		else if (Q_stricmp(gi.argv(2), "") == 0)	//print maplist
 		{
-			Svcmd_show_f();
+			SVCmd_show_f();
 		}
 		else	//load maplist
 		{
