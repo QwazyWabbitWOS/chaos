@@ -2096,7 +2096,7 @@ static void CTFSay_Team_Sight(edict_t* who, char* buf)
 void CTFSay_Team(edict_t* who, char* msg)
 {
 	char outmsg[256];
-	char buf[256];
+	char buf[1024];
 	int i;
 	char* p;
 	edict_t* cl_ent;
