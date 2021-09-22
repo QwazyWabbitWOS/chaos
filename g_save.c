@@ -199,6 +199,7 @@ void InitGame(void)
 	flood_msgs = gi.cvar("flood_msgs", "4", 0);
 	flood_persecond = gi.cvar("flood_persecond", "4", 0);
 	flood_waitdelay = gi.cvar("flood_waitdelay", "10", 0);
+	filterban = gi.cvar("filterban", "1", 0);
 	/* END */
 
 	// items

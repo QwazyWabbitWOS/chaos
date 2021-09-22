@@ -529,6 +529,7 @@ extern	cvar_t* maxclients;
 extern	cvar_t* flood_msgs;
 extern	cvar_t* flood_persecond;
 extern	cvar_t* flood_waitdelay;
+extern	cvar_t* filterban;
 /* END */
 
 qboolean	is_quad;     //MATTHIAS
