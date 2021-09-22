@@ -52,7 +52,7 @@ cvar_t* flood_msgs;
 cvar_t* flood_persecond;
 cvar_t* flood_waitdelay;
 cvar_t* filterban;
-void Svcmd_killbot_f(char* name);
+void SVCmd_killbot_f(char* name);
 /* END */
 
 cvar_t* sv_cheats;
@@ -321,7 +321,7 @@ void ExitLevel(void)
 		if (ent->health > ent->client->pers.max_health)
 			ent->health = ent->client->pers.max_health;
 	}
-	Svcmd_killbot_f("all");
+	SVCmd_killbot_f("all");
 	//ZOID
 	if (ctf->value)
 		CTFInit();

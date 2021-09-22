@@ -43,8 +43,8 @@ int		chat_linecount[NUM_CHATSECTIONS];
 
 
 //Bot functions
-void Svcmd_addbots_f(void);
-void Svcmd_killbot_f(char* name);
+void SVCmd_addbots_f(void);
+void SVCmd_killbot_f(char* name);
 
 int Riding_Plat(edict_t* ent);
 edict_t* Bot_FindBestWeapon(edict_t* ent);

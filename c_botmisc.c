@@ -12,7 +12,7 @@
 
 // Adds "num" bots with specified skill, team, name and model/skin.
 // sv addbots <amount> <skill> <team> <name> <model/skin>
-void Svcmd_addbots_f(void)
+void SVCmd_addbots_f(void)
 {
 	int		i, num, bot_skill, team;
 	char	name[64], model[128];
@@ -76,7 +76,7 @@ void Svcmd_addbots_f(void)
 	}
 }
 
-void Svcmd_killbot_f(char* name)
+void SVCmd_killbot_f(char* name)
 {
 	int i, k, count;
 
