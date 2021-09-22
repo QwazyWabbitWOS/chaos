@@ -35,7 +35,7 @@ static void LogWrite(const char* format, va_list* pmarker, int dated)
 	if ((fp = fopen(f_szLogFile, "a+")) == NULL)    /* MrG{DRGN} check the return */
 	{
 		Com_Printf("Unable to open file! %s.\n", strerror(errno));
-		return false;
+		return;
 	}
 
 	if (dated)
@@ -64,7 +64,7 @@ static void LogSpecial(const char* format, ...)
 	if ((fp = fopen(f_szLogFile, "a+")) == NULL)    /* MrG{DRGN} check the return */
 	{
 		Com_Printf("Unable to open file! %s.\n", strerror(errno));
-		return false;
+		return;
 	}
 
 	time(&now);
