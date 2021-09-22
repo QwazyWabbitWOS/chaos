@@ -112,3 +112,23 @@ gitem_t
 * it_belt, * it_flashlight, * it_scanner;
 /* MrG{DRGN} TODO: Missing? */
 
+cvar_t* node_debug;
+cvar_t* lightsoff;
+cvar_t* botchat;
+cvar_t* blindtime;
+cvar_t* poisontime;
+cvar_t* lasertime;
+cvar_t* proxytime;
+cvar_t* defence_turret_ammo;
+cvar_t* rocket_turret_ammo;
+cvar_t* dntg;
+cvar_t* lasermine_health;
+cvar_t* ex_arrow_damage;
+cvar_t* ex_arrow_radius;
+cvar_t* start_invulnerable_time;
+
+/* MrG{DRGN} Chaos DM Lives cvars */
+cvar_t* drop_tech;	/* MrG{DRGN} tech drop prevention */
+cvar_t* weapon_kick; /* MrG{DRGN} kickable weapons toggle */
+cvar_t* tele_fire; /* MrG{DRGN} allow certain non-client projectiles to pass through teleporters */
+

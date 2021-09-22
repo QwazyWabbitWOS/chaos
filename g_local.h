@@ -493,43 +493,43 @@ extern	edict_t* g_edicts;
 #define random()	((rand () & 0x7fff) / ((float)0x7fff))
 #define crandom()	(2.0F * (random() - 0.5F))/* MrG{DRGN} explicit float */
 
-extern	cvar_t* maxentities;
-extern	cvar_t* deathmatch;
-extern	cvar_t* coop;
-extern	cvar_t* dmflags;
-extern	cvar_t* skill;
-extern	cvar_t* fraglimit;
-extern	cvar_t* timelimit;
-extern	cvar_t* capturelimit;
+extern cvar_t* maxentities;
+extern cvar_t* deathmatch;
+extern cvar_t* coop;
+extern cvar_t* dmflags;
+extern cvar_t* skill;
+extern cvar_t* fraglimit;
+extern cvar_t* timelimit;
+extern cvar_t* capturelimit;
 
-extern	cvar_t* password;
-extern	cvar_t* g_select_empty;
-extern	cvar_t* dedicated;
-extern	cvar_t* game_dir;
-extern	cvar_t* g_maplistfile;
-extern	cvar_t* g_maplistmode;
+extern cvar_t* password;
+extern cvar_t* g_select_empty;
+extern cvar_t* dedicated;
+extern cvar_t* game_dir;
+extern cvar_t* g_maplistfile;
+extern cvar_t* g_maplistmode;
 
-extern	cvar_t* sv_gravity;
-extern	cvar_t* sv_maxvelocity;
+extern cvar_t* sv_gravity;
+extern cvar_t* sv_maxvelocity;
 
-extern	cvar_t* gun_x, * gun_y, * gun_z;
-extern	cvar_t* sv_rollspeed;
-extern	cvar_t* sv_rollangle;
+extern cvar_t* gun_x, * gun_y, * gun_z;
+extern cvar_t* sv_rollspeed;
+extern cvar_t* sv_rollangle;
 
-extern	cvar_t* run_pitch;
-extern	cvar_t* run_roll;
-extern	cvar_t* bob_up;
-extern	cvar_t* bob_pitch;
-extern	cvar_t* bob_roll;
+extern cvar_t* run_pitch;
+extern cvar_t* run_roll;
+extern cvar_t* bob_up;
+extern cvar_t* bob_pitch;
+extern cvar_t* bob_roll;
 
-extern	cvar_t* sv_cheats;
-extern	cvar_t* maxclients;
+extern cvar_t* sv_cheats;
+extern cvar_t* maxclients;
 
 /* MrG{DRGN} */
-extern	cvar_t* flood_msgs;
-extern	cvar_t* flood_persecond;
-extern	cvar_t* flood_waitdelay;
-extern	cvar_t* filterban;
+extern cvar_t* flood_msgs;
+extern cvar_t* flood_persecond;
+extern cvar_t* flood_waitdelay;
+extern cvar_t* filterban;
 /* END */
 
 qboolean	is_quad;     //MATTHIAS
@@ -1252,25 +1252,25 @@ edict_t* health_list;
 edict_t* powerup_list;
 edict_t* ammo_list;
 edict_t* vortex_pointer;	//pointer to the vortex if one is currently active
-cvar_t* node_debug;
-cvar_t* lightsoff;
-cvar_t* botchat;
-cvar_t* blindtime;
-cvar_t* poisontime;
-cvar_t* lasertime;
-cvar_t* proxytime;
-cvar_t* defence_turret_ammo;
-cvar_t* rocket_turret_ammo;
-cvar_t* dntg;
-cvar_t* lasermine_health;
-cvar_t* ex_arrow_damage;
-cvar_t* ex_arrow_radius;
-cvar_t* start_invulnerable_time;
+extern cvar_t* node_debug;
+extern cvar_t* lightsoff;
+extern cvar_t* botchat;
+extern cvar_t* blindtime;
+extern cvar_t* poisontime;
+extern cvar_t* lasertime;
+extern cvar_t* proxytime;
+extern cvar_t* defence_turret_ammo;
+extern cvar_t* rocket_turret_ammo;
+extern cvar_t* dntg;
+extern cvar_t* lasermine_health;
+extern cvar_t* ex_arrow_damage;
+extern cvar_t* ex_arrow_radius;
+extern cvar_t* start_invulnerable_time;
 
 /* MrG{DRGN} Chaos DM Lives cvars */
-cvar_t* drop_tech;	/* MrG{DRGN} tech drop prevention */
-cvar_t* weapon_kick; /* MrG{DRGN} kickable weapons toggle */
-cvar_t* tele_fire; /* MrG{DRGN} allow certain non-client projectiles to pass through teleporters */
+extern cvar_t* drop_tech;	/* MrG{DRGN} tech drop prevention */
+extern cvar_t* weapon_kick; /* MrG{DRGN} kickable weapons toggle */
+extern cvar_t* tele_fire; /* MrG{DRGN} allow certain non-client projectiles to pass through teleporters */
 
 /* END */
 
