@@ -31,9 +31,13 @@ static void LogWrite(const char* format, va_list* pmarker, int dated)
 	time_t now;
 	char timestring[64];
 	FILE* fp = NULL;
-	fp = fopen(f_szLogFile, "a+");
-	if (!fp)
-		return;
+
+	if ((fp = fopen(f_szLogFile, "a+")) == NULL)    /* MrG{DRGN} check the return */
+	{
+		Com_Printf("Unable to open file! %s.\n", strerror(errno));
+		return false;
+	}
+
 	if (dated)
 	{
 		time(&now);
@@ -57,10 +61,11 @@ static void LogSpecial(const char* format, ...)
 	char timestring[64];
 	FILE* fp = NULL;
 
-	fp = fopen(f_szLogFile, "a+");
-
-	if (!fp)
-		return;
+	if ((fp = fopen(f_szLogFile, "a+")) == NULL)    /* MrG{DRGN} check the return */
+	{
+		Com_Printf("Unable to open file! %s.\n", strerror(errno));
+		return false;
+	}
 
 	time(&now);
 	
