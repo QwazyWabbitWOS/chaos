@@ -189,3 +189,40 @@ Starting over 09/23/2020
 * Fixed a bug in CTFSay_Team that could crash servers.
 
 
+//========Chaos DM Lives v1.2b beta - MrG================
+set weapon_kick "0"    // kickable weapons toggle                                       - redone
+set do_respawn "60"    // base item respawn time default                                - todo
+set do_respawn_rnd "80"// random item respawn time default                              - todo
+set drop_tech "1"      //*MrG{DRGN} enable/disable tech drops                           - redone
+set bot_log_only "1"   //bot detection is only logged when set to 1                     - no
+set chaos_plus "0"     //enable some new chaos features.                                - todo - master cvar for the following
+set telefrag_rail "0"  //enable special railgun mode.                                   - may do
+set tele_fire "1"      //enable some items/weapon fire to pass through teleporters      - redone
+set turprox_fx "1"     // enable new turret & proxy effects                             - may do
+//========================================================
+
+* Added updated codebase server commands to g_svcmds.c as follows
+   /*
+   ==============================================================================
+   PACKET FILTERING
+
+   You can add or remove addresses from the filter list with:
+
+   addip <ip>
+   removeip <ip>
+
+   The ip address is specified in dot format, and any unspecified digits will match any value, so you can specify an entire class C network with "addip 192.246.40".
+   Removeip will only remove an address specified exactly the same way.  You cannot addip a subnet, then removeip a single host.
+
+   listip
+   Prints the current list of filters.
+
+   writeip
+   Dumps "addip <ip>" commands to listip.cfg so it can be execed at a later date.  The filter lists are not saved and restored by default, because I beleive it would cause too much confusion.
+
+   filterban <0 or 1>
+   If 1 (the default), then ip addresses matching the current list will be prohibited from entering the game.  This is the default setting.
+   If 0, then only addresses matching the list will be allowed.  This lets you easily set up a private game, or a game that only allows players from your local network.
+   ==============================================================================
+   */
+

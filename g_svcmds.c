@@ -5,7 +5,7 @@
 
 static void	Svcmd_Test_f(void)
 {
-	safe_cprintf(NULL, PRINT_HIGH, "Svcmd_Test_f()\n");
+	gi.cprintf(NULL, PRINT_HIGH, "Svcmd_Test_f()\n");
 }
 
 /*
@@ -72,7 +72,7 @@ static qboolean StringToFilter(char* s, ipfilter_t* f)
 
 		if (*s < '0' || *s > '9')
 		{
-			safe_cprintf(NULL, PRINT_HIGH, "Bad filter address: %s\n", s);
+			gi.cprintf(NULL, PRINT_HIGH, "Bad filter address: %s\n", s);
 			return false;
 		}
 
@@ -141,7 +141,7 @@ static void SVCmd_AddIP_f(void)
 	int		i;
 
 	if (gi.argc() < 3) {
-		safe_cprintf(NULL, PRINT_HIGH, "Usage:  addip <ip-mask>\n");
+		gi.cprintf(NULL, PRINT_HIGH, "Usage:  addip <ip-mask>\n");
 		return;
 	}
 
@@ -152,7 +152,7 @@ static void SVCmd_AddIP_f(void)
 	{
 		if (numipfilters == MAX_IPFILTERS)
 		{
-			safe_cprintf(NULL, PRINT_HIGH, "IP filter list is full\n");
+			gi.cprintf(NULL, PRINT_HIGH, "IP filter list is full\n");
 			return;
 		}
 		numipfilters++;
@@ -173,7 +173,7 @@ static void SVCmd_RemoveIP_f(void)
 	int			i, j;
 
 	if (gi.argc() < 3) {
-		safe_cprintf(NULL, PRINT_HIGH, "Usage:  sv removeip <ip-mask>\n");
+		gi.cprintf(NULL, PRINT_HIGH, "Usage:  sv removeip <ip-mask>\n");
 		return;
 	}
 
@@ -187,10 +187,10 @@ static void SVCmd_RemoveIP_f(void)
 			for (j = i + 1; j < numipfilters; j++)
 				ipfilters[j - 1] = ipfilters[j];
 			numipfilters--;
-			safe_cprintf(NULL, PRINT_HIGH, "Removed.\n");
+			gi.cprintf(NULL, PRINT_HIGH, "Removed.\n");
 			return;
 		}
-	safe_cprintf(NULL, PRINT_HIGH, "Didn't find %s.\n", gi.argv(2));
+	gi.cprintf(NULL, PRINT_HIGH, "Didn't find %s.\n", gi.argv(2));
 }
 
 /*
@@ -203,11 +203,11 @@ static void SVCmd_ListIP_f(void)
 	int		i;
 	byte	b[4] = { 0 };
 
-	safe_cprintf(NULL, PRINT_HIGH, "Filter list:\n");
+	gi.cprintf(NULL, PRINT_HIGH, "Filter list:\n");
 	for (i = 0; i < numipfilters; i++)
 	{
 		*(unsigned*)b = ipfilters[i].compare;
-		safe_cprintf(NULL, PRINT_HIGH, "%3i.%3i.%3i.%3i\n", b[0], b[1], b[2], b[3]);
+		gi.cprintf(NULL, PRINT_HIGH, "%3i.%3i.%3i.%3i\n", b[0], b[1], b[2], b[3]);
 	}
 }
 
@@ -231,15 +231,13 @@ static void SVCmd_WriteIP_f(void)
 	else
 		sprintf(name, "%s/listip.cfg", gamename->string);
 
-	safe_cprintf(NULL, PRINT_HIGH, "Writing %s.\n", name);
+	gi.cprintf(NULL, PRINT_HIGH, "Writing %s.\n", name);
 
-	f = fopen(name, "wb");
-	if (!f)
+	if ((f = fopen(name, "wb")) == NULL)    /* MrG{DRGN} check the return */
 	{
-		safe_cprintf(NULL, PRINT_HIGH, "Couldn't open %s\n", name);
+		gi.cprintf(NULL, PRINT_HIGH, "Couldn't open %s\n", name, strerror(errno));
 		return;
 	}
-
 	fprintf(f, "set filterban %d\n", (int)filterban->value);
 
 	for (i = 0; i < numipfilters; i++)
