@@ -3139,7 +3139,7 @@ void weapon_flashgrenade_fire(edict_t* ent, qboolean held)
 		ent->s.frame = FRAME_crattak1 - 1;
 		ent->client->anim_end = FRAME_crattak3;
 	}
-	else if (ent->s.modelindex != 255 && ent->health > 0)
+	else if (ent->s.modelindex != PLAYER_MODEL && ent->health > 0)
 	{
 		ent->client->anim_priority = ANIM_REVERSE;
 		ent->s.frame = FRAME_wave08;
@@ -3512,7 +3512,7 @@ void weapon_lasergrenade_fire(edict_t* ent, qboolean held)
 		ent->s.frame = FRAME_crattak1 - 1;
 		ent->client->anim_end = FRAME_crattak3;
 	}
-	else if (ent->s.modelindex != 255 && ent->health > 0)
+	else if (ent->s.modelindex != PLAYER_MODEL && ent->health > 0)
 	{
 		ent->client->anim_priority = ANIM_REVERSE;
 		ent->s.frame = FRAME_wave08;
@@ -3892,7 +3892,7 @@ void weapon_poisongrenade_fire(edict_t* ent, qboolean held)
 		ent->s.frame = FRAME_crattak1 - 1;
 		ent->client->anim_end = FRAME_crattak3;
 	}
-	else if (ent->s.modelindex != 255 && ent->health > 0)
+	else if (ent->s.modelindex != PLAYER_MODEL && ent->health > 0)
 	{
 		ent->client->anim_priority = ANIM_REVERSE;
 		ent->s.frame = FRAME_wave08;
