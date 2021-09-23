@@ -766,7 +766,7 @@ void player_die(edict_t* self, edict_t* inflictor, edict_t* attacker, int damage
 	self->takedamage = DAMAGE_YES;
 	self->movetype = MOVETYPE_TOSS;
 
-	self->s.modelindex2 = 0;	// remove linked weapon model
+	self->s.modelindex2 = REMOVED_MODEL;	// remove linked weapon model
 
 
 	self->s.angles[0] = 0;
@@ -796,7 +796,7 @@ void player_die(edict_t* self, edict_t* inflictor, edict_t* attacker, int damage
 		/* MrG{DRGN} move CTF specific stuff here */
 		if (ctf->value)
 		{	//ZOID
-			self->s.modelindex3 = 0;	// remove linked ctf flag
+			self->s.modelindex3 = REMOVED_MODEL;	// remove linked ctf flag
 			CTFFragBonuses(self, inflictor, attacker);
 			CTFDeadDropFlag(self);
 		}/* END */
@@ -2067,10 +2067,10 @@ void ClientDisconnect(edict_t* ent)
 	gi.multicast(ent->s.origin, MULTICAST_PVS);
 
 	gi.unlinkentity(ent);
-	ent->s.modelindex = 0;
-	ent->s.modelindex2 = 0;
-	ent->s.modelindex3 = 0; 
-	ent->s.modelindex4 = 0;
+	ent->s.modelindex = REMOVED_MODEL;
+	ent->s.modelindex2 = REMOVED_MODEL;
+	ent->s.modelindex3 = REMOVED_MODEL;
+	ent->s.modelindex4 = REMOVED_MODEL;
 
 	ent->solid = SOLID_NOT;
 	ent->inuse = false;

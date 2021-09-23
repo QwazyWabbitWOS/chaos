@@ -316,7 +316,7 @@ void Bot_Spawn(edict_t* ent)
 
 	ent->s.effects = 0;
 	ent->s.skinnum = index;
-	ent->s.modelindex = (PLAYER_MODEL); /* MrG{DRGN} Player model */
+	ent->s.modelindex = (PLAYER_MODEL); /* MrG{DRGN} */
 
 	ShowGun(ent); //vwep
 	//ent->s.modelindex2    = 255;
@@ -369,7 +369,7 @@ void bot_die(edict_t* self, edict_t* inflictor, edict_t* attacker, int damage, v
 	self->takedamage = DAMAGE_YES;
 	self->movetype = MOVETYPE_TOSS;
 
-	self->s.modelindex2 = 0;	// remove linked weapon model
+	self->s.modelindex2 = REMOVED_MODEL;	// remove linked weapon model
 
 
 	self->s.angles[0] = 0;
@@ -393,7 +393,7 @@ void bot_die(edict_t* self, edict_t* inflictor, edict_t* attacker, int damage, v
 		/* MrG{DRGN} move CTF specific stuff here */
 		if (ctf->value)
 		{	//ZOID
-			self->s.modelindex3 = 0;	// remove linked ctf flag
+			self->s.modelindex3 = REMOVED_MODEL;	// remove linked ctf flag
 			CTFFragBonuses(self, inflictor, attacker);
 			CTFDeadDropFlag(self);
 		}/* END */

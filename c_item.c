@@ -16,7 +16,7 @@ void Use_Invisibility(edict_t* ent, gitem_t* item)
 
 	gi.sound(ent, CHAN_ITEM, gi.soundindex("items/invis.wav"), 0.8F, ATTN_NORM, 0);/* MrG{DRGN} added  F, as this was causing truncation from double to float.*/
 	ent->client->invisible = 1;
-	ent->s.modelindex = 0;
+	ent->s.modelindex = REMOVED_MODEL;
 
 	if (ent->client->invisible_framenum > level.framenum)
 		ent->client->invisible_framenum += 300;

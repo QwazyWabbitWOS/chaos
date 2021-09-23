@@ -60,12 +60,12 @@ void ShowGun(edict_t* ent)	//QW from WOD:LOX for vwep
 	if (!ent->client->pers.weapon)
 	{
 		ent->client->ps.gunindex = 0;		// WI: seems to be missing?
-		ent->s.modelindex2 = 0;
+		ent->s.modelindex2 = REMOVED_MODEL;	 /* MrG{DRGN} */
 		gi.dprintf("ShowGun: Oops! Weapon Index missing! %s\n", ent->client->pers.netname);
 		return;
 	}
 
-	ent->s.modelindex2 = 255;
+	ent->s.modelindex2 = VWEP_MODEL;   /* MrG{DRGN} */
 	strcpy(heldmodel, "#");	//safe, don't change
 	strcat(heldmodel, ent->client->pers.weapon->icon);
 	strcat(heldmodel, ".md2");
@@ -80,7 +80,7 @@ void ShowGun(edict_t* ent)	//QW from WOD:LOX for vwep
 
 //void ShowGun(edict_t* ent)	//vwep
 //{
-//	int		nIndex = 0;
+//	int		nIndex = REMOVED_MODEL;
 //	char* pszIcon;
 //
 //	/* MrG{DRGN} sanity check */
@@ -90,7 +90,7 @@ void ShowGun(edict_t* ent)	//QW from WOD:LOX for vwep
 //
 //	if (!ent->client->pers.weapon)
 //	{
-//		ent->s.modelindex2 = 0;
+//		ent->s.modelindex2 = REMOVED_MODEL;
 //		return;
 //	}
 //
@@ -148,7 +148,7 @@ void ShowGun(edict_t* ent)	//QW from WOD:LOX for vwep
 //
 //	// Set new weapon model.
 //	ent->s.skinnum |= (nIndex << 8);
-//	ent->s.modelindex2 = (VWEP_MODEL); /* MrG{DRGN} VWEP_MAX  */
+//	ent->s.modelindex2 = (VWEP_MODEL); /* MrG{DRGN} VWEP_MODEL  */
 //}
 
 qboolean TouchingLadder(edict_t* self)
@@ -799,8 +799,8 @@ void FakeDeath(edict_t* self)
 		self->takedamage = DAMAGE_YES;
 		self->movetype = MOVETYPE_TOSS;
 
-		self->s.modelindex2 = 0;	// remove linked weapon model
-		self->s.modelindex3 = 0;	// remove linked ctf flag
+		self->s.modelindex2 = REMOVED_MODEL;	// remove linked weapon model
+		self->s.modelindex3 = REMOVED_MODEL;	// remove linked ctf flag
 		//self->client->ps.gunindex = 0;
 
 		//self->client->killer_yaw = self->s.angles[YAW];

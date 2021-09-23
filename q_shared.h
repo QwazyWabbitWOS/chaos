@@ -86,6 +86,8 @@ typedef enum { false, true }	qboolean;
 #define	MAX_IMAGES			256
 #define	MAX_ITEMS			256
 #define MAX_GENERAL			(MAX_CLIENTS*2)	// general config strings
+
+#define REMOVED_MODEL		0  // for clearing models
 #define WORLD_MODEL			1 // Model of world is always 1
 #define VWEP_MODEL			(MAX_MODELS - 1) // for vwep model
 #define	PLAYER_MODEL		(MAX_MODELS - 1)  /* Player Model */

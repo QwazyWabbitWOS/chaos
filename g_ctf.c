@@ -967,7 +967,7 @@ void CTFEffects(edict_t* player)
 	else if (player->client->pers.inventory[ITEM_INDEX(it_flag_blue)])
 		player->s.modelindex3 = gi.modelindex("players/male/flag2.md2");
 	else
-		player->s.modelindex3 = 0;
+		player->s.modelindex3 = REMOVED_MODEL;
 }
 
 // called when we enter the intermission
