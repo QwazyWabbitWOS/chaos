@@ -370,8 +370,6 @@ void Turret_Die(edict_t* ent, edict_t* inflictor, edict_t* attacker, int damage,
 	}
 	else
 		bprintf2(PRINT_HIGH, "%s killed his own turret!\n", attacker->client->pers.netname);
-}
-
 	Turret_Explode(ent);
 }
 
@@ -4687,6 +4685,15 @@ int Valid_Target(edict_t* ent, edict_t* blip)
 	 */
 	if (blip == ent)
 		return false;
+
+	if ((Q_stricmp(ent->classname, "vortex") != 0))
+	{
+		if (blip == ent->owner ||
+			blip->owner == ent->owner ||
+			TeamMembers(ent->owner, blip) ||
+			TeamMembers(ent->owner, blip->owner))
+			return false;
+	}
 
 	/*
 	 * The Vortex doesn't care who launched it or who is one what team,
