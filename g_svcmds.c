@@ -233,22 +233,18 @@ static void SVCmd_WriteIP_f(void)
 	char	name[MAX_OSPATH];
 	byte	b[4] = { 0 };
 	int		i;
-	cvar_t* gamename;
 
-	gamename = gi.cvar("game", "", 0);
-
-	if (!*gamename->string)
-		sprintf(name, "%s/listip.cfg", GAMEVERSION);
-	else
-		sprintf(name, "%s/listip.cfg", gamename->string);
-
-	gi.cprintf(NULL, PRINT_HIGH, "Writing %s.\n", name);
+	Com_strcpy(name, sizeof name, "./");
+	Com_strcat(name, sizeof name, game_dir->string);
+	Com_strcat(name, sizeof name, "/listip.cfg");
 
 	if ((f = fopen(name, "wb")) == NULL)    /* MrG{DRGN} check the return */
 	{
 		gi.cprintf(NULL, PRINT_HIGH, "Couldn't open %s\n", name, strerror(errno));
 		return;
 	}
+
+	gi.cprintf(NULL, PRINT_HIGH, "Writing %s.\n", name);
 	fprintf(f, "set filterban %d\n", (int)filterban->value);
 
 	for (i = 0; i < numipfilters; i++)
