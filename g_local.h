@@ -779,6 +779,7 @@ void BeginIntermission(edict_t* targ);
 void MoveClientToIntermission(edict_t* ent);
 void G_SetStats(edict_t* ent);
 void ValidateSelectedItem(edict_t* ent);
+void DeathmatchScoreboard(edict_t* ent);
 void DeathmatchScoreboardMessage(edict_t* ent, edict_t* killer);
 void ClientBegin(edict_t* ent);
 

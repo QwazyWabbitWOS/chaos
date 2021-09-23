@@ -2332,7 +2332,7 @@ void CTFJoinTeam2(edict_t* ent, pmenu_t* p)
 
 void CTFChaseCam(edict_t* ent, pmenu_t* p)
 {
-	if (ent->client->camera)	//swicth back to player mode
+	if (ent->client->camera)	//switch back to player mode
 	{
 		ClientBeginDeathmatch(ent);
 		PMenu_Close(ent);
@@ -2352,7 +2352,7 @@ void CTFReturnToMain(edict_t* ent, pmenu_t* p)
 
 void CTFCredits(edict_t* ent, pmenu_t* p);
 
-void DeathmatchScoreboard(edict_t* ent);
+
 
 void CTFShowScores(edict_t* ent, pmenu_t* p)
 {
