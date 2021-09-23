@@ -299,6 +299,9 @@ void ClientObituary(edict_t* self, edict_t* inflictor, edict_t* attacker)
 			case MOD_KAMIKAZE:
 				message = "joined the divine wind";
 				break;
+			case MOD_TURRET:
+				message = "got perforated by their own turret";
+				break;
 				/* END */
 			default:
 				if (IsFemale(self))

@@ -358,16 +358,19 @@ void Turret_Die(edict_t* ent, edict_t* inflictor, edict_t* attacker, int damage,
 	}
 	/* END */
 
-	if (attacker->client)
+	if (attacker != ent->owner && !TeamMembers(ent->owner, attacker)) /* MrG{DRGN} don't get teammates get frags for killing their partner's turrets. */
 	{
-		if (attacker != ent->owner)
-		{
-			attacker->client->resp.score += 1;
-			bprintf2(PRINT_MEDIUM, "%s receives an extra frag for killing %s's turret.\n", attacker->client->pers.netname, ent->owner->client->pers.netname);
-		}
-		else
-			bprintf2(PRINT_HIGH, "%s killed his own turret!\n", attacker->client->pers.netname);
+		attacker->client->resp.score += 1;
+		bprintf2(PRINT_MEDIUM, "%s receives an extra frag for killing %s's turret.\n", attacker->client->pers.netname, ent->owner->client->pers.netname);
 	}
+	else if (TeamMembers(ent->owner, attacker))
+	{
+		attacker->client->resp.score -= 1;
+		bprintf2(PRINT_MEDIUM, "%s loses a frag for killing %s's turret.\n", attacker->client->pers.netname, ent->owner->client->pers.netname);
+	}
+	else
+		bprintf2(PRINT_HIGH, "%s killed his own turret!\n", attacker->client->pers.netname);
+}
 
 	Turret_Explode(ent);
 }
