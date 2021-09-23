@@ -48,9 +48,10 @@ qboolean infront(edict_t* self, edict_t* other)
 	return false;
 }
 
-int vwep_index; //QW offset for vwep list.
-
 // ### Hentai ### BEGIN
+int vwep_index; //QW offset for vwep list in cached models
+
+// Compute a player's current vwep index and combine it with his skin index
 void ShowGun(edict_t* ent)	//QW from WOD:LOX for vwep
 {
 	char heldmodel[128];
