@@ -599,8 +599,9 @@ void PreCacheAll(void)
 	gi.modelindex("models/items/invis/tris.md2");
 	gi.modelindex("models/items/jet/tris.md2");
 
-	// VWEP STUFF This section must be contiguous.
-	vwep_index = gi.modelindex("#w_ak42.md2") - 1;//QW set the base offset for ShowGun.
+	// VWEP STUFF This section must be contiguous and in weapon select order.
+	// Hard limit for this is 19 models, index 0 is default blaster vwep defined in client code.
+	vwep_index = gi.modelindex("#w_ak42.md2") - 1;//QW vwep_index sets the base offset for ShowGun.
 	gi.modelindex("#w_sword.md2");
 	gi.modelindex("#w_chainsaw.md2");
 	gi.modelindex("#w_sshotgun.md2");
@@ -608,7 +609,6 @@ void PreCacheAll(void)
 	gi.modelindex("#w_airfist.md2");
 	gi.modelindex("#a_grenades1.md2");
 	gi.modelindex("#w_glauncher1.md2");
-	gi.modelindex("#w_plauncher.md2");
 	gi.modelindex("#w_xlauncher.md2");
 	gi.modelindex("#w_rlauncher.md2");
 	gi.modelindex("#w_hyperblaster.md2");
@@ -616,17 +616,6 @@ void PreCacheAll(void)
 	gi.modelindex("#w_buzzsaw.md2");
 	gi.modelindex("#w_bfg.md2");
 	gi.modelindex("#a_vortex.md2");
-	gi.modelindex("#a_rturret.md2");
-	//The following model files are missing.
-	//gi.modelindex("#w_esshotgun.md2");
-	//gi.modelindex("#a_lturret.md2");
-	//gi.modelindex("#w_pbow.md2");
-	//gi.modelindex("#w_ebow.md2");
-	//gi.modelindex("#a_fgrenades.md2");
-	//gi.modelindex("#a_pgrenades.md2");
-	//gi.modelindex("#a_lmines.md2");
-	//gi.modelindex("#w_flauncher.md2");
-	//gi.modelindex("#w_grlauncher.md2");
 
 	//sound
 	gi.soundindex("hook/hit.wav");
