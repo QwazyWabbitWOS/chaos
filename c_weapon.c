@@ -4686,7 +4686,7 @@ int Valid_Target(edict_t* ent, edict_t* blip)
 	if (blip == ent)
 		return false;
 
-	if ((Q_stricmp(ent->classname, "vortex") != 0))
+	if ((Q_stricmp(ent->classname, "vortex") != 0))	 /* MrG{DRGN} so proxys don't hunt teammates.*/
 	{
 		if (blip == ent->owner ||
 			blip->owner == ent->owner ||
