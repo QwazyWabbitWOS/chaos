@@ -1694,6 +1694,7 @@ void ClientCommand2(edict_t* ent)
 	else if (Q_stricmp(cmd, "zoom") == 0)
 	{
 		int zoomtype = atoi(gi.argv(1));
+		
 
 		if (ent->health <= 0)
 			return;
@@ -1704,10 +1705,10 @@ void ClientCommand2(edict_t* ent)
 		}
 		else if (zoomtype == 1)
 		{
-			if (ent->client->ps.fov == 90) ent->client->ps.fov = 40;
+			if (ent->client->ps.fov == atoi(Info_ValueForKey(ent->client->pers.userinfo, "fov"))) ent->client->ps.fov = 40;		/* MrG{DRGN} fix zoom */
 			else if (ent->client->ps.fov == 40) ent->client->ps.fov = 20;
 			else if (ent->client->ps.fov == 20) ent->client->ps.fov = 10;
-			else ent->client->ps.fov = 90;
+			else ent->client->ps.fov = atoi(Info_ValueForKey(ent->client->pers.userinfo, "fov")); /* MrG{DRGN} fix zoom */
 		}
 	}
 	else if (Q_stricmp(cmd, "camera") == 0)
