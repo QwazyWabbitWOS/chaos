@@ -235,7 +235,7 @@ static gitem_t* it_flag2_item;
 void CTFInit(void)
 {
 	ctf = gi.cvar("ctf", "0", CVAR_SERVERINFO); //MATTHIAS
-	ctf_forcejoin = gi.cvar("ctf_forcejoin", "", 0);
+	ctf_forcejoin = gi.cvar("ctf_forcejoin", "1", CVAR_LATCH);
 	/*
 	if (!it_flag_red)
 		it_flag_red = FindItemByClassindex(ITEM_FLAG_TEAM1);

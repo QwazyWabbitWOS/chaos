@@ -1009,15 +1009,15 @@ void InitClientPersistant(gclient_t* client)
 
 	if (start_jacketarmor->value > 0)
 	{
-		if (start_jacketarmor->value > 4)
-			start_jacketarmor->value = 4;
+		if (start_jacketarmor->value > 2)
+			start_jacketarmor->value = 2;
 		client->pers.inventory[ITEM_INDEX(FindItemByClassindex(AR_JACKET))] = start_jacketarmor->value * 50;
 	}
 
-	if (start_jacketarmor->value > 0)
+	if (start_combatarmor->value > 0)
 	{
-		if (start_combatarmor->value > 8)
-			start_combatarmor->value = 8;
+		if (start_combatarmor->value > 2)
+			start_combatarmor->value = 2;
 		client->pers.inventory[ITEM_INDEX(FindItemByClassindex(AR_COMBAT))] = start_combatarmor->value * 25;
 	}
 

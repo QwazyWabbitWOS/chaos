@@ -285,6 +285,7 @@ void LoadMaplist(char* filename)
 
 void GetSettings(void)
 {
+	/* Server settings */
 	node_debug = gi.cvar("node_debug", "0", CVAR_USERINFO);
 	blindtime = gi.cvar("blindtime", "20", CVAR_SERVERINFO);
 	poisontime = gi.cvar("poisontime", "15", CVAR_SERVERINFO);
@@ -296,13 +297,15 @@ void GetSettings(void)
 	// FWP Set ex arrow strength and radius from server var
 	ex_arrow_damage = gi.cvar("ex_arrow_damage", "80", CVAR_LATCH);
 	ex_arrow_radius = gi.cvar("ex_arrow_radius", "200", CVAR_LATCH);
-
 	dntg = gi.cvar("dntg", "1", CVAR_SERVERINFO);
-
 	start_invulnerable_time = gi.cvar("start_invulnerable_time", "3", CVAR_SERVERINFO);
 	lightsoff = gi.cvar("lightsoff", "0", CVAR_SERVERINFO);
 	botchat = gi.cvar("botchat", "1", CVAR_SERVERINFO);
+	drop_tech = gi.cvar("drop_tech", "1", CVAR_LATCH); /* MrG{DRGN} tech drop prevention */
+	weapon_kick = gi.cvar("weapon_kick", "1", CVAR_LATCH); /* MrG{DRGN} kickable weapons toggle */
+	tele_fire = gi.cvar("tele_fire", "0", CVAR_LATCH); /* MrG{DRGN} allow certain non-client projectiles to pass through teleporters */
 
+	/* Weapons */
 	ban_sword = gi.cvar("ban_sword", "0", CVAR_LATCH);
 	ban_chainsaw = gi.cvar("ban_chainsaw", "0", CVAR_LATCH);
 	ban_supershotgun = gi.cvar("ban_supershotgun", "0", CVAR_LATCH);
@@ -319,20 +322,7 @@ void GetSettings(void)
 	ban_vortex = gi.cvar("ban_vortex", "0", CVAR_LATCH);
 	ban_bfg = gi.cvar("ban_bfg", "0", CVAR_LATCH);
 
-#ifdef	CHAOS_RETAIL
-	ban_grapple = gi.cvar("ban_grapple", "1", CVAR_LATCH);
-	ban_jetpack = gi.cvar("ban_jetpack", "1", CVAR_LATCH);
-#else
-	ban_grapple = gi.cvar("ban_grapple", "0", CVAR_LATCH);
-	ban_jetpack = gi.cvar("ban_jetpack", "0", CVAR_LATCH);
-#endif
-
-	ban_bodyarmor = gi.cvar("ban_bodyarmor", "0", CVAR_LATCH);
-	ban_combatarmor = gi.cvar("ban_combatarmor", "0", CVAR_LATCH);
-	ban_jacketarmor = gi.cvar("ban_jacketarmor", "0", CVAR_LATCH);
-	ban_armorshard = gi.cvar("ban_armorshard ", "0", CVAR_LATCH);
-	ban_powerscreen = gi.cvar("ban_powerscreen", "0", CVAR_LATCH);
-	ban_powershield = gi.cvar("ban_powershield", "0", CVAR_LATCH);
+	/* Ammo */
 	ban_ammo_grenades = gi.cvar("ban_ammo_grenades", "0", CVAR_LATCH);
 	ban_ammo_flashgrenades = gi.cvar("ban_ammo_flashgrenades", "0", CVAR_LATCH);
 	ban_ammo_lasergrenades = gi.cvar("ban_ammo_lasergrenades", "0", CVAR_LATCH);
@@ -348,6 +338,25 @@ void GetSettings(void)
 	ban_ammo_homingmissiles = gi.cvar("ban_ammo_homingmissiles", "0", CVAR_LATCH);
 	ban_ammo_buzzes = gi.cvar("ban_ammo_buzzes", "0", CVAR_LATCH);
 	ban_ammo_slugs = gi.cvar("ban_ammo_slugs", "0", CVAR_LATCH);
+
+	/* Armor */
+	ban_bodyarmor = gi.cvar("ban_bodyarmor", "0", CVAR_LATCH);
+	ban_combatarmor = gi.cvar("ban_combatarmor", "0", CVAR_LATCH);
+	ban_jacketarmor = gi.cvar("ban_jacketarmor", "0", CVAR_LATCH);
+	ban_armorshard = gi.cvar("ban_armorshard ", "0", CVAR_LATCH); 
+
+	/* Power Armor */
+	ban_powerscreen = gi.cvar("ban_powerscreen", "0", CVAR_LATCH);
+	ban_powershield = gi.cvar("ban_powershield", "0", CVAR_LATCH);
+
+	/* Powerups */
+#ifdef	CHAOS_RETAIL
+	ban_grapple = gi.cvar("ban_grapple", "1", CVAR_LATCH);
+	ban_jetpack = gi.cvar("ban_jetpack", "1", CVAR_LATCH);
+#else
+	ban_grapple = gi.cvar("ban_grapple", "0", CVAR_LATCH);
+	ban_jetpack = gi.cvar("ban_jetpack", "0", CVAR_LATCH);
+#endif
 	ban_quaddamage = gi.cvar("ban_quaddamage", "0", CVAR_LATCH);
 	ban_invulnerability = gi.cvar("ban_invulnerability", "0", CVAR_LATCH);
 	ban_invisibility = gi.cvar("ban_invisibility", "0", CVAR_LATCH);
@@ -356,13 +365,14 @@ void GetSettings(void)
 	ban_rebreather = gi.cvar("ban_rebreather", "0", CVAR_LATCH);
 	ban_environmentsuit = gi.cvar("ban_environmentsuit", "0", CVAR_LATCH);
 
+	/* Health */
 	ban_health = gi.cvar("ban_health", "0", CVAR_LATCH);
 	ban_health_small = gi.cvar("ban_health_small", "0", CVAR_LATCH);
 	ban_health_large = gi.cvar("ban_health_large", "0", CVAR_LATCH);
 	ban_health_mega = gi.cvar("ban_health_mega", "0", CVAR_LATCH);
 
+	/* Weapons */
 	start_sword = gi.cvar("start_sword", "0", CVAR_LATCH);
-
 	start_chainsaw = gi.cvar("start_chainsaw", "0", CVAR_LATCH);
 	start_supershotgun = gi.cvar("start_supershotgun", "0", CVAR_LATCH);
 	start_crossbow = gi.cvar("start_crossbow", "0", CVAR_LATCH);
@@ -374,18 +384,11 @@ void GetSettings(void)
 	start_railgun = gi.cvar("start_railgun", "0", CVAR_LATCH);
 	start_buzzsaw = gi.cvar("start_buzzsaw", "0", CVAR_LATCH);
 	start_bfg = gi.cvar("start_bfg", "0", CVAR_LATCH);
-
-	start_grapple = gi.cvar("start_grapple", "0", CVAR_LATCH);
-	start_jetpack = gi.cvar("start_jetpack", "0", CVAR_LATCH);
 	start_gravityvortex = gi.cvar("start_gravityvortex", "0", CVAR_LATCH);
 	start_defenseturret = gi.cvar("start_defenseturret", "0", CVAR_LATCH);
 	start_rocketturret = gi.cvar("start_rocketturret", "0", CVAR_LATCH);
-	start_bodyarmor = gi.cvar("start_bodyarmor", "0", CVAR_LATCH);
-	start_combatarmor = gi.cvar("start_combatarmor", "0", CVAR_LATCH);
-	start_jacketarmor = gi.cvar("start_jacketarmor", "0", CVAR_LATCH);
-	start_armorshard = gi.cvar("start_armorshard", "0", CVAR_LATCH);
-	start_powerscreen = gi.cvar("start_powerscreen", "0", CVAR_LATCH);
-	start_powershield = gi.cvar("start_powershield", "0", CVAR_LATCH);
+
+	/* Ammo */
 	start_ammo_grenades = gi.cvar("start_ammo_grenades", "0", CVAR_LATCH);
 	start_ammo_flashgrenades = gi.cvar("start_ammo_flashgrenades", "0", CVAR_LATCH);
 	start_ammo_lasergrenades = gi.cvar("start_ammo_lasergrenades", "0", CVAR_LATCH);
@@ -401,15 +404,24 @@ void GetSettings(void)
 	start_ammo_homingmissiles = gi.cvar("start_ammo_homingmissiles", "0", CVAR_LATCH);
 	start_ammo_buzzes = gi.cvar("start_ammo_buzzes", "0", CVAR_LATCH);
 	start_ammo_slugs = gi.cvar("start_ammo_slugs", "0", CVAR_LATCH);
+	
+	/* Armor - This section needs work as they amounts given aren't correct. */
+	start_bodyarmor = gi.cvar("start_bodyarmor", "0", CVAR_LATCH);
+	start_combatarmor = gi.cvar("start_combatarmor", "0", CVAR_LATCH);
+	start_jacketarmor = gi.cvar("start_jacketarmor", "0", CVAR_LATCH);
+	start_armorshard = gi.cvar("start_armorshard", "0", CVAR_LATCH);
+	/* Power Armor */
+	start_powerscreen = gi.cvar("start_powerscreen", "0", CVAR_LATCH);
+	start_powershield = gi.cvar("start_powershield", "0", CVAR_LATCH);
+
+	/* Powerups */
+	start_grapple = gi.cvar("start_grapple", "0", CVAR_LATCH);
+	start_jetpack = gi.cvar("start_jetpack", "0", CVAR_LATCH);
 	start_quaddamage = gi.cvar("start_quaddamage", "0", CVAR_LATCH);
 	start_invulnerability = gi.cvar("start_invulnerability", "0", CVAR_LATCH);
 	start_silencer = gi.cvar("start_silencer", "0", CVAR_LATCH);
 	start_rebreather = gi.cvar("start_rebreather", "0", CVAR_LATCH);
-	start_environmentsuit = gi.cvar("start_environmentsuit", "0", CVAR_LATCH);
-
-	drop_tech = gi.cvar("drop_tech", "1", CVAR_LATCH); /* MrG{DRGN} tech drop prevention */
-	weapon_kick = gi.cvar("weapon_kick", "1", CVAR_LATCH); /* MrG{DRGN} kickable weapons toggle */
-	tele_fire = gi.cvar("tele_fire", "0", CVAR_LATCH); /* MrG{DRGN} allow certain non-client projectiles to pass through teleporters */
+	start_environmentsuit = gi.cvar("start_environmentsuit", "0", CVAR_LATCH);	
 
 }
 
