@@ -1224,6 +1224,17 @@ qboolean Bot_CanPickupItem(edict_t* ent, edict_t* eitem)
 		|| item == FindItemByClassindex(ITEM_FLAG_TEAM2))
 		return 0;
 
+	/* MrG{DRGN} don't go for keys (which should probably be removed eventually), or multiple grappling hooks or Jetpacks */
+	if (item->flags & IT_KEY)
+		return 0;
+	if (item == it_grapple && ent->client->pers.inventory[ITEM_INDEX(it_grapple)])
+		return 0;
+	if (item == it_jetpack && ent->client->pers.inventory[ITEM_INDEX(it_jetpack)] > 0 && ent->client->jet_remaining == 600)
+		return 0;
+
+	/* END */
+
+
 	/* MrG{DRGN} Tweak Havoc bot health hunting routine
 	if (item == FindItem("Health") && ent->health >= ent->max_health)
 		return 0; */
@@ -1235,7 +1246,8 @@ qboolean Bot_CanPickupItem(edict_t* ent, edict_t* eitem)
 	if (item == it_tech2
 		|| item == it_tech3
 		|| item == it_tech4
-		|| item == it_tech1)
+		|| item == it_tech1
+		)
 
 	{
 		if (ent->client->pers.inventory[ITEM_INDEX(it_tech2)]
