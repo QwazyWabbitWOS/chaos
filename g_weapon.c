@@ -104,7 +104,7 @@ void fire_lead(edict_t* self, vec3_t start, vec3_t aimdir, int damage, int kick,
 	/* END */
 
 	tr = gi.trace(self->s.origin, NULL, NULL, start, self, MASK_SHOT);
-	if (!tr.fraction < 1.0)
+	(!(tr.fraction < 1.0))
 	{
 		vectoangles(aimdir, dir);
 		AngleVectors(dir, forward, right, up);
