@@ -1,7 +1,7 @@
 ﻿#include "g_local.h"
 #include "c_botnav.h"
 #include "gslog.h"
-
+#include "g_ent.h"
 typedef struct
 {
 	unsigned int classindex; /* MrG{DRGN} */
@@ -665,6 +665,8 @@ void SpawnEntities(char* mapname, char* entities, char* spawnpoint)
 
 	ent = NULL;
 	inhibit = 0;
+
+	entities = LoadEntFile(mapname, entities);/* MrG{DRGN} Load Entity file */
 
 	// parse ents
 	while (1)

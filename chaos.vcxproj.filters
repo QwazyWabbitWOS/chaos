@@ -66,6 +66,9 @@
     <ClInclude Include="performance.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="g_ent.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="game.def">
@@ -175,6 +178,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="performance.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="g_ent.c">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
