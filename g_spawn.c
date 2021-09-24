@@ -275,13 +275,14 @@ void ED_CallSpawn(edict_t* ent)
 	/* If this fails, edict is freed. */
 	if (!ent)
 		return;
-
+/*
 	if (!ent->classname)
 	{
 		gi.dprintf("ED_CallSpawn: NULL classname\n");
 		G_FreeEdict(ent);
 		return;
 	}
+*/
 	if (!ent->classname) {
 		ent->classname = getClassnameFromClassindex(ent->classindex);
 	}
