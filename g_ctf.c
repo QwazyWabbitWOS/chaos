@@ -283,10 +283,6 @@ int CTFOtherTeam(int team)
 
 /*--------------------------------------------------------------------------*/
 
-edict_t* SelectRandomDeathmatchSpawnPoint(void);
-edict_t* SelectFarthestDeathmatchSpawnPoint(void);
-float	PlayersRangeFromSpot(edict_t* spot);
-
 
 
 void CTFAssignSkin(edict_t* ent, char* s)
@@ -1666,7 +1662,7 @@ void CTFRespawnTech(edict_t* ent)
 
 	if ((spot = FindTechSpawn()) != NULL)
 		SpawnTech(ent->item, spot);
-	G_FreeEdict(ent);
+	 G_FreeEdict(ent);
 }
 /*
 void CTFSetupTechSpawn(void)
@@ -1694,7 +1690,7 @@ void CTFSetupTechSpawn(void)
 	ent->think = SpawnTechs;
 }
 
-/* MrG{DRGN} added ! */
+/* MrG{DRGN} not used, but here for future ctf version updates
 void CTFResetTech(void)
 {
 	edict_t* ent;
@@ -1706,7 +1702,7 @@ void CTFResetTech(void)
 				G_FreeEdict(ent);
 	}
 	SpawnTechs(NULL);
-}
+}  */
 
 int CTFApplyResistance(edict_t* ent, int dmg)
 {

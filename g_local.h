@@ -753,7 +753,9 @@ void ClientObituary(edict_t* self, edict_t* inflictor, edict_t* attacker);
 void Use_Plat(edict_t* ent, edict_t* other, edict_t* activator);
 void trigger_elevator_use(edict_t* self, edict_t* other, edict_t* activator);
 void door_use(edict_t* self, edict_t* other, edict_t* activator);
-
+edict_t* SelectRandomDeathmatchSpawnPoint(void);
+edict_t* SelectFarthestDeathmatchSpawnPoint(void);
+float	PlayersRangeFromSpot(edict_t* spot);
 
 //
 // g_player.c
