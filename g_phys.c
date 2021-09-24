@@ -878,7 +878,7 @@ void SV_Physics_Step(edict_t* ent)
 		// apply friction
 		// let dead monsters who aren't completely onground slide
 		if ((wasonground) || (ent->flags & (FL_SWIM | FL_FLY)))
-			if (!(ent->health <= 0.0))
+			if (!ent->health <= 0.0)
 			{
 				vel = ent->velocity;
 				speed = sqrtf(vel[0] * vel[0] + vel[1] * vel[1]); /* MrG{DRGN} use sqrtf not sqrt to calculate the speed, since it's a float */

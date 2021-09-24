@@ -104,7 +104,7 @@ void fire_lead(edict_t* self, vec3_t start, vec3_t aimdir, int damage, int kick,
 	/* END */
 
 	tr = gi.trace(self->s.origin, NULL, NULL, start, self, MASK_SHOT);
-	if (!(tr.fraction < 1.0))
+	if (!tr.fraction < 1.0)
 	{
 		vectoangles(aimdir, dir);
 		AngleVectors(dir, forward, right, up);
@@ -303,7 +303,7 @@ void blaster_touch(edict_t* self, edict_t* other, cplane_t* plane, csurface_t* s
 		else
 			mod = MOD_BLASTER;
 
-		if (other->client && other->client->pers.weapon == it_sword && infront(other, self))
+		if (other->client && other->client->pers.weapon == it_sword && infront(self, other))
 		{
 			// 60% blocked
 			if (random() < 0.6)

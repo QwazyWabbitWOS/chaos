@@ -2017,7 +2017,7 @@ void arrow_touch(edict_t* self, edict_t* other, cplane_t* plane, csurface_t* sur
 	{
 		self->s.sound = 0;
 
-		if (other->client && other->client->pers.weapon == it_sword && infront(other, self))
+		if (other->client && other->client->pers.weapon == it_sword && infront(self, other))
 		{
 			// 60% blocked
 			if (random() < 0.6)
@@ -2192,7 +2192,7 @@ void parrow_touch(edict_t* self, edict_t* other, cplane_t* plane, csurface_t* su
 	{
 		self->s.sound = 0;
 
-		if (other->client && other->client->pers.weapon == it_sword && infront(other, self))
+		if (other->client && other->client->pers.weapon == it_sword && infront(self, other))
 		{
 			// 60% blocked
 			if (random() < 0.6)
@@ -2745,7 +2745,7 @@ void buzz_touch(edict_t* self, edict_t* other, cplane_t* plane, csurface_t* surf
 
 	if (other->takedamage && self->movetype != MOVETYPE_BOUNCE)
 	{
-		if (other->client && other->client->pers.weapon == it_sword && infront(other, self))
+		if (other->client && other->client->pers.weapon == it_sword && infront(self, other))
 		{
 			// 60% blocked
 			if (random() < 0.6)
