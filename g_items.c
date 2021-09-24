@@ -2334,7 +2334,7 @@ void droptofloor(edict_t* ent)
 
 	//MATTHIAS Autorespawn
 
-	ent->nextthink = level.time + 60 + random() * 80;
+	ent->nextthink = level.time + (do_respawn->value) + (random() * do_respawn_rnd->value);	 /* MrG{DRGN} */
 	ent->think = DoRespawn;
 
 	gi.linkentity(ent);
