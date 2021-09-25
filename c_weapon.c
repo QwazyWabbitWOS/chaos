@@ -360,8 +360,17 @@ void Turret_Die(edict_t* ent, edict_t* inflictor, edict_t* attacker, int damage,
 
 	if (attacker != ent->owner && !TeamMembers(ent->owner, attacker)) /* MrG{DRGN} don't get teammates get frags for killing their partner's turrets. */
 	{
-		attacker->client->resp.score += 1;
-		bprintf2(PRINT_MEDIUM, "%s receives an extra frag for killing %s's turret.\n", attacker->client->pers.netname, ent->owner->client->pers.netname);
+		if (attacker->client)
+		{
+			attacker->client->resp.score += 1;
+			bprintf2(PRINT_MEDIUM, "%s receives an extra frag for killing %s's turret.\n", attacker->client->pers.netname, ent->owner->client->pers.netname);
+		}
+		else 
+			if (attacker->owner->client)
+			{
+				attacker->owner->client->resp.score += 1;
+				bprintf2(PRINT_MEDIUM, "%s receives an extra frag for killing %s's turret.\n", attacker->owner->client->pers.netname, ent->owner->client->pers.netname);
+			}
 	}
 	else if (TeamMembers(ent->owner, attacker))
 	{
@@ -4697,9 +4706,7 @@ int Valid_Target(edict_t* ent, edict_t* blip)
 
 	if ((Q_stricmp(ent->classname, "vortex") != 0))	 /* MrG{DRGN} so proxys don't hunt teammates.*/
 	{
-		if (blip == ent->owner ||
-			blip->owner == ent->owner ||
-			TeamMembers(ent->owner, blip) ||
+		if (TeamMembers(ent->owner, blip) ||
 			TeamMembers(ent->owner, blip->owner))
 			return false;
 	}
