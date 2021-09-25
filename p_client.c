@@ -999,25 +999,25 @@ void InitClientPersistant(gclient_t* client)
 	if (start_rocketturret->value > 0)
 		client->pers.inventory[ITEM_INDEX(it_rturret)] = start_rocketturret->value;
 
-	if (start_bodyarmor->value > 0)
+	// Cap initial armor at 200% of max allowed per class.
+	if (start_bodyarmor->value > 0) // range is 0 to 2
 	{
 		if (start_bodyarmor->value > 2)
-			start_bodyarmor->value = 2;
-
+			gi.cvar_set("start_bodyarmor", "2"); // limit is 200%
 		client->pers.inventory[ITEM_INDEX(FindItemByClassindex(AR_BODY))] = start_bodyarmor->value * 100;
 	}
 
 	if (start_jacketarmor->value > 0)
 	{
 		if (start_jacketarmor->value > 2)
-			start_jacketarmor->value = 2;
+			gi.cvar_set("start_jacketarmor", "2");
 		client->pers.inventory[ITEM_INDEX(FindItemByClassindex(AR_JACKET))] = start_jacketarmor->value * 50;
 	}
 
 	if (start_combatarmor->value > 0)
 	{
 		if (start_combatarmor->value > 2)
-			start_combatarmor->value = 2;
+			gi.cvar_set("start_combatarmor", "2");
 		client->pers.inventory[ITEM_INDEX(FindItemByClassindex(AR_COMBAT))] = start_combatarmor->value * 25;
 	}
 

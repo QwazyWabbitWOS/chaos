@@ -345,7 +345,7 @@ void GetSettings(void)
 	ban_bodyarmor = gi.cvar("ban_bodyarmor", "0", CVAR_LATCH);
 	ban_combatarmor = gi.cvar("ban_combatarmor", "0", CVAR_LATCH);
 	ban_jacketarmor = gi.cvar("ban_jacketarmor", "0", CVAR_LATCH);
-	ban_armorshard = gi.cvar("ban_armorshard ", "0", CVAR_LATCH); 
+	ban_armorshard = gi.cvar("ban_armorshard ", "0", CVAR_LATCH);
 
 	/* Power Armor */
 	ban_powerscreen = gi.cvar("ban_powerscreen", "0", CVAR_LATCH);
@@ -406,12 +406,30 @@ void GetSettings(void)
 	start_ammo_homingmissiles = gi.cvar("start_ammo_homingmissiles", "0", CVAR_LATCH);
 	start_ammo_buzzes = gi.cvar("start_ammo_buzzes", "0", CVAR_LATCH);
 	start_ammo_slugs = gi.cvar("start_ammo_slugs", "0", CVAR_LATCH);
-	
-	/* Armor - This section needs work as they amounts given aren't correct. */
+
+	/* Armor - 0|1|2 Initiate 0%, 100% or 200% of max allowed in each class */
 	start_bodyarmor = gi.cvar("start_bodyarmor", "0", CVAR_LATCH);
 	start_combatarmor = gi.cvar("start_combatarmor", "0", CVAR_LATCH);
 	start_jacketarmor = gi.cvar("start_jacketarmor", "0", CVAR_LATCH);
 	start_armorshard = gi.cvar("start_armorshard", "0", CVAR_LATCH);
+
+	// Grant only the highest armor selected at init. Exclude lower ones.
+	if (start_bodyarmor->value > 0)
+	{
+		gi.cvar_set("start_combatarmor", "0");
+		gi.cvar_set("start_jacketarmor", "0");
+		gi.cvar_set("start_armorshard", "0");
+	}
+	if (start_combatarmor->value > 0)
+	{
+		gi.cvar_set("start_jacketarmor", "0");
+		gi.cvar_set("start_armorshard", "0");
+	}
+	if (start_jacketarmor->value > 0)
+	{
+		gi.cvar_set("start_armorshard", "0");
+	}
+
 	/* Power Armor */
 	start_powerscreen = gi.cvar("start_powerscreen", "0", CVAR_LATCH);
 	start_powershield = gi.cvar("start_powershield", "0", CVAR_LATCH);
@@ -423,7 +441,7 @@ void GetSettings(void)
 	start_invulnerability = gi.cvar("start_invulnerability", "0", CVAR_LATCH);
 	start_silencer = gi.cvar("start_silencer", "0", CVAR_LATCH);
 	start_rebreather = gi.cvar("start_rebreather", "0", CVAR_LATCH);
-	start_environmentsuit = gi.cvar("start_environmentsuit", "0", CVAR_LATCH);	
+	start_environmentsuit = gi.cvar("start_environmentsuit", "0", CVAR_LATCH);
 
 }
 
@@ -871,7 +889,7 @@ void FakeDeath(edict_t* self)
 		else
 			gi.sound(self, CHAN_VOICE, gi.soundindex("misc/fakedeath.wav"), 1, ATTN_NORM, 0);
 
-		self->s.modelindex = PLAYER_MODEL; 
+		self->s.modelindex = PLAYER_MODEL;
 		self->deadflag = DEAD_DEAD;
 
 
@@ -910,7 +928,7 @@ void FakeDeath(edict_t* self)
 		self->client->ps.gunindex = gi.modelindex(self->client->pers.weapon->view_model);
 
 		self->s.effects = 0;
-		self->s.modelindex = PLAYER_MODEL; 
+		self->s.modelindex = PLAYER_MODEL;
 
 		self->s.origin[2] += 1;  // make sure off ground
 
@@ -1027,11 +1045,11 @@ static char	BPrint2Buff[0x2000]; /*  MrG{DRGN} move this here  and reduce the si
 void bprintf2(int printlevel, char* fmt, ...)
 {
 	int i;
-	
+
 	va_list		argptr;
 	edict_t* cl_ent;
 
-	va_start(argptr, fmt);	
+	va_start(argptr, fmt);
 	vsnprintf(BPrint2Buff, sizeof(BPrint2Buff), fmt, argptr);
 	va_end(argptr);
 
@@ -1060,7 +1078,7 @@ void cprintf2(edict_t* ent, int printlevel, char* fmt, ...)
 		return;
 
 	va_start(argptr, fmt);
-	
+
 	vsnprintf(CPrint2Buff, sizeof(CPrint2Buff), fmt, argptr);
 	va_end(argptr);
 
@@ -1082,7 +1100,7 @@ void nprintf(int printlevel, char* fmt, ...)
 		return;
 
 	va_start(argptr, fmt);
-	
+
 	vsnprintf(NPrintBuff, sizeof(NPrintBuff), fmt, argptr);
 	va_end(argptr);
 
@@ -1697,7 +1715,7 @@ void ClientCommand2(edict_t* ent)
 	else if (Q_stricmp(cmd, "zoom") == 0)
 	{
 		int zoomtype = atoi(gi.argv(1));
-		
+
 
 		if (ent->health <= 0)
 			return;
