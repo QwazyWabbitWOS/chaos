@@ -4710,7 +4710,8 @@ int Valid_Target(edict_t* ent, edict_t* blip)
 			TeamMembers(ent->owner, blip->owner))
 			return false;
 	}
-
+	if (blip->solid == SOLID_NOT) /* MrG{DRGN} Don't let the vortex suck and kill Pre join game spectators */
+		return false;
 	/*
 	 * The Vortex doesn't care who launched it or who is one what team,
 	 * it just eats everything in it's path

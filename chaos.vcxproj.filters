@@ -197,8 +197,5 @@
     <Text Include="Docs\TODO.txt">
       <Filter>Docs</Filter>
     </Text>
-    <Text Include="Docs\Ver. 1.2b Notes  - REDO some .txt">
-      <Filter>Docs</Filter>
-    </Text>
   </ItemGroup>
 </Project>
