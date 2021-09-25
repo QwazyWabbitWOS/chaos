@@ -1003,21 +1003,21 @@ void InitClientPersistant(gclient_t* client)
 	if (start_bodyarmor->value > 0) // range is 0 to 2
 	{
 		if (start_bodyarmor->value > 2)
-			gi.cvar_set("start_bodyarmor", "2"); // limit is 200%
+			gi.cvar_forceset("start_bodyarmor", "2"); // limit is 200%
 		client->pers.inventory[ITEM_INDEX(FindItemByClassindex(AR_BODY))] = start_bodyarmor->value * 100;
 	}
 
 	if (start_jacketarmor->value > 0)
 	{
 		if (start_jacketarmor->value > 2)
-			gi.cvar_set("start_jacketarmor", "2");
+			gi.cvar_forceset("start_jacketarmor", "2");
 		client->pers.inventory[ITEM_INDEX(FindItemByClassindex(AR_JACKET))] = start_jacketarmor->value * 50;
 	}
 
 	if (start_combatarmor->value > 0)
 	{
 		if (start_combatarmor->value > 2)
-			gi.cvar_set("start_combatarmor", "2");
+			gi.cvar_forceset("start_combatarmor", "2");
 		client->pers.inventory[ITEM_INDEX(FindItemByClassindex(AR_COMBAT))] = start_combatarmor->value * 25;
 	}
 
