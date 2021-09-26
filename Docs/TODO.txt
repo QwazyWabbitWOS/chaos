@@ -31,6 +31,11 @@ No:
 	* flamethrower for Airfist if possible - 
 
 	* light saber upgrade for sword possibly  - overdone in other mods and is really just an old Qdevels tutorial. 
+	
+	* Airgun can push players through physical objects and get them stuck in walls - Feature
+
+	* Occasionally a Vortex grabs a player and pulls them through a wall - Feature
+
 
 Probably no:
 
@@ -48,6 +53,15 @@ In progress:
 	* upgrade Havok Bots
 
 	* port code to quake2 3.20 source code - CTF still needs work. I did qshared.h, and game.h a while ago. 
+
+	* Bugs with CTF spectator modes - working through them
+
+	* Game occasionally sig11's in Linux and Segfaults in Win95, possibly memory
+	  leak somewhere (this will be painfull to fix)
+	  // FWP One segfault cause (turret crash) fixed.  May be others. 
+	  MrG{DRGN} - Unsure if this is still an issue
+
+	  * Error messages appearing to clients "yada yada no such oldframe",seems to happen when player runs out of ammo and autoswitches to new weapon, also appears to be harmless. - May be fixed
 
 Done:
 

@@ -188,9 +188,6 @@
     <Text Include="Docs\FIXEDBUGS.txt">
       <Filter>Docs</Filter>
     </Text>
-    <Text Include="Docs\KNOWNBUGS.txt">
-      <Filter>Docs</Filter>
-    </Text>
     <Text Include="Docs\LICENSE.TXT">
       <Filter>Docs</Filter>
     </Text>

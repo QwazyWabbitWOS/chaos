@@ -169,6 +169,8 @@ set turprox_fx "1"     // enable new turret & proxy effects
 
 ----------------------version notes ----------------------
 
+
+
 * Fixed some uninitialized variables, undeclared function prototypes, reworking
   of some formulas/equations (replaced  160>>3 with just 20 for example) ... id did some odd things and this is built off an old code release i think)
 - Fixed Sat Dec 13, 2003
@@ -385,6 +387,12 @@ but the way bot safe chat was handled.
 *****************************************************
 
 Back to 1.14 Source base
+
+Fixed when?
+* If you fakedeath while having the jetpack active the model animation is
+  screwed up and locked into a STANDING position.  The problem is that i am
+  not certain which is the bug, the model animation beeing screwed or the fact
+  that they can fakedeath while using a jetpack. - FIXED
 
 Chaos DM Lives 3.0b
 
