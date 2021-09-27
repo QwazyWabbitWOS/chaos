@@ -171,6 +171,7 @@ void InitGame(void)
 		path_buffer[j] = -1;
 	}
 
+	/*	MrG{DRGN} Do we need to check this? Just do it.
 	//This game.dll only supports deathmatch
 	if (!deathmatch->value) {
 		gi.dprintf("Forcing deathmatch.\n");
@@ -179,6 +180,9 @@ void InitGame(void)
 	//force coop off
 	if (coop->value)
 		gi.cvar_set("coop", "0");
+	 */
+	gi.cvar_forceset("deathmatch", "1");
+	gi.cvar_forceset("coop", "0");
 
 	// change anytime vars
 	dmflags = gi.cvar("dmflags", "0", CVAR_SERVERINFO);
