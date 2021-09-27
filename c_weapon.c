@@ -378,7 +378,7 @@ void Turret_Die(edict_t* ent, edict_t* inflictor, edict_t* attacker, int damage,
 		bprintf2(PRINT_MEDIUM, "%s loses a frag for killing %s's turret.\n", attacker->client->pers.netname, ent->owner->client->pers.netname);
 	}
 	else
-		bprintf2(PRINT_HIGH, "%s killed his own turret!\n", attacker->client->pers.netname);
+		bprintf2(PRINT_HIGH, "%s killed their own turret!\n", attacker->client->pers.netname);
 	Turret_Explode(ent);
 }
 
