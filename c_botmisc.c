@@ -184,14 +184,23 @@ void Bot_Create(int accuracy_level, int team, char* name, char* skin)
 	if (ctf->value)
 	{
 		if ((team != 1) && (team != 2))
-		{
+		/*/ {
 			if (numblue < numred)
 				CTFBotJoinTeam(bot, 2);
 			else
 				CTFBotJoinTeam(bot, 1);
-		}
-		else
-			CTFBotJoinTeam(bot, team);
+		}	 */
+		//else
+		//	CTFBotJoinTeam(bot, team);
+
+		if (numblue < numred) /* MrG{DRGN} */
+			CTFBotJoinTeam(bot, 2);
+	else if (numred < numblue)
+			CTFBotJoinTeam(bot, 1);
+	else if (rand() & 1)
+			CTFBotJoinTeam(bot, 1);
+	else
+			CTFBotJoinTeam(bot, 2);
 	}
 	else
 	{
