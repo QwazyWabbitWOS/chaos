@@ -1411,7 +1411,7 @@ void CTFScoreboardMessage(edict_t* ent, edict_t* killer)
 			cl_ent = g_edicts + 1 + i;
 			cl = &game.clients[i];
 			if (!cl_ent->inuse ||
-				cl_ent->solid != SOLID_NOT ||
+				(cl_ent->solid != SOLID_TRIGGER && cl_ent->solid != SOLID_NOT )||
 				cl_ent->client->resp.ctf_team != CTF_NOTEAM)
 				continue;
 
