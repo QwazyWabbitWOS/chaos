@@ -1035,7 +1035,7 @@ void ClientCommand(edict_t* ent)
 	if (Q_stricmp(cmd, "say_team") == 0 || Q_stricmp(cmd, "steam") == 0)
 	{
 		/* MrG{DRGN} Spectators don't have teams and shouldn't be spamming macros */
-		if (ent->solid == SOLID_NOT)
+		if (ent->solid == SOLID_NOT || ent->solid == SOLID_TRIGGER)
 			return;
 		/* END */
 		CTFSay_Team(ent, gi.args());
