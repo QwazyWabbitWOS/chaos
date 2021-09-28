@@ -61,6 +61,7 @@ void ShowGun(edict_t* ent)	//QW from WOD:LOX for vwep
 	{
 		ent->client->ps.gunindex = 0;		// WI: seems to be missing?
 		ent->s.modelindex2 = REMOVED_MODEL;	 /* MrG{DRGN} */
+		if (ent->solid != SOLID_TRIGGER) /* MrG{DRGN} Don't complain about camera using players not having a gun */
 		gi.dprintf("ShowGun: Oops! Weapon Index missing! %s\n", ent->client->pers.netname);
 		return;
 	}
@@ -1738,19 +1739,24 @@ void ClientCommand2(edict_t* ent)
 		{
 			if (ent->client->camera)
 			{
-				char name[MAX_INFO_KEY], skin[MAX_INFO_KEY], hand[MAX_INFO_KEY]; 
+				char name[MAX_INFO_KEY], skin[MAX_INFO_KEY], hand[MAX_INFO_KEY], fov[MAX_INFO_KEY];
 
-				Com_Printf(name, Info_ValueForKey(ent->client->pers.userinfo, "name"));
-				Com_Printf(skin, Info_ValueForKey(ent->client->pers.userinfo, "skin"));
-				Com_Printf(hand, Info_ValueForKey(ent->client->pers.userinfo, "hand"));
+				sprintf(name, Info_ValueForKey(ent->client->pers.userinfo, "name"));
+				sprintf(skin, Info_ValueForKey(ent->client->pers.userinfo, "skin"));
+				sprintf(hand, Info_ValueForKey(ent->client->pers.userinfo, "hand"));
+				sprintf(fov, Info_ValueForKey(ent->client->pers.userinfo, "fov"));
+
 				ClientDisconnect(ent);
 				ClientConnect(ent, ent->client->pers.userinfo);
 				Info_SetValueForKey(ent->client->pers.userinfo, "name", name);
 				Info_SetValueForKey(ent->client->pers.userinfo, "skin", skin);
 				Info_SetValueForKey(ent->client->pers.userinfo, "hand", hand);
+				Info_SetValueForKey(ent->client->pers.userinfo, "fov", fov);
+
+				//ent->client->resp.fov_start = ent->client->ps.fov;
 
 				ClientBegin(ent);
-				cprintf2(ent, PRINT_HIGH, "Camera OFF!\n");
+				cprintf2(ent, PRINT_HIGH, "Camera OFF!\n");		
 			}
 		}
 		else if (Q_stricmp(gi.argv(1), "1") == 0)	//intelli mode
