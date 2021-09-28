@@ -4124,8 +4124,8 @@ void Proxy_Think(edict_t* ent)
 		if (!Valid_Target(ent, blip))
 			continue;
 
-		/* MrG{DRGN} Don't target spectators */
-		if (blip->solid == SOLID_NOT)
+		/* MrG{DRGN} Don't target spectators or Camera users */
+		if (blip->solid == SOLID_NOT||blip->solid == SOLID_TRIGGER)
 			continue;
 	
 
@@ -4270,8 +4270,8 @@ void EvilProxy_Think(edict_t* ent)
 		if (players[i]->client->invisible_framenum > level.framenum)	//invisible
 			continue;
 
-		/* MrG{DRGN} Don't target spectators */
-		if (players[i]->solid == SOLID_NOT)
+		/* MrG{DRGN} Don't target spectators or camera users*/
+		if (players[i]->solid == SOLID_NOT|| players[i]->solid == SOLID_TRIGGER)
 			continue;
 
 		VectorSubtract(players[i]->s.origin, ent->s.origin, blipdir);
