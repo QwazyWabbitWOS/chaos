@@ -62,7 +62,7 @@ void ShowGun(edict_t* ent)	//QW from WOD:LOX for vwep
 		ent->client->ps.gunindex = 0;		// WI: seems to be missing?
 		ent->s.modelindex2 = REMOVED_MODEL;	 /* MrG{DRGN} */
 		if (ent->solid != SOLID_TRIGGER) /* MrG{DRGN} Don't complain about camera using players not having a gun */
-		gi.dprintf("ShowGun: Oops! Weapon Index missing! %s\n", ent->client->pers.netname);
+			gi.dprintf("ShowGun: Oops! Weapon Index missing! %s\n", ent->client->pers.netname);
 		return;
 	}
 
@@ -1741,10 +1741,10 @@ void ClientCommand2(edict_t* ent)
 			{
 				char name[MAX_INFO_KEY], skin[MAX_INFO_KEY], hand[MAX_INFO_KEY], fov[MAX_INFO_KEY];
 
-				sprintf(name, Info_ValueForKey(ent->client->pers.userinfo, "name"));
-				sprintf(skin, Info_ValueForKey(ent->client->pers.userinfo, "skin"));
-				sprintf(hand, Info_ValueForKey(ent->client->pers.userinfo, "hand"));
-				sprintf(fov, Info_ValueForKey(ent->client->pers.userinfo, "fov"));
+				Com_sprintf(name, sizeof name, Info_ValueForKey(ent->client->pers.userinfo, "name"));
+				Com_sprintf(skin, sizeof skin, Info_ValueForKey(ent->client->pers.userinfo, "skin"));
+				Com_sprintf(hand, sizeof hand, Info_ValueForKey(ent->client->pers.userinfo, "hand"));
+				Com_sprintf(fov, sizeof fov, Info_ValueForKey(ent->client->pers.userinfo, "fov"));
 
 				ClientDisconnect(ent);
 				ClientConnect(ent, ent->client->pers.userinfo);

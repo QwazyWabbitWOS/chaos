@@ -134,7 +134,7 @@ void InitGame(void)
 	dedicated = gi.cvar("dedicated", "0", CVAR_NOSET);
 	game_dir = gi.cvar("game", "", CVAR_NOSET);
 	if (Q_stricmp(game_dir->string, "chaos") != 0) {
-		Com_Printf("Chaos: GAME ERROR!! Game directory must be chaos.\n");
+		gi.dprintf("Chaos: GAME ERROR!! Game directory must be chaos.\n");
 	}
 
 	// latched vars

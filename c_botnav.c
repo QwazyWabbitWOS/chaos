@@ -425,7 +425,7 @@ qboolean Bot_SaveNodes(void)
 
 	if ((output = fopen(file, "wb")) == NULL)    /* MrG{DRGN} check the return */
 	{
-		Com_Printf("Unable to open file! %s.\n", strerror(errno));
+		gi.dprintf("Unable to open file! %s.\n", strerror(errno));
 		return false;
 	}
 
@@ -453,7 +453,7 @@ qboolean Bot_SaveNodes(void)
 	fwrite(nodetable_id, sizeof(const char), 19, output);
 	fwrite(nodetable_version, sizeof(const char), 4, output);
 
-	Com_Printf("%d nodes written to %s\n", numnodes, file);
+	gi.dprintf("%d nodes written to %s\n", numnodes, file);
 
 	fclose(output);
 	return true;
@@ -481,32 +481,32 @@ qboolean Bot_LoadNodes(void)
 
 	if ((input = fopen(file, "rb")) == NULL)    /* MrG{DRGN} check the return */
 	{
-		Com_Printf("Unable to open %s! %s.\n", file, strerror(errno));
+		gi.dprintf("Unable to open %s! %s.\n", file, strerror(errno));
 		return false;
 	}
 
 	//check 1
 	num = fread(id_buffer, sizeof(const char), sizeof nodetable_id, input);
 	if (!num && !feof(input))
-		Com_Printf("Chaos: %s error reading nodetable_id\n", __func__);
+		gi.dprintf("Chaos: %s error reading nodetable_id\n", __func__);
 	num = fread(version_buffer, sizeof(const char), sizeof nodetable_version, input);
 	if (!num && !feof(input))
-		Com_Printf("Chaos: %s error reading nodetable_version\n", __func__);
+		gi.dprintf("Chaos: %s error reading nodetable_version\n", __func__);
 	num = fread(&numnodes, sizeof(int), 1, input);
 	if (!num && !feof(input))
-		Com_Printf("Chaos: %s error reading numnodes\n", __func__);
+		gi.dprintf("Chaos: %s error reading numnodes\n", __func__);
 
 	//dynamic node table generation on/off
 	num = fread(&dntgvalue, sizeof(int), 1, input);
 
 	if (dntgvalue == 1)
 	{
-		Com_Printf("\nDynamic Node Table Generation ON\n");
+		gi.dprintf("\nDynamic Node Table Generation ON\n");
 		gi.cvar_set("dntg", "1");
 	}
 	else
 	{
-		Com_Printf("\nDynamic Node Table Generation OFF\n");
+		gi.dprintf("\nDynamic Node Table Generation OFF\n");
 		gi.cvar_set("dntg", "0");
 	}
 
@@ -532,13 +532,13 @@ qboolean Bot_LoadNodes(void)
 	{
 		num = fread(&nodes[i].flag, sizeof(int), 1, input);
 		if (!num && !feof(input))
-			Com_Printf("Chaos: %s error reading node flags\n", __func__);
+			gi.dprintf("Chaos: %s error reading node flags\n", __func__);
 		num = fread(&nodes[i].duckflag, sizeof(int), 1, input);
 		if (!num && !feof(input))
-			Com_Printf("Chaos: %s error reading node duckflags\n", __func__);
+			gi.dprintf("Chaos: %s error reading node duckflags\n", __func__);
 		num = fread(&nodes[i].origin, sizeof(vec3_t), 1, input);
 		if (!num && !feof(input))
-			Com_Printf("Chaos: %s error reading node origins\n", __func__);
+			gi.dprintf("Chaos: %s error reading node origins\n", __func__);
 
 		for (j = 0; j < numnodes; j++)
 		{
@@ -550,10 +550,10 @@ qboolean Bot_LoadNodes(void)
 	//check 2
 	num = fread(id_buffer, sizeof(const char), sizeof nodetable_id, input);
 	if (!num && !feof(input))
-		Com_Printf("Chaos: %s error reading nodetable_id\n", __func__);
+		gi.dprintf("Chaos: %s error reading nodetable_id\n", __func__);
 	num = fread(version_buffer, sizeof(const char), sizeof nodetable_version, input);
 	if (!num && !feof(input))
-		Com_Printf("Chaos: %s error reading nodetable_version\n", __func__);
+		gi.dprintf("Chaos: %s error reading nodetable_version\n", __func__);
 
 	if ((strcmp(id_buffer, nodetable_id) != 0))/* MrG{DRGN} simpify */
 		return false;
@@ -561,6 +561,6 @@ qboolean Bot_LoadNodes(void)
 		return false;
 
 	fclose(input);
-	Com_Printf("%d nodes read from %s\n", numnodes, file);
+	gi.dprintf("%d nodes read from %s\n", numnodes, file);
 	return true;
 }

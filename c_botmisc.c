@@ -1633,8 +1633,8 @@ void Load_BotChat(void)
 	if (!fp)
 	{
 		//QwazyWabbit gracefully fail if file doesn't exist.
-		Com_Printf("Unable to open file! %s.\n", strerror(errno));
-		Com_Printf("Forcing botchat OFF\n");
+		gi.dprintf("Unable to open file! %s.\n", strerror(errno));
+		gi.dprintf("Forcing botchat OFF\n");
 		gi.cvar_set("botchat", "0");
 		return;
 	}
@@ -1646,8 +1646,8 @@ void Load_BotChat(void)
 		// QwazyWabbit if file exists but doesn't parse, fall out and disable bot chat.
 		if (fscanf(fp, "%c", &buffer) == EOF && section == -1) /* MrG{DRGN check return */
 		{
-			Com_Printf("Chaos: ERROR reading %s\n", filename);
-			Com_Printf("Forcing botchat OFF and aborting file load.\n\n");
+			gi.dprintf("Chaos: ERROR reading %s\n", filename);
+			gi.dprintf("Forcing botchat OFF and aborting file load.\n\n");
 			gi.cvar_set("botchat", "0");
 			fclose(fp);
 			return;
@@ -1703,7 +1703,7 @@ void Load_BotChat(void)
 		}
 	}
 
-	Com_Printf("%s successfully loaded %u sections.\n", filename, section + 1);
+	gi.dprintf("%s successfully loaded %u sections.\n", filename, section + 1);
 	fclose(fp);
 }
 
