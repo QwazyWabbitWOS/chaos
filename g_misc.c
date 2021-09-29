@@ -233,14 +233,14 @@ void BecomeExplosion1(edict_t* self)
 	if (self->classindex == ITEM_FLAG_TEAM1)
 	{
 		CTFResetFlag(CTF_TEAM1); // this will free self!
-		bprintf2(PRINT_HIGH, "The %s flag has returned!\n",
+		bprint_botsafe(PRINT_HIGH, "The %s flag has returned!\n",
 			CTFTeamName(CTF_TEAM1));
 		return;
 	}
 	if (self->classindex == ITEM_FLAG_TEAM2)
 	{
 		CTFResetFlag(CTF_TEAM2); // this will free self!
-		bprintf2(PRINT_HIGH, "The %s flag has returned!\n",
+		bprint_botsafe(PRINT_HIGH, "The %s flag has returned!\n",
 			CTFTeamName(CTF_TEAM1));
 		return;
 	}

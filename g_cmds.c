@@ -153,7 +153,7 @@ void Cmd_Give_f(edict_t* ent)
 
 	if (!sv_cheats->value)
 	{
-		cprintf2(ent, PRINT_HIGH, "You must run the server with '+set cheats 1' to enable this command.\n");
+		cprint_botsafe(ent, PRINT_HIGH, "You must run the server with '+set cheats 1' to enable this command.\n");
 		return;
 	}
 
@@ -332,7 +332,7 @@ void Cmd_God_f(edict_t* ent)
 
 	if (!sv_cheats->value)
 	{
-		cprintf2(ent, PRINT_HIGH, "You must run the server with '+set cheats 1' to enable this command.\n");
+		cprint_botsafe(ent, PRINT_HIGH, "You must run the server with '+set cheats 1' to enable this command.\n");
 		return;
 	}
 
@@ -342,7 +342,7 @@ void Cmd_God_f(edict_t* ent)
 	else
 		msg = "godmode ON\n";
 
-	cprintf2(ent, PRINT_HIGH, msg);
+	cprint_botsafe(ent, PRINT_HIGH, msg);
 }
 
 /*
@@ -360,7 +360,7 @@ void Cmd_Notarget_f(edict_t* ent)
 
 	if (!sv_cheats->value)
 	{
-		cprintf2(ent, PRINT_HIGH, "You must run the server with '+set cheats 1' to enable this command.\n");
+		cprint_botsafe(ent, PRINT_HIGH, "You must run the server with '+set cheats 1' to enable this command.\n");
 		return;
 	}
 
@@ -370,7 +370,7 @@ void Cmd_Notarget_f(edict_t* ent)
 	else
 		msg = "notarget ON\n";
 
-	cprintf2(ent, PRINT_HIGH, msg);
+	cprint_botsafe(ent, PRINT_HIGH, msg);
 }
 
 /*
@@ -386,7 +386,7 @@ void Cmd_Noclip_f(edict_t* ent)
 
 	if (!sv_cheats->value)
 	{
-		cprintf2(ent, PRINT_HIGH, "You must run the server with '+set cheats 1' to enable this command.\n");
+		cprint_botsafe(ent, PRINT_HIGH, "You must run the server with '+set cheats 1' to enable this command.\n");
 		return;
 	}
 
@@ -401,7 +401,7 @@ void Cmd_Noclip_f(edict_t* ent)
 		msg = "noclip ON\n";
 	}
 
-	cprintf2(ent, PRINT_HIGH, msg);
+	cprint_botsafe(ent, PRINT_HIGH, msg);
 }
 
 /*
@@ -424,18 +424,18 @@ void Cmd_Use_f(edict_t* ent)
 	it = FindItem(s);
 	if (!it)
 	{
-		cprintf2(ent, PRINT_HIGH, "unknown item: %s\n", s);
+		cprint_botsafe(ent, PRINT_HIGH, "unknown item: %s\n", s);
 		return;
 	}
 	if (!it->use)
 	{
-		cprintf2(ent, PRINT_HIGH, "Item is not usable.\n");
+		cprint_botsafe(ent, PRINT_HIGH, "Item is not usable.\n");
 		return;
 	}
 	index = ITEM_INDEX(it);
 	if (!ent->client->pers.inventory[index])
 	{
-		cprintf2(ent, PRINT_HIGH, "Out of item: %s\n", s);
+		cprint_botsafe(ent, PRINT_HIGH, "Out of item: %s\n", s);
 		return;
 	}
 
@@ -467,19 +467,19 @@ void Cmd_Drop_f(edict_t* ent)
 
 	if (!it)
 	{
-		cprintf2(ent, PRINT_HIGH, "unknown item: %s\n", s);
+		cprint_botsafe(ent, PRINT_HIGH, "unknown item: %s\n", s);
 		return;
 	}
 
 	if (!it->drop)
 	{
-		cprintf2(ent, PRINT_HIGH, "Item is not dropable.\n");
+		cprint_botsafe(ent, PRINT_HIGH, "Item is not dropable.\n");
 		return;
 	}
 	index = ITEM_INDEX(it);
 	if (!ent->client->pers.inventory[index])
 	{
-		cprintf2(ent, PRINT_HIGH, "Out of item: %s\n", s);
+		cprint_botsafe(ent, PRINT_HIGH, "Out of item: %s\n", s);
 		return;
 	}
 
@@ -553,14 +553,14 @@ void Cmd_InvUse_f(edict_t* ent)
 
 	if (ent->client->pers.selected_item == -1)
 	{
-		cprintf2(ent, PRINT_HIGH, "No item to use.\n");
+		cprint_botsafe(ent, PRINT_HIGH, "No item to use.\n");
 		return;
 	}
 
 	it = &itemlist[ent->client->pers.selected_item];
 	if (!it->use)
 	{
-		cprintf2(ent, PRINT_HIGH, "Item is not usable.\n");
+		cprint_botsafe(ent, PRINT_HIGH, "Item is not usable.\n");
 		return;
 	}
 	it->use(ent, it);
@@ -708,14 +708,14 @@ void Cmd_InvDrop_f(edict_t* ent)
 
 		if (ent->client->pers.selected_item == -1)
 		{
-			cprintf2(ent, PRINT_HIGH, "No item to drop.\n");
+			cprint_botsafe(ent, PRINT_HIGH, "No item to drop.\n");
 			return;
 		}
 
 		it = &itemlist[ent->client->pers.selected_item];
 		if (!it->drop)
 		{
-			cprintf2(ent, PRINT_HIGH, "Item is not dropable.\n");
+			cprint_botsafe(ent, PRINT_HIGH, "Item is not dropable.\n");
 			return;
 		}
 		it->drop(ent, it);
@@ -837,7 +837,7 @@ void Cmd_Players_f(edict_t* ent)
 
 	}
 
-	cprintf2(ent, PRINT_HIGH, "%s\n%i players\n", large, count);
+	cprint_botsafe(ent, PRINT_HIGH, "%s\n%i players\n", large, count);
 }
 
 /*
@@ -866,28 +866,28 @@ void Cmd_Wave_f(edict_t* ent)
 	switch (i)
 	{
 	case 0:
-		cprintf2(ent, PRINT_HIGH, "flipoff\n");
+		cprint_botsafe(ent, PRINT_HIGH, "flipoff\n");
 		ent->s.frame = FRAME_flip01 - 1;
 		ent->client->anim_end = FRAME_flip12;
 		break;
 	case 1:
-		cprintf2(ent, PRINT_HIGH, "salute\n");
+		cprint_botsafe(ent, PRINT_HIGH, "salute\n");
 		ent->s.frame = FRAME_salute01 - 1;
 		ent->client->anim_end = FRAME_salute11;
 		break;
 	case 2:
-		cprintf2(ent, PRINT_HIGH, "taunt\n");
+		cprint_botsafe(ent, PRINT_HIGH, "taunt\n");
 		ent->s.frame = FRAME_taunt01 - 1;
 		ent->client->anim_end = FRAME_taunt17;
 		break;
 	case 3:
-		cprintf2(ent, PRINT_HIGH, "wave\n");
+		cprint_botsafe(ent, PRINT_HIGH, "wave\n");
 		ent->s.frame = FRAME_wave01 - 1;
 		ent->client->anim_end = FRAME_wave11;
 		break;
 	case 4:
 	default:
-		cprintf2(ent, PRINT_HIGH, "point\n");
+		cprint_botsafe(ent, PRINT_HIGH, "point\n");
 		ent->s.frame = FRAME_point01 - 1;
 		ent->client->anim_end = FRAME_point12;
 		break;
@@ -1062,7 +1062,7 @@ void ClientCommand(edict_t* ent)
 		/* MrG{DRGN} tech drop prevention */
 		if ((Q_stricmp(gi.args(), "tech") == 0) && (!drop_tech->value))
 		{
-			cprintf2(ent, PRINT_HIGH, "Tech drop is disabled by the admin!\n");
+			cprint_botsafe(ent, PRINT_HIGH, "Tech drop is disabled by the admin!\n");
 			return;
 		}
 		else

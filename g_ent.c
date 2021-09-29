@@ -47,7 +47,7 @@ char* LoadEntFile(char* mapname, char* entities)
 
 	/* convert string to all lowercase (for Linux) */
 	for (i = 0; entfilename[i]; i++)
-		entfilename[i] = tolower(entfilename[i]);
+		entfilename[i] = Q_tolower(entfilename[i]);
 
 	newentities = ReadEntFile(entfilename);
 

@@ -317,7 +317,7 @@ void ClientObituary(edict_t* self, edict_t* inflictor, edict_t* attacker)
 		{
 			int i;
 
-			bprintf2(PRINT_MEDIUM, "%s %s.\n", self->client->pers.netname, message);
+			bprint_botsafe(PRINT_MEDIUM, "%s %s.\n", self->client->pers.netname, message);
 			
 			if (deathmatch->value)
 			self->client->resp.score--;
@@ -485,7 +485,7 @@ void ClientObituary(edict_t* self, edict_t* inflictor, edict_t* attacker)
 			}
 			if (message)
 			{
-				bprintf2(PRINT_MEDIUM, "%s %s %s%s\n", self->client->pers.netname, message, attacker->client->pers.netname, message2);
+				bprint_botsafe(PRINT_MEDIUM, "%s %s %s%s\n", self->client->pers.netname, message, attacker->client->pers.netname, message2);
 				if (deathmatch->value)
 				{
 					if (ff)
@@ -559,7 +559,7 @@ void ClientObituary(edict_t* self, edict_t* inflictor, edict_t* attacker)
 					}
 					if (message)
 					{
-						bprintf2(PRINT_MEDIUM, "%s %s\n", self->client->pers.netname, message);
+						bprint_botsafe(PRINT_MEDIUM, "%s %s\n", self->client->pers.netname, message);
 
 						if (deathmatch->value)
 						{
@@ -586,7 +586,7 @@ void ClientObituary(edict_t* self, edict_t* inflictor, edict_t* attacker)
 					}
 					if (message)
 					{
-						bprintf2(PRINT_MEDIUM, "%s %s %s%s\n", self->client->pers.netname, message, attacker->owner->client->pers.netname, message2);
+						bprint_botsafe(PRINT_MEDIUM, "%s %s %s%s\n", self->client->pers.netname, message, attacker->owner->client->pers.netname, message2);
 						if (deathmatch->value)
 						{
 							if (ff)
@@ -616,7 +616,7 @@ void ClientObituary(edict_t* self, edict_t* inflictor, edict_t* attacker)
 						}
 						if (message)
 						{
-							bprintf2(PRINT_MEDIUM, "%s %s\n", self->client->pers.netname, message);
+							bprint_botsafe(PRINT_MEDIUM, "%s %s\n", self->client->pers.netname, message);
 							if (deathmatch->value)
 							{
 								/* MrG{DRGN} Duplicate branches!
@@ -638,7 +638,7 @@ void ClientObituary(edict_t* self, edict_t* inflictor, edict_t* attacker)
 						}
 						if (message)
 						{
-							bprintf2(PRINT_MEDIUM, "%s %s %s%s\n", self->client->pers.netname, message, attacker->owner->owner->client->pers.netname, message2);
+							bprint_botsafe(PRINT_MEDIUM, "%s %s %s%s\n", self->client->pers.netname, message, attacker->owner->owner->client->pers.netname, message2);
 							if (deathmatch->value)
 							{
 								if (ff)
@@ -655,7 +655,7 @@ void ClientObituary(edict_t* self, edict_t* inflictor, edict_t* attacker)
 		}
 	}
 
-	bprintf2(PRINT_MEDIUM, "%s died.\n", self->client->pers.netname);
+	bprint_botsafe(PRINT_MEDIUM, "%s died.\n", self->client->pers.netname);
 	if (deathmatch->value)
 		self->client->resp.score--;
 }
@@ -1771,7 +1771,7 @@ void ClientBeginDeathmatch(edict_t* ent)
 	gi.WriteByte(MZ_LOGIN);
 	gi.multicast(ent->s.origin, MULTICAST_PVS);
 
-	bprintf2(PRINT_HIGH, "%s entered the game\n", ent->client->pers.netname);
+	bprint_botsafe(PRINT_HIGH, "%s entered the game\n", ent->client->pers.netname);
 	if (!ctf->value)
 	{
 		/* MrG{DRGN}if (strcmp(ent->classname, "bot") != 0) */
@@ -1858,7 +1858,7 @@ void ClientBegin(edict_t* ent)
 			gi.WriteByte(MZ_LOGIN);
 			gi.multicast(ent->s.origin, MULTICAST_PVS);
 
-			bprintf2(PRINT_HIGH, "%s entered the game\n", ent->client->pers.netname);
+			bprint_botsafe(PRINT_HIGH, "%s entered the game\n", ent->client->pers.netname);
 		}
 	}
 
@@ -2080,7 +2080,7 @@ void ClientDisconnect(edict_t* ent)
 
 	playernum = ent - g_edicts - 1;
 	gi.configstring(CS_PLAYERSKINS + playernum, "");
-	bprintf2(PRINT_HIGH, "%s disconnected\n", ent->client->pers.netname);
+	bprint_botsafe(PRINT_HIGH, "%s disconnected\n", ent->client->pers.netname);
 }
 
 //==============================================================
@@ -2323,7 +2323,7 @@ void ClientThink(edict_t* ent, usercmd_t* ucmd)
 	{
 		if (ent->client->pers.inventory[ITEM_INDEX(it_cells)] <= 0)
 		{
-			cprintf2(ent, PRINT_HIGH, "You don't have enough cells to run your anti gravity belt!\n");
+			cprint_botsafe(ent, PRINT_HIGH, "You don't have enough cells to run your anti gravity belt!\n");
 			client->beltactive = 0;
 			client->nextbeltcell = level.time;
 		}

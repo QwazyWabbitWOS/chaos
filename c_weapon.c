@@ -363,22 +363,22 @@ void Turret_Die(edict_t* ent, edict_t* inflictor, edict_t* attacker, int damage,
 		if (attacker->client)
 		{
 			attacker->client->resp.score += 1;
-			bprintf2(PRINT_MEDIUM, "%s receives an extra frag for killing %s's turret.\n", attacker->client->pers.netname, ent->owner->client->pers.netname);
+			bprint_botsafe(PRINT_MEDIUM, "%s receives an extra frag for killing %s's turret.\n", attacker->client->pers.netname, ent->owner->client->pers.netname);
 		}
 		else 
 			if (attacker->owner->client)
 			{
 				attacker->owner->client->resp.score += 1;
-				bprintf2(PRINT_MEDIUM, "%s receives an extra frag for killing %s's turret.\n", attacker->owner->client->pers.netname, ent->owner->client->pers.netname);
+				bprint_botsafe(PRINT_MEDIUM, "%s receives an extra frag for killing %s's turret.\n", attacker->owner->client->pers.netname, ent->owner->client->pers.netname);
 			}
 	}
 	else if (TeamMembers(ent->owner, attacker))
 	{
 		attacker->client->resp.score -= 1;
-		bprintf2(PRINT_MEDIUM, "%s loses a frag for killing %s's turret.\n", attacker->client->pers.netname, ent->owner->client->pers.netname);
+		bprint_botsafe(PRINT_MEDIUM, "%s loses a frag for killing %s's turret.\n", attacker->client->pers.netname, ent->owner->client->pers.netname);
 	}
 	else
-		bprintf2(PRINT_HIGH, "%s killed their own turret!\n", attacker->client->pers.netname);
+		bprint_botsafe(PRINT_HIGH, "%s killed their own turret!\n", attacker->client->pers.netname);
 	Turret_Explode(ent);
 }
 
@@ -1085,12 +1085,12 @@ void weapon_lturret_fire(edict_t* ent)
 
 	if (tr.startsolid || tr.fraction != 1.0)
 	{
-		cprintf2(ent, PRINT_HIGH, "To close to a wall!\n");
+		cprint_botsafe(ent, PRINT_HIGH, "To close to a wall!\n");
 		return;
 	}
 	else if (numturrets >= 3)
 	{
-		cprintf2(ent, PRINT_HIGH, "Only 3 Turrets can be active at the same time...try later!\n");
+		cprint_botsafe(ent, PRINT_HIGH, "Only 3 Turrets can be active at the same time...try later!\n");
 		return;
 	}
 
@@ -1128,12 +1128,12 @@ void weapon_rturret_fire(edict_t* ent)
 
 	if (tr.startsolid || tr.fraction != 1.0)
 	{
-		cprintf2(ent, PRINT_HIGH, "To close to a wall!\n");
+		cprint_botsafe(ent, PRINT_HIGH, "To close to a wall!\n");
 		return;
 	}
 	else if (numturrets >= 3)
 	{
-		cprintf2(ent, PRINT_HIGH, "Only 3 Turrets can be active at the same time...try later!\n");
+		cprint_botsafe(ent, PRINT_HIGH, "Only 3 Turrets can be active at the same time...try later!\n");
 		return;
 	}
 
@@ -2965,12 +2965,12 @@ void FlashGrenade_Explode(edict_t* ent)
 
 		if (ent->owner && ent->owner->client)
 		{
-			cprintf2(target, PRINT_HIGH, "You are blinded by %s's flash grenade!\n", ent->owner->client->pers.netname);
-			cprintf2(ent->owner, PRINT_HIGH, "%s has been blinded by your flash grenade!\n", target->client->pers.netname);
+			cprint_botsafe(target, PRINT_HIGH, "You are blinded by %s's flash grenade!\n", ent->owner->client->pers.netname);
+			cprint_botsafe(ent->owner, PRINT_HIGH, "%s has been blinded by your flash grenade!\n", target->client->pers.netname);
 		}
 		else
 		{
-			cprintf2(target, PRINT_HIGH, "You are blinded by a flash grenade!\n");
+			cprint_botsafe(target, PRINT_HIGH, "You are blinded by a flash grenade!\n");
 		}
 	}
 	gi.WriteByte(svc_temp_entity);
@@ -3709,12 +3709,12 @@ void PoisonGrenade_Explode(edict_t* ent)
 
 		if (ent->owner && ent->owner->client)
 		{
-			cprintf2(target, PRINT_HIGH, "You are poisoned by %s's poison grenade!\n", ent->owner->client->pers.netname);
-			cprintf2(ent->owner, PRINT_HIGH, "%s has been poisoned by your poison grenade!\n", target->client->pers.netname);
+			cprint_botsafe(target, PRINT_HIGH, "You are poisoned by %s's poison grenade!\n", ent->owner->client->pers.netname);
+			cprint_botsafe(ent->owner, PRINT_HIGH, "%s has been poisoned by your poison grenade!\n", target->client->pers.netname);
 		}
 		else
 		{
-			cprintf2(target, PRINT_HIGH, "You are poisoned by a poison grenade!\n");
+			cprint_botsafe(target, PRINT_HIGH, "You are poisoned by a poison grenade!\n");
 		}
 	}
 
@@ -5190,7 +5190,7 @@ void weapon_vortex_fire(edict_t* ent)
 
 	if (vortexstate != VORTEX_INACTIVE)
 	{
-		cprintf2(ent, PRINT_HIGH, "Only one Gravity Vortex can be active at the same time...try later!");
+		cprint_botsafe(ent, PRINT_HIGH, "Only one Gravity Vortex can be active at the same time...try later!");
 		return;
 	}
 

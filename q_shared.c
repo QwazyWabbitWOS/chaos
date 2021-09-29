@@ -1150,7 +1150,7 @@ void Com_PageInMemory(byte* buffer, int size)
 #define Q_isspace(c)    (c == ' ' || c == '\f' || c == '\n' || \
                          c == '\r' || c == '\t' || c == '\v')
 
-static inline int Q_tolower(int c)
+inline int Q_tolower(int c)
 {
 	if (Q_isupper(c)) {
 		c += ('a' - 'A');

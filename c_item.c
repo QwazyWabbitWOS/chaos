@@ -29,7 +29,7 @@ void Use_Invisibility(edict_t* ent, gitem_t* item)
 void Use_Jet(edict_t* ent, gitem_t* item)
 {
 #ifdef	CHAOS_RETAIL
-	cprintf2(ent, PRINT_HIGH, "The Jetpack has been deactivated in the retail version!\n");
+	cprint_botsafe(ent, PRINT_HIGH, "The Jetpack has been deactivated in the retail version!\n");
 	return;
 #endif
 	/* MrG{DRGN} sanity check*/
@@ -416,10 +416,10 @@ void Toggle_Scanner(edict_t* ent)
 	{
 		if (ent->client->pers.inventory[ITEM_INDEX(it_cells)] == 0)
 		{
-			cprintf2(ent, PRINT_HIGH, "You don't have enough cells to run your scanner!\n");
+			cprint_botsafe(ent, PRINT_HIGH, "You don't have enough cells to run your scanner!\n");
 			return;
 		}
-		cprintf2(ent, PRINT_HIGH, "Scanner ON\n");
+		cprint_botsafe(ent, PRINT_HIGH, "Scanner ON\n");
 		ent->client->scanneractive = 1;
 		ent->client->showinventory = 0;
 		ent->client->showscores = 0;
@@ -427,7 +427,7 @@ void Toggle_Scanner(edict_t* ent)
 	else
 	{
 		ent->client->scanneractive = 0;
-		cprintf2(ent, PRINT_HIGH, "Scanner OFF\n");
+		cprint_botsafe(ent, PRINT_HIGH, "Scanner OFF\n");
 	}
 }
 //SCANNER
@@ -444,7 +444,7 @@ void Scanner_Think(edict_t* ent)
 	{
 		if (ent->client->pers.inventory[ITEM_INDEX(it_cells)] <= 0)
 		{
-			cprintf2(ent, PRINT_HIGH, "You don't have enough cells to run your scanner!\n");
+			cprint_botsafe(ent, PRINT_HIGH, "You don't have enough cells to run your scanner!\n");
 			client->scanneractive = 0;
 			client->nextscannercell = level.time;
 		}

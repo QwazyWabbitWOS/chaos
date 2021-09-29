@@ -43,18 +43,6 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #include <math.h>
 #include <ctype.h>
 
-#if (defined _M_IX86 || defined __i386__) && !defined C_ONLY && !defined __sun__
-#define id386	1
-#else
-#define id386	0
-#endif
-
-#if defined _M_ALPHA && !defined C_ONLY
-#define idaxp	1
-#else
-#define idaxp	0
-#endif
-
 typedef unsigned char 		byte;
 typedef enum { false, true }	qboolean;
 
@@ -217,6 +205,7 @@ void Com_PageInMemory(byte* buffer, int size);
 //=============================================
 
 // portable case insensitive compare
+inline int Q_tolower(int c);
 int Q_stricmp(const char* s1, const char* s2);
 int Q_strnicmp(const char* s1, const char* s2, size_t count);
 size_t Q_strncpyz(char* dst, size_t dstSize, const char* src);

@@ -146,7 +146,7 @@ void Bot_Create(int accuracy_level, int team, char* name, char* skin)
 
 	if (!bot)
 	{
-		bprintf2(PRINT_HIGH, "%s cant connect, server is full!\n", name);
+		bprint_botsafe(PRINT_HIGH, "%s cant connect, server is full!\n", name);
 		return;
 	}
 
@@ -174,7 +174,7 @@ void Bot_Create(int accuracy_level, int team, char* name, char* skin)
 	gi.WriteByte(MZ_LOGIN);
 	gi.multicast(bot->s.origin, MULTICAST_PVS);
 
-	bprintf2(PRINT_HIGH, "%s entered the game\n", bot->client->pers.netname);
+	bprint_botsafe(PRINT_HIGH, "%s entered the game\n", bot->client->pers.netname);
 	ClientEndServerFrame(bot);
 	players[numplayers] = bot;
 	numplayers++;
@@ -209,12 +209,12 @@ void Bot_Create(int accuracy_level, int team, char* name, char* skin)
 		else if ((team > 0) && (team < 100))
 		{
 			bot->client->resp.team = team;
-			bprintf2(PRINT_HIGH, "%s has joined team %d!\n", name, team);
+			bprint_botsafe(PRINT_HIGH, "%s has joined team %d!\n", name, team);
 		}
 		else
 		{
 			bot->client->resp.team = 0;
-			bprintf2(PRINT_HIGH, "Invalid team number! %s has joined NO team!\n", name);
+			bprint_botsafe(PRINT_HIGH, "Invalid team number! %s has joined NO team!\n", name);
 		}
 	}
 }

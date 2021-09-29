@@ -263,7 +263,7 @@ void CheckDMRules(void)
 	{
 		if (level.time >= timelimit->value * 60)
 		{
-			bprintf2(PRINT_HIGH, "Timelimit hit.\n");
+			bprint_botsafe(PRINT_HIGH, "Timelimit hit.\n");
 			EndDMLevel();
 			return;
 		}
@@ -286,7 +286,7 @@ void CheckDMRules(void)
 
 			if (cl->resp.score >= fraglimit->value)
 			{
-				bprintf2(PRINT_HIGH, "Fraglimit hit.\n");
+				bprint_botsafe(PRINT_HIGH, "Fraglimit hit.\n");
 				EndDMLevel();
 				return;
 			}

@@ -364,7 +364,7 @@ void CTFAssignSkin(edict_t* ent, char* s)
 			va("%s\\%s", ent->client->pers.netname, s));
 		break;
 	}
-	//	cprintf2(ent, PRINT_HIGH, "You have been assigned to %s team.\n", ent->client->pers.netname);
+	//	cprint_botsafe(ent, PRINT_HIGH, "You have been assigned to %s team.\n", ent->client->pers.netname);
 }
 
 void CTFAssignTeam(gclient_t* who)
@@ -524,7 +524,7 @@ void CTFFragBonuses(edict_t* targ, edict_t* inflictor, edict_t* attacker)
 	if (targ->client->pers.inventory[ITEM_INDEX(enemy_flag_item)]) {
 		attacker->client->resp.ctf_lastfraggedcarrier = level.time;
 		attacker->client->resp.score += CTF_FRAG_CARRIER_BONUS;
-		cprintf2(attacker, PRINT_MEDIUM, "BONUS: %d points for fragging enemy flag carrier.\n",
+		cprint_botsafe(attacker, PRINT_MEDIUM, "BONUS: %d points for fragging enemy flag carrier.\n",
 			CTF_FRAG_CARRIER_BONUS);
 
 		// Log Flag Carrier Frag - Mark Davies
@@ -552,7 +552,7 @@ void CTFFragBonuses(edict_t* targ, edict_t* inflictor, edict_t* attacker)
 		// attacker is on the same team as the flag carrier and
 		// fragged a guy who hurt our flag carrier
 		attacker->client->resp.score += CTF_CARRIER_DANGER_PROTECT_BONUS;
-		bprintf2(PRINT_MEDIUM, "%s defends %s's flag carrier against an aggressive enemy\n",
+		bprint_botsafe(PRINT_MEDIUM, "%s defends %s's flag carrier against an aggressive enemy\n",
 			attacker->client->pers.netname,
 			CTFTeamName(attacker->client->resp.ctf_team));
 
@@ -616,11 +616,11 @@ void CTFFragBonuses(edict_t* targ, edict_t* inflictor, edict_t* attacker)
 		// we defended the base flag
 		attacker->client->resp.score += CTF_FLAG_DEFENSE_BONUS;
 		if (flag->solid == SOLID_NOT)
-			bprintf2(PRINT_MEDIUM, "%s defends the %s base.\n",
+			bprint_botsafe(PRINT_MEDIUM, "%s defends the %s base.\n",
 				attacker->client->pers.netname,
 				CTFTeamName(attacker->client->resp.ctf_team));
 		else
-			bprintf2(PRINT_MEDIUM, "%s defends the %s flag.\n",
+			bprint_botsafe(PRINT_MEDIUM, "%s defends the %s flag.\n",
 				attacker->client->pers.netname,
 				CTFTeamName(attacker->client->resp.ctf_team));
 
@@ -643,7 +643,7 @@ void CTFFragBonuses(edict_t* targ, edict_t* inflictor, edict_t* attacker)
 			VectorLength(v2) < CTF_ATTACKER_PROTECT_RADIUS ||
 			loc_CanSee(carrier, targ) || loc_CanSee(carrier, attacker)) {
 			attacker->client->resp.score += CTF_CARRIER_PROTECT_BONUS;
-			bprintf2(PRINT_MEDIUM, "%s defends the %s's flag carrier.\n",
+			bprint_botsafe(PRINT_MEDIUM, "%s defends the %s's flag carrier.\n",
 				attacker->client->pers.netname,
 				CTFTeamName(attacker->client->resp.ctf_team));
 
@@ -731,7 +731,7 @@ qboolean CTFPickup_Flag(edict_t* ent, edict_t* other)
 	else if (strcmp(ent->classname, "item_flag_team2") == 0)
 		ctf_team = CTF_TEAM2;
 	else {
-		cprintf2(ent, PRINT_HIGH, "Don't know what team the flag is on.\n");
+		cprint_botsafe(ent, PRINT_HIGH, "Don't know what team the flag is on.\n");
 		return false;
 	}
 
@@ -751,7 +751,7 @@ qboolean CTFPickup_Flag(edict_t* ent, edict_t* other)
 			// flag, he's just won!
 
 			if (other->client->pers.inventory[ITEM_INDEX(enemy_flag_item)]) {
-				bprintf2(PRINT_HIGH, "%s captured the %s flag!\n",
+				bprint_botsafe(PRINT_HIGH, "%s captured the %s flag!\n",
 					other->client->pers.netname, CTFOtherTeamName(ctf_team));
 
 				// Log Flag Capture - Mark Davies
@@ -801,7 +801,7 @@ qboolean CTFPickup_Flag(edict_t* ent, edict_t* other)
 						}
 						// award extra points for capture assists
 						if (player->client->resp.ctf_lastreturnedflag + CTF_RETURN_FLAG_ASSIST_TIMEOUT > level.time) {
-							bprintf2(PRINT_HIGH, "%s gets an assist for returning the flag!\n", player->client->pers.netname);
+							bprint_botsafe(PRINT_HIGH, "%s gets an assist for returning the flag!\n", player->client->pers.netname);
 							player->client->resp.score += CTF_RETURN_FLAG_ASSIST_BONUS;
 
 							// Log Flag Capture Team Score - Mark Davies
@@ -814,7 +814,7 @@ qboolean CTFPickup_Flag(edict_t* ent, edict_t* other)
 								level.time);
 						}
 						if (player->client->resp.ctf_lastfraggedcarrier + CTF_FRAG_CARRIER_ASSIST_TIMEOUT > level.time) {
-							bprintf2(PRINT_HIGH, "%s gets an assist for fragging the flag carrier!\n", player->client->pers.netname);
+							bprint_botsafe(PRINT_HIGH, "%s gets an assist for fragging the flag carrier!\n", player->client->pers.netname);
 							player->client->resp.score += CTF_FRAG_CARRIER_ASSIST_BONUS;
 
 							// Log Flag Capture Team Score - Mark Davies
@@ -835,7 +835,7 @@ qboolean CTFPickup_Flag(edict_t* ent, edict_t* other)
 			return false; // it's at home base already
 		}
 		// hey, it's not home.  return it by teleporting it back
-		bprintf2(PRINT_HIGH, "%s returned the %s flag!\n",
+		bprint_botsafe(PRINT_HIGH, "%s returned the %s flag!\n",
 			other->client->pers.netname, CTFTeamName(ctf_team));
 
 		// Log Flag Recover - Mark Davies
@@ -856,7 +856,7 @@ qboolean CTFPickup_Flag(edict_t* ent, edict_t* other)
 	}
 
 	// hey, it's not our flag, pick it up
-	bprintf2(PRINT_HIGH, "%s got the %s flag!\n",
+	bprint_botsafe(PRINT_HIGH, "%s got the %s flag!\n",
 		other->client->pers.netname, CTFTeamName(ctf_team));
 	other->client->resp.score += CTF_FLAG_BONUS;
 
@@ -899,12 +899,12 @@ static void CTFDropFlagThink(edict_t* ent)
 	// reset flag will remove ourselves
 	if (strcmp(ent->classname, "item_flag_team1") == 0) {
 		CTFResetFlag(CTF_TEAM1);
-		bprintf2(PRINT_HIGH, "The %s flag has returned!\n",
+		bprint_botsafe(PRINT_HIGH, "The %s flag has returned!\n",
 			CTFTeamName(CTF_TEAM1));
 	}
 	else if (strcmp(ent->classname, "item_flag_team2") == 0) {
 		CTFResetFlag(CTF_TEAM2);
-		bprintf2(PRINT_HIGH, "The %s flag has returned!\n",
+		bprint_botsafe(PRINT_HIGH, "The %s flag has returned!\n",
 			CTFTeamName(CTF_TEAM2));
 	}
 }
@@ -921,14 +921,14 @@ void CTFDeadDropFlag(edict_t* self)
 	{
 		dropped = Drop_Item(self, it_flag_red);
 		self->client->pers.inventory[ITEM_INDEX(it_flag_red)] = 0;/* MrG{DRGN}*/
-		bprintf2(PRINT_HIGH, "%s lost the %s flag!\n",
+		bprint_botsafe(PRINT_HIGH, "%s lost the %s flag!\n",
 			self->client->pers.netname, CTFTeamName(CTF_TEAM1));
 	}
 	else if (self->client->pers.inventory[ITEM_INDEX(it_flag_blue)])/* MrG{DRGN}*/
 	{
 		dropped = Drop_Item(self, it_flag_blue);
 		self->client->pers.inventory[ITEM_INDEX(it_flag_blue)] = 0;/* MrG{DRGN}*/
-		bprintf2(PRINT_HIGH, "%s lost the %s flag!\n",
+		bprint_botsafe(PRINT_HIGH, "%s lost the %s flag!\n",
 			self->client->pers.netname, CTFTeamName(CTF_TEAM2));
 	}
 
@@ -942,9 +942,9 @@ void CTFDeadDropFlag(edict_t* self)
 qboolean CTFDrop_Flag(edict_t* ent, gitem_t* item)
 {
 	if (rand() & 1)
-		cprintf2(ent, PRINT_HIGH, "Only lusers drop flags.\n");
+		cprint_botsafe(ent, PRINT_HIGH, "Only lusers drop flags.\n");
 	else
-		cprintf2(ent, PRINT_HIGH, "Winners don't drop flags.\n");
+		cprint_botsafe(ent, PRINT_HIGH, "Winners don't drop flags.\n");
 	return false;
 }
 
@@ -1034,11 +1034,11 @@ void CTFCalcScores(void)
 void CTFID_f(edict_t* ent)
 {
 	if (ent->client->resp.id_state) {
-		cprintf2(ent, PRINT_HIGH, "Disabling player identication display.\n");
+		cprint_botsafe(ent, PRINT_HIGH, "Disabling player identication display.\n");
 		ent->client->resp.id_state = false;
 	}
 	else {
-		cprintf2(ent, PRINT_HIGH, "Activating player identication display.\n");
+		cprint_botsafe(ent, PRINT_HIGH, "Activating player identication display.\n");
 		ent->client->resp.id_state = true;
 	}
 }
@@ -1233,7 +1233,7 @@ void CTFTeam_f(edict_t* ent)
 
 	t = gi.args();
 	if (!*t) {
-		cprintf2(ent, PRINT_HIGH, "You are on the %s team.\n",
+		cprint_botsafe(ent, PRINT_HIGH, "You are on the %s team.\n",
 			CTFTeamName(ent->client->resp.ctf_team));
 		return;
 	}
@@ -1242,12 +1242,12 @@ void CTFTeam_f(edict_t* ent)
 	else if (Q_stricmp(t, "blue") == 0)
 		desired_team = CTF_TEAM2;
 	else {
-		cprintf2(ent, PRINT_HIGH, "Unknown team %s.\n", t);
+		cprint_botsafe(ent, PRINT_HIGH, "Unknown team %s.\n", t);
 		return;
 	}
 
 	if (ent->client->resp.ctf_team == desired_team) {
-		cprintf2(ent, PRINT_HIGH, "You are already on the %s team.\n",
+		cprint_botsafe(ent, PRINT_HIGH, "You are already on the %s team.\n",
 			CTFTeamName(ent->client->resp.ctf_team));
 		return;
 	}
@@ -1273,7 +1273,7 @@ void CTFTeam_f(edict_t* ent)
 		// hold in place briefly
 		ent->client->ps.pmove.pm_flags = PMF_TIME_TELEPORT;
 		ent->client->ps.pmove.pm_time = 14;
-		bprintf2(PRINT_HIGH, "%s joined the %s team.\n",
+		bprint_botsafe(PRINT_HIGH, "%s joined the %s team.\n",
 			ent->client->pers.netname, CTFTeamName(desired_team));
 		return;
 	}
@@ -1286,7 +1286,7 @@ void CTFTeam_f(edict_t* ent)
 
 	ent->client->resp.score = 0;
 
-	bprintf2(PRINT_HIGH, "%s changed to the %s team.\n",
+	bprint_botsafe(PRINT_HIGH, "%s changed to the %s team.\n",
 		ent->client->pers.netname, CTFTeamName(desired_team));
 }
 
@@ -2227,7 +2227,7 @@ void CTFSay_Team(edict_t* who, char* msg)
 		if (!cl_ent->inuse)
 			continue;
 		if (cl_ent->client->resp.ctf_team == who->client->resp.ctf_team)
-			cprintf2(cl_ent, PRINT_CHAT, "(%s): %s\n",
+			cprint_botsafe(cl_ent, PRINT_CHAT, "(%s): %s\n",
 				who->client->pers.netname, outmsg);
 	}
 
@@ -2315,7 +2315,7 @@ void CTFBotJoinTeam(edict_t* ent, int desired_team)	//MATTHIAS
 	// hold in place briefly
 	ent->client->ps.pmove.pm_flags = PMF_TIME_TELEPORT;
 	ent->client->ps.pmove.pm_time = 14;
-	bprintf2(PRINT_HIGH, "%s joined the %s team.\n", ent->client->pers.netname, CTFTeamName(desired_team));
+	bprint_botsafe(PRINT_HIGH, "%s joined the %s team.\n", ent->client->pers.netname, CTFTeamName(desired_team));
 
 	if (desired_team == 1)
 	{
@@ -2351,7 +2351,7 @@ void CTFJoinTeam(edict_t* ent, int desired_team)
 	// hold in place briefly
 	ent->client->ps.pmove.pm_flags = PMF_TIME_TELEPORT;
 	ent->client->ps.pmove.pm_time = 14;
-	bprintf2(PRINT_HIGH, "%s joined the %s team.\n", ent->client->pers.netname, CTFTeamName(desired_team));
+	bprint_botsafe(PRINT_HIGH, "%s joined the %s team.\n", ent->client->pers.netname, CTFTeamName(desired_team));
 
 	if (desired_team == 1)
 	{
@@ -2562,7 +2562,7 @@ qboolean CTFCheckRules()
 	if (capturelimit->value &&
 		(ctfgame.team1 >= capturelimit->value ||
 			ctfgame.team2 >= capturelimit->value)) {
-		bprintf2(PRINT_HIGH, "Capturelimit hit.\n");
+		bprint_botsafe(PRINT_HIGH, "Capturelimit hit.\n");
 		return true;
 	}
 	return false;

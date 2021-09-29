@@ -824,7 +824,7 @@ void Bot_Think(edict_t* ent)
 			}
 			else
 			{
-				//bprintf2(PRINT_HIGH,"currentnode %d!\n",ent->client->b_currentnode);
+				//bprint_botsafe(PRINT_HIGH,"currentnode %d!\n",ent->client->b_currentnode);
 				ent->client->b_nodetime = level.time + 3.0F; /* MrG{DRGN} Explicitly now a float */
 
 				if (ent->client->b_currentnode > 0)
@@ -2046,28 +2046,28 @@ void Bot_Wave(edict_t* ent, int i, float time)
 	switch (i)
 	{
 	case 0:
-		cprintf2(ent, PRINT_HIGH, "flipoff\n");
+		cprint_botsafe(ent, PRINT_HIGH, "flipoff\n");
 		ent->s.frame = FRAME_flip01 - 1;
 		ent->client->anim_end = FRAME_flip12;
 		break;
 	case 1:
-		cprintf2(ent, PRINT_HIGH, "salute\n");
+		cprint_botsafe(ent, PRINT_HIGH, "salute\n");
 		ent->s.frame = FRAME_salute01 - 1;
 		ent->client->anim_end = FRAME_salute11;
 		break;
 	case 2:
-		cprintf2(ent, PRINT_HIGH, "taunt\n");
+		cprint_botsafe(ent, PRINT_HIGH, "taunt\n");
 		ent->s.frame = FRAME_taunt01 - 1;
 		ent->client->anim_end = FRAME_taunt17;
 		break;
 	case 3:
-		cprintf2(ent, PRINT_HIGH, "wave\n");
+		cprint_botsafe(ent, PRINT_HIGH, "wave\n");
 		ent->s.frame = FRAME_wave01 - 1;
 		ent->client->anim_end = FRAME_wave11;
 		break;
 	case 4:
 	default:
-		cprintf2(ent, PRINT_HIGH, "point\n");
+		cprint_botsafe(ent, PRINT_HIGH, "point\n");
 		ent->s.frame = FRAME_point01 - 1;
 		ent->client->anim_end = FRAME_point12;
 		break;

@@ -213,7 +213,7 @@ void use_target_changelevel(edict_t* self, edict_t* other, edict_t* activator)
 	/* MrG{DRGN} always DM if (deathmatch->value) */
 	{
 		if (activator && activator->client)
-			bprintf2(PRINT_HIGH, "%s exited the level.\n", activator->client->pers.netname);
+			bprint_botsafe(PRINT_HIGH, "%s exited the level.\n", activator->client->pers.netname);
 	}
 
 	// if going to a new unit, clear cross triggers

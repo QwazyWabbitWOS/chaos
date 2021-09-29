@@ -79,79 +79,6 @@ void ShowGun(edict_t* ent)	//QW from WOD:LOX for vwep
 }
 // ### Hentai ### END
 
-//void ShowGun(edict_t* ent)	//vwep
-//{
-//	int		nIndex = REMOVED_MODEL;
-//	char* pszIcon;
-//
-//	/* MrG{DRGN} sanity check */
-//	if (!ent)
-//		return;
-//	/* END */
-//
-//	if (!ent->client->pers.weapon)
-//	{
-//		ent->s.modelindex2 = REMOVED_MODEL;
-//		return;
-//	}
-//
-//	// Determine the weapon's precache index.
-//
-//	pszIcon = ent->client->pers.weapon->icon;
-//
-//	if (strcmp(pszIcon, "w_ak42") == 0)
-//		nIndex = 1;
-//	else if (strcmp(pszIcon, "w_sword") == 0)
-//		nIndex = 2;
-//	else if (strcmp(pszIcon, "w_chainsaw") == 0)
-//		nIndex = 3;
-//	else if (strcmp(pszIcon, "w_sshotgun") == 0
-//		|| strcmp(pszIcon, "w_esshotgun") == 0)
-//		nIndex = 4;
-//	else if (strcmp(pszIcon, "w_bow") == 0
-//		|| strcmp(pszIcon, "w_pbow") == 0
-//		|| strcmp(pszIcon, "w_ebow") == 0)
-//		nIndex = 5;
-//	else if (strcmp(pszIcon, "w_airfist") == 0)
-//		nIndex = 6;
-//	else if (strcmp(pszIcon, "a_grenades1") == 0
-//		|| strcmp(pszIcon, "a_fgrenades") == 0
-//		|| strcmp(pszIcon, "a_pgrenades") == 0
-//		|| strcmp(pszIcon, "a_lmines") == 0)
-//		nIndex = 7;
-//	else if (strcmp(pszIcon, "w_glauncher1") == 0
-//		|| strcmp(pszIcon, "w_flauncher") == 0
-//		|| strcmp(pszIcon, "w_plauncher") == 0)
-//		nIndex = 8;
-//	else if (strcmp(pszIcon, "w_xlauncher") == 0)
-//		nIndex = 9;
-//	else if (strcmp(pszIcon, "w_rlauncher") == 0
-//		|| strcmp(pszIcon, "w_grlauncher") == 0)
-//		nIndex = 10;
-//	else if (strcmp(pszIcon, "w_hyperblaster") == 0)
-//		nIndex = 11;
-//	else if (strcmp(pszIcon, "w_railgun") == 0)
-//		nIndex = 12;
-//	else if (strcmp(pszIcon, "w_buzzsaw") == 0)
-//		nIndex = 13;
-//	else if (strcmp(pszIcon, "w_bfg") == 0)
-//		nIndex = 14;
-//	else if (strcmp(pszIcon, "a_vortex") == 0)
-//		nIndex = 15;
-//	else if (strcmp(pszIcon, "a_rturret") == 0
-//		|| strcmp(pszIcon, "a_lturret") == 0)
-//		nIndex = 16;
-//	else
-//		nIndex = 0;
-//
-//	// Clear previous weapon model.
-//	ent->s.skinnum &= 255;
-//
-//	// Set new weapon model.
-//	ent->s.skinnum |= (nIndex << 8);
-//	ent->s.modelindex2 = (VWEP_MODEL); /* MrG{DRGN} VWEP_MODEL  */
-//}
-
 qboolean TouchingLadder(edict_t* self)
 {
 	/* MrG{DRGN} sanity check */
@@ -709,13 +636,9 @@ void PreCacheAll(void)
 
 qboolean TeamMembers(edict_t* p1, edict_t* p2)
 {
-	if (!p1)
+	if (!p1 || !p1->client)
 		return 0;
-	if (!p1->client)
-		return 0;
-	if (!p2)
-		return 0;
-	if (!p2->client)
+	if (!p2 || !p2->client)
 		return 0;
 
 	if (ctf->value)
@@ -737,38 +660,17 @@ void LoadMOTD(void)
 	FILE* fp;
 	char file[MAX_QPATH];
 	char line[80];
-	size_t i;
+	size_t i = 0;
 
 	Com_strcpy(file, sizeof file, "./");
 	Com_strcat(file, sizeof file, game_dir->string);
 	Com_strcat(file, sizeof file, "/motd.txt");
-
-	/* 	if ((fp = fopen(file, "r")) != NULL)
-	{
-		if (fgets(motd, 500, fp) )
-		{
-				charcnt = 0;
-			while (charcnt < 559 && ( fgets(line, 80,fp) ))
-			{
-				strcat(motd, line);
-				charcnt += 80;
-			}
-				if (charcnt >= 559)
-			   gi.dprintf("MOTD length exceeded maximum (560) , may be truncated.\n");
-		}
-		fclose(fp);
-	}
-
-	*/
-
 
 	if ((fp = fopen(file, "r")) == NULL)
 	{
 		gi.cprintf(NULL, PRINT_HIGH, "Could not find file \"%s\".\n\n", file, strerror(errno));
 		return;
 	}
-
-	i = 0;
 
 	while ((!feof(fp)) && (i < sizeof motd))
 	{
@@ -787,8 +689,6 @@ void LoadMOTD(void)
 			gi.dprintf("MOTD is too long (> %u chars), truncated\n", sizeof motd);
 		i += len;
 	}
-
-	//close file
 	fclose(fp);
 }
 
@@ -810,7 +710,7 @@ void FakeDeath(edict_t* self)
 	{
 		if (self->client->PoisonTime > 0)
 		{
-			cprintf2(self, PRINT_HIGH, "You can't fake death because you are poisoned!\n");
+			cprint_botsafe(self, PRINT_HIGH, "You can't fake death because you are poisoned!\n");
 			return;
 		}
 
@@ -828,9 +728,6 @@ void FakeDeath(edict_t* self)
 		//self->client->killer_yaw = self->s.angles[YAW];
 		self->s.angles[0] = 0;
 		self->s.angles[2] = 0;
-
-
-
 		self->maxs[2] = -8;
 
 		self->client->ps.pmove.pm_type = PM_DEAD;
@@ -892,15 +789,11 @@ void FakeDeath(edict_t* self)
 
 		self->s.modelindex = PLAYER_MODEL;
 		self->deadflag = DEAD_DEAD;
-
-
-
 		gi.linkentity(self);
 	}
 	else	// revive
 	{
 		self->client->fakedeath = 0;
-
 		self->takedamage = DAMAGE_AIM;
 		self->viewheight = 22;
 		self->inuse = true;
@@ -927,17 +820,14 @@ void FakeDeath(edict_t* self)
 		}
 
 		self->client->ps.gunindex = gi.modelindex(self->client->pers.weapon->view_model);
-
 		self->s.effects = 0;
 		self->s.modelindex = PLAYER_MODEL;
-
 		self->s.origin[2] += 1;  // make sure off ground
-
 		self->s.frame = FRAME_stand01;
 		self->client->anim_end = FRAME_stand40;
-
 		self->client->pers.weapon = it_ak42;
 		self->client->newweapon = self->client->pers.weapon;
+
 		ChangeWeapon(self);
 		ShowGun(self);	//vwep
 
@@ -1043,7 +933,7 @@ edict_t* findradius2(edict_t* from, vec3_t org, float rad)	//find all entities
 
 static char	BPrint2Buff[0x2000]; /*  MrG{DRGN} move this here  and reduce the size*/
 
-void bprintf2(int printlevel, char* fmt, ...)
+void bprint_botsafe(int printlevel, char* fmt, ...)
 {
 	int i;
 
@@ -1067,12 +957,12 @@ void bprintf2(int printlevel, char* fmt, ...)
 		gi.cprintf(cl_ent, printlevel, BPrint2Buff);
 	}
 }
+
 static char	CPrint2Buff[0x2000]; /*  MrG{DRGN} move this here  and reduce the size*/
 
-void cprintf2(edict_t* ent, int printlevel, char* fmt, ...)
+// bot-safe cprint
+void cprint_botsafe(edict_t* ent, int printlevel, char* fmt, ...)
 {
-	//char	bigbuffer[0x10000];
-	/* int		len;  MrG{DRGN} unused! */
 	va_list		argptr;
 
 	if (!ent || ent->bot_player)/* MrG{DRGN} */
@@ -1756,7 +1646,7 @@ void ClientCommand2(edict_t* ent)
 				//ent->client->resp.fov_start = ent->client->ps.fov;
 
 				ClientBegin(ent);
-				cprintf2(ent, PRINT_HIGH, "Camera OFF!\n");		
+				cprint_botsafe(ent, PRINT_HIGH, "Camera OFF!\n");		
 			}
 		}
 		else if (Q_stricmp(gi.argv(1), "1") == 0)	//intelli mode
@@ -1765,7 +1655,7 @@ void ClientCommand2(edict_t* ent)
 				CreateCamera(ent);
 
 			ent->client->cammode = 1;
-			cprintf2(ent, PRINT_HIGH, "IntelliCam Mode!\n");
+			cprint_botsafe(ent, PRINT_HIGH, "IntelliCam Mode!\n");
 		}
 		else if (Q_stricmp(gi.argv(1), "2") == 0)	//chase cam mode
 		{
@@ -1773,7 +1663,7 @@ void ClientCommand2(edict_t* ent)
 				CreateCamera(ent);
 
 			ent->client->cammode = 2;
-			cprintf2(ent, PRINT_HIGH, "ChaseCam Mode!\n");
+			cprint_botsafe(ent, PRINT_HIGH, "ChaseCam Mode!\n");
 		}
 		else if (Q_stricmp(gi.argv(1), "3") == 0)	// birdview chase cam
 		{
@@ -1781,7 +1671,7 @@ void ClientCommand2(edict_t* ent)
 				CreateCamera(ent);
 
 			ent->client->cammode = 3;
-			cprintf2(ent, PRINT_HIGH, "Birdview ChaseCam Mode!\n");
+			cprint_botsafe(ent, PRINT_HIGH, "Birdview ChaseCam Mode!\n");
 		}
 		else if (Q_stricmp(gi.argv(1), "4") == 0)	// TV cam mode
 		{
@@ -1789,7 +1679,7 @@ void ClientCommand2(edict_t* ent)
 				CreateCamera(ent);
 
 			ent->client->cammode = 4;
-			cprintf2(ent, PRINT_HIGH, "TV-Cam Mode!\n");
+			cprint_botsafe(ent, PRINT_HIGH, "TV-Cam Mode!\n");
 		}
 	}
 	else if (Q_stricmp(cmd, "pathdebug") == 0)
@@ -1802,13 +1692,13 @@ void ClientCommand2(edict_t* ent)
 			ent->client->b_target->s.modelindex = gi.modelindex("models/objects/gibs/skull/tris.md2");
 			VectorCopy(ent->s.origin, ent->client->b_target->s.origin);
 			gi.linkentity(ent->client->b_target);
-			cprintf2(ent, PRINT_HIGH, "Pathdebug ON!\n");
+			cprint_botsafe(ent, PRINT_HIGH, "Pathdebug ON!\n");
 		}
 		else
 		{
 			G_FreeEdict(ent->client->b_target);
 			ent->client->b_target = NULL;
-			cprintf2(ent, PRINT_HIGH, "Pathdebug OFF!\n");
+			cprint_botsafe(ent, PRINT_HIGH, "Pathdebug OFF!\n");
 		}
 
 
@@ -1863,7 +1753,7 @@ void ClientCommand2(edict_t* ent)
 			Bot_CalcNode(ent, numnodes);
 		}
 		else
-			cprintf2(ent, PRINT_HIGH, "Dynamic Node Table Generation is off activate it with <set dntg 1>!\n");
+			cprint_botsafe(ent, PRINT_HIGH, "Dynamic Node Table Generation is off activate it with <set dntg 1>!\n");
 	}
 	else if (Q_stricmp(cmd, "belt") == 0)
 	{
@@ -1876,7 +1766,7 @@ void ClientCommand2(edict_t* ent)
 			return;
 		if (ent->client->beltactive > 0)
 		{
-			cprintf2(ent, PRINT_HIGH, "Anti gravity belt OFF\n");
+			cprint_botsafe(ent, PRINT_HIGH, "Anti gravity belt OFF\n");
 			ent->client->beltactive = 0;
 			ent->client->nextbeltcell = level.time;
 		}
@@ -1884,13 +1774,13 @@ void ClientCommand2(edict_t* ent)
 		{
 			if (ent->client->pers.inventory[ITEM_INDEX(it_cells)] <= 0)
 			{
-				cprintf2(ent, PRINT_HIGH, "You don't have enough cells to run your anti gravity belt!\n");
+				cprint_botsafe(ent, PRINT_HIGH, "You don't have enough cells to run your anti gravity belt!\n");
 				ent->client->beltactive = 0;
 				ent->client->nextbeltcell = level.time;
 			}
 			else
 			{
-				cprintf2(ent, PRINT_HIGH, "Anti gravity belt ON\n");
+				cprint_botsafe(ent, PRINT_HIGH, "Anti gravity belt ON\n");
 				ent->client->beltactive = 1;
 				ent->client->nextbeltcell = level.time + 2;
 			}
@@ -1910,7 +1800,7 @@ void ClientCommand2(edict_t* ent)
 			ent->client->flashlightactive = false;
 			if (ent->client->flashlight)
 				ent->client->flashlight->think = G_FreeEdict;
-			cprintf2(ent, PRINT_HIGH, "Flashlight OFF\n");
+			cprint_botsafe(ent, PRINT_HIGH, "Flashlight OFF\n");
 		}
 		else
 		{
@@ -1938,7 +1828,7 @@ void ClientCommand2(edict_t* ent)
 
 			gi.linkentity(ent->client->flashlight);
 
-			cprintf2(ent, PRINT_HIGH, "Flashlight ON\n");
+			cprint_botsafe(ent, PRINT_HIGH, "Flashlight ON\n");
 		}
 	}
 	else if (Q_stricmp(cmd, "teleport") == 0)
@@ -1957,13 +1847,13 @@ void ClientCommand2(edict_t* ent)
 		{
 			if (ent->client->pers.inventory[ITEM_INDEX(it_cells)] < 100)
 			{
-				cprintf2(ent, PRINT_HIGH, "You need 100 cells to place a self teleporter!\n");
+				cprint_botsafe(ent, PRINT_HIGH, "You need 100 cells to place a self teleporter!\n");
 			}
 			else
 			{
 				ent->client->pers.inventory[ITEM_INDEX(it_cells)] -= 100;
 				Teleport(ent);
-				cprintf2(ent, PRINT_HIGH, "Self Teleporter placed! Use cmd teleport again to use it.\n");
+				cprint_botsafe(ent, PRINT_HIGH, "Self Teleporter placed! Use cmd teleport again to use it.\n");
 			}
 		}
 	}
@@ -1977,12 +1867,12 @@ void ClientCommand2(edict_t* ent)
 			return;
 		if (ent->flags & FL_GODMODE)
 		{
-			cprintf2(ent, PRINT_MEDIUM, "You can't go kamikaze in god mode, cheater!\n");
+			cprint_botsafe(ent, PRINT_MEDIUM, "You can't go kamikaze in god mode, cheater!\n");
 			return;
 		}
 		if (ent->client->pers.inventory[ITEM_INDEX(it_rockets)] + ent->client->pers.inventory[ITEM_INDEX(it_grenades)] + ent->client->pers.inventory[ITEM_INDEX(it_homings)] < 10)
 		{
-			cprintf2(ent, PRINT_MEDIUM, "You need at least 10 rockets or grenades to go kamikaze!\n");
+			cprint_botsafe(ent, PRINT_MEDIUM, "You need at least 10 rockets or grenades to go kamikaze!\n");
 			return;
 		}
 
@@ -1997,11 +1887,11 @@ void ClientCommand2(edict_t* ent)
 		if (ent->client->grenadesactive == 1)
 		{
 			ent->client->grenadesactive = 0;
-			cprintf2(ent, PRINT_HIGH, "Grenades OFF\n");
+			cprint_botsafe(ent, PRINT_HIGH, "Grenades OFF\n");
 		}
 		else
 		{
-			cprintf2(ent, PRINT_HIGH, "Grenades ON\n");
+			cprint_botsafe(ent, PRINT_HIGH, "Grenades ON\n");
 			ent->client->grenadesactive = 1;
 		}
 	}
@@ -2088,26 +1978,26 @@ void ClientCommand2(edict_t* ent)
 	}
 	else if (Q_stricmp(cmd, "nums") == 0)
 	{
-		cprintf2(ent, PRINT_HIGH, "numplayers=%d\n", numplayers);
-		cprintf2(ent, PRINT_HIGH, "numbots=%d\n", numbots);
-		cprintf2(ent, PRINT_HIGH, "numred=%d\n", numred);
-		cprintf2(ent, PRINT_HIGH, "numblue=%d\n", numblue);
-		cprintf2(ent, PRINT_HIGH, "red_base=%d\n", red_base);
-		cprintf2(ent, PRINT_HIGH, "blue_base=%d\n", blue_base);
-		cprintf2(ent, PRINT_HIGH, "numturrets=%d\n", numturrets);
+		cprint_botsafe(ent, PRINT_HIGH, "numplayers=%d\n", numplayers);
+		cprint_botsafe(ent, PRINT_HIGH, "numbots=%d\n", numbots);
+		cprint_botsafe(ent, PRINT_HIGH, "numred=%d\n", numred);
+		cprint_botsafe(ent, PRINT_HIGH, "numblue=%d\n", numblue);
+		cprint_botsafe(ent, PRINT_HIGH, "red_base=%d\n", red_base);
+		cprint_botsafe(ent, PRINT_HIGH, "blue_base=%d\n", blue_base);
+		cprint_botsafe(ent, PRINT_HIGH, "numturrets=%d\n", numturrets);
 	}
 	else if (Q_stricmp(cmd, "join_team") == 0)
 	{
 		int team = atoi(gi.argv(1));
 
 		if (team < 0 || team > 99)
-			cprintf2(ent, PRINT_HIGH, "\nPlease select a team between 1 and 99!\nSelect 0 for no team!\n");
+			cprint_botsafe(ent, PRINT_HIGH, "\nPlease select a team between 1 and 99!\nSelect 0 for no team!\n");
 		else
 		{
 			if (team == 0)
-				cprintf2(ent, PRINT_HIGH, "\nYou have joined team 0 that means you are in NO team!\n");
+				cprint_botsafe(ent, PRINT_HIGH, "\nYou have joined team 0 that means you are in NO team!\n");
 			else
-				cprintf2(ent, PRINT_HIGH, "\nYou have joined team %d!\n", team);
+				cprint_botsafe(ent, PRINT_HIGH, "\nYou have joined team %d!\n", team);
 
 			ent->client->resp.team = team;
 		}
@@ -2120,7 +2010,7 @@ void ClientCommand2(edict_t* ent)
 		{
 			if (players[i])
 				if (players[i]->client)
-					cprintf2(ent, PRINT_HIGH, "%d: %s\n", i, players[i]->client->pers.netname);
+					cprint_botsafe(ent, PRINT_HIGH, "%d: %s\n", i, players[i]->client->pers.netname);
 		}
 	}
 	else if (Q_stricmp(cmd, "turretlist") == 0)
@@ -2130,7 +2020,7 @@ void ClientCommand2(edict_t* ent)
 		for (i = 0; i < numturrets; i++)
 		{
 			if (turrets[i] && turrets[i]->inuse)
-				cprintf2(ent, PRINT_HIGH, "turret %d active\n", i);
+				cprint_botsafe(ent, PRINT_HIGH, "turret %d active\n", i);
 		}
 	}
 	else if (Q_stricmp(cmd, "weaponlist") == 0)
@@ -2142,7 +2032,7 @@ void ClientCommand2(edict_t* ent)
 		//go through all items in the list
 		while (current)
 		{
-			cprintf2(ent, PRINT_HIGH, "%s\n", current->classname);
+			cprint_botsafe(ent, PRINT_HIGH, "%s\n", current->classname);
 			current = current->next_listitem;	//go to next item in list
 		}
 	}
@@ -2155,7 +2045,7 @@ void ClientCommand2(edict_t* ent)
 		//go through all items in the list
 		while (current)
 		{
-			cprintf2(ent, PRINT_HIGH, "%s\n", current->classname);
+			cprint_botsafe(ent, PRINT_HIGH, "%s\n", current->classname);
 			current = current->next_listitem;	//go to next item in list
 		}
 	}
@@ -2168,7 +2058,7 @@ void ClientCommand2(edict_t* ent)
 		//go through all items in the list
 		while (current)
 		{
-			cprintf2(ent, PRINT_HIGH, "%s\n", current->classname);
+			cprint_botsafe(ent, PRINT_HIGH, "%s\n", current->classname);
 			current = current->next_listitem;	//go to next item in list
 		}
 	}
@@ -2181,7 +2071,7 @@ void ClientCommand2(edict_t* ent)
 		//go through all items in the list
 		while (current)
 		{
-			cprintf2(ent, PRINT_HIGH, "%s\n", current->classname);
+			cprint_botsafe(ent, PRINT_HIGH, "%s\n", current->classname);
 			current = current->next_listitem;	//go to next item in list
 		}
 	}

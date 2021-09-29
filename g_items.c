@@ -2037,7 +2037,7 @@ void Use_PowerArmor(edict_t* ent, gitem_t* item)
 		index = ITEM_INDEX(it_cells);/* MrG{DRGN}*/
 		if (!ent->client->pers.inventory[index])
 		{
-			cprintf2(ent, PRINT_HIGH, "No cells for power armor.\n");
+			cprint_botsafe(ent, PRINT_HIGH, "No cells for power armor.\n");
 			return;
 		}
 		ent->flags |= FL_POWER_ARMOR;

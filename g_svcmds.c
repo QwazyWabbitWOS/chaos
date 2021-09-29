@@ -261,7 +261,7 @@ static void SVCmd_WriteIP_f(void)
 // Force the next map in queue
 void SVCmd_nextmap_f(void)
 {
-	bprintf2(PRINT_HIGH, "Advancing to next level.\n");
+	bprint_botsafe(PRINT_HIGH, "Advancing to next level.\n");
 	EndDMLevel();
 }
 
