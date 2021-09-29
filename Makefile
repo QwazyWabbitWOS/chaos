@@ -75,6 +75,7 @@ GAME_OBJS = \
 	$(BUILDDIR)/g_cmds.o \
 	$(BUILDDIR)/g_combat.o \
 	$(BUILDDIR)/g_ctf.o \
+	$(BUILDDIR)/g_ent.o \
 	$(BUILDDIR)/g_func.o \
 	$(BUILDDIR)/g_items.o \
 	$(BUILDDIR)/g_main.o \
@@ -131,6 +132,9 @@ $(BUILDDIR)/g_combat.o : g_combat.c
 	$(DO_SHLIB_CC)
 
 $(BUILDDIR)/g_ctf.o : g_ctf.c
+	$(DO_SHLIB_CC)
+	
+$(BUILDDIR)/g_ent.o : g_ent.c
 	$(DO_SHLIB_CC)
 
 $(BUILDDIR)/g_func.o : g_func.c
