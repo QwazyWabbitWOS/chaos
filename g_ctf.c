@@ -1,14 +1,63 @@
 ﻿#include "g_local.h"
 #include "stdlog.h"
+#pragma warning( disable : 4100 )
 
+#include "g_local.h"
+#include "m_player.h"
 
-typedef struct ctfgame_s
-{
+typedef enum match_s {
+	MATCH_NONE,
+	MATCH_SETUP,
+	MATCH_PREGAME,
+	MATCH_GAME,
+	MATCH_POST
+} match_t;
+
+typedef enum {
+	ELECT_NONE,
+	ELECT_MATCH,
+	ELECT_ADMIN,
+	ELECT_MAP
+} elect_t;
+
+typedef struct ctfgame_s {
 	int team1, team2;
-	int total1, total2; // these are only set when going into intermission!
+	int total1, total2;	// these are only set when going into intermission!
 	float last_flag_capture;
 	int last_capture_team;
+
+	match_t match;		// match state
+	float matchtime;	// time for match start/end (depends on state)
+	int lasttime;		// last time update
+	qboolean countdown;	// has audio countdown started?
+
+	elect_t election;	// election type
+	edict_t* etarget;	// for admin election, who's being elected
+	char elevel[32];	// for map election, target level
+	int evotes;		// votes so far
+	int needvotes;		// votes needed
+	float electtime;	// remaining time until election times out
+	char emsg[256];		// election name
+	int warnactive;		// true if stat string 30 is active
+
+	ghost_t ghosts[MAX_CLIENTS];	// ghost codes
 } ctfgame_t;
+
+ctfgame_t ctfgame;
+
+cvar_t* ctf;
+cvar_t* ctf_forcejoin;
+
+cvar_t* competition;
+cvar_t* matchlock;
+cvar_t* electpercentage;
+cvar_t* matchtime;
+cvar_t* matchsetuptime;
+cvar_t* matchstarttime;
+cvar_t* admin_password;
+cvar_t* allow_admin;
+cvar_t* warp_list;
+cvar_t* warn_unbalanced;
 
 ctfgame_t ctfgame;
 qboolean techspawn = false;
@@ -890,13 +939,13 @@ void CTFDeadDropFlag(edict_t* self)
 	}
 }
 
-void CTFDrop_Flag(edict_t* ent, gitem_t* item) /* MrG{DRGN} was qboolean */
+qboolean CTFDrop_Flag(edict_t* ent, gitem_t* item)
 {
 	if (rand() & 1)
 		cprintf2(ent, PRINT_HIGH, "Only lusers drop flags.\n");
 	else
 		cprintf2(ent, PRINT_HIGH, "Winners don't drop flags.\n");
-	return;
+	return false;
 }
 
 static void CTFFlagThink(edict_t* ent)

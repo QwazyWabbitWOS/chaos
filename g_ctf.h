@@ -28,11 +28,6 @@ typedef enum {
 } ctfteam_t;
 
 typedef enum {
-	CTF_STATE_START,
-	CTF_STATE_PLAYING
-} ctfstate_t;
-
-typedef enum {
 	CTF_GRAPPLE_STATE_FLY,
 	CTF_GRAPPLE_STATE_PULL,
 	CTF_GRAPPLE_STATE_HANG
@@ -49,9 +44,9 @@ typedef struct ghost_s {
 	int basedef;
 	int carrierdef;
 
-	int code; // ghost code
-	int team; // team
-	int score; // frags at time of disconnect
+	int code;		// ghost code
+	int team;		// team
+	int score;		// frags at time of disconnect
 	edict_t* ent;
 } ghost_t;
 
@@ -86,16 +81,14 @@ extern cvar_t* ctf;
 
 #define CTF_AUTO_FLAG_RETURN_TIMEOUT		30	// number of seconds before dropped flag auto-returns
 
-#define CTF_TECH_TIMEOUT					60  // seconds before techs spawn again
+#define CTF_TECH_TIMEOUT					60	// seconds before techs spawn again
 
-#define CTF_GRAPPLE_SPEED					650 // speed of grapple in flight
+#define CTF_GRAPPLE_SPEED					650	// speed of grapple in flight
 #define CTF_GRAPPLE_PULL_SPEED				650	// speed player is pulled at
 
 void CTFInit(void);
-/*
 void CTFSpawn(void);
 void CTFPrecache(void);
-  */
 
 void SP_info_player_team1(edict_t* self);
 void SP_info_player_team2(edict_t* self);
@@ -106,7 +99,7 @@ void CTFAssignSkin(edict_t* ent, char* s);
 void CTFAssignTeam(gclient_t* who);
 edict_t* SelectCTFSpawnPoint(edict_t* ent);
 qboolean CTFPickup_Flag(edict_t* ent, edict_t* other);
-void CTFDrop_Flag(edict_t* ent, gitem_t* item); /* MrG{DRGN} was qboolean */
+qboolean CTFDrop_Flag(edict_t* ent, gitem_t* item);
 void CTFEffects(edict_t* player);
 void CTFCalcScores(void);
 void SetCTFStats(edict_t* ent);
@@ -120,13 +113,12 @@ void CTFResetFlag(int ctf_team);
 void CTFFragBonuses(edict_t* targ, edict_t* inflictor, edict_t* attacker);
 void CTFCheckHurtCarrier(edict_t* targ, edict_t* attacker);
 
-// GRAPPLE	
-/*
+// GRAPPLE
 void CTFWeapon_Grapple(edict_t* ent);
 void CTFPlayerResetGrapple(edict_t* ent);
 void CTFGrapplePull(edict_t* self);
 void CTFResetGrapple(edict_t* self);
-										   */
+
 //TECH
 gitem_t* CTFWhat_Tech(edict_t* ent);
 qboolean CTFPickup_Tech(edict_t* ent, edict_t* other);
@@ -145,7 +137,6 @@ void CTFResetTech(void);
 
 void CTFOpenJoinMenu(edict_t* ent);
 qboolean CTFStartClient(edict_t* ent);
-/*
 void CTFVoteYes(edict_t* ent);
 void CTFVoteNo(edict_t* ent);
 void CTFReady(edict_t* ent);
@@ -160,22 +151,26 @@ void CTFStats(edict_t* ent);
 void CTFWarp(edict_t* ent);
 void CTFBoot(edict_t* ent);
 void CTFPlayerList(edict_t* ent);
-	   */
+
 qboolean CTFCheckRules(void);
 
 void SP_misc_ctf_banner(edict_t* ent);
 void SP_misc_ctf_small_banner(edict_t* ent);
 
 extern char* ctf_statusbar;
-   /*
+
 void UpdateChaseCam(edict_t* ent);
 void ChaseNext(edict_t* ent);
 void ChasePrev(edict_t* ent);
 
 void CTFObserver(edict_t* ent);
- */
+
 void SP_trigger_teleport(edict_t* ent);
 void SP_info_teleport_destination(edict_t* ent);
-/*
+
 void CTFSetPowerUpEffect(edict_t* ent, int def);
-  */
+
+typedef enum {
+	CTF_STATE_START,
+	CTF_STATE_PLAYING
+} ctfstate_t;
