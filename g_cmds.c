@@ -462,6 +462,23 @@ void Cmd_Drop_f(edict_t* ent)
 		return;
 	}
 	//ZOID
+
+	if (Q_stricmp(gi.args(), "flag") == 0)
+	{
+		if (ent->client->pers.inventory[ITEM_INDEX(FindItem("Red Flag"))])
+		{
+			it = FindItem("Red Flag");
+			it->drop(ent, it);
+			return;
+		}
+		if (ent->client->pers.inventory[ITEM_INDEX(FindItem("Blue Flag"))])
+		{
+			it = FindItem("Blue Flag");
+			it->drop(ent, it);
+			return;
+		}
+	}
+
 	s = gi.args();
 	it = FindItem(s);
 
