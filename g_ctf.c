@@ -1,8 +1,5 @@
 ﻿#include "g_local.h"
 #include "stdlog.h"
-#pragma warning( disable : 4100 )
-
-#include "g_local.h"
 #include "m_player.h"
 
 typedef enum match_s {
