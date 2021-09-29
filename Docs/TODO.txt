@@ -1,7 +1,7 @@
 This need to get done in no particular order .. they just need to be done
 ---------------------------------------------------------------------------
  I don't think we should make any huge changes to a long existing mod, regardless of whatever dev plan they had in the late 90's
-	at least without one master cvar disabling all of them, then if the master cvar is enabled the "new" items should be controlable via individual cvars - MrG{DRGN}
+	at least without one master cvar disabling all of them, then if the master cvar is enabled the "new" items should be controllable via individual cvars - MrG{DRGN}
 
 No:
 
@@ -22,7 +22,7 @@ No:
 	  possible be able to swing other players around.  Also, be able to cut
 	  grapple cable with sword/chainsaw/lightsaber - this would really change the game in a not so great way and be a pain to code.
 
-	* Compression grenades - Not sure what that is, and we have enough nade types
+	* Compression grenades - Not sure what that is, and we have enough grenade types
 
 	* Night Vision goggles - we have a flashlight
 	
@@ -61,7 +61,7 @@ In progress:
 	  // FWP One segfault cause (turret crash) fixed.  May be others. 
 	  MrG{DRGN} - Unsure if this is still an issue
 
-	  * Error messages appearing to clients "yada yada no such oldframe",seems to happen when player runs out of ammo and autoswitches to new weapon, also appears to be harmless. - May be fixed
+	  * Error messages appearing to client's "yada yada no such oldframe",seems to happen when player runs out of ammo and autoswitches to new weapon, also appears to be harmless. - May be fixed
 
 Done:
 

@@ -69,9 +69,9 @@ edict_t* Bot_FindBestItem(edict_t* ent)
 		did_weapons = 1;
 	}
 
-	// ok we need nothing special or we haven't found it so search other thingies:
+	// ok we need nothing special, or we haven't found it so search other thingies:
 
-	if (random() > 0.3) // OPTIMZE: We do not ALWAYS search for POWER-UPS
+	if (random() > 0.3) // OPTIMIZE: We do not ALWAYS search for POWER-UPS
 	{
 		// POWER-UPS
 		if ((best = Bot_FindBestPowerup(ent)) != 0)
@@ -169,7 +169,7 @@ void Bot_Think(edict_t* ent)
 		ent->client->b_closeitem = Bot_FindCloseItem(ent);
 	}
 
-	// look wether our goalitem is valid or not
+	// look whether our goalitem is valid or not
 	if (ent->client->b_goalitem && (ent->client->b_goalitem->solid != SOLID_TRIGGER))
 		ent->client->b_goalitem = NULL;
 
@@ -303,7 +303,7 @@ void Bot_Think(edict_t* ent)
 					VectorCopy(ent->s.origin, oorigin);
 					oorigin[2] += 24;
 
-					/* MrG{DRGN} operator has equivalent nested opperands
+					/* MrG{DRGN} operator has equivalent nested operands
 					tr = gi.trace(oorigin, mins, maxs, dir, ent, MASK_SOLID | MASK_PLAYERSOLID);
 					*/
 					tr = gi.trace(oorigin, mins, maxs, dir, ent, MASK_PLAYERSOLID);
@@ -387,7 +387,7 @@ void Bot_Think(edict_t* ent)
 							AngleVectors(ent->client->v_angle, forward, NULL, NULL);
 							VectorMA(ent->s.origin, -30, forward, forward);
 
-							/* MrG{DRGN} operator has equivalent nested opperands
+							/* MrG{DRGN} operator has equivalent nested operands
 							tr = gi.trace(oorigin, mins, maxs, dir, ent, MASK_SOLID | MASK_PLAYERSOLID);*/
 							tr = gi.trace(oorigin, mins, maxs, dir, ent, MASK_PLAYERSOLID);
 
@@ -959,7 +959,7 @@ void Bot_Think(edict_t* ent)
 			VectorCopy(ent->s.origin, oorigin);
 			oorigin[2] += 24;
 
-			/* MrG{DRGN} operator has equivalent nested opperands
+			/* MrG{DRGN} operator has equivalent nested operands
 			tr = gi.trace(oorigin, mins, maxs, dir, ent, MASK_SOLID | MASK_PLAYERSOLID);*/
 			tr = gi.trace(oorigin, mins, maxs, dir, ent, MASK_PLAYERSOLID);
 
@@ -1064,7 +1064,7 @@ edict_t* Bot_FindBestWeapon(edict_t* ent)
 			|| current->item == it_vortex
 			|| current->item == it_bfg)
 		{
-			// We really really want these !!!
+			// We really, really want these !!!
 			bonus = 6;
 
 			if ((current->item->classindex == AM_RTURRET && ent->client->pers.inventory[ITEM_INDEX(it_rturret)] >= ent->client->pers.max_rturret)
@@ -1146,7 +1146,7 @@ edict_t* Bot_FindBestHealth(edict_t* ent)
 		// add bonuses to the dist
 		if (current->item == it_health_mega)
 		{
-			// We really really want these !!!
+			// We really, really want these !!!
 			bonus = 6;
 		}
 		else if (current->item == it_health_large)/* MrG{DRGN} was missing current->item == */
@@ -1239,7 +1239,7 @@ edict_t* Bot_FindBestPowerup(edict_t* ent)
 			|| current->item == it_tech3
 			|| current->item == it_tech4)
 		{
-			// We really really want these !!!
+			// We really, really want these !!!
 			bonus = 6;
 		}
 		else if (current->item == FindItemByClassindex(AR_POWER_SHIELD) /* MrG{DRGN} added */
@@ -1475,7 +1475,7 @@ void Bot_Attack(edict_t* ent, usercmd_t* cmd, vec3_t angles, vec3_t target)
 {
 	vec3_t	dir = { 0 }, t_angles;
 	gitem_t* weapon;
-	int temp_level = (6 - ent->client->b_botlevel); /*MrG{DRGN} Arithmetic overflow: shut up code analysis about */
+	int temp_level = (6 - ent->client->b_botlevel); /*MrG{DRGN} Arithmetic overflow: shut up code analysis */
 
 	if (ent->enemy->deadflag == DEAD_DEAD)
 		ent->enemy = NULL;

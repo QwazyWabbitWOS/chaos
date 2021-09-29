@@ -487,7 +487,7 @@ void CTFFragBonuses(edict_t* targ, edict_t* inflictor, edict_t* attacker)
 			CTF_FRAG_CARRIER_BONUS,
 			level.time);
 
-		// the the target had the flag, clear the hurt carrier
+		// The target had the flag, clear the hurt carrier
 		// field on the other team
 		for (i = 1; i <= maxclients->value; i++) {
 			ent = g_edicts + i;
@@ -783,9 +783,9 @@ qboolean CTFPickup_Flag(edict_t* ent, edict_t* other)
 				CTFResetFlags();
 				return false;
 			}
-			return false; // its at home base already
+			return false; // it's at home base already
 		}
-		// hey, its not home.  return it by teleporting it back
+		// hey, it's not home.  return it by teleporting it back
 		bprintf2(PRINT_HIGH, "%s returned the %s flag!\n",
 			other->client->pers.netname, CTFTeamName(ctf_team));
 
@@ -806,7 +806,7 @@ qboolean CTFPickup_Flag(edict_t* ent, edict_t* other)
 		return false;
 	}
 
-	// hey, its not our flag, pick it up
+	// hey, it's not our flag, pick it up
 	bprintf2(PRINT_HIGH, "%s got the %s flag!\n",
 		other->client->pers.netname, CTFTeamName(ctf_team));
 	other->client->resp.score += CTF_FLAG_BONUS;
@@ -2612,7 +2612,7 @@ void SP_trigger_teleport(edict_t* ent)
 	gi.linkentity(ent);
 
 	ent->classindex = TRIGGER_TELEPORT;
-	// noise maker and splash effect dude
+	// noisemaker and splash effect dude
 	s = G_Spawn();
 	ent->enemy = s;
 	for (i = 0; i < 3; i++)

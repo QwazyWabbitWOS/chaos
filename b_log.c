@@ -103,7 +103,7 @@ void Log_PrintfNoDate(const char* format, ...)
 	va_start(marker, format);
 
 	LogWrite(format, &marker, 0);
-	va_end(marker); /* MrG{DRGM} this was missing */
+	va_end(marker); /* MrG{DRGN} this was missing */
 }
 
 void Log_PrintfWithLocation(const char* File, int Line, const char* msg)

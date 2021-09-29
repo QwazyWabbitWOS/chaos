@@ -4714,7 +4714,7 @@ int Valid_Target(edict_t* ent, edict_t* blip)
 		return false;
 	/*
 	 * The Vortex doesn't care who launched it or who is one what team,
-	 * it just eats everything in it's path
+	 * it just eats everything in its path
 	 */
 	if (Q_stricmp(ent->classname, "vortex") /*== 0)*/)
 		/*
@@ -4765,7 +4765,7 @@ int Valid_Target(edict_t* ent, edict_t* blip)
 		*/
 
 		/*
-		 * Here we need to do a check to setup Evil Proxies
+		 * Here we need to do a check to set up Evil Proxies
 		 * If we are a proxymine we roll the dice for an evil proxy,
 		 * if the roll fails then we fall back to the turret/proxy
 		 * rules, else we are an evil proxy and that's life. */
@@ -4816,7 +4816,7 @@ int Valid_Target(edict_t* ent, edict_t* blip)
 			}
 		}
 
-		//		else	// Something other then Evil Proxies, at the time of
+		//		else	// Something other than Evil Proxies, at the time of
 		//{ 	// this writing this was only Proxies and Turrets
 		// }
 		if (blip->client && blip->client->camera)
@@ -4830,8 +4830,8 @@ int Valid_Target(edict_t* ent, edict_t* blip)
 		}
 
 		/*
-		 * This part of the search takes up a lot of CPU time
-		 * so we use a switch statement to make a general match w/
+		 * This part of the search takes up a lot of CPU time,
+		 * so we use a switch statement to make a general match with
 		 * as little CPU overhead as possible and then get into the
 		 * fun stuff.
 		 *

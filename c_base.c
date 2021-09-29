@@ -1212,13 +1212,13 @@ void Teleport(edict_t* ent)
 		VectorCopy(spawn_origin, ent->s.origin);
 
 		if (!KillBox(ent))
-		{	// could't spawn in?
+		{	// couldn't spawn in?
 		}
 
 		gi.sound(telep, CHAN_VOICE, gi.soundindex("misc/selfteleport.wav"), 1, ATTN_NORM, 0);
 
 		//kill teleport point
-		telep->s.event = EV_ITEM_RESPAWN; // Make an item respawn effect ! Look cool ! :)
+		telep->s.event = EV_ITEM_RESPAWN; // Make an item respawn effect ! Looks cool ! :)
 		G_FreeEdict(telep);
 		ent->client->teleporter = NULL;
 	}

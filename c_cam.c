@@ -644,7 +644,7 @@ void FindNewTVSpot(edict_t* ent)
 
 			dist = VectorLength(dir);
 
-			if (dist < 160 && bestdist == 9999) // closer than 160 is not too good but we take it if we have no other chance
+			if (dist < 160 && bestdist == 9999) // closer than 160 is not too good, but we take it if we have no other chance
 			{
 				best = dummy;
 				bestdist = dist;

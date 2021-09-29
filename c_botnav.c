@@ -352,7 +352,7 @@ int Bot_ShortestPath(int source, int target)
 
 	do
 	{
-		// kNew is the tentatively labeled node with smallest path size
+		// kNew is the tentatively labeled node with the smallest path size
 		kNew = BOT_INFINITY;
 		minDist = (double)BOT_INFINITY;
 

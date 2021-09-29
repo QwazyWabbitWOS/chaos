@@ -386,7 +386,7 @@ void plat_blocked(edict_t* self, edict_t* other)
 {
 	if (!other->client)
 	{
-		// give it a chance to go away on it's own terms (like gibs)
+		// give it a chance to go away on its own terms (like gibs)
 		T_Damage(other, self, self, vec3_origin, other->s.origin, vec3_origin, 100000, 1, 0, MOD_CRUSH);
 		// if it's still there, nuke it
 		/* MrG{DRGN} better sanity check*/
@@ -616,7 +616,7 @@ check either the X_AXIS or Y_AXIS box to change that.
 "speed" determines how fast it moves; default value is 100.
 "dmg"	damage to inflict when blocked (2 default)
 
-REVERSE will cause the it to rotate in the opposite direction.
+REVERSE will cause it to rotate in the opposite direction.
 STOP mean it will stop moving instead of pushing entities
 */
 
@@ -715,7 +715,7 @@ BUTTONS
 */
 
 /*QUAKED func_button (0 .5 .8) ?
-When a button is touched, it moves some distance in the direction of it's angle, triggers all of it's targets, waits some time, then returns to it's original position where it can be triggered again.
+When a button is touched, it moves some distance in the direction of it's angle, triggers all of its targets, waits some time, then returns to its original position where it can be triggered again.
 
 "angle"		determines the opening direction
 "target"	all entities with a matching targetname will be used

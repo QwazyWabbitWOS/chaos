@@ -57,7 +57,7 @@ void SVCmd_addbots_f(void)
 
 		Bot_Create(bot_skill, team, name, model);
 	}
-	else // num > 1, accept only models, names will be place holder.
+	else // num > 1, accept only models, names will be placeholder.
 	{
 		for (i = 0; i < num; i++)
 		{
@@ -1391,7 +1391,7 @@ qboolean Bot_CanReachSpotDirectly(edict_t* ent, vec3_t target)
 }
 /*VectorNormalize2(dir, dir);
 
-inc = 12;		// do more thourough checking
+inc = 12;		// do more thorough checking
 
 for (progressive_dist = 32; progressive_dist < (dist - 16) ; progressive_dist += inc)
 {
@@ -1446,7 +1446,7 @@ qboolean Bot_CheckObstacle(edict_t* self)
 
 	VectorCopy(self->s.origin, start);
 	start[2] += 10;
-	/* MrG{DRGN} operator has equivalent nested opperands
+	/* MrG{DRGN} operator has equivalent nested operands
 	tr = gi.trace(start, mins, maxs, dir, self, MASK_SOLID | MASK_PLAYERSOLID);	*/
 	tr = gi.trace(start, mins, maxs, dir, self, MASK_PLAYERSOLID);
 	if ((tr.fraction != 1) || tr.startsolid)
@@ -1665,7 +1665,7 @@ void Load_BotChat(void)
 		if (buffer == ';')	//comment, strip the rest of the line
 		{
 			while (!feof(fp) && (buffer != '\n'))
-				if (fscanf(fp, "%c", &buffer)); /* MrG{DRGN check should this if be here, it's an empty body? */
+				if (fscanf(fp, "%c", &buffer) != EOF); /* MrG{DRGN} check should this if be here, it's an empty body? */
 
 		}
 		else if (section > NUM_CHATSECTIONS - 1)
@@ -1679,7 +1679,7 @@ void Load_BotChat(void)
 			line = -1;
 
 			while (!feof(fp) && (buffer != '\n'))	// read the end of the line
-				if (fscanf(fp, "%c", &buffer)); /* MrG{DRGN check should this if be here, it's an empty body? */
+				if (fscanf(fp, "%c", &buffer) !=EOF); /* MrG{DRGN} check should this if be here, it's an empty body? */
 		}
 		else if ((((buffer >= 'a') && (buffer <= 'z')) ||	// a chat line...read it
 			((buffer >= 'A') && (buffer <= 'Z')) ||
@@ -1697,7 +1697,7 @@ void Load_BotChat(void)
 			{
 				chat_text[section][line][i++] = buffer;
 
-				if (fscanf(fp, "%c", &buffer)); /* MrG{DRGN check should this if be here, it's an empty body? */
+				if (fscanf(fp, "%c", &buffer) != EOF); /* MrG{DRGN} check should this if be here, it's an empty body? */
 			}
 
 			if (i > 0)

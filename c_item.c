@@ -341,7 +341,7 @@ void ShowScanner(edict_t* ent, char* layout)
 	// Main scanner graphic draw
 	SAFE_STRCAT(layout, stats, LAYOUT_MAX_LENGTH);
 
-	// Players dots
+	// Player's dots
 	for (i = 0; i < game.maxclients; i++)
 	{
 		float	len;
@@ -366,7 +366,7 @@ void ShowScanner(edict_t* ent, char* layout)
 		// remove height component
 		v[2] = 0;
 
-		// calc length of distance from top down view (no z)
+		// calc length of distance from top-down view (no z)
 		len = VectorLength(v) / SCANNER_UNIT;
 
 		// in range ?

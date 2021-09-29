@@ -570,13 +570,6 @@ static void Weapon_Generic2(edict_t* ent, int FRAME_ACTIVATE_LAST, int FRAME_FIR
 {
 	int		n;
 
-	/* MrG{DRGN} sanity check*/
-	if (!ent || !fire_frames || !fire)
-	{
-		return;
-	}
-	/* END */
-
 	if (((ent->s.modelindex != PLAYER_MODEL && ent->client->invisible != true) || (ent->deadflag))) // vwep 
 		return; // not on client, so VWep animations could do wacky things
 
