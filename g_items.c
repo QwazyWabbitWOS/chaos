@@ -1130,8 +1130,8 @@ qboolean Pickup_Powerup(edict_t* ent, edict_t* other)
 		else
 			other->client->jet_framenum = 0;
 
-		/* MrG{DRGN} too soon */
-		return true;
+		/* MrG{DRGN} DON'T return here! It breaks the item respawn */
+		//return true;
 
 
 	}
