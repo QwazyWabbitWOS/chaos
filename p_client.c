@@ -318,8 +318,8 @@ void ClientObituary(edict_t* self, edict_t* inflictor, edict_t* attacker)
 			int i;
 
 			bprintf2(PRINT_MEDIUM, "%s %s.\n", self->client->pers.netname, message);
-			/* MrG{DRGN} always DM
-			if (deathmatch->value) */
+			
+			if (deathmatch->value)
 			self->client->resp.score--;
 			self->enemy = NULL;
 
