@@ -937,12 +937,41 @@ void CTFDeadDropFlag(edict_t* self)
 }
 
 void CTFDrop_Flag(edict_t* ent, gitem_t* item)
-{
-	if (rand() & 1)
-		cprint_botsafe(ent, PRINT_HIGH, "Only lusers drop flags.\n");
+{	  	
+	if (!allow_flagdrop->value)
+	{
+		if (rand() & 1)																 
+			cprint_botsafe(ent, PRINT_HIGH, "Only lusers drop flags.\n");
+		else
+			cprint_botsafe(ent, PRINT_HIGH, "Winners don't drop flags.\n");
+		return;
+	}
 	else
-		cprint_botsafe(ent, PRINT_HIGH, "Winners don't drop flags.\n");
-	return;
+	{
+		cprint_botsafe(ent, PRINT_HIGH, "You dropped the flag!\n");
+		edict_t* dropped = NULL;
+
+		if (!it_flag_red || !it_flag_blue)
+			CTFInit();
+		if (ent->client->pers.inventory[ITEM_INDEX(it_flag_red)]) /* MrG{DRGN}*/
+		{
+			dropped = Drop_Item(ent, it_flag_red);
+			ent->client->pers.inventory[ITEM_INDEX(it_flag_red)] = 0;/* MrG{DRGN}*/
+				ent->client->pers.netname, CTFTeamName(CTF_TEAM1);
+		}
+		else if (ent->client->pers.inventory[ITEM_INDEX(it_flag_blue)])/* MrG{DRGN}*/
+		{
+			dropped = Drop_Item(ent, it_flag_blue);
+			ent->client->pers.inventory[ITEM_INDEX(it_flag_blue)] = 0;/* MrG{DRGN}*/
+				ent->client->pers.netname, CTFTeamName(CTF_TEAM2);
+		}
+
+		if (dropped) {
+			dropped->think = CTFDropFlagThink;
+			dropped->nextthink = level.time + CTF_AUTO_FLAG_RETURN_TIMEOUT;
+			dropped->touch = CTFDropFlagTouch;
+		}
+	}
 }
 
 static void CTFFlagThink(edict_t* ent)

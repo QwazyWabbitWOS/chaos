@@ -230,6 +230,7 @@ void GetSettings(void)
 	lightsoff = gi.cvar("lightsoff", "0", CVAR_SERVERINFO);
 	botchat = gi.cvar("botchat", "1", CVAR_SERVERINFO);
 	drop_tech = gi.cvar("drop_tech", "1", CVAR_LATCH); /* MrG{DRGN} tech drop prevention */
+	allow_flagdrop = gi.cvar("allow_flagdrop", "1", CVAR_LATCH); /* MrG{DRGN} allow flag dropping */
 	weapon_kick = gi.cvar("weapon_kick", "1", CVAR_LATCH); /* MrG{DRGN} kickable weapons toggle */
 	tele_fire = gi.cvar("tele_fire", "0", CVAR_LATCH); /* MrG{DRGN} allow certain non-client projectiles to pass through teleporters */
 	do_respawn = gi.cvar("do_respawn", "80", CVAR_LATCH); /* MrG{DRGN} base item respawn time default 60 */

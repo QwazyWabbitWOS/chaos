@@ -1273,6 +1273,7 @@ extern cvar_t* start_invulnerable_time;
 
 /* MrG{DRGN} Chaos DM Lives cvars */
 extern cvar_t* drop_tech;	/* MrG{DRGN} tech drop prevention */
+extern cvar_t* allow_flagdrop;	/* MrG{DRGN} allow flag dropping */
 extern cvar_t* weapon_kick; /* MrG{DRGN} kickable weapons toggle */
 extern cvar_t* tele_fire; /* MrG{DRGN} allow certain non-client projectiles to pass through teleporters */
 
