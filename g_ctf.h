@@ -23,8 +23,8 @@
 
 typedef enum {
 	CTF_NOTEAM,
-	CTF_TEAM1,
-	CTF_TEAM2
+	CTF_TEAM1, // Red Team
+	CTF_TEAM2  // Blue Team
 } ctfteam_t;
 
 typedef enum {

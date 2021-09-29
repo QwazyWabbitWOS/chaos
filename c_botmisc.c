@@ -183,37 +183,30 @@ void Bot_Create(int accuracy_level, int team, char* name, char* skin)
 	//TEAMPLAY
 	if (ctf->value)
 	{
-		if ((team != 1) && (team != 2))
-		/*/ {
+		if (bot->team == CTF_NOTEAM)
+		{
 			if (numblue < numred)
-				CTFBotJoinTeam(bot, 2);
+				CTFBotJoinTeam(bot, CTF_TEAM2);
 			else
-				CTFBotJoinTeam(bot, 1);
-		}	 */
-		//else
-		//	CTFBotJoinTeam(bot, team);
-
-		if (numblue < numred) /* MrG{DRGN} */
-			CTFBotJoinTeam(bot, 2);
-	else if (numred < numblue)
-			CTFBotJoinTeam(bot, 1);
-	else if (rand() & 1)
-			CTFBotJoinTeam(bot, 1);
-	else
-			CTFBotJoinTeam(bot, 2);
+				CTFBotJoinTeam(bot, CTF_TEAM1);
+		}
+		else if (rand() & 1)
+			CTFBotJoinTeam(bot, CTF_TEAM1);
+		else
+			CTFBotJoinTeam(bot, CTF_TEAM2);
 	}
 	else
 	{
-		if (team == 0)
-			bot->client->resp.team = 0;
-		else if ((team > 0) && (team < 100))
+		if (team == CTF_NOTEAM)
+			bot->client->resp.team = CTF_NOTEAM;
+		else if ((team > CTF_NOTEAM) && (team < 100))
 		{
 			bot->client->resp.team = team;
 			bprint_botsafe(PRINT_HIGH, "%s has joined team %d!\n", name, team);
 		}
 		else
 		{
-			bot->client->resp.team = 0;
+			bot->client->resp.team = CTF_NOTEAM;
 			bprint_botsafe(PRINT_HIGH, "Invalid team number! %s has joined NO team!\n", name);
 		}
 	}
