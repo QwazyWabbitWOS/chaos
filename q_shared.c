@@ -1139,60 +1139,40 @@ void Com_PageInMemory(byte* buffer, int size)
 ============================================================================
 */
 
-/** Case independent string compare (strcasecmp)
- if s1 is contained within s2 then return 0, they are "equal".
+// fast "C" macros
+#define Q_isupper(c)    ((c) >= 'A' && (c) <= 'Z')
+#define Q_islower(c)    ((c) >= 'a' && (c) <= 'z')
+#define Q_isdigit(c)    ((c) >= '0' && (c) <= '9')
+#define Q_isalpha(c)    (Q_isupper(c) || Q_islower(c))
+#define Q_isalnum(c)    (Q_isalpha(c) || Q_isdigit(c))
+#define Q_isprint(c)    ((c) >= 32 && (c) < 127)
+#define Q_isgraph(c)    ((c) > 32 && (c) < 127)
+#define Q_isspace(c)    (c == ' ' || c == '\f' || c == '\n' || \
+                         c == '\r' || c == '\t' || c == '\v')
+
+static inline int Q_tolower(int c)
+{
+	if (Q_isupper(c)) {
+		c += ('a' - 'A');
+	}
+	return c;
+}
+
+/** Case independent string compare.
+ If s1 is contained within s2 then return 0, they are "equal".
  else return the lexicographic difference between them.
 */
-int	Q_stricmp(const char* s1, const char* s2)
+int Q_stricmp(const char* s1, const char* s2)
 {
 	const unsigned char
 		* uc1 = (const unsigned char*)s1,
 		* uc2 = (const unsigned char*)s2;
 
-	while (tolower(*uc1) == tolower(*uc2++))
+	while (Q_tolower(*uc1) == Q_tolower(*uc2++))
 		if (*uc1++ == '\0')
 			return (0);
-	return (tolower(*uc1) - tolower(*--uc2));
+	return (Q_tolower(*uc1) - Q_tolower(*--uc2));
 }
-
-int Q_strncasecmp(char* s1, char* s2, size_t n) /* MrG{DRGN}  changed from int to size_t for 64 bit compatibility */
-{
-	int		c1 = 0, c2 = 0;
-
-	do
-	{
-		c1 = *s1++;
-		c2 = *s2++;
-
-		if (!n--)
-			return 0;		// strings are equal until end point
-
-		if (c1 != c2)
-		{
-			if (c1 >= 'a' && c1 <= 'z')
-				c1 -= ('a' - 'A');
-			if (c2 >= 'a' && c2 <= 'z')
-				c2 -= ('a' - 'A');
-			if (c1 != c2)
-				return -1;		// strings not equal
-		}
-	} while (c1);
-
-	return 0;		// strings are equal
-}
-/*
-void Com_sprintf(char* dest, size_t size, char* fmt, ...)
-{
-	int	len;
-	va_list		argptr;
-	char	bigbuffer[0x10000];
-
-	va_start(argptr, fmt);
-	len = vsnprintf(bigbuffer, sizeof(bigbuffer), fmt, argptr);
-	va_end(argptr);
-	if (len < size)
-		strncpy(dest, bigbuffer, size - 1);
-}*/
 
 /* MrG{DRGN} TY QW */
 static char	bigbuffer[0x10000];  //QW// For Com_sprintf
@@ -1221,7 +1201,76 @@ void Com_sprintf(char* dest, int size, char* fmt, ...)
 	}
 }
 /* END*/
- /* MrG{DRGN} Function Replacements TY Knightmare! */
+ 
+int Q_strnicmp(const char* s1, const char* s2, size_t count)
+{
+	if (count == 0)
+		return 0;
+	else
+	{
+		while (count-- != 0 && Q_tolower(*s1) == Q_tolower(*s2))
+		{
+			if (count == 0 || *s1 == '\0' || *s2 == '\0')
+				break;
+			s1++;
+			s2++;
+		}
+
+		return Q_tolower(*(unsigned char*)s1) - Q_tolower(*(unsigned char*)s2);
+	}
+}
+
+size_t Q_strncpyz(char* dst, size_t dstSize, const char* src)
+{
+	char* d = dst;
+	const char* s = src;
+	size_t        decSize = dstSize;
+
+	if (!dst || !src || dstSize < 1) {
+		Com_Printf("Bad arguments passed to %s\n", __func__);
+		return 0;
+	}
+
+	while (--decSize && *s)
+		*d++ = *s++;
+	*d = 0;
+
+	if (decSize == 0)    // Unsufficent room in dst, return count + length of remaining src
+		return (s - src - 1 + strlen(s));
+	else
+		return (s - src - 1);    // returned count excludes NULL terminator
+}
+
+size_t Q_strncatz(char* dst, size_t dstSize, const char* src)
+{
+	char* d = dst;
+	const char* s = src;
+	size_t        decSize = dstSize;
+	size_t        dLen;
+
+	if (!dst || !src || dstSize < 1) {
+		Com_Printf("Bad arguments passed to %s\n", __func__);
+		return 0;
+	}
+
+	while (--decSize && *d)
+		d++;
+	dLen = d - dst;
+
+	if (decSize == 0)
+		return (dLen + strlen(s));
+
+	if (decSize > 0) {
+		while (--decSize && *s)
+			*d++ = *s++;
+
+		*d = 0;
+	}
+
+	return (dLen + (s - src));    // returned count excludes NULL terminator
+}
+
+/* MrG{DRGN} Function Replacements TY Knightmare! */
 size_t Com_strcpy(char* dest, size_t destSize, const char* src)
 {
 	char* d = dest;
@@ -1282,6 +1331,7 @@ size_t Com_strcat(char* dest, size_t destSize, const char* src)
 
 	return (dLen + (s - src));	// returned count excludes NULL terminator
 }
+
 /*
 =====================================================================
 
