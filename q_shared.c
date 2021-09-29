@@ -1175,7 +1175,7 @@ int Q_stricmp(const char* s1, const char* s2)
 }
 
 /* MrG{DRGN} TY QW */
-static char	bigbuffer[0x10000];  //QW// For Com_sprintf
+static char	bigbuffer[0x1000];  //QW// For Com_sprintf
 /**
  Safer, uses large buffer
  //QW// The big buffer allows us to safely dump

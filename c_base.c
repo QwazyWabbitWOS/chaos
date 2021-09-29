@@ -487,6 +487,7 @@ void PreCacheAll(void)
 	gi.imageindex("w_plauncher");
 	gi.imageindex("w_pbow");
 	gi.imageindex("w_xlauncher");
+	gi.imageindex("w_xlauncher"); //proxy mine launcher
 	gi.imageindex("w_sword");
 	gi.imageindex("w_chainsaw");
 	//models
@@ -534,7 +535,6 @@ void PreCacheAll(void)
 	gi.modelindex("models/objects/earrow/tris.md2");
 	gi.modelindex("models/objects/gflash/tris.md2");
 	gi.modelindex("models/objects/gpoison/tris.md2");
-	//gi.modelindex("models/objects/hgevilpr/tris.md2");
 	gi.modelindex("models/objects/hgflash/tris.md2");
 	gi.modelindex("models/objects/hglaser/tris.md2");
 	gi.modelindex("models/objects/hgpoison/tris.md2");

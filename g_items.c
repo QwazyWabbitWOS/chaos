@@ -5114,7 +5114,7 @@ gitem_t	itemlist[] =
 		"item_flag_team1",
 		CTFPickup_Flag,
 		NULL,
-		CTFDrop_Flag, //Should this be null if we don't want players to drop it manually?
+		CTFDrop_Flag,
 		NULL,
 		"ctf/flagtk.wav",
 		"players/male/flag1.md2", EF_FLAG1,
@@ -5137,7 +5137,7 @@ gitem_t	itemlist[] =
 		"item_flag_team2",
 		CTFPickup_Flag,
 		NULL,
-		CTFDrop_Flag, //Should this be null if we don't want players to drop it manually?
+		CTFDrop_Flag,
 		NULL,
 		"ctf/flagtk.wav",
 		"players/male/flag2.md2", EF_FLAG2,
