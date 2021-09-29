@@ -1,4 +1,5 @@
-#pragma once
+#ifndef C_ITEM_H
+#define C_ITEM_H
 
 #define	GRAPPLE_OFF			0
 #define	GRAPPLE_INAIR		1
@@ -21,3 +22,4 @@ void	Toggle_Scanner(edict_t * ent);
 void	Scanner_Think(edict_t* ent);
 void	Use_Invisibility(edict_t * ent, gitem_t * item);	//MATTHIAS
 
+#endif // !C_ITEM_H

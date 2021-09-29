@@ -1,5 +1,7 @@
 ﻿// g_local.h -- local definitions for game module
 #pragma once
+#ifndef G_LOCAL_H
+#define G_LOCAL_H
 
 #include "q_shared.h"
 /* MrG{DRGN} ty QW! */
@@ -1285,4 +1287,5 @@ int		red_base, blue_base;	//node at red/blue flag
   //ZOID
 #include "g_ctf.h"
 
+#endif // !G_LOCAL_H
 /* End of g_local.h */
