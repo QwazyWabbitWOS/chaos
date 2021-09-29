@@ -829,6 +829,7 @@ void G_RunFrame(void);
 #include "c_base.h"
 #include "c_item.h"
 #include "c_weapon.h"
+#include "c_botai.h"
 /* END*/
 //============================================================================
 

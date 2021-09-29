@@ -9,9 +9,6 @@ typedef struct
 	void	(*spawn)(edict_t* ent);
 } spawn_t;
 
-void PreCacheAll(void);	//MATTHIAS
-void LoadMOTD(void);
-void Load_BotChat(void);
 
 void SP_item_health(edict_t* self);
 void SP_item_health_small(edict_t* self);
