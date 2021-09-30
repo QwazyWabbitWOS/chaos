@@ -1,4 +1,4 @@
-# 
+#
 # Makefile				Chaotic Dreams Makefile
 #
 # Major'Trips'
@@ -13,22 +13,22 @@
 BUILD_DEBUG_DIR=debug
 BUILD_RELEASE_DIR=release
 
-CC=gcc -std=c11 -Wall -Wpedantic
+CC = gcc -std=c11 -Wall -Wpedantic
 
 # Base Flags
 # If you want to add a CFLAG to be included in both the
 # debug and the release build, add it here
-BASE_CFLAGS=-Dstricmp=strcasecmp -DC_ONLY -pedantic -m386 -V2.7.2.3
+BASE_CFLAGS= -fcommon -DC_ONLY -pedantic
+
 
 # Release Flags
 # Flags added here are ONLY used for building the release
 # binaries
-RELEASE_CFLAGS=$(BASE_CFLAGS) -ffast-math -funroll-loops \
-	-fomit-frame-pointer -fexpensive-optimizations
+RELEASE_CFLAGS=$(BASE_CFLAGS) -O3 -Wall
 
 # Debug Flags
 # These flags are only used when compiling the debug binaries
-DEBUG_CFLAGS=$(BASE_CFLAGS) -g -Wall
+DEBUG_CFLAGS=$(BASE_CFLAGS) -g -Wreturn-type
 
 # LD Flags
 # These are typically not used, though I understand it's
@@ -37,7 +37,8 @@ DEBUG_CFLAGS=$(BASE_CFLAGS) -g -Wall
 
 ##### Dont go beyond here unless you know what's going on ####
 
-ARCH=i386
+#ARCH=x86
+ARCH := $(shell uname -m | sed -e s/i.86/i386/ -e s/sun4u/sparc64/ -e s/arm.*/arm/ -e s/sa110/arm/ -e s/alpha/axp/)
 
 SHLIBEXT=so
 
