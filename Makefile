@@ -35,6 +35,21 @@ DEBUG_CFLAGS=$(BASE_CFLAGS) -g -Wreturn-type
 # necessary to use them on a Slakware system
 #LDFLAGS=-ldl -lm
 
+# flavors of Linux
+ifeq ($(shell uname), Linux)
+CFLAGS += -DLINUX
+LIBTOOL = ldd
+LDFLAGS =-ldl -lm
+LDDFLAGS=-r
+endif
+
+# CYGWIN
+ifeq ($(shell uname), CYGWIN_NT)
+LIBTOOL = ldd
+LDFLAGS =
+LDDFLAGS=
+endif
+
 ##### Dont go beyond here unless you know what's going on ####
 
 #ARCH=x86
@@ -100,7 +115,7 @@ GAME_OBJS = \
 	$(BUILDDIR)/stdlog.o
 
 $(BUILDDIR)/game$(ARCH).$(SHLIBEXT) : $(GAME_OBJS)
-	$(CC) $(SHLIBLDFLAGS) $(CFLAGS) -o $@ $(GAME_OBJS)
+	$(CC) $(SHLIBLDFLAGS) $(CFLAGS) -o $@ $(GAME_OBJS) $(LDFLAGS)
 
 $(BUILDDIR)/b_log.o : b_log.c
 	$(DO_SHLIB_CC)
