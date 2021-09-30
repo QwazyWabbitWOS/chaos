@@ -173,9 +173,6 @@
     <ClCompile Include="stdlog.c">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="b_log.c">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="performance.c">
       <Filter>Source Files</Filter>
     </ClCompile>

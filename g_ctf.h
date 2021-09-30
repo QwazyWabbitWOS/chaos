@@ -114,11 +114,12 @@ void CTFFragBonuses(edict_t* targ, edict_t* inflictor, edict_t* attacker);
 void CTFCheckHurtCarrier(edict_t* targ, edict_t* attacker);
 
 // GRAPPLE
+ /* won't be used
 void CTFWeapon_Grapple(edict_t* ent);
 void CTFPlayerResetGrapple(edict_t* ent);
 void CTFGrapplePull(edict_t* self);
 void CTFResetGrapple(edict_t* self);
-
+   */
 //TECH
 gitem_t* CTFWhat_Tech(edict_t* ent);
 qboolean CTFPickup_Tech(edict_t* ent, edict_t* other);
@@ -158,13 +159,13 @@ void SP_misc_ctf_banner(edict_t* ent);
 void SP_misc_ctf_small_banner(edict_t* ent);
 
 extern char* ctf_statusbar;
-
+ /* won't be used
 void UpdateChaseCam(edict_t* ent);
 void ChaseNext(edict_t* ent);
 void ChasePrev(edict_t* ent);
 
 void CTFObserver(edict_t* ent);
-
+ */
 void SP_trigger_teleport(edict_t* ent);
 void SP_info_teleport_destination(edict_t* ent);
 
