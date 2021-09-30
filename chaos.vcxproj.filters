@@ -75,7 +75,6 @@
       <Filter>Resource Files</Filter>
     </None>
     <None Include="Makefile" />
-    <None Include="GNUmakefile" />
     <None Include="Docs\example_server.cfg">
       <Filter>Docs</Filter>
     </None>

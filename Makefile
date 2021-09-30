@@ -13,18 +13,18 @@
 BUILD_DEBUG_DIR=debug
 BUILD_RELEASE_DIR=release
 
-CC = gcc -std=c11 -Wall -Wpedantic
+CC = gcc -std=c11
 
 # Base Flags
 # If you want to add a CFLAG to be included in both the
 # debug and the release build, add it here
-BASE_CFLAGS= -fcommon -DC_ONLY -pedantic
+BASE_CFLAGS= -fcommon -Wpedantic -Wall
 
 
 # Release Flags
 # Flags added here are ONLY used for building the release
 # binaries
-RELEASE_CFLAGS=$(BASE_CFLAGS) -O3 -Wall
+RELEASE_CFLAGS=$(BASE_CFLAGS) -O3
 
 # Debug Flags
 # These flags are only used when compiling the debug binaries
