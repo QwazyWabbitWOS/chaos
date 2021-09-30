@@ -1618,7 +1618,7 @@ qboolean Pickup_Key(edict_t* ent, edict_t* other)
 		return false;
 	}
 	/* END */
-	/* MrG{DRGN}  Always DM
+	
 	if (coop->value)
 	{
 		if (strcmp(ent->classname, "key_power_cube") == 0)
@@ -1636,7 +1636,7 @@ qboolean Pickup_Key(edict_t* ent, edict_t* other)
 		}
 		return true;
 	}
-	*/
+	
 	other->client->pers.inventory[ITEM_INDEX(ent->item)]++;
 	return true;
 }

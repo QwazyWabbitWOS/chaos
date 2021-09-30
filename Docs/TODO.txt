@@ -71,4 +71,6 @@ Done:
 
 	* reduce strength of explosive tips on crossbows - already variable via the server cvar config
 
+	* Drop_Weapon and Pickup Weapon have been reworked so they function properly 
+
 

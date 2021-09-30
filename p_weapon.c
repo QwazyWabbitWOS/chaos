@@ -124,22 +124,54 @@ qboolean Pickup_Weapon(edict_t* ent, edict_t* other)
 	other->client->pers.inventory[index]++;
 
 	//MATTHIAS
+	/* MrG{DRGN} Reworked so it functions properly */
 	if (ent->item == it_supershotgun)
 		other->client->pers.inventory[ITEM_INDEX(it_esupershotgun)]++;
+
+	if (ent->item == it_esupershotgun)
+		other->client->pers.inventory[ITEM_INDEX(it_supershotgun)]++;
+
+
 	if (ent->item == it_rocketlauncher)
 		other->client->pers.inventory[ITEM_INDEX(it_hominglauncher)]++;
+
 	if (ent->item == it_hominglauncher)
 		other->client->pers.inventory[ITEM_INDEX(it_rocketlauncher)]++;
+
 	if (ent->item == it_grenadelauncher)
 	{
 		other->client->pers.inventory[ITEM_INDEX(it_flashgrenadelauncher)]++;
 		other->client->pers.inventory[ITEM_INDEX(it_poisongrenadelauncher)]++;
 	}
+	if (ent->item == it_flashgrenadelauncher)
+	{
+		other->client->pers.inventory[ITEM_INDEX(it_grenadelauncher)]++;
+		other->client->pers.inventory[ITEM_INDEX(it_poisongrenadelauncher)]++;
+	}
+	if (ent->item == it_poisongrenadelauncher)
+	{
+		other->client->pers.inventory[ITEM_INDEX(it_flashgrenadelauncher)]++;
+		other->client->pers.inventory[ITEM_INDEX(it_grenadelauncher)]++;
+	}
+
 	if (ent->item == it_crossbow)
 	{
 		other->client->pers.inventory[ITEM_INDEX(it_poisoncrossbow)]++;
 		other->client->pers.inventory[ITEM_INDEX(it_explosivecrossbow)]++;
 	}
+
+	if (ent->item == it_poisoncrossbow)
+	{
+		other->client->pers.inventory[ITEM_INDEX(it_crossbow)]++;
+		other->client->pers.inventory[ITEM_INDEX(it_explosivecrossbow)]++;
+	}
+
+	if (ent->item == it_explosivecrossbow)
+	{
+		other->client->pers.inventory[ITEM_INDEX(it_poisoncrossbow)]++;
+		other->client->pers.inventory[ITEM_INDEX(it_crossbow)]++;
+	}
+
 
 	if (!(ent->spawnflags & DROPPED_ITEM))
 	{
@@ -517,38 +549,149 @@ void Drop_Weapon(edict_t* ent, gitem_t* item)
 	}
 
 	//MATTHIAS
-	if (item == it_supershotgun
-		|| item == it_esupershotgun)
+	/* MrG{DRGN} Reworked so it functions properly */
+	if (item == it_supershotgun)
 	{
-		ent->client->pers.inventory[ITEM_INDEX(it_supershotgun)]--;
-		ent->client->pers.inventory[ITEM_INDEX(it_esupershotgun)]--;
-		item = it_supershotgun;
+		if (it_esupershotgun == ent->client->pers.weapon)
+		{
+			cprint_botsafe(ent, PRINT_HIGH, "Can't drop alternate weapon\n");
+			return;
+		}
+		else
+		{
+			ent->client->pers.inventory[ITEM_INDEX(it_supershotgun)]--;
+			ent->client->pers.inventory[ITEM_INDEX(it_esupershotgun)]--;
+			//item = it_supershotgun;
+		}
 	}
-	else if (item == it_rocketlauncher
-		|| item == it_hominglauncher)
+	else if (item == it_esupershotgun)
 	{
-		ent->client->pers.inventory[ITEM_INDEX(it_rocketlauncher)]--;
-		ent->client->pers.inventory[ITEM_INDEX(it_hominglauncher)]--;
-		item = it_rocketlauncher;
+		if (it_supershotgun == ent->client->pers.weapon)		{
+			cprint_botsafe(ent, PRINT_HIGH, "Can't drop aternate weapon\n");
+			return;
+		}
+		else
+		{
+			ent->client->pers.inventory[ITEM_INDEX(it_supershotgun)]--;
+			ent->client->pers.inventory[ITEM_INDEX(it_esupershotgun)]--;
+			//item = it_supershotgun;
+		}
 	}
-	else if (item == it_grenadelauncher
-		|| item == it_flashgrenadelauncher
-		|| item == it_poisongrenadelauncher)
+	
+	else if (item == it_rocketlauncher)
 	{
-		ent->client->pers.inventory[ITEM_INDEX(it_grenadelauncher)]--;
-		ent->client->pers.inventory[ITEM_INDEX(it_flashgrenadelauncher)]--;
-		ent->client->pers.inventory[ITEM_INDEX(it_poisongrenadelauncher)]--;
-		item = it_grenadelauncher;
+		if (it_hominglauncher == ent->client->pers.weapon) {
+			cprint_botsafe(ent, PRINT_HIGH, "Can't drop aternate weapon\n");
+			return;
+		}
+		else
+		{
+			ent->client->pers.inventory[ITEM_INDEX(it_rocketlauncher)]--;
+			ent->client->pers.inventory[ITEM_INDEX(it_hominglauncher)]--;
+			//item = it_rocketlauncher;
+		}
 	}
-	else if (item == it_crossbow
-		|| item == it_poisoncrossbow
-		|| item == it_explosivecrossbow)
+	else if (item == it_hominglauncher)
 	{
-		ent->client->pers.inventory[ITEM_INDEX(it_crossbow)]--;
-		ent->client->pers.inventory[ITEM_INDEX(it_poisoncrossbow)]--;
-		ent->client->pers.inventory[ITEM_INDEX(it_explosivecrossbow)]--;
-		item = it_crossbow;
+		if (it_rocketlauncher == ent->client->pers.weapon) {
+			cprint_botsafe(ent, PRINT_HIGH, "Can't drop aternate weapon\n");
+			return;
+		}
+		else
+		{
+			ent->client->pers.inventory[ITEM_INDEX(it_rocketlauncher)]--;
+			ent->client->pers.inventory[ITEM_INDEX(it_hominglauncher)]--;
+			//item = it_hominglauncher;
+		}
 	}
+
+	else if (item == it_grenadelauncher)
+	{
+		if (it_flashgrenadelauncher == ent->client->pers.weapon || it_poisongrenadelauncher == ent->client->pers.weapon) {
+			cprint_botsafe(ent, PRINT_HIGH, "Can't drop aternate weapon\n");
+			return;
+		}
+		else
+		{
+			ent->client->pers.inventory[ITEM_INDEX(it_grenadelauncher)]--;
+			ent->client->pers.inventory[ITEM_INDEX(it_flashgrenadelauncher)]--;
+			ent->client->pers.inventory[ITEM_INDEX(it_poisongrenadelauncher)]--;
+			//item = it_grenadelauncher;
+		}
+	}
+	else if (item == it_flashgrenadelauncher)
+	{
+		if (it_grenadelauncher == ent->client->pers.weapon || it_poisongrenadelauncher == ent->client->pers.weapon) {
+			cprint_botsafe(ent, PRINT_HIGH, "Can't drop aternate weapon\n");
+			return;
+		}
+		else
+		{
+			ent->client->pers.inventory[ITEM_INDEX(it_grenadelauncher)]--;
+			ent->client->pers.inventory[ITEM_INDEX(it_flashgrenadelauncher)]--;
+			ent->client->pers.inventory[ITEM_INDEX(it_poisongrenadelauncher)]--;
+			//item = it_grenadelauncher;
+		}
+	}
+	else if (item == it_poisongrenadelauncher)
+	{
+		if (it_flashgrenadelauncher == ent->client->pers.weapon || it_grenadelauncher == ent->client->pers.weapon) {
+			cprint_botsafe(ent, PRINT_HIGH, "Can't drop aternate weapon\n");
+			return;
+		}
+		else
+		{
+			ent->client->pers.inventory[ITEM_INDEX(it_grenadelauncher)]--;
+			ent->client->pers.inventory[ITEM_INDEX(it_flashgrenadelauncher)]--;
+			ent->client->pers.inventory[ITEM_INDEX(it_poisongrenadelauncher)]--;
+			//item = it_grenadelauncher;
+		}
+	}
+
+
+	else if (item == it_crossbow)
+	{
+		if (it_poisoncrossbow == ent->client->pers.weapon || it_explosivecrossbow == ent->client->pers.weapon) {
+			cprint_botsafe(ent, PRINT_HIGH, "Can't drop aternate weapon\n");
+			return;
+		}
+		else
+		{
+			ent->client->pers.inventory[ITEM_INDEX(it_crossbow)]--;
+			ent->client->pers.inventory[ITEM_INDEX(it_poisoncrossbow)]--;
+			ent->client->pers.inventory[ITEM_INDEX(it_explosivecrossbow)]--;
+			//item = it_crossbow;
+		}
+	}
+	else if (item == it_poisoncrossbow)
+	{
+		if (it_crossbow == ent->client->pers.weapon || it_explosivecrossbow == ent->client->pers.weapon) {
+			cprint_botsafe(ent, PRINT_HIGH, "Can't drop aternate weapon\n");
+			return;
+		}
+		else
+		{
+			ent->client->pers.inventory[ITEM_INDEX(it_crossbow)]--;
+			ent->client->pers.inventory[ITEM_INDEX(it_poisoncrossbow)]--;
+			ent->client->pers.inventory[ITEM_INDEX(it_explosivecrossbow)]--;
+			//item = it_crossbow;
+		}
+	}
+	else if (item == it_explosivecrossbow)
+	{
+		if (it_poisoncrossbow == ent->client->pers.weapon || it_crossbow == ent->client->pers.weapon) {
+			cprint_botsafe(ent, PRINT_HIGH, "Can't drop aternate weapon\n");
+			return;
+		}
+		else
+		{
+			ent->client->pers.inventory[ITEM_INDEX(it_crossbow)]--;
+			ent->client->pers.inventory[ITEM_INDEX(it_poisoncrossbow)]--;
+			ent->client->pers.inventory[ITEM_INDEX(it_explosivecrossbow)]--;
+			//item = it_crossbow;
+		}
+	}
+
 	else
 		ent->client->pers.inventory[index]--;
 
