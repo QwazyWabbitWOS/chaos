@@ -41,7 +41,7 @@ static void LogWrite(const char* format, va_list* pmarker, int dated)
 	if (dated)
 	{
 		time(&now);
-		
+
 		Com_strcpy(timestring, sizeof(timestring), ctime(&now));
 		Com_strcpy(&timestring[strlen(timestring) - 1], sizeof(&timestring[strlen(timestring) - 1]), ")) ");
 		/* MrG{DRGN} END */
@@ -68,7 +68,7 @@ static void LogSpecial(const char* format, ...)
 	}
 
 	time(&now);
-	
+
 	Com_strcpy(timestring, sizeof(timestring), ctime(&now));
 	Com_strcpy(&timestring[strlen(timestring) - 1], sizeof(&timestring[strlen(timestring) - 1]), ")) ");
 	/* MrG{DRGN} END */
