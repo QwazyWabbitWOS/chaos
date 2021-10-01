@@ -34,6 +34,12 @@ _CrtMemState startup1;	// memory diagnostics
 // the "gameversion" client command will print this plus compile date
 #define	GAMEVERSION	"Chaos DM Lives v3.2b"
 
+#ifndef _DEBUG
+#define BUILD	"Release"
+#else
+#define BUILD	"Debug"
+#endif
+
 // protocol bytes that can be directly added to messages
 #define	svc_muzzleflash		1
 #define	svc_muzzleflash2	2
