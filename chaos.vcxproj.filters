@@ -78,6 +78,9 @@
     <None Include="Docs\example_server.cfg">
       <Filter>Docs</Filter>
     </None>
+    <None Include="Docs\node.cfg">
+      <Filter>Docs</Filter>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="c_base.c">
@@ -188,6 +191,9 @@
       <Filter>Docs</Filter>
     </Text>
     <Text Include="Docs\TODO.txt">
+      <Filter>Docs</Filter>
+    </Text>
+    <Text Include="Docs\nodetable.txt">
       <Filter>Docs</Filter>
     </Text>
   </ItemGroup>

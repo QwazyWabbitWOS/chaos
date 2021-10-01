@@ -1,0 +1,60 @@
+Havoc Bot Node Table Generation Tutorial
+========================================
+
+While Havoc Bot v0.8 supports dynamic node table generation 
+(generation while you play against the bots) building quality node
+table files needs more care and time.
+
+NOTE: v0.8 does not support CTF AI, yet. You can play with bot's in CTF games
+      but they won't go for the map.
+
+NOTE: The pathing system supports elevators, ladders, teleporters, water and jumps
+      but no trains (will be implemented in a future version).
+
+NOTE: The node table system supports up to 450 nodes (I'm working on a faster
+      routine...will be increased to 750 or more in the next version)
+
+To create a new node table file:
+
+1)  Start the map you want to create nodes for.
+2)  Execute the file node.cfg, it sets all console variables
+    and binds all keys you'll need.
+3)  Walk straight lines, cover the whole level.
+    Don't pickup items close to your way as you walk straight down a hallway
+    the bots automatically go for close (2-3 meters) items.
+4)  Don't jump down to elevators, step on them.
+5)  Be very carefull when climbing laders, look straight towards the ladder
+    as you climb.
+6)  Don't use the grappling hook or Jetpack while you create nodes.
+7)  Try not to fall into lava/slime.
+8)  Try not to die.
+9)  The bots do not understand trains, yet (as all other bots I know) so
+    don't try to map them...find ways around.
+10) Try to get to all items on the map, so the bots can find them later on.
+11) Jump only if you need to, don't jump around just for fun.
+12) Use 'cmd pathdebug' to visualize a path. The green line shows the path from you to
+    little skull.
+13) Use 'cmd placenode' to place nodes by hand...this is usefull to cover holes in the
+    node system that cna somethimes be found using pathdebug.
+14) Use 'cmd save_nodes' to svae the nodes table to a file (same name as the current map)
+    in the subdirectory 'nodes'.
+15) If you think that your node system is complete set dntg to 0 before you save the nodes.
+    This settings will be saved together with the nodes to prevent the game from setting dntg
+    to 1 again for this map.
+16) If you want to delete and restart a node table, just delete the node file for this map
+    in the 'nodes' subdirectory.
+
+NOTE: node.cfg executes the following commands:
+-----------------------------------------------
+set dntg 1 (set dynamic-node-table-generation to on)
+set node_debug 1 (prints ingame debug messages)
+bind s save_nodes (bind 's' to save node table for current map)
+bind l load_nodes (bind 'l' to load node table for current map)
+bind d pathdebug (bind 'd' to visualize a path
+bind p placenodes (bind 'p' to place a node 'by hand')
+
+
+Hope this small tutorial helps!
+
+Flash
+
