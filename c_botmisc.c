@@ -327,8 +327,8 @@ void Bot_Spawn(edict_t* ent)
 	ent->client->b_currentnode = -1;
 	/* MrG{DRGN} make their aim speed a little more reasonable
 	(20 degrees per frame base, + 5 degrees per level)
-	vs the hardcoded 90 it was!  ty Paril */
-	ent->yaw_speed = 90;// + (ent->client->b_botlevel * 5);
+	vs the hardcoded 90 it was!   */
+	ent->yaw_speed = 20 + (ent->client->b_botlevel * 5);
 
 	VectorCopy(origin, ent->s.origin);
 	ent->s.origin[2]++;
