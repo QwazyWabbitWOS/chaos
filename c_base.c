@@ -225,7 +225,7 @@ void GetSettings(void)
 	// FWP Set ex arrow strength and radius from server var
 	ex_arrow_damage = gi.cvar("ex_arrow_damage", "80", CVAR_LATCH);
 	ex_arrow_radius = gi.cvar("ex_arrow_radius", "200", CVAR_LATCH);
-	dntg = gi.cvar("dntg", "1", CVAR_SERVERINFO);
+	dntg = gi.cvar("dntg", "0", CVAR_SERVERINFO);
 	start_invulnerable_time = gi.cvar("start_invulnerable_time", "3", CVAR_SERVERINFO);
 	lightsoff = gi.cvar("lightsoff", "0", CVAR_SERVERINFO);
 	botchat = gi.cvar("botchat", "1", CVAR_SERVERINFO);
