@@ -1714,6 +1714,7 @@ static void SpawnTechs(edict_t* ent)
 		i++;
 	}
 }*/
+
 /* MrG{DRGN} */
 static void SpawnTechs(edict_t* ent)
 {
@@ -1728,31 +1729,35 @@ static void SpawnTechs(edict_t* ent)
 			SpawnTech(tech, spot);
 		i++;
 	}
+	DbgPrintf("%s %s %d\n", __func__, ent->classname, ent->classindex);
 	if (ent)
 		G_FreeEdict(ent);
 }
+
 // frees the passed edict!
 void CTFRespawnTech(edict_t* ent)
 {
 	edict_t* spot;
 
+	DbgPrintf("%s %s %d\n", __func__, ent->classname, ent->classindex);
 	if ((spot = FindTechSpawn()) != NULL)
 		SpawnTech(ent->item, spot);
 	 G_FreeEdict(ent);
 }
-/*
-void CTFSetupTechSpawn(void)
-{
-	edict_t* ent;
 
-	if (techspawn || ((int)dmflags->value & DF_CTF_NO_TECH))
-		return;
 
-	ent = G_Spawn();
-	ent->nextthink = level.time + 2;
-	ent->think = SpawnTechs;
-	techspawn = true;
-} */
+//void CTFSetupTechSpawn(void)
+//{
+//	edict_t* ent;
+//
+//	if (techspawn || ((int)dmflags->value & DF_CTF_NO_TECH))
+//		return;
+//
+//	ent = G_Spawn();
+//	ent->nextthink = level.time + 2;
+//	ent->think = SpawnTechs;
+//	techspawn = true;
+//}
 
 void CTFSetupTechSpawn(void)
 {
@@ -1766,19 +1771,19 @@ void CTFSetupTechSpawn(void)
 	ent->think = SpawnTechs;
 }
 
-/* MrG{DRGN} not used, but here for future ctf version updates
-void CTFResetTech(void)
-{
-	edict_t* ent;
-	int i;
-
-	for (ent = g_edicts + 1, i = 1; i < globals.num_edicts; i++, ent++) {
-		if (ent->inuse)
-			if (ent->item && (ent->item->flags & IT_TECH))
-				G_FreeEdict(ent);
-	}
-	SpawnTechs(NULL);
-}  */
+/* MrG{DRGN} not used, but here for future ctf version updates */
+//void CTFResetTech(void)
+//{
+//	edict_t* ent;
+//	int i;
+//
+//	for (ent = g_edicts + 1, i = 1; i < globals.num_edicts; i++, ent++) {
+//		if (ent->inuse)
+//			if (ent->item && (ent->item->flags & IT_TECH))
+//				G_FreeEdict(ent);
+//	}
+//	SpawnTechs(NULL);
+//}
 
 int CTFApplyResistance(edict_t* ent, int dmg)
 {
