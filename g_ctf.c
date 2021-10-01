@@ -1669,6 +1669,7 @@ static void SpawnTech(gitem_t* item, edict_t* spot)
 	ent = G_Spawn();
 
 	ent->classname = item->classname;
+	ent->classindex = item->classindex;
 	ent->item = item;
 	ent->spawnflags = DROPPED_ITEM;
 	ent->s.effects = item->world_model_flags;
@@ -1696,24 +1697,27 @@ static void SpawnTech(gitem_t* item, edict_t* spot)
 
 	gi.linkentity(ent);
 
+	DbgPrintf("%s %s %d\n", __func__, ent->classname, ent->classindex);
+
 	//HAVOC
 	AddItemToList(ent);
 }
-/*
-static void SpawnTechs(edict_t* ent)
-{
-	gitem_t* tech;
-	edict_t* spot;
-	int i;
 
-	i = 0;
-	while (tnames[i]) {
-		if ((tech = FindItemByClassname(tnames[i])) != NULL &&
-			(spot = FindTechSpawn()) != NULL)
-			SpawnTech(tech, spot);
-		i++;
-	}
-}*/
+/* QW Old function, scheduled for deletion. */
+//static void SpawnTechs(edict_t* ent)
+//{
+//	gitem_t* tech;
+//	edict_t* spot;
+//	int i;
+//
+//	i = 0;
+//	while (tnames[i]) {
+//		if ((tech = FindItemByClassname(tnames[i])) != NULL &&
+//			(spot = FindTechSpawn()) != NULL)
+//			SpawnTech(tech, spot);
+//		i++;
+//	}
+//}
 
 /* MrG{DRGN} */
 static void SpawnTechs(edict_t* ent)
@@ -1730,8 +1734,6 @@ static void SpawnTechs(edict_t* ent)
 		i++;
 	}
 	DbgPrintf("%s %s %d\n", __func__, ent->classname, ent->classindex);
-	if (ent)
-		G_FreeEdict(ent);
 }
 
 // frees the passed edict!
@@ -1739,10 +1741,10 @@ void CTFRespawnTech(edict_t* ent)
 {
 	edict_t* spot;
 
-	DbgPrintf("%s %s %d\n", __func__, ent->classname, ent->classindex);
 	if ((spot = FindTechSpawn()) != NULL)
 		SpawnTech(ent->item, spot);
-	 G_FreeEdict(ent);
+	DbgPrintf("%s %s %d\n", __func__, ent->classname, ent->classindex);
+	G_FreeEdict(ent);
 }
 
 
