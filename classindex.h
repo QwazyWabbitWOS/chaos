@@ -237,7 +237,8 @@ typedef enum classindex
 	   BLACKHOLESTUFF,
 	   FLASHLIGHT,
 
-	   SELFTELEPORTER
+	   SELFTELEPORTER,
+	   NODE_TABLE,
 
 
 } classindex_t;

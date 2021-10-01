@@ -1697,7 +1697,7 @@ static void SpawnTech(gitem_t* item, edict_t* spot)
 
 	gi.linkentity(ent);
 
-	DbgPrintf("%s %s %d\n", __func__, ent->classname, ent->classindex);
+	DbgPrintf("%s %s index: %d\n", __func__, ent->classname, ent->classindex);
 
 	//HAVOC
 	AddItemToList(ent);
@@ -1733,7 +1733,6 @@ static void SpawnTechs(edict_t* ent)
 			SpawnTech(tech, spot);
 		i++;
 	}
-	DbgPrintf("%s %s %d\n", __func__, ent->classname, ent->classindex);
 }
 
 // frees the passed edict!

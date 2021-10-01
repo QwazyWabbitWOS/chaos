@@ -470,7 +470,7 @@ qboolean Bot_LoadNodes(void)
 	const char	nodetable_id[] = "CHAOSDM NODE TABLE";
 	char	id_buffer[28] = { 0 };
 	char	version_buffer[5] = { 0 };
-	int		dntgvalue;
+	int		dntgvalue = 0;
 	size_t	num;
 
 	Com_strcpy(file, sizeof file, "./");
@@ -479,7 +479,7 @@ qboolean Bot_LoadNodes(void)
 	Com_strcat(file, sizeof file, level.mapname);
 	Com_strcat(file, sizeof file, ".ntb");
 
-	if ((input = fopen(file, "rb")) == NULL)    /* MrG{DRGN} check the return */
+	if ((input = fopen(file, "rb")) == NULL)
 	{
 		gi.dprintf("Unable to open %s! %s.\n", file, strerror(errno));
 		return false;
@@ -517,12 +517,12 @@ qboolean Bot_LoadNodes(void)
 		return false;
 	}
 
-	if ((strcmp(id_buffer, nodetable_id) != 0)) /* MrG{DRGN} simpify */
+	if ((strcmp(id_buffer, nodetable_id) != 0)) /* MrG{DRGN} simplify */
 	{
 		fclose(input); /* MrG{DRGN} fixed resource leak! */
 		return false;
 	}
-	if ((strcmp(version_buffer, nodetable_version) != 0))/* MrG{DRGN} simpify */
+	if ((strcmp(version_buffer, nodetable_version) != 0))/* MrG{DRGN} simplify */
 	{
 		fclose(input); /* MrG{DRGN} fixed resource leak! */
 		return false;
@@ -555,9 +555,9 @@ qboolean Bot_LoadNodes(void)
 	if (!num && !feof(input))
 		gi.dprintf("Chaos: %s error reading nodetable_version\n", __func__);
 
-	if ((strcmp(id_buffer, nodetable_id) != 0))/* MrG{DRGN} simpify */
+	if ((strcmp(id_buffer, nodetable_id) != 0))/* MrG{DRGN} simplify */
 		return false;
-	if ((strcmp(version_buffer, nodetable_version) != 0)) /* MrG{DRGN} simpify */
+	if ((strcmp(version_buffer, nodetable_version) != 0)) /* MrG{DRGN} simplify */
 		return false;
 
 	fclose(input);

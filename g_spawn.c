@@ -717,6 +717,8 @@ void SpawnEntities(char* mapname, char* entities, char* spawnpoint)
 
 	//MATTHIAS
 	dummy = G_Spawn();
+	dummy->classname = "nodetable";
+	dummy->classindex = NODE_TABLE;
 	dummy->think = NodeCheck;
 	dummy->nextthink = level.time + 1.5;
 
