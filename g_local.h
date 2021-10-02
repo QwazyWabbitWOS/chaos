@@ -508,8 +508,10 @@ extern cvar_t* dmflags;
 extern cvar_t* skill;
 extern cvar_t* fraglimit;
 extern cvar_t* timelimit;
-extern cvar_t* capturelimit;
-
+//ZOID
+extern	cvar_t* capturelimit;
+extern	cvar_t* instantweap;
+//ZOID
 extern cvar_t* password;
 extern cvar_t* g_select_empty;
 extern cvar_t* dedicated;
@@ -540,7 +542,7 @@ extern cvar_t* flood_waitdelay;
 extern cvar_t* filterban;
 /* END */
 
-qboolean	is_quad;     //MATTHIAS
+qboolean	is_quad;     //MATTHIAS	
 byte		is_silenced;
 
 #define world	(&g_edicts[0])
@@ -903,15 +905,20 @@ typedef struct
 	int			enterframe;			// level.framenum the client entered the game
 	int			score;				// frags, etc
 //ZOID
-	int			ctf_team; // CTF team
-	int			team; //MATTHIAS deathmatch team
+	int			ctf_team;			// CTF team
+	int			team; // MATHIAS Deathmatch Team
 	int			ctf_state;
 	float		ctf_lasthurtcarrier;
 	float		ctf_lastreturnedflag;
 	float		ctf_flagsince;
 	float		ctf_lastfraggedcarrier;
 	qboolean	id_state;
-	//ZOID
+	float		lastidtime;
+	qboolean	voted; // for elections
+	qboolean	ready;
+	qboolean	admin;
+	struct ghost_s* ghost; // for ghost codes
+//ZOID
 	vec3_t		cmd_angles;			// angles sent over in the last command
 	int			game_helpchanged;
 	int			helpchanged;
@@ -1053,16 +1060,26 @@ struct gclient_s
 
 	float		respawn_time;		// can respawn when time > this
 
-//ZOID
-	float		ctf_regentime;		// regen tech
-	float		ctf_techsndtime;
-	float		ctf_lasttechmsg;
+
 
 	/* MrG{DRGN} */
 	float		flood_locktill;		// locked from talking
 	float		flood_when[10];		// when messages were said
 	int			flood_whenhead;		// head pointer for when said
 	/* END */
+
+	//ZOID
+	//void* ctf_grapple;		// entity of grapple
+	//int			ctf_grapplestate;		// true if pulling
+	//float		ctf_grapplereleasetime;	// time of grapple release
+	float		ctf_regentime;		// regen tech
+	float		ctf_techsndtime;
+	float		ctf_lasttechmsg;
+	edict_t* chase_target;
+	qboolean	update_chase;
+	float		menutime;			// time to update menu
+	qboolean	menudirty;
+	//ZOID
 	qboolean    camera;	//MATTHIAS Camera
 	int         cammode;
 	edict_t* pTarget;
@@ -1290,8 +1307,8 @@ extern cvar_t* tele_fire; /* MrG{DRGN} allow certain non-client projectiles to p
 int		red_base, blue_base;	//node at red/blue flag
 
 //#define CHAOS_RETAIL
-  //ZOID
+// ZOID
 #include "g_ctf.h"
-
+// ZOID
 #endif // !G_LOCAL_H
 /* End of g_local.h */
