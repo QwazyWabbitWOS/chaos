@@ -1638,14 +1638,12 @@ static void TechThink(edict_t* tech)
 {
 	edict_t* spot;
 
-//	if ((spot = FindTechSpawn()) != NULL)
-	if ((spot = FindTechDest()) != NULL)
-	{
-		RemoveFromList(tech);
+	//	if ((spot = FindTechSpawn()) != NULL)
+	if ((spot = FindTechDest()) != NULL) {
 		SpawnTech(tech->item, spot);
 		G_FreeEdict(tech);
 	}
-	else
+	else 
 	{
 		tech->nextthink = level.time + CTF_TECH_TIMEOUT;
 		tech->think = TechThink;
@@ -1730,23 +1728,6 @@ static void SpawnTech(gitem_t* item, edict_t* spot)
 	AddItemToList(ent);
 }
 
-/* QW Old function, scheduled for deletion. */
-//static void SpawnTechs(edict_t* ent)
-//{
-//	gitem_t* tech;
-//	edict_t* spot;
-//	int i;
-//
-//	i = 0;
-//	while (tnames[i]) {
-//		if ((tech = FindItemByClassname(tnames[i])) != NULL &&
-//			(spot = FindTechSpawn()) != NULL)
-//			SpawnTech(tech, spot);
-//		i++;
-//	}
-//}
-
-/* MrG{DRGN} */
 static void SpawnTechs(edict_t* ent)
 {
 	gitem_t* tech;
@@ -1756,10 +1737,12 @@ static void SpawnTechs(edict_t* ent)
 	i = 0;
 	while (tnames[i]) {
 		if ((tech = FindItemByClassname(tnames[i])) != NULL &&
-			(spot = FindTechSpawn()) != NULL)
+			(spot = FindTechDest()) != NULL)
 			SpawnTech(tech, spot);
 		i++;
 	}
+	if (ent)
+		G_FreeEdict(ent);
 }
 
 // frees the passed edict!
@@ -1767,25 +1750,11 @@ void CTFRespawnTech(edict_t* ent)
 {
 	edict_t* spot;
 
-	if ((spot = FindTechSpawn()) != NULL)
+	if ((spot = FindTechDest()) != NULL)
 		SpawnTech(ent->item, spot);
 	DbgPrintf("%s %s %d\n", __func__, ent->classname, ent->classindex);
 	G_FreeEdict(ent);
 }
-
-
-//void CTFSetupTechSpawn(void)
-//{
-//	edict_t* ent;
-//
-//	if (techspawn || ((int)dmflags->value & DF_CTF_NO_TECH))
-//		return;
-//
-//	ent = G_Spawn();
-//	ent->nextthink = level.time + 2;
-//	ent->think = SpawnTechs;
-//	techspawn = true;
-//}
 
 void CTFSetupTechSpawn(void)
 {
@@ -1799,19 +1768,18 @@ void CTFSetupTechSpawn(void)
 	ent->think = SpawnTechs;
 }
 
-/* MrG{DRGN} not used, but here for future ctf version updates */
-//void CTFResetTech(void)
-//{
-//	edict_t* ent;
-//	int i;
-//
-//	for (ent = g_edicts + 1, i = 1; i < globals.num_edicts; i++, ent++) {
-//		if (ent->inuse)
-//			if (ent->item && (ent->item->flags & IT_TECH))
-//				G_FreeEdict(ent);
-//	}
-//	SpawnTechs(NULL);
-//}
+void CTFResetTech(void)
+{
+	edict_t* ent;
+	int i;
+
+	for (ent = g_edicts + 1, i = 1; i < globals.num_edicts; i++, ent++) {
+		if (ent->inuse)
+			if (ent->item && (ent->item->flags & IT_TECH))
+				G_FreeEdict(ent);
+	}
+	SpawnTechs(NULL);
+}
 
 int CTFApplyResistance(edict_t* ent, int dmg)
 {
