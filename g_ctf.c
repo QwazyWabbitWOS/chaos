@@ -1596,17 +1596,17 @@ qboolean CTFPickup_Tech(edict_t* ent, edict_t* other)
 
 static void SpawnTech(gitem_t* item, edict_t* spot);
 
-static edict_t* FindTechSpawn(void)
-{
-	edict_t* spot = NULL;
-	int i = rand() % 16;
+//static edict_t* FindTechSpawn(void)
+//{
+//	edict_t* spot = NULL;
+//	int i = rand() % 16;
 
-	while (i--)
-		spot = G_Find(spot, FOFS(classname), "info_player_deathmatch");
-	if (!spot)
-		spot = G_Find(spot, FOFS(classname), "info_player_deathmatch");
-	return spot;
-}
+//	while (i--)
+//		spot = G_Find(spot, FOFS(classname), "info_player_deathmatch");
+//	if (!spot)
+//		spot = G_Find(spot, FOFS(classname), "info_player_deathmatch");
+//	return spot;
+//}
 /*
 MrG{DRGN} - A better way to pick a random spawnpoint than FindTechSpawn
 */
@@ -1780,6 +1780,60 @@ void CTFResetTech(void)
 	}
 	SpawnTechs(NULL);
 }
+
+ /*
+ * 	 MrG{DRGN} working out a function for the techs to travel, vs be freed.
+ */
+static void CTFTech_teleport(gitem_t* item, edict_t* tech)
+{
+	edict_t* spot;
+	vec3_t	forward, right;
+	vec3_t  angles = { 0 };
+
+
+	/* END */
+	if ((spot = FindTechDest()) == NULL)
+		return;
+
+	gi.unlinkentity(tech);
+
+	VectorCopy(spot->s.origin, tech->s.origin);
+	VectorCopy(spot->s.origin, tech->s.old_origin);
+
+	tech->classname = item->classname;
+	tech->classindex = item->classindex;
+	tech->item = item;
+	tech->spawnflags = DROPPED_ITEM;
+	tech->s.effects = item->world_model_flags;
+	tech->s.renderfx = RF_GLOW;
+	VectorSet(tech->mins, -15, -15, -15);
+	VectorSet(tech->maxs, 15, 15, 15);
+	gi.setmodel(tech, tech->item->world_model);
+	tech->solid = SOLID_TRIGGER;
+	tech->movetype = MOVETYPE_TOSS;
+	tech->touch = Touch_Item;
+	tech->owner = tech;
+
+	angles[0] = 0;
+	angles[1] = rand() % 360;
+	angles[2] = 0;
+
+	AngleVectors(angles, forward, right, NULL);
+	VectorCopy(spot->s.origin, tech->s.origin);
+	tech->s.origin[2] += 16;
+	VectorScale(forward, 100, tech->velocity);
+	tech->velocity[2] = 300;
+
+	tech->nextthink = level.time + CTF_TECH_TIMEOUT;
+	tech->think = TechThink;
+	
+	VectorScale(forward, 200, tech->velocity);
+
+	gi.linkentity(tech);
+}
+
+
+
 
 int CTFApplyResistance(edict_t* ent, int dmg)
 {
