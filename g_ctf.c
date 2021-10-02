@@ -1607,12 +1607,39 @@ static edict_t* FindTechSpawn(void)
 		spot = G_Find(spot, FOFS(classname), "info_player_deathmatch");
 	return spot;
 }
+/*
+MrG{DRGN} - A better way to pick a random spawnpoint than FindTechSpawn
+*/
+static edict_t* FindTechDest(void)
+{
+	edict_t* spot;
+	int        count = 0;
+	int        selection;
 
+	spot = NULL;
+
+	while ((spot = G_Find(spot, FOFS(classname), "info_player_deathmatch")) != NULL)
+		count++;
+
+	if (!count)
+		return NULL;
+
+	selection = rand() % count;
+	spot = NULL;
+
+	do
+	{
+		spot = G_Find(spot, FOFS(classname), "info_player_deathmatch");
+	} while (selection--);
+
+	return spot;
+}
 static void TechThink(edict_t* tech)
 {
 	edict_t* spot;
 
-	if ((spot = FindTechSpawn()) != NULL)
+//	if ((spot = FindTechSpawn()) != NULL)
+	if ((spot = FindTechDest()) != NULL)
 	{
 		RemoveFromList(tech);
 		SpawnTech(tech->item, spot);
