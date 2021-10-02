@@ -912,6 +912,7 @@ void Cmd_Wave_f(edict_t* ent)
 }
 
 /* MrG{DRGN} */
+// Mute spammy players.
 qboolean CheckFlood(edict_t* ent)
 {
 	int	i;
@@ -1023,7 +1024,7 @@ void Cmd_Say_f(edict_t* ent, qboolean team, qboolean arg0)
 
 /*
 =================
-ClientCommand
+Process normal client commands
 =================
 */
 void ClientCommand(edict_t* ent)

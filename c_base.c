@@ -1493,7 +1493,8 @@ void ClientCommand2(edict_t* ent)
 
 	if (!Q_stricmp(cmd, "grapple"))
 	{
-		if (ent->classindex == CAMPLAYER || ent->movetype == MOVETYPE_NOCLIP)/* MrG{DRGN} if you haven't joined a team yet. you can't use the hook! */
+		/* MrG{DRGN} if you haven't joined a team yet. you can't use the hook! */
+		if (ent->classindex == CAMPLAYER || ent->movetype == MOVETYPE_NOCLIP)
 			return;
 		if (ent->health <= 0)
 			return;

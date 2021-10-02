@@ -17,7 +17,7 @@ void		Bot_InitNodes(void);
 qboolean	Bot_LoadNodes(void);
 qboolean	Bot_SaveNodes(void);
 void FakeDeath(edict_t* self);
-void ClientCommand2(edict_t* ent);
+void ClientCommand2(edict_t* ent); //Chaos commands
 void ThrowUpNow(edict_t* self);
 void ShowGun(edict_t* ent);	//vwep
 void CreateCamera(edict_t* ent);

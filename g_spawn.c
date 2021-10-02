@@ -592,6 +592,8 @@ void G_FindTeams(void)
 }
 
 //MATTHIAS
+//QW// If node table isn't filled by now, turn off 
+// dynamic node table generation and free the nodetable edict.
 void NodeCheck(edict_t* ent)
 {
 	if (numnodes >= MAX_NODES - 1)	//MAX_NODES = 512
@@ -611,8 +613,7 @@ void NodeCheck(edict_t* ent)
 
 /*
 ==============
-SpawnEntities
-
+The game exports this, called from server.
 Creates a server's entity / program execution context by
 parsing textual entity definitions out of an ent file.
 ==============
@@ -715,11 +716,18 @@ void SpawnEntities(char* mapname, char* entities, char* spawnpoint)
 
 	G_FindTeams();
 
+	//QW// This seems to be the nodetable entity but the class
+	// initialization was incomplete. I added classname and classindex
+	// so we can track it. It spawns and schedules itself for "checking".
+	// Chaos' InitEdict and G_Spawn are unremarkable.
+	// This seems to depend on at least one player being connected the moment the
+	// new level starts with dntg set to ON. 
+	// (command the map, turn on dntg via client rcon, etc.)
 	//MATTHIAS
 	dummy = G_Spawn();
 	dummy->classname = "nodetable";
 	dummy->classindex = NODE_TABLE;
-	dummy->think = NodeCheck;
+	dummy->think = NodeCheck;	// if the table isn't filled right away, Free it.
 	dummy->nextthink = level.time + 1.5;
 
 	//PlayerTrail_Init ();	//MATTHIAS
