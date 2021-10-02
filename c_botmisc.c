@@ -1711,9 +1711,8 @@ void Load_BotChat(void)
 
 char* Get_RandomBotSkin(void)
 {
-	int rn = 0;
 
-	switch (rn = (int)(random() * 28))
+	switch ((int)(random() * 28))
 	{
 	case 0:  	return "male/cipher"; break;
 	case 1:	return "male/claymore"; break;
