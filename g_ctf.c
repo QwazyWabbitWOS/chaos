@@ -1635,11 +1635,10 @@ static edict_t* FindTechDest(void)
 	return spot;
 }
 
-static void CTFTech_teleport(edict_t* tech);
+
 static void TechThink(edict_t* tech)
 {
-	gitem_t* item = tech->item;
-	CTFTech_teleport(item, tech);
+	CTFTech_teleport(tech);
 	tech->nextthink = level.time + CTF_TECH_TIMEOUT;
 	tech->think = TechThink;
 }
@@ -1775,10 +1774,10 @@ void CTFResetTech(void)
 	SpawnTechs(NULL);
 }
 
- /*
- * 	 MrG{DRGN} working out a function for the techs to travel, vs be freed.
- */
-static void CTFTech_teleport( edict_t* tech)
+/*
+* 	 MrG{DRGN} working out a function for the techs to travel, vs be freed.
+*/
+void CTFTech_teleport( edict_t* tech)
 {
 	edict_t* spot;
 	vec3_t	forward, right;
@@ -1793,10 +1792,12 @@ static void CTFTech_teleport( edict_t* tech)
 
 	VectorCopy(spot->s.origin, tech->s.origin);
 	VectorCopy(spot->s.origin, tech->s.old_origin);
-	tech->s.event = EV_OTHER_TELEPORT;	  
+
 	tech->spawnflags = DROPPED_ITEM;
-
-
+	tech->s.renderfx = RF_GLOW;
+	VectorSet(tech->mins, -15, -15, -15);
+	VectorSet(tech->maxs, 15, 15, 15);
+	gi.setmodel(tech, tech->item->world_model);
 	tech->solid = SOLID_TRIGGER;
 	tech->movetype = MOVETYPE_TOSS;
 	tech->touch = Touch_Item;
@@ -1809,12 +1810,13 @@ static void CTFTech_teleport( edict_t* tech)
 	AngleVectors(angles, forward, right, NULL);
 	VectorCopy(spot->s.origin, tech->s.origin);
 	tech->s.origin[2] += 16;
+
+	tech->s.event = EV_ITEM_RESPAWN;
 	VectorScale(forward, 100, tech->velocity);
 	tech->velocity[2] = 300;
 
 	tech->nextthink = level.time + CTF_TECH_TIMEOUT;
 	tech->think = TechThink;
-	
 
 	gi.linkentity(tech);
 }

@@ -110,6 +110,7 @@ void CTFID_f(edict_t* ent);
 void CTFSay_Team(edict_t* who, char* msg);
 void CTFFlagSetup(edict_t* ent);
 void CTFResetFlag(int ctf_team);
+void CTFTech_teleport(edict_t* tech);
 void CTFFragBonuses(edict_t* targ, edict_t* inflictor, edict_t* attacker);
 void CTFCheckHurtCarrier(edict_t* targ, edict_t* attacker);
 
