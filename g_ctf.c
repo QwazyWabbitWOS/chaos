@@ -1638,19 +1638,10 @@ static edict_t* FindTechDest(void)
 static void CTFTech_teleport(edict_t* tech);
 static void TechThink(edict_t* tech)
 {
-	edict_t* spot;
-
-	//	if ((spot = FindTechSpawn()) != NULL)
-	if ((spot = FindTechDest()) != NULL) {
-		//SpawnTech(tech->item, spot);
-		//G_FreeEdict(tech);
-		CTFTech_teleport(tech);
-	}
-	else 
-	{
-		tech->nextthink = level.time + CTF_TECH_TIMEOUT;
-		tech->think = TechThink;
-	}
+	gitem_t* item = tech->item;
+	CTFTech_teleport(item, tech);
+	tech->nextthink = level.time + CTF_TECH_TIMEOUT;
+	tech->think = TechThink;
 }
 
 void CTFDrop_Tech(edict_t* ent, gitem_t* item)
