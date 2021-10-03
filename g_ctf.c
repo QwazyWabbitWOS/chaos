@@ -1634,14 +1634,17 @@ static edict_t* FindTechDest(void)
 
 	return spot;
 }
+
+static void CTFTech_teleport(edict_t* tech);
 static void TechThink(edict_t* tech)
 {
 	edict_t* spot;
 
 	//	if ((spot = FindTechSpawn()) != NULL)
 	if ((spot = FindTechDest()) != NULL) {
-		SpawnTech(tech->item, spot);
-		G_FreeEdict(tech);
+		//SpawnTech(tech->item, spot);
+		//G_FreeEdict(tech);
+		CTFTech_teleport(tech);
 	}
 	else 
 	{
@@ -1784,7 +1787,7 @@ void CTFResetTech(void)
  /*
  * 	 MrG{DRGN} working out a function for the techs to travel, vs be freed.
  */
-static void CTFTech_teleport(gitem_t* item, edict_t* tech)
+static void CTFTech_teleport( edict_t* tech)
 {
 	edict_t* spot;
 	vec3_t	forward, right;
@@ -1799,16 +1802,10 @@ static void CTFTech_teleport(gitem_t* item, edict_t* tech)
 
 	VectorCopy(spot->s.origin, tech->s.origin);
 	VectorCopy(spot->s.origin, tech->s.old_origin);
-
-	tech->classname = item->classname;
-	tech->classindex = item->classindex;
-	tech->item = item;
+	tech->s.event = EV_OTHER_TELEPORT;	  
 	tech->spawnflags = DROPPED_ITEM;
-	tech->s.effects = item->world_model_flags;
-	tech->s.renderfx = RF_GLOW;
-	VectorSet(tech->mins, -15, -15, -15);
-	VectorSet(tech->maxs, 15, 15, 15);
-	gi.setmodel(tech, tech->item->world_model);
+
+
 	tech->solid = SOLID_TRIGGER;
 	tech->movetype = MOVETYPE_TOSS;
 	tech->touch = Touch_Item;
@@ -1827,7 +1824,6 @@ static void CTFTech_teleport(gitem_t* item, edict_t* tech)
 	tech->nextthink = level.time + CTF_TECH_TIMEOUT;
 	tech->think = TechThink;
 	
-	VectorScale(forward, 200, tech->velocity);
 
 	gi.linkentity(tech);
 }

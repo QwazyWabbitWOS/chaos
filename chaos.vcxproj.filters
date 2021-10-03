@@ -176,13 +176,13 @@
     <ClCompile Include="stdlog.c">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="b_log.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
     <ClCompile Include="performance.c">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="g_ent.c">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="b_log.c">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -193,10 +193,10 @@
     <Text Include="Docs\LICENSE.TXT">
       <Filter>Docs</Filter>
     </Text>
-    <Text Include="Docs\TODO.txt">
+    <Text Include="Docs\nodetable.txt">
       <Filter>Docs</Filter>
     </Text>
-    <Text Include="Docs\nodetable.txt">
+    <Text Include="Docs\TODO.txt">
       <Filter>Docs</Filter>
     </Text>
   </ItemGroup>
