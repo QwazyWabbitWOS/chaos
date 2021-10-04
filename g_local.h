@@ -279,6 +279,7 @@ typedef struct
 	char		level_name[MAX_QPATH];	// the descriptive name (Outer Base, etc)
 	char		mapname[MAX_QPATH];		// the server name (base1, etc)
 	char		nextmap[MAX_QPATH];		// go here when fraglimit is hit
+	char		forcemap[MAX_QPATH];	// go here
 
 	// intermission state
 	float		intermissiontime;		// time the intermission was started

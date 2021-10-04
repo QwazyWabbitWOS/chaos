@@ -272,11 +272,12 @@ void CheckDMRules(void)
 	if (fraglimit->value)
 	{
 		//ZOID
-		if (ctf->value) {
-			if (CTFCheckRules()) {
-				EndDMLevel();
-			}
+		if (ctf->value && CTFCheckRules()) {
+			EndDMLevel();
+			return;
 		}
+		if (CTFInMatch())
+			return; // no checking in match mode
 		//ZOID
 		for (i = 0; i < maxclients->value; i++)
 		{

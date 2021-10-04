@@ -278,7 +278,7 @@ static gitem_t* it_flag1_item;
 static gitem_t* it_flag2_item;
 */
 
-void CTFInit(void)
+void CTFInit_old(void)
 {
 	ctf = gi.cvar("ctf", "0", CVAR_SERVERINFO); //MATTHIAS
 	ctf_forcejoin = gi.cvar("ctf_forcejoin", "1", CVAR_LATCH);
@@ -292,6 +292,25 @@ void CTFInit(void)
 	techspawn = false;
 }
 
+void CTFInit(void)
+{
+	ctf = gi.cvar("ctf", "0", CVAR_SERVERINFO);
+	ctf_forcejoin = gi.cvar("ctf_forcejoin", "1", 0);
+	competition = gi.cvar("competition", "0", CVAR_SERVERINFO);
+	matchlock = gi.cvar("matchlock", "1", CVAR_SERVERINFO);
+	electpercentage = gi.cvar("electpercentage", "66", 0);
+	matchtime = gi.cvar("matchtime", "20", CVAR_SERVERINFO);
+	matchsetuptime = gi.cvar("matchsetuptime", "10", 0);
+	matchstarttime = gi.cvar("matchstarttime", "20", 0);
+	admin_password = gi.cvar("admin_password", "", 0);
+	allow_admin = gi.cvar("allow_admin", "1", 0);
+	warp_list = gi.cvar("warp_list", "q2ctf1 q2ctf2 q2ctf3 q2ctf4 q2ctf5", 0);
+	warn_unbalanced = gi.cvar("warn_unbalanced", "1", 0);
+	memset(&ctfgame, 0, sizeof(ctfgame));
+	techspawn = false;
+}
+
+/*
 /*--------------------------------------------------------------------------*/
 
 char* CTFTeamName(int team)
@@ -2365,6 +2384,423 @@ void SP_misc_ctf_small_banner(edict_t* ent)
 
 /*-----------------------------------------------------------------------*/
 
+
+/* ELECTIONS */
+
+qboolean CTFBeginElection(edict_t* ent, elect_t type, char* msg)
+{
+	int i;
+	int count;
+	edict_t* e;
+
+	if (electpercentage->value == 0) {
+		gi.cprintf(ent, PRINT_HIGH, "Elections are disabled, only an admin can process this action.\n");
+		return false;
+	}
+
+
+	if (ctfgame.election != ELECT_NONE) {
+		gi.cprintf(ent, PRINT_HIGH, "Election already in progress.\n");
+		return false;
+	}
+
+	// clear votes
+	count = 0;
+	for (i = 1; i <= maxclients->value; i++) {
+		e = g_edicts + i;
+		e->client->resp.voted = false;
+		if (e->inuse)
+			count++;
+	}
+
+	if (count < 2) {
+		gi.cprintf(ent, PRINT_HIGH, "Not enough players for election.\n");
+		return false;
+	}
+
+	ctfgame.etarget = ent;
+	ctfgame.election = type;
+	ctfgame.evotes = 0;
+	ctfgame.needvotes = (count * electpercentage->value) / 100;
+	ctfgame.electtime = level.time + 20; // twenty seconds for election
+	strncpy(ctfgame.emsg, msg, sizeof(ctfgame.emsg) - 1);
+
+	// tell everyone
+	gi.bprintf(PRINT_CHAT, "%s\n", ctfgame.emsg);
+	gi.bprintf(PRINT_HIGH, "Type YES or NO to vote on this request.\n");
+	gi.bprintf(PRINT_HIGH, "Votes: %d  Needed: %d  Time left: %ds\n", ctfgame.evotes, ctfgame.needvotes,
+		(int)(ctfgame.electtime - level.time));
+
+	return true;
+}
+
+void DoRespawn(edict_t* ent);
+
+void CTFResetAllPlayers(void)
+{
+	int i;
+	edict_t* ent;
+
+	for (i = 1; i <= maxclients->value; i++) {
+		ent = g_edicts + i;
+		if (!ent->inuse)
+			continue;
+
+		if (ent->client->menu)
+			PMenu_Close(ent);
+
+		//CTFPlayerResetGrapple(ent);
+		CTFDeadDropFlag(ent);
+		CTFDeadDropTech(ent);
+
+		ent->client->resp.ctf_team = CTF_NOTEAM;
+		ent->client->resp.ready = false;
+
+		ent->svflags = 0;
+		ent->flags &= ~FL_GODMODE;
+		PutClientInServer(ent);
+	}
+
+	// reset the level
+	CTFResetTech();
+	CTFResetFlags();
+
+	for (ent = g_edicts + 1, i = 1; i < globals.num_edicts; i++, ent++) {
+		if (ent->inuse && !ent->client) {
+			if (ent->solid == SOLID_NOT && ent->think == DoRespawn &&
+				ent->nextthink >= level.time) {
+				ent->nextthink = 0;
+				DoRespawn(ent);
+			}
+		}
+	}
+	if (ctfgame.match == MATCH_SETUP)
+		ctfgame.matchtime = level.time + matchsetuptime->value * 60;
+}
+
+void CTFAssignGhost(edict_t* ent)
+{
+	int ghost, i;
+
+	for (ghost = 0; ghost < MAX_CLIENTS; ghost++)
+		if (!ctfgame.ghosts[ghost].code)
+			break;
+	if (ghost == MAX_CLIENTS)
+		return;
+	ctfgame.ghosts[ghost].team = ent->client->resp.ctf_team;
+	ctfgame.ghosts[ghost].score = 0;
+	for (;;) {
+		ctfgame.ghosts[ghost].code = 10000 + (rand() % 90000);
+		for (i = 0; i < MAX_CLIENTS; i++)
+			if (i != ghost && ctfgame.ghosts[i].code == ctfgame.ghosts[ghost].code)
+				break;
+		if (i == MAX_CLIENTS)
+			break;
+	}
+	ctfgame.ghosts[ghost].ent = ent;
+	strcpy(ctfgame.ghosts[ghost].netname, ent->client->pers.netname);
+	ent->client->resp.ghost = ctfgame.ghosts + ghost;
+	gi.cprintf(ent, PRINT_CHAT, "Your ghost code is **** %d ****\n", ctfgame.ghosts[ghost].code);
+	gi.cprintf(ent, PRINT_HIGH, "If you lose connection, you can rejoin with your score "
+		"intact by typing \"ghost %d\".\n", ctfgame.ghosts[ghost].code);
+}
+
+// start a match
+void CTFStartMatch(void)
+{
+	int i;
+	edict_t* ent;
+	int ghost = 0;
+
+	ctfgame.match = MATCH_GAME;
+	ctfgame.matchtime = level.time + matchtime->value * 60;
+	ctfgame.countdown = false;
+
+	ctfgame.team1 = ctfgame.team2 = 0;
+
+	memset(ctfgame.ghosts, 0, sizeof(ctfgame.ghosts));
+
+	for (i = 1; i <= maxclients->value; i++) {
+		ent = g_edicts + i;
+		if (!ent->inuse)
+			continue;
+
+		ent->client->resp.score = 0;
+		ent->client->resp.ctf_state = CTF_STATE_START;
+		ent->client->resp.ghost = NULL;
+
+		gi.centerprintf(ent, "******************\n\nMATCH HAS STARTED!\n\n******************");
+
+		if (ent->client->resp.ctf_team != CTF_NOTEAM) {
+			// make up a ghost code
+			CTFAssignGhost(ent);
+			//CTFPlayerResetGrapple(ent);
+			ent->svflags = SVF_NOCLIENT;
+			ent->flags &= ~FL_GODMODE;
+
+			ent->client->respawn_time = level.time + 1.0 + ((rand() % 30) / 10.0);
+			ent->client->ps.pmove.pm_type = PM_DEAD;
+			ent->client->anim_priority = ANIM_DEATH;
+			ent->s.frame = FRAME_death308 - 1;
+			ent->client->anim_end = FRAME_death308;
+			ent->deadflag = DEAD_DEAD;
+			ent->movetype = MOVETYPE_NOCLIP;
+			ent->client->ps.gunindex = 0;
+			gi.linkentity(ent);
+		}
+	}
+}
+
+void CTFEndMatch(void)
+{
+	ctfgame.match = MATCH_POST;
+	gi.bprintf(PRINT_CHAT, "MATCH COMPLETED!\n");
+
+	CTFCalcScores();
+
+	gi.bprintf(PRINT_HIGH, "RED TEAM:  %d captures, %d points\n",
+		ctfgame.team1, ctfgame.total1);
+	gi.bprintf(PRINT_HIGH, "BLUE TEAM:  %d captures, %d points\n",
+		ctfgame.team2, ctfgame.total2);
+
+	if (ctfgame.team1 > ctfgame.team2)
+		gi.bprintf(PRINT_CHAT, "RED team won over the BLUE team by %d CAPTURES!\n",
+			ctfgame.team1 - ctfgame.team2);
+	else if (ctfgame.team2 > ctfgame.team1)
+		gi.bprintf(PRINT_CHAT, "BLUE team won over the RED team by %d CAPTURES!\n",
+			ctfgame.team2 - ctfgame.team1);
+	else if (ctfgame.total1 > ctfgame.total2) // frag tie breaker
+		gi.bprintf(PRINT_CHAT, "RED team won over the BLUE team by %d POINTS!\n",
+			ctfgame.total1 - ctfgame.total2);
+	else if (ctfgame.total2 > ctfgame.total1)
+		gi.bprintf(PRINT_CHAT, "BLUE team won over the RED team by %d POINTS!\n",
+			ctfgame.total2 - ctfgame.total1);
+	else
+		gi.bprintf(PRINT_CHAT, "TIE GAME!\n");
+
+	EndDMLevel();
+}
+
+qboolean CTFNextMap(void)
+{
+	if (ctfgame.match == MATCH_POST) {
+		ctfgame.match = MATCH_SETUP;
+		CTFResetAllPlayers();
+		return true;
+	}
+	return false;
+}
+
+void CTFWinElection(void)
+{
+	switch (ctfgame.election) {
+	case ELECT_MATCH:
+		// reset into match mode
+		if (competition->value < 3)
+			gi.cvar_set("competition", "2");
+		ctfgame.match = MATCH_SETUP;
+		CTFResetAllPlayers();
+		break;
+
+	case ELECT_ADMIN:
+		ctfgame.etarget->client->resp.admin = true;
+		gi.bprintf(PRINT_HIGH, "%s has become an admin.\n", ctfgame.etarget->client->pers.netname);
+		gi.cprintf(ctfgame.etarget, PRINT_HIGH, "Type 'admin' to access the adminstration menu.\n");
+		break;
+
+	case ELECT_MAP:
+		gi.bprintf(PRINT_HIGH, "%s is warping to level %s.\n",
+			ctfgame.etarget->client->pers.netname, ctfgame.elevel);
+		strncpy(level.forcemap, ctfgame.elevel, sizeof(level.forcemap) - 1);
+		EndDMLevel();
+		break;
+	}
+	ctfgame.election = ELECT_NONE;
+}
+
+void CTFVoteYes(edict_t* ent)
+{
+	if (ctfgame.election == ELECT_NONE) {
+		gi.cprintf(ent, PRINT_HIGH, "No election is in progress.\n");
+		return;
+	}
+	if (ent->client->resp.voted) {
+		gi.cprintf(ent, PRINT_HIGH, "You already voted.\n");
+		return;
+	}
+	if (ctfgame.etarget == ent) {
+		gi.cprintf(ent, PRINT_HIGH, "You can't vote for yourself.\n");
+		return;
+	}
+
+	ent->client->resp.voted = true;
+
+	ctfgame.evotes++;
+	if (ctfgame.evotes == ctfgame.needvotes) {
+		// the election has been won
+		CTFWinElection();
+		return;
+	}
+	gi.bprintf(PRINT_HIGH, "%s\n", ctfgame.emsg);
+	gi.bprintf(PRINT_CHAT, "Votes: %d  Needed: %d  Time left: %ds\n", ctfgame.evotes, ctfgame.needvotes,
+		(int)(ctfgame.electtime - level.time));
+}
+
+void CTFVoteNo(edict_t* ent)
+{
+	if (ctfgame.election == ELECT_NONE) {
+		gi.cprintf(ent, PRINT_HIGH, "No election is in progress.\n");
+		return;
+	}
+	if (ent->client->resp.voted) {
+		gi.cprintf(ent, PRINT_HIGH, "You already voted.\n");
+		return;
+	}
+	if (ctfgame.etarget == ent) {
+		gi.cprintf(ent, PRINT_HIGH, "You can't vote for yourself.\n");
+		return;
+	}
+
+	ent->client->resp.voted = true;
+
+	gi.bprintf(PRINT_HIGH, "%s\n", ctfgame.emsg);
+	gi.bprintf(PRINT_CHAT, "Votes: %d  Needed: %d  Time left: %ds\n", ctfgame.evotes, ctfgame.needvotes,
+		(int)(ctfgame.electtime - level.time));
+}
+
+void CTFReady(edict_t* ent)
+{
+	int i, j;
+	edict_t* e;
+	int t1, t2;
+
+	if (ent->client->resp.ctf_team == CTF_NOTEAM) {
+		gi.cprintf(ent, PRINT_HIGH, "Pick a team first (hit <TAB> for menu)\n");
+		return;
+	}
+
+	if (ctfgame.match != MATCH_SETUP) {
+		gi.cprintf(ent, PRINT_HIGH, "A match is not being setup.\n");
+		return;
+	}
+
+	if (ent->client->resp.ready) {
+		gi.cprintf(ent, PRINT_HIGH, "You have already commited.\n");
+		return;
+	}
+
+	ent->client->resp.ready = true;
+	gi.bprintf(PRINT_HIGH, "%s is ready.\n", ent->client->pers.netname);
+
+	t1 = t2 = 0;
+	for (j = 0, i = 1; i <= maxclients->value; i++) {
+		e = g_edicts + i;
+		if (!e->inuse)
+			continue;
+		if (e->client->resp.ctf_team != CTF_NOTEAM && !e->client->resp.ready)
+			j++;
+		if (e->client->resp.ctf_team == CTF_TEAM1)
+			t1++;
+		else if (e->client->resp.ctf_team == CTF_TEAM2)
+			t2++;
+	}
+	if (!j && t1 && t2) {
+		// everyone has commited
+		gi.bprintf(PRINT_CHAT, "All players have commited.  Match starting\n");
+		ctfgame.match = MATCH_PREGAME;
+		ctfgame.matchtime = level.time + matchstarttime->value;
+		ctfgame.countdown = false;
+		gi.positioned_sound(world->s.origin, world, CHAN_AUTO | CHAN_RELIABLE, gi.soundindex("misc/talk1.wav"), 1, ATTN_NONE, 0);
+	}
+}
+
+void CTFNotReady(edict_t* ent)
+{
+	if (ent->client->resp.ctf_team == CTF_NOTEAM) {
+		gi.cprintf(ent, PRINT_HIGH, "Pick a team first (hit <TAB> for menu)\n");
+		return;
+	}
+
+	if (ctfgame.match != MATCH_SETUP && ctfgame.match != MATCH_PREGAME) {
+		gi.cprintf(ent, PRINT_HIGH, "A match is not being setup.\n");
+		return;
+	}
+
+	if (!ent->client->resp.ready) {
+		gi.cprintf(ent, PRINT_HIGH, "You haven't commited.\n");
+		return;
+	}
+
+	ent->client->resp.ready = false;
+	gi.bprintf(PRINT_HIGH, "%s is no longer ready.\n", ent->client->pers.netname);
+
+	if (ctfgame.match == MATCH_PREGAME) {
+		gi.bprintf(PRINT_CHAT, "Match halted.\n");
+		ctfgame.match = MATCH_SETUP;
+		ctfgame.matchtime = level.time + matchsetuptime->value * 60;
+	}
+}
+
+void CTFGhost(edict_t* ent)
+{
+	int i;
+	int n;
+
+	if (gi.argc() < 2) {
+		gi.cprintf(ent, PRINT_HIGH, "Usage:  ghost <code>\n");
+		return;
+	}
+
+	if (ent->client->resp.ctf_team != CTF_NOTEAM) {
+		gi.cprintf(ent, PRINT_HIGH, "You are already in the game.\n");
+		return;
+	}
+	if (ctfgame.match != MATCH_GAME) {
+		gi.cprintf(ent, PRINT_HIGH, "No match is in progress.\n");
+		return;
+	}
+
+	n = atoi(gi.argv(1));
+
+	for (i = 0; i < MAX_CLIENTS; i++) {
+		if (ctfgame.ghosts[i].code && ctfgame.ghosts[i].code == n) {
+			gi.cprintf(ent, PRINT_HIGH, "Ghost code accepted, your position has been reinstated.\n");
+			ctfgame.ghosts[i].ent->client->resp.ghost = NULL;
+			ent->client->resp.ctf_team = ctfgame.ghosts[i].team;
+			ent->client->resp.ghost = ctfgame.ghosts + i;
+			ent->client->resp.score = ctfgame.ghosts[i].score;
+			ent->client->resp.ctf_state = CTF_STATE_START;
+			ctfgame.ghosts[i].ent = ent;
+			ent->svflags = 0;
+			ent->flags &= ~FL_GODMODE;
+			PutClientInServer(ent);
+			gi.bprintf(PRINT_HIGH, "%s has been reinstated to %s team.\n",
+				ent->client->pers.netname, CTFTeamName(ent->client->resp.ctf_team));
+			return;
+		}
+	}
+	gi.cprintf(ent, PRINT_HIGH, "Invalid ghost code.\n");
+}
+
+qboolean CTFMatchSetup(void)
+{
+	if (ctfgame.match == MATCH_SETUP || ctfgame.match == MATCH_PREGAME)
+		return true;
+	return false;
+}
+
+qboolean CTFMatchOn(void)
+{
+	if (ctfgame.match == MATCH_GAME)
+		return true;
+	return false;
+}
+
+
+/*-----------------------------------------------------------------------*/
+
+/*-----------------------------------------------------------------------*/
+
 void CTFBotJoinTeam(edict_t* ent, int desired_team)	//MATTHIAS
 {
 	char* s;
@@ -2398,7 +2834,7 @@ void CTFBotJoinTeam(edict_t* ent, int desired_team)	//MATTHIAS
 	}
 }
 
-void CTFJoinTeam(edict_t* ent, int desired_team)
+void CTFJoinTeam_old(edict_t* ent, int desired_team)
 {
 	char* s;
 
@@ -2435,7 +2871,58 @@ void CTFJoinTeam(edict_t* ent, int desired_team)
 	if (!ent->bot_player)
 		gi.centerprintf(ent, motd);//MATTHIAS
 }
+void CTFJoinTeam(edict_t* ent, int desired_team)
+{
+	char* s;
 
+	PMenu_Close(ent);
+
+	ent->svflags &= ~SVF_NOCLIENT;
+	ent->client->resp.ctf_team = desired_team;
+	ent->client->resp.ctf_state = CTF_STATE_START;
+	s = Info_ValueForKey(ent->client->pers.userinfo, "skin");
+	CTFAssignSkin(ent, s);
+
+	// Log Join Team - Mark Davies
+	sl_LogPlayerName(&gi,
+		ent->client->pers.netname,
+		CTFTeamName(ent->client->resp.ctf_team),
+		level.time);
+
+	// assign a ghost if we are in match mode
+	if (ctfgame.match == MATCH_GAME) {
+		if (ent->client->resp.ghost)
+			ent->client->resp.ghost->code = 0;
+		ent->client->resp.ghost = NULL;
+		CTFAssignGhost(ent);
+	}
+
+	PutClientInServer(ent);
+	// add a teleportation effect
+	ent->s.event = EV_PLAYER_TELEPORT;
+	// hold in place briefly
+	ent->client->ps.pmove.pm_flags = PMF_TIME_TELEPORT;
+	ent->client->ps.pmove.pm_time = 14;
+	bprint_botsafe(PRINT_HIGH, "%s joined the %s team.\n", ent->client->pers.netname, CTFTeamName(desired_team));
+
+	if (desired_team == 1)
+	{
+		numred++;
+	}
+	else if (desired_team == 2)
+	{
+		numblue++;
+	}
+	if (!ent->bot_player)
+		gi.centerprintf(ent, motd);//MATTHIAS
+	if (ctfgame.match == MATCH_SETUP) {
+		if (!ent->bot_player)
+		gi.centerprintf(ent, "***********************\n"
+			"Type \"ready\" in console\n"
+			"to ready up.\n"
+			"***********************");
+	}
+}
 void CTFJoinTeam1(edict_t* ent, pmenu_t* p)
 {
 	CTFJoinTeam(ent, CTF_TEAM1);
@@ -2628,7 +3115,7 @@ qboolean CTFStartClient(edict_t* ent)
 	return false;
 }
 
-qboolean CTFCheckRules()
+qboolean CTFCheckRules_Old()
 {
 	if (capturelimit->value &&
 		(ctfgame.team1 >= capturelimit->value ||
@@ -2639,6 +3126,160 @@ qboolean CTFCheckRules()
 	return false;
 }
 
+qboolean CTFInMatch(void)
+{
+	if (ctfgame.match > MATCH_NONE)
+		return true;
+	return false;
+}
+
+qboolean CTFCheckRules(void)
+{
+	int t;
+	int i, j;
+	char text[64];
+	edict_t* ent;
+
+	if (ctfgame.election != ELECT_NONE && ctfgame.electtime <= level.time) {
+		gi.bprintf(PRINT_CHAT, "Election timed out and has been cancelled.\n");
+		ctfgame.election = ELECT_NONE;
+	}
+
+	if (ctfgame.match != MATCH_NONE) {
+		t = ctfgame.matchtime - level.time;
+
+		// no team warnings in match mode
+		ctfgame.warnactive = 0;
+
+		if (t <= 0) { // time ended on something
+			switch (ctfgame.match) {
+			case MATCH_SETUP:
+				// go back to normal mode
+				if (competition->value < 3) {
+					ctfgame.match = MATCH_NONE;
+					gi.cvar_set("competition", "1");
+					CTFResetAllPlayers();
+				}
+				else {
+					// reset the time
+					ctfgame.matchtime = level.time + matchsetuptime->value * 60;
+				}
+				return false;
+
+			case MATCH_PREGAME:
+				// match started!
+				CTFStartMatch();
+				gi.positioned_sound(world->s.origin, world, CHAN_AUTO | CHAN_RELIABLE, gi.soundindex("misc/tele_up.wav"), 1, ATTN_NONE, 0);
+				return false;
+
+			case MATCH_GAME:
+				// match ended!
+				CTFEndMatch();
+				gi.positioned_sound(world->s.origin, world, CHAN_AUTO | CHAN_RELIABLE, gi.soundindex("misc/bigtele.wav"), 1, ATTN_NONE, 0);
+				return false;
+			}
+		}
+
+		if (t == ctfgame.lasttime)
+			return false;
+
+		ctfgame.lasttime = t;
+
+		switch (ctfgame.match) {
+		case MATCH_SETUP:
+			for (j = 0, i = 1; i <= maxclients->value; i++) {
+				ent = g_edicts + i;
+				if (!ent->inuse)
+					continue;
+				if (ent->client->resp.ctf_team != CTF_NOTEAM &&
+					!ent->client->resp.ready)
+					j++;
+			}
+
+			if (competition->value < 3)
+				sprintf(text, "%02d:%02d SETUP: %d not ready",
+					t / 60, t % 60, j);
+			else
+				sprintf(text, "SETUP: %d not ready", j);
+
+			gi.configstring(CONFIG_CTF_MATCH, text);
+			break;
+
+
+		case MATCH_PREGAME:
+			sprintf(text, "%02d:%02d UNTIL START",
+				t / 60, t % 60);
+			gi.configstring(CONFIG_CTF_MATCH, text);
+
+			if (t <= 10 && !ctfgame.countdown) {
+				ctfgame.countdown = true;
+				gi.positioned_sound(world->s.origin, world, CHAN_AUTO | CHAN_RELIABLE, gi.soundindex("world/10_0.wav"), 1, ATTN_NONE, 0);
+			}
+			break;
+
+		case MATCH_GAME:
+			sprintf(text, "%02d:%02d MATCH",
+				t / 60, t % 60);
+			gi.configstring(CONFIG_CTF_MATCH, text);
+			if (t <= 10 && !ctfgame.countdown) {
+				ctfgame.countdown = true;
+				gi.positioned_sound(world->s.origin, world, CHAN_AUTO | CHAN_RELIABLE, gi.soundindex("world/10_0.wav"), 1, ATTN_NONE, 0);
+			}
+			break;
+		}
+		return false;
+
+	}
+	else {
+		int team1 = 0, team2 = 0;
+
+		if (level.time == ctfgame.lasttime)
+			return false;
+		ctfgame.lasttime = level.time;
+		// this is only done in non-match (public) mode
+
+		if (warn_unbalanced->value) {
+			// count up the team totals
+			for (i = 1; i <= maxclients->value; i++) {
+				ent = g_edicts + i;
+				if (!ent->inuse)
+					continue;
+				if (ent->client->resp.ctf_team == CTF_TEAM1)
+					team1++;
+				else if (ent->client->resp.ctf_team == CTF_TEAM2)
+					team2++;
+			}
+
+			if (team1 - team2 >= 2 && team2 >= 2) {
+				if (ctfgame.warnactive != CTF_TEAM1) {
+					ctfgame.warnactive = CTF_TEAM1;
+					gi.configstring(CONFIG_CTF_TEAMINFO, "WARNING: Red has too many players");
+				}
+			}
+			else if (team2 - team1 >= 2 && team1 >= 2) {
+				if (ctfgame.warnactive != CTF_TEAM2) {
+					ctfgame.warnactive = CTF_TEAM2;
+					gi.configstring(CONFIG_CTF_TEAMINFO, "WARNING: Blue has too many players");
+				}
+			}
+			else
+				ctfgame.warnactive = 0;
+		}
+		else
+			ctfgame.warnactive = 0;
+
+	}
+
+
+
+	if (capturelimit->value &&
+		(ctfgame.team1 >= capturelimit->value ||
+			ctfgame.team2 >= capturelimit->value)) {
+		gi.bprintf(PRINT_HIGH, "Capturelimit hit.\n");
+		return true;
+	}
+	return false;
+}
 /*--------------------------------------------------------------------------
  * just here to help old map conversions
  *--------------------------------------------------------------------------*/
