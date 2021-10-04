@@ -77,7 +77,7 @@ static void _sl_LogPlayerRename(char* pOldPlayerName,
 	char* pNewPlayerName,
 	float timeInSeconds);
 
-static int _sl_MaybeOpenFile(game_import_t* gimp);
+static int _sl_MaybeOpenFile(game_import_t* gi);
 static void  _sl_MaybeCloseFile(void);
 
 /*
@@ -294,16 +294,16 @@ static void _sl_LogPlayerRename(char* pOldPlayerName,
 	fprintf(StdLogFile, "\t\tPlayerRename\t%s\t%s\t%.1f\n", pOldPlayerName, pNewPlayerName, timeInSeconds);
 }
 
-static int _sl_MaybeOpenFile(game_import_t* gimp)
+static int _sl_MaybeOpenFile(game_import_t* gi)
 {
 	if (NULL == logfile)
-		logfile = gimp->cvar("stdlogfile", "0", CVAR_SERVERINFO);
+		logfile = gi->cvar("stdlogfile", "0", CVAR_SERVERINFO);
 
 	if ((NULL != logfile) && (logfile->value != 0))
 	{
 		if (NULL == StdLogFile)
 		{
-			cvar_t* filename = gimp->cvar("stdlogname", "StdLog.log", CVAR_SERVERINFO);
+			cvar_t* filename = gi->cvar("stdlogname", "StdLog.log", CVAR_SERVERINFO);
 			char* pName = "StdLog.log";
 
 			// Open File
@@ -314,7 +314,7 @@ static int _sl_MaybeOpenFile(game_import_t* gimp)
 
 			if (NULL == StdLogFile)
 			{
-				gimp->error("Couldn't open %s", pName, strerror(errno));
+				gi->error("Couldn't open %s", pName, strerror(errno));
 			}
 		}
 	}
@@ -335,11 +335,11 @@ static void _sl_MaybeCloseFile(void)
 	uiLogstyle = 0;
 }
 
-static __inline void _sl_SetStyle(game_import_t* gimp)
+static __inline void _sl_SetStyle(game_import_t* gi)
 {
 	if (NULL == logstyle)
 	{
-		logstyle = gimp->cvar("stdlogstyle", "0", CVAR_SERVERINFO);
+		logstyle = gi->cvar("stdlogstyle", "0", CVAR_SERVERINFO);
 		if (logstyle)
 		{
 			uiLogstyle = (unsigned int)logstyle->value;
@@ -356,9 +356,9 @@ static __inline void _sl_SetStyle(game_import_t* gimp)
  *
  */
 
-int sl_OpenLogFile(game_import_t* gimp)
+int sl_OpenLogFile(game_import_t* gi)
 {
-	return _sl_MaybeOpenFile(gimp);
+	return _sl_MaybeOpenFile(gi);
 }
 
 void sl_CloseLogFile(void)
@@ -366,76 +366,76 @@ void sl_CloseLogFile(void)
 	_sl_MaybeCloseFile();
 }
 
-void sl_LogVers(game_import_t* gimp)
+void sl_LogVers(game_import_t* gi)
 {
-	if (_sl_MaybeOpenFile(gimp))
+	if (_sl_MaybeOpenFile(gi))
 	{
-		_sl_SetStyle(gimp);
+		_sl_SetStyle(gi);
 		_sl_LogStyles[uiLogstyle].pLogVers();
 	}
 }
 
-void sl_LogPatch(game_import_t* gimp,
+void sl_LogPatch(game_import_t* gi,
 	char* pPatchName)
 {
-	if (_sl_MaybeOpenFile(gimp))
+	if (_sl_MaybeOpenFile(gi))
 	{
-		_sl_SetStyle(gimp);
+		_sl_SetStyle(gi);
 		_sl_LogStyles[uiLogstyle].pLogPatch(pPatchName);
 	}
 }
 
-void sl_LogDate(game_import_t* gimp)
+void sl_LogDate(game_import_t* gi)
 {
-	if (_sl_MaybeOpenFile(gimp))
+	if (_sl_MaybeOpenFile(gi))
 	{
-		_sl_SetStyle(gimp);
+		_sl_SetStyle(gi);
 		_sl_LogStyles[uiLogstyle].pLogDate();
 	}
 }
 
-void sl_LogTime(game_import_t* gimp)
+void sl_LogTime(game_import_t* gi)
 {
-	if (_sl_MaybeOpenFile(gimp))
+	if (_sl_MaybeOpenFile(gi))
 	{
-		_sl_SetStyle(gimp);
+		_sl_SetStyle(gi);
 		_sl_LogStyles[uiLogstyle].pLogTime();
 	}
 }
 
-void sl_LogDeathFlags(game_import_t* gimp,
+void sl_LogDeathFlags(game_import_t* gi,
 	unsigned long   dmFlags)
 {
-	if (_sl_MaybeOpenFile(gimp))
+	if (_sl_MaybeOpenFile(gi))
 	{
-		_sl_SetStyle(gimp);
+		_sl_SetStyle(gi);
 		_sl_LogStyles[uiLogstyle].pLogDeathFlags(dmFlags);
 	}
 }
 
-void sl_LogMapName(game_import_t* gimp,
+void sl_LogMapName(game_import_t* gi,
 	char* pMapName)
 {
-	if (_sl_MaybeOpenFile(gimp))
+	if (_sl_MaybeOpenFile(gi))
 	{
-		_sl_SetStyle(gimp);
+		_sl_SetStyle(gi);
 		_sl_LogStyles[uiLogstyle].pLogMapName(pMapName);
 	}
 }
 
-void sl_LogPlayerName(game_import_t* gimp,
+void sl_LogPlayerName(game_import_t* gi,
 	char* pPlayerName,
 	char* pTeamName,
 	float           timeInSeconds)
 {
-	if (_sl_MaybeOpenFile(gimp))
+	if (_sl_MaybeOpenFile(gi))
 	{
-		_sl_SetStyle(gimp);
+		_sl_SetStyle(gi);
 		_sl_LogStyles[uiLogstyle].pLogPlayerName(pPlayerName, pTeamName, timeInSeconds);
 	}
 }
 
-void sl_LogScore(game_import_t* gimp,
+void sl_LogScore(game_import_t* gi,
 	char* pKillerName,
 	char* pTargetName,
 	char* pScoreType,
@@ -443,76 +443,76 @@ void sl_LogScore(game_import_t* gimp,
 	int             iScore,
 	float           timeInSeconds)
 {
-	if (_sl_MaybeOpenFile(gimp))
+	if (_sl_MaybeOpenFile(gi))
 	{
-		_sl_SetStyle(gimp);
+		_sl_SetStyle(gi);
 		_sl_LogStyles[uiLogstyle].pLogScore(pKillerName, pTargetName, pScoreType, pWeaponName, iScore, timeInSeconds);
 	}
 }
 
-void sl_LogPlayerLeft(game_import_t* gimp,
+void sl_LogPlayerLeft(game_import_t* gi,
 	char* pPlayerName,
 	float           timeInSeconds)
 {
-	if (_sl_MaybeOpenFile(gimp))
+	if (_sl_MaybeOpenFile(gi))
 	{
-		_sl_SetStyle(gimp);
+		_sl_SetStyle(gi);
 		_sl_LogStyles[uiLogstyle].pLogPlayerLeft(pPlayerName, timeInSeconds);
 	}
 }
 
-void sl_LogGameStart(game_import_t* gimp,
+void sl_LogGameStart(game_import_t* gi,
 	float           timeInSeconds)
 {
-	if (_sl_MaybeOpenFile(gimp))
+	if (_sl_MaybeOpenFile(gi))
 	{
-		_sl_SetStyle(gimp);
+		_sl_SetStyle(gi);
 		_sl_LogStyles[uiLogstyle].pLogGameStart(timeInSeconds);
 	}
 }
 
-void sl_LogGameEnd(game_import_t* gimp,
+void sl_LogGameEnd(game_import_t* gi,
 	float           timeInSeconds)
 {
-	if (_sl_MaybeOpenFile(gimp))
+	if (_sl_MaybeOpenFile(gi))
 	{
-		_sl_SetStyle(gimp);
+		_sl_SetStyle(gi);
 		_sl_LogStyles[uiLogstyle].pLogGameEnd(timeInSeconds);
 	}
 }
 
-void sl_LogPlayerConnect(game_import_t* gimp,
+void sl_LogPlayerConnect(game_import_t* gi,
 	char* pPlayerName,
 	char* pTeamName,
 	float           timeInSeconds)
 {
-	if (_sl_MaybeOpenFile(gimp))
+	if (_sl_MaybeOpenFile(gi))
 	{
-		_sl_SetStyle(gimp);
+		_sl_SetStyle(gi);
 		_sl_LogStyles[uiLogstyle].pLogPlayerConnect(pPlayerName, pTeamName, timeInSeconds);
 	}
 }
 
-void sl_LogPlayerTeamChange(game_import_t* gimp,
+void sl_LogPlayerTeamChange(game_import_t* gi,
 	char* pPlayerName,
 	char* pTeamName,
 	float           timeInSeconds)
 {
-	if (_sl_MaybeOpenFile(gimp))
+	if (_sl_MaybeOpenFile(gi))
 	{
-		_sl_SetStyle(gimp);
+		_sl_SetStyle(gi);
 		_sl_LogStyles[uiLogstyle].pLogPlayerTeamChange(pPlayerName, pTeamName, timeInSeconds);
 	}
 }
 
-void sl_LogPlayerRename(game_import_t* gimp,
+void sl_LogPlayerRename(game_import_t* gi,
 	char* pOldPlayerName,
 	char* pNewPlayerName,
 	float           timeInSeconds)
 {
-	if (_sl_MaybeOpenFile(gimp))
+	if (_sl_MaybeOpenFile(gi))
 	{
-		_sl_SetStyle(gimp);
+		_sl_SetStyle(gi);
 		_sl_LogStyles[uiLogstyle].pLogPlayerRename(pOldPlayerName, pNewPlayerName, timeInSeconds);
 	}
 }
