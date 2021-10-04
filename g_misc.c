@@ -160,7 +160,7 @@ void ThrowClientHead(edict_t* self, int damage)
 	self->s.origin[2] += 32;
 	self->s.frame = 0;
 	gi.setmodel(self, gibname);
-	self->classname = "gibhead"; /* MrG{DRGN} */
+	//self->classname = "gibhead"; /* MrG{DRGN} */
 	self->classindex = GIBHEAD; /* MrG{DRGN} */
 	VectorSet(self->mins, -16, -16, 0);
 	VectorSet(self->maxs, 16, 16, 16);
