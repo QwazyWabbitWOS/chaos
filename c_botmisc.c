@@ -343,7 +343,7 @@ void Bot_Spawn(edict_t* ent)
 	gi.unlinkentity(ent);
 	KillBox(ent);
 	gi.linkentity(ent);
-
+	DbgPrintf("%s %s index: %d\n", __func__, ent->classname, ent->classindex);
 	ent->client->newweapon = ent->client->pers.weapon;
 	ChangeWeapon(ent);
 
@@ -493,6 +493,7 @@ void bot_die(edict_t* self, edict_t* inflictor, edict_t* attacker, int damage, v
 		G_FreeEdict(self->client->teleporter);
 
 	gi.linkentity(self);
+	DbgPrintf("%s %s index: %d\n", __func__, self->classname, self->classindex);
 }
 
 ///------------------------------------------------------------------------------------------
