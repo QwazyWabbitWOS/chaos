@@ -3054,13 +3054,13 @@ pmenu_t joinmenu[] = {
 };
 
 pmenu_t nochasemenu[] = {
-	{ "*Quake II",			PMENU_ALIGN_CENTER, NULL },
+	{ "*Quake II",			PMENU_ALIGN_CENTER, NULL, NULL},
 	{ "*Chaos DM Lives v3.2b",	PMENU_ALIGN_CENTER, NULL },
-	{ NULL,					PMENU_ALIGN_CENTER, NULL },
-	{ NULL,					PMENU_ALIGN_CENTER, NULL },
-	{ "No one to chase",	PMENU_ALIGN_LEFT, NULL },
-	{ NULL,					PMENU_ALIGN_CENTER, NULL },
-	{ "Return to Main Menu", PMENU_ALIGN_LEFT, CTFReturnToMain }
+	{ NULL,					PMENU_ALIGN_CENTER, NULL, NULL },
+	{ NULL,					PMENU_ALIGN_CENTER, NULL, NULL },
+	{ "No one to chase",	PMENU_ALIGN_LEFT, NULL, NULL },
+	{ NULL,					PMENU_ALIGN_CENTER, NULL, NULL },
+	{ "Return to Main Menu", PMENU_ALIGN_LEFT, NULL, CTFReturnToMain }
 };
 
 
