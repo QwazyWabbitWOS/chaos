@@ -5,6 +5,7 @@
 #define	GRAPPLE_INAIR		1
 #define	GRAPPLE_ATTACHED	2		//attached without grow/shrink
 #define	GRAPPLE_STARTSHRINK	3	//start with shrink
+void Grapple_Reset(edict_t* ent);
 
 #define SCANNER_UNIT                   32
 #define SCANNER_RANGE                  64

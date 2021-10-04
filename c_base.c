@@ -11,10 +11,10 @@ qboolean visible(edict_t* self, edict_t* other)
 {
 	vec3_t	spot1 = { 0 }, spot2 = { 0 };
 	trace_t	trace;
-	/* MrG{DRGN} sanity check */
+	
 	if (!self || !other)
 		return false;
-	/* END */
+	
 
 	VectorCopy(self->s.origin, spot1);
 	spot1[2] += self->viewheight;
@@ -33,10 +33,10 @@ qboolean infront(edict_t* self, edict_t* other)
 	float	dot;
 	vec3_t	forward;
 
-	/* MrG{DRGN} sanity check */
+	
 	if (!self || !other)
 		return false;
-	/* END */
+	
 
 	AngleVectors(self->s.angles, forward, NULL, NULL);
 	VectorSubtract(other->s.origin, self->s.origin, vec);
@@ -81,10 +81,10 @@ void ShowGun(edict_t* ent)	//QW from WOD:LOX for vwep
 
 qboolean TouchingLadder(edict_t* self)
 {
-	/* MrG{DRGN} sanity check */
+	
 	if (!self)
 		return false;
-	/* END */
+	
 
 	vec3_t org = { 0 };
 
@@ -380,10 +380,10 @@ qboolean infront2(edict_t* self, edict_t* other)
 	float	dot;
 	vec3_t	forward;
 
-	/* MrG{DRGN} sanity check */
+	
 	if (!self || !other)
 		return false;
-	/* END */
+	
 
 	AngleVectors(self->s.angles, forward, NULL, NULL);
 	VectorSubtract(other->s.origin, self->s.origin, vec);
@@ -401,10 +401,10 @@ qboolean infront3(edict_t* self, edict_t* other)
 	float	dot;
 	vec3_t	forward;
 
-	/* MrG{DRGN} sanity check */
+	
 	if (!self || !other)
 		return false;
-	/* END */
+	
 
 	AngleVectors(self->s.angles, forward, NULL, NULL);
 	VectorSubtract(other->s.origin, self->s.origin, vec);
@@ -422,10 +422,10 @@ qboolean infront4(edict_t* self, edict_t* other)
 	float	dot;
 	vec3_t	forward;
 
-	/* MrG{DRGN} sanity check */
+	
 	if (!self || !other)
 		return false;
-	/* END */
+	
 
 	AngleVectors(self->s.angles, forward, NULL, NULL);
 	VectorSubtract(other->s.origin, self->s.origin, vec);
@@ -698,10 +698,10 @@ void FakeDeath(edict_t* self)
 	vec3_t              mins = { -16, -16, -24 };
 	vec3_t              maxs = { 16, 16, 32 };
 
-	/* MrG{DRGN} sanity check */
+	
 	if (!self)
 		return;
-	/* END */
+	
 
 	/* MrG{DRGN} classindex instead of classname */
 	if (self->classindex == CAMPLAYER || self->movetype == MOVETYPE_NOCLIP)/* MrG{DRGN} if you haven't joined a team yet. you can't fakedeath! */
@@ -851,10 +851,10 @@ void FlashLightThink(edict_t* ent)
 	vec3_t forward, right, up;
 	trace_t tr;
 
-	/* MrG{DRGN} sanity check */
+	
 	if (!ent)
 		return;
-	/* END */
+	
 	if (!ent->owner ||
 		!ent->owner->client)
 		return;
@@ -1070,12 +1070,12 @@ void Teleport(edict_t* ent)
 	edict_t* telep = NULL;
 	vec3_t spawn_origin = { 0 };
 
-	/* MrG{DRGN} sanity check */
+	
 	if (!ent || !ent->client)
 	{
 		return;
 	}
-	/* END */
+	
 
 	if (ent->client->teleporter)	//teleport
 	{
@@ -1097,7 +1097,7 @@ void Teleport(edict_t* ent)
 		for (i = 0; i < 3; i++) {
 			ent->client->ps.pmove.origin[i] = COORD2SHORT(spawn_origin[i]);
 		}
-		/* END */
+		
 		ent->s.event = EV_ITEM_RESPAWN;
 		spawn_origin[2] += 1;
 		VectorCopy(spawn_origin, ent->s.origin);
@@ -1967,7 +1967,7 @@ void ClientCommand2(edict_t* ent)
 
 						return;
 					}
-				}/* MrG{DRGN} END */
+				}
 		}
 	}
 	else if (Q_stricmp(cmd, "load_nodes") == 0)
@@ -2081,7 +2081,7 @@ void ClientCommand2(edict_t* ent)
 	{
 		gi.cprintf(ent, PRINT_HIGH, "%s : %s : %s\n", GAMEVERSION, __DATE__, __TIME__);
 	}
-	/* END */
+	
 	else
 		Cmd_Say_f(ent, false, true);
 }

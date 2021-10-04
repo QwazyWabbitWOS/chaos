@@ -6,12 +6,12 @@
 
 void CreateCamera(edict_t* ent)
 {
-	/* MrG{DRGN} sanity check*/
+	
 	if (!ent)
 	{
 		return;
 	}
-	/* END */
+	
 	gi.unlinkentity(ent);
 
 	ent->groundentity = NULL;
@@ -45,7 +45,7 @@ void CreateCamera(edict_t* ent)
 	ent->client->invisible = 0;
 	ent->client->nextscannercell = 0;
 	ent->client->scanneractive = 0;
-	/* END */
+	
 	ent->client->quad_framenum = 0;
 	ent->client->invincible_framenum = 0;
 	ent->client->invisible_framenum = 0;
@@ -89,7 +89,7 @@ void CreateCamera(edict_t* ent)
 	/* MrG{DRGN} moved these up here, since I clear the clients inventory below! */
 	CTFDeadDropFlag(ent);
 	CTFDeadDropTech(ent);
-	/* END */
+	
 	memset(ent->client->ps.stats, 0, sizeof(ent->client->ps.stats));
 	memset(ent->client->pers.inventory, 0, sizeof(ent->client->pers.inventory)); /* MrG{DRGN} to avoid items being used */
 	VectorClear(ent->maxs);
@@ -103,12 +103,12 @@ int NumVisiblePlayers(edict_t* ent)
 {
 	int		i, num = 0;
 
-	/* MrG{DRGN} sanity check*/
+	
 	if (!ent)
 	{
 		return false;
 	}
-	/* END */
+	
 
 	for (i = 0; i < numplayers; i++)
 	{
@@ -136,12 +136,12 @@ edict_t* ClosestVisible(edict_t* ent)
 	int		i;
 	vec_t	dist, bestdist = 9999;
 
-	/* MrG{DRGN} sanity check*/
+	
 	if (!ent)
 	{
 		return NULL;
 	}
-	/* END */
+	
 
 	for (i = 0; i < numplayers; i++)
 	{
@@ -265,12 +265,12 @@ edict_t* GetNextValidPlayer(edict_t* current)
 {
 	int i;
 
-	/* MrG{DRGN} sanity check*/
+	
 	if (!current)
 	{
 		return NULL;
 	}
-	/* END */
+	
 
 	//find num of current target
 	for (i = 0; i < numplayers; i++)
@@ -302,12 +302,12 @@ edict_t* GetPrevValidPlayer(edict_t* current)
 {
 	int i;
 
-	/* MrG{DRGN} sanity check*/
+	
 	if (!current)
 	{
 		return NULL;
 	}
-	/* END */
+	
 
 	//find num of current target
 	for (i = 0; i < numplayers; i++)
@@ -337,12 +337,12 @@ edict_t* GetPrevValidPlayer(edict_t* current)
 
 void CamNext(edict_t* ent)
 {
-	/* MrG{DRGN} sanity check*/
+	
 	if (!ent)
 	{
 		return;
 	}
-	/* END */
+	
 
 	if (ent->client->cammode > 1)
 	{
@@ -359,12 +359,12 @@ void CamNext(edict_t* ent)
 
 void CamPrev(edict_t* ent)
 {
-	/* MrG{DRGN} sanity check*/
+	
 	if (!ent)
 	{
 		return;
 	}
-	/* END */
+	
 
 	if (ent->client->cammode > 1)
 	{
@@ -383,12 +383,12 @@ void PointCamAtSpot(edict_t* ent, vec3_t spot)
 {
 	vec3_t	dir = { 0 }, angles;
 
-	/* MrG{DRGN} sanity check*/
+	
 	if (!ent || !spot)
 	{
 		return;
 	}
-	/* END */
+	
 
 	VectorSubtract(spot, ent->s.origin, dir);
 
@@ -405,12 +405,12 @@ void PointCamAtPlayer(edict_t* ent)
 	float	diff;
 	int		na;
 
-	/* MrG{DRGN} sanity check*/
+	
 	if (!ent)
 	{
 		return;
 	}
-	/* END */
+	
 
 	VectorSubtract(ent->client->pTarget->s.origin, ent->s.origin, dir);
 	vectoangles(dir, angles);
@@ -485,12 +485,12 @@ void RepositionAtPlayer(edict_t* ent)
 	vec3_t        pos = { 0 }, forward;
 	trace_t       tr;
 
-	/* MrG{DRGN} sanity check*/
+	
 	if (!ent)
 	{
 		return;
 	}
-	/* END */
+	
 
 	AngleVectors(ent->client->pTarget->client->v_angle, forward, NULL, NULL);
 	forward[2] = 0;
@@ -593,12 +593,12 @@ void FindNewTVSpot(edict_t* ent)
 	vec3_t	dir = { 0 };
 	vec_t	dist, bestdist = 9999;
 
-	/* MrG{DRGN} sanity check*/
+	
 	if (!ent)
 	{
 		return;
 	}
-	/* END */
+	
 
 	dummy = g_edicts;
 
@@ -676,12 +676,12 @@ trace_t	PM_trace(vec3_t start, vec3_t mins, vec3_t maxs, vec3_t end);
 
 void CameraThink(edict_t* ent, usercmd_t* ucmd)
 {
-	/* MrG{DRGN} sanity check*/
+	
 	if (!ent)
 	{
 		return;
 	}
-	/* END */
+	
 	//vec3_t	dir = {0};
 	ent->client->ps.pmove.pm_type = PM_FREEZE;
 	ent->client->ps.pmove.gravity = 0;

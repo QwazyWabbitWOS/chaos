@@ -195,10 +195,10 @@ Changes level to "map" when fired
 */
 void use_target_changelevel(edict_t* self, edict_t* other, edict_t* activator)
 {
-	/* MrG{DRGN} sanity check */
+	
 	if (!self || !other)
 		return;
-	/* END */
+	
 	if (level.intermissiontime)
 		return;		// allready activated
 

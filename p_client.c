@@ -191,7 +191,7 @@ qboolean IsNeutral(edict_t* ent)
 		return true;
 	return false;
 }
-/* END */
+
 
 void ClientObituary(edict_t* self, edict_t* inflictor, edict_t* attacker)
 {
@@ -302,7 +302,7 @@ void ClientObituary(edict_t* self, edict_t* inflictor, edict_t* attacker)
 			case MOD_TURRET:
 				message = "got perforated by their own turret";
 				break;
-				/* END */
+				
 			default:
 				if (IsFemale(self))
 					message = "killed herself";
@@ -799,7 +799,7 @@ void player_die(edict_t* self, edict_t* inflictor, edict_t* attacker, int damage
 			self->s.modelindex3 = REMOVED_MODEL;	// remove linked ctf flag
 			CTFFragBonuses(self, inflictor, attacker);
 			CTFDeadDropFlag(self);
-		}/* END */
+		}
 
 		TossClientWeapon(self);
 
@@ -1634,7 +1634,7 @@ void PutClientInServer(edict_t* ent)
 	for (i = 0; i < 3; i++) {
 		client->ps.pmove.origin[i] = COORD2SHORT(spawn_origin[i]);
 	}
-	/* END */
+	
 
 	//ZOID
 	client->ps.pmove.pm_flags &= ~PMF_NO_PREDICTION;
@@ -1680,7 +1680,7 @@ void PutClientInServer(edict_t* ent)
 	/* MrG{DRGN} added */
 	gi.cvar_set("cl_blend", "1");
 	gi.cvar_set("gl_polyblend", "1");
-	/* END */
+	
 
 	//MATTHIAS
 	client->BlindBase = 0;
@@ -2054,7 +2054,7 @@ void ClientDisconnect(edict_t* ent)
 	else if (ent->client->resp.ctf_team == 2)
 		numblue--;
 
-	/* END */
+	
 //ZOID
 	CTFDeadDropFlag(ent);
 	CTFDeadDropTech(ent);
@@ -2307,7 +2307,7 @@ void ClientThink(edict_t* ent, usercmd_t* ucmd)
 		ent->client->pers.inventory[ITEM_INDEX(it_rockets)] = 0;
 		ent->client->pers.inventory[ITEM_INDEX(it_grenades)] = 0;
 		ent->client->pers.inventory[ITEM_INDEX(it_homings)] = 0;
-		/* END */
+		
 
 		client->kamikazetime = 0;
 	}
@@ -2434,7 +2434,7 @@ void ClientThink(edict_t* ent, usercmd_t* ucmd)
 		*/
 		pm.s.origin[i] = COORD2SHORT(ent->s.origin[i]);
 		pm.s.velocity[i] = COORD2SHORT(ent->velocity[i]);
-		/* END */
+		
 	}
 
 	if (memcmp(&client->old_pmove, &pm.s, sizeof(pm.s)))
@@ -2466,7 +2466,7 @@ void ClientThink(edict_t* ent, usercmd_t* ucmd)
 			ent->velocity[i] = pm.s.velocity[i] * 0.125;
 		*/
 			ent->velocity[i] = SHORT2COORD(pm.s.velocity[i]);
-		/* END */
+		
 	}
 
 	VectorCopy(pm.mins, ent->mins);

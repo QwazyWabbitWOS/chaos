@@ -16,12 +16,12 @@ qboolean fire_hit(edict_t* self, vec3_t aim, int damage, int kick)
 	float		range;
 	vec3_t		dir;
 
-	/* MrG{DRGN} sanity check*/
+	
 	if (!self)
 	{
 		return false;
 	}
-	/* END */
+	
 
 	//see if enemy is in range
 	VectorSubtract(self->enemy->s.origin, self->s.origin, dir);
@@ -96,12 +96,12 @@ void fire_lead(edict_t* self, vec3_t start, vec3_t aimdir, int damage, int kick,
 	qboolean	water = false;
 	int			content_mask = MASK_SHOT | MASK_WATER;
 
-	/* MrG{DRGN} sanity check*/
+	
 	if (!self)
 	{
 		return;
 	}
-	/* END */
+	
 
 	tr = gi.trace(self->s.origin, NULL, NULL, start, self, MASK_SHOT);
 	if (!(tr.fraction < 1.0))
@@ -235,12 +235,12 @@ pistols, rifles, etc....
 */
 void fire_bullet(edict_t* self, vec3_t start, vec3_t aimdir, int damage, int kick, int hspread, int vspread, int mod)
 {
-	/* MrG{DRGN} sanity check*/
+	
 	if (!self)
 	{
 		return;
 	}
-	/* END */
+	
 	fire_lead(self, start, aimdir, damage, kick, TE_GUNSHOT, hspread, vspread, mod);
 }
 
@@ -255,12 +255,12 @@ void fire_shotgun(edict_t* self, vec3_t start, vec3_t aimdir, int damage, int ki
 {
 	int		i;
 
-	/* MrG{DRGN} sanity check*/
+	
 	if (!self)
 	{
 		return;
 	}
-	/* END */
+	
 	for (i = 0; i < count; i++)
 		fire_lead(self, start, aimdir, damage, kick, TE_SHOTGUN, hspread, vspread, mod);
 }
@@ -282,7 +282,7 @@ void blaster_touch(edict_t* self, edict_t* other, cplane_t* plane, csurface_t* s
 		G_FreeEdict(self);
 		return;
 	}
-	/* END */
+	
 
 	if (other == self->owner)
 		return;
@@ -347,12 +347,12 @@ void fire_blaster(edict_t* self, vec3_t start, vec3_t dir, int damage, int speed
 	edict_t* bolt;
 	trace_t	tr;
 
-	/* MrG{DRGN} sanity check*/
+	
 	if (!self)
 	{
 		return;
 	}
-	/* END */
+	
 
 	VectorNormalize(dir);
 
@@ -399,12 +399,12 @@ void Grenade_Explode(edict_t* ent)
 	vec3_t		origin;
 	int			mod;
 
-	/* MrG{DRGN} sanity check*/
+	
 	if (!ent)
 	{
 		return;
 	}
-	/* END */
+	
 
 	if (ent->owner && ent->owner->client)
 		PlayerNoise(ent->owner, ent->s.origin, PNOISE_IMPACT);
@@ -466,7 +466,7 @@ void Grenade_Touch(edict_t* ent, edict_t* other, cplane_t* plane, csurface_t* su
 		G_FreeEdict(ent);
 		return;
 	}
-	/* END */
+	
 
 	if (other == ent->owner)
 		return;
@@ -503,12 +503,12 @@ void fire_grenade(edict_t* self, vec3_t start, vec3_t aimdir, int damage, int sp
 	vec3_t	dir;
 	vec3_t	forward, right, up;
 
-	/* MrG{DRGN} sanity check*/
+	
 	if (!self)
 	{
 		return;
 	}
-	/* END */
+	
 
 	vectoangles(aimdir, dir);
 	AngleVectors(dir, forward, right, up);
@@ -544,12 +544,12 @@ void fire_grenade2(edict_t* self, vec3_t start, vec3_t aimdir, int damage, int s
 	vec3_t	dir;
 	vec3_t	forward, right, up;
 
-	/* MrG{DRGN} sanity check*/
+	
 	if (!self)
 	{
 		return;
 	}
-	/* END */
+	
 
 	vectoangles(aimdir, dir);
 	AngleVectors(dir, forward, right, up);
@@ -605,7 +605,7 @@ void rocket_touch(edict_t* ent, edict_t* other, cplane_t* plane, csurface_t* sur
 		G_FreeEdict(ent);
 		return;
 	}
-	/* END */
+	
 
 	if (other == ent->owner)
 		return;
@@ -644,12 +644,12 @@ void fire_rocket(edict_t* self, vec3_t start, vec3_t dir, int damage, int speed,
 {
 	edict_t* rocket;
 
-	/* MrG{DRGN} sanity check*/
+	
 	if (!self)
 	{
 		return;
 	}
-	/* END */
+	
 
 	rocket = G_Spawn();
 	VectorCopy(start, rocket->s.origin);
@@ -690,12 +690,12 @@ void fire_rail(edict_t* self, vec3_t start, vec3_t aimdir, int damage, int kick)
 	int			mask;
 	qboolean	water;
 	int i = 0; /* MrG{DRGN} railgun runaway trace fix*/
-	/* MrG{DRGN} sanity check*/
+	
 	if (!self)
 	{
 		return;
 	}
-	/* END */
+	
 
 	VectorMA(start, 8192, aimdir, end);
 	VectorCopy(start, from);
@@ -762,12 +762,12 @@ void bfg_explode(edict_t* self)
 	vec3_t	v;
 	float	dist;
 
-	/* MrG{DRGN} sanity check*/
+	
 	if (!self)
 	{
 		return;
 	}
-	/* END */
+	
 
 	if (self->s.frame == 0)
 	{
@@ -814,7 +814,7 @@ void bfg_touch(edict_t* self, edict_t* other, cplane_t* plane, csurface_t* surf)
 		G_FreeEdict(self);
 		return;
 	}
-	/* END */
+	
 
 	if (other == self->owner)
 		return;
@@ -860,7 +860,7 @@ void bfgball_touch(edict_t* self, edict_t* other, cplane_t* plane, csurface_t* s
 		G_FreeEdict(other);
 		return;
 	}
-	/* END */
+	
 
 	if (other == self->owner)
 		return;
@@ -870,12 +870,12 @@ void bfgball_touch(edict_t* self, edict_t* other, cplane_t* plane, csurface_t* s
 
 void bfgball_think(edict_t* self)
 {
-	/* MrG{DRGN} sanity check*/
+	
 	if (!self)
 	{
 		return;
 	}
-	/* END */
+	
 
 	if (self->s.frame < 9)
 		self->s.frame += 1;
@@ -896,12 +896,12 @@ void bfg_think(edict_t* self)
 	int		dmg;
 	trace_t	tr;
 
-	/* MrG{DRGN} sanity check*/
+	
 	if (!self)
 	{
 		return;
 	}
-	/* END */
+	
 
 	dmg = 5;
 
@@ -970,12 +970,12 @@ void fire_bfg(edict_t* self, vec3_t start, vec3_t dir, int damage, int speed, fl
 	edict_t* bfg;
 	edict_t* ball;
 
-	/* MrG{DRGN} sanity check*/
+	
 	if (!self)
 	{
 		return;
 	}
-	/* END */
+	
 
 	bfg = G_Spawn();
 	VectorCopy(start, bfg->s.origin);

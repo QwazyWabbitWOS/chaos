@@ -44,7 +44,7 @@ static void LogWrite(const char* format, va_list* pmarker, int dated)
 
 		Com_strcpy(timestring, sizeof(timestring), ctime(&now));
 		Com_strcpy(&timestring[strlen(timestring) - 1], sizeof(&timestring[strlen(timestring) - 1]), ")) ");
-		/* MrG{DRGN} END */
+		
 		fprintf(fp, "%s", timestring); //QW added %s for security
 	}
 
@@ -71,7 +71,7 @@ static void LogSpecial(const char* format, ...)
 
 	Com_strcpy(timestring, sizeof(timestring), ctime(&now));
 	Com_strcpy(&timestring[strlen(timestring) - 1], sizeof(&timestring[strlen(timestring) - 1]), ")) ");
-	/* MrG{DRGN} END */
+	
 	fprintf(fp, "%s", timestring); //QW added %s for security
 	va_list marker;
 	va_start(marker, format);

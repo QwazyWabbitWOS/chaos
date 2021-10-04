@@ -475,7 +475,7 @@ void ED_ParseField(char* key, char* value, edict_t* ent)
 			case F_ITEM:
 			case F_CLIENT:
 				break;
-				/* END */
+				
 			default:
 				break;
 			}
@@ -734,7 +734,8 @@ void SpawnEntities(char* mapname, char* entities, char* spawnpoint)
 
 	sl_GameStart(&gi, level);	//	StdLog - Mark Davies
 
-	CTFSetupTechSpawn();
+	//CTFSetupTechSpawn();
+	CTFSpawn();
 }
 
 //===================================================================
@@ -866,7 +867,7 @@ void SP_worldspawn(edict_t * ent)
 	*/
 	//srand(time(0));
 	srand((unsigned int)(time(0)));
-	/* END */
+	
 
 	//---------------
 

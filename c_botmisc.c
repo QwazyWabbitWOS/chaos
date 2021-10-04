@@ -398,7 +398,7 @@ void bot_die(edict_t* self, edict_t* inflictor, edict_t* attacker, int damage, v
 			self->s.modelindex3 = REMOVED_MODEL;	// remove linked ctf flag
 			CTFFragBonuses(self, inflictor, attacker);
 			CTFDeadDropFlag(self);
-		}/* END */
+		}
 		TossClientWeapon(self);
 
 		CTFDeadDropTech(self);
@@ -1235,7 +1235,7 @@ qboolean Bot_CanPickupItem(edict_t* ent, edict_t* eitem)
 	if (item == it_jetpack && ent->client->pers.inventory[ITEM_INDEX(it_jetpack)] > 0 && ent->client->jet_remaining == 600)
 		return 0;
 
-	/* END */
+	
 
 
 	/* MrG{DRGN} Tweak Havoc bot health hunting routine
@@ -1244,7 +1244,7 @@ qboolean Bot_CanPickupItem(edict_t* ent, edict_t* eitem)
 	if (item == FindItem("Health") && ent->health >= ent->max_health && (item->classindex != (ITEM_HEALTH_MEGA | ITEM_HEALTH_SMALL)))
 
 		return 0;
-	/* END */
+	
 
 	if (item == it_tech2
 		|| item == it_tech3
@@ -1265,7 +1265,7 @@ qboolean Bot_CanPickupItem(edict_t* ent, edict_t* eitem)
 	/* MrG{DRGN} */
 	if (eitem->classindex == AR_BODY
 		|| eitem->classindex == AR_JACKET
-		|| eitem->classindex == AR_COMBAT)/* END */
+		|| eitem->classindex == AR_COMBAT)
 	{
 		if (!Bot_CanPickupArmor(ent, eitem))/* MrG{DRGN} there was an unintended ; here. */
 			return 0;
@@ -1558,7 +1558,7 @@ void RemoveFromList(edict_t* ent)
 		|| ent->classindex == FREED
 		|| ent->classindex == ITEM_HEALTH_SMALL)
 		return;
-	/* END */
+	
 
    //find the list head
 	if (ent->item->pickup == Pickup_Weapon)

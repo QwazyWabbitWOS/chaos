@@ -53,7 +53,7 @@ cvar_t* flood_persecond;
 cvar_t* flood_waitdelay;
 cvar_t* filterban;
 void SVCmd_killbot_f(char* name);
-/* END */
+
 
 cvar_t* sv_cheats;
 
@@ -132,7 +132,7 @@ void Sys_Error(const char* error, ...) /* MrG{DRGN} changed to const */
 	gi.error (ERR_FATAL, "%s", text);
 	*/
 	gi.error("%s", text);
-	/* END */
+	
 }
 
 void Com_Printf(char* msg, ...)

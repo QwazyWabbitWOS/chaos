@@ -382,10 +382,10 @@ qboolean SV_Push(edict_t* pusher, vec3_t move, vec3_t amove)
 	pushed_t* p;
 	vec3_t		org = {0}, org2 = {0}, move2 = {0}, forward, right, up;
 
-	/* MrG{DRGN} sanity check */
+	
 	if (!pusher)
 		return false;
-	/* END */
+	
 
 	// clamp the move to 1/8 units, so the position will
 	// be accurate for client side prediction
@@ -571,7 +571,7 @@ void SV_Physics_Pusher(edict_t* ent)
 	*/
 	if (pushed_p > & pushed[MAX_EDICTS - 1])
 		gi.error("pushed_p > &pushed[MAX_EDICTS - 1], memory corrupted");
-	/* END */
+	
 
 	if (part)
 	{

@@ -3,12 +3,12 @@
 
 void Use_Invisibility(edict_t* ent, gitem_t* item)
 {
-	/* MrG{DRGN} sanity check*/
+	
 	if (!ent || !item)
 	{
 		return;
 	}
-	/* END */
+	
 
 	ValidateSelectedItem(ent);
 
@@ -32,12 +32,12 @@ void Use_Jet(edict_t* ent, gitem_t* item)
 	cprint_botsafe(ent, PRINT_HIGH, "The Jetpack has been deactivated in the retail version!\n");
 	return;
 #endif
-	/* MrG{DRGN} sanity check*/
+	
 	if (!ent)
 	{
 		return;
 	}
-	/* END */
+	
 	ValidateSelectedItem(ent);
 
 	if (ent->client->jet_remaining == 0)
@@ -56,12 +56,12 @@ qboolean Jet_AvoidGround(edict_t* ent)
 	vec3_t        new_origin = { 0 };
 	trace_t       trace;
 	qboolean      success;
-	/* MrG{DRGN} sanity check*/
+	
 	if (!ent)
 	{
 		return false;
 	}
-	/* END */
+	
 
 	/*Check if there is enough room above us before we change origin[2]*/
 	new_origin[0] = ent->s.origin[0];
@@ -77,24 +77,24 @@ qboolean Jet_AvoidGround(edict_t* ent)
 
 qboolean Jet_Active(edict_t* ent)
 {
-	/* MrG{DRGN} sanity check*/
+	
 	if (!ent)
 	{
 		return false;
 	}
-	/* END */
+	
 
 	return (ent->client->jet_framenum >= level.framenum);
 }
 
 void Jet_BecomeExplosion(edict_t* ent, int damage)
 {
-	/* MrG{DRGN} sanity check*/
+	
 	if (!ent)
 	{
 		return;
 	}
-	/* END */
+	
 
 	gi.WriteByte(svc_temp_entity);
 	gi.WriteByte(TE_EXPLOSION1);
@@ -122,12 +122,12 @@ void Jet_ApplyLifting(edict_t* ent)
 	int           time = 24;
 	float         amplitude = 2.0;
 
-	/* MrG{DRGN} sanity check*/
+	
 	if (!ent)
 	{
 		return;
 	}
-	/* END */
+	
 
 	delta = sinf((float)((level.framenum % time) * (360.0f / time)) / 180 * M_PI) * amplitude;/* MrG{DRGN} use sinf not sin to calculate the delta, since it's a float */
 	delta = (float)((int)(delta * 8)) / 8;
@@ -152,12 +152,12 @@ void Jet_ApplySparks(edict_t* ent)
 	vec3_t  forward, right;
 	vec3_t  pack_pos, jet_vector;
 
-	/* MrG{DRGN} sanity check*/
+	
 	if (!ent)
 	{
 		return;
 	}
-	/* END */
+	
 
 	AngleVectors(ent->client->v_angle, forward, right, NULL);
 	VectorScale(forward, -7, pack_pos);
@@ -183,12 +183,12 @@ void Jet_ApplyRolling(edict_t* ent, vec3_t right)
 {
 	float roll, value = 0.05F, sign = -1; /* MrG{DRGN} added  F, as this was causing truncation from double to float.*/
 
-										  /* MrG{DRGN} sanity check*/
+										  
 	if (!ent)
 	{
 		return;
 	}
-	/* END */
+	
 
 	roll = DotProduct(ent->velocity, right) * value * sign;
 	ent->client->kick_angles[ROLL] = roll;
@@ -201,12 +201,12 @@ void Jet_ApplyJet(edict_t* ent, usercmd_t* ucmd)
 	vec3_t forward, right;
 	int    i;
 
-	/* MrG{DRGN} sanity check*/
+	
 	if (!ent)
 	{
 		return;
 	}
-	/* END */
+	
 
 	ent->client->ps.pmove.gravity = 0;
 	AngleVectors(ent->client->v_angle, forward, right, NULL);
@@ -267,12 +267,12 @@ void ShowScanner(edict_t* ent, char* layout)
 	char    stats[64] = { 0 }; /* MrG{DRGN} initialized */
 	vec3_t  v = { 0 };
 
-	/* MrG{DRGN} sanity check*/
+	
 	if (!ent)
 	{
 		return;
 	}
-	/* END */
+	
 
 	/* MrG{DRGN this is probably faster than the long series of if else statemnts that was here */
 	switch (ent->client->scanneractive)
@@ -476,12 +476,12 @@ void P_ProjectSource2(gclient_t* client, vec3_t point, vec3_t distance, vec3_t f
 
 void Grapple_Reset(edict_t* ent)
 {
-	/* MrG{DRGN} sanity check*/
+	
 	if (!ent)
 	{
 		return;
 	}
-	/* END */
+	
 
 	ent->owner->client->grapple_state = GRAPPLE_OFF;
 	gi.sound(ent->owner, CHAN_AUTO, gi.soundindex("misc/grapple/reset.wav"), 1, ATTN_NORM, 0);
@@ -497,12 +497,12 @@ void Grapple_DrawCable(edict_t* ent)
 	vec3_t	dir = { 0 };
 	float	distance;
 
-	/* MrG{DRGN} sanity check*/
+	
 	if (!ent)
 	{
 		return;
 	}
-	/* END */
+	
 
 	AngleVectors(ent->owner->client->v_angle, f, r, NULL);
 	VectorSet(offset, 16, 16, ent->owner->viewheight - 8);
@@ -540,7 +540,7 @@ void Grapple_Touch(edict_t* ent, edict_t* other, cplane_t* plane, csurface_t* su
 		G_FreeEdict(ent);
 		return;
 	}
-	/* END */
+	
 
 	if (surf && (surf->flags & SURF_SKY))
 	{
@@ -589,12 +589,12 @@ void Grapple_Think(edict_t* ent)
 	vec_t len;
 	float f1, f2;			// restrainment forces
 
-	/* MrG{DRGN} sanity check*/
+	
 	if (!ent)
 	{
 		return;
 	}
-	/* END */
+	
 
 	if (ent->owner->client->grapple_state > 1)	// Grapple is attached
 	{
@@ -678,12 +678,12 @@ void Grapple_Fire(edict_t* ent)
 	vec3_t	offset = { 0 };
 	vec3_t	start, f, r;
 
-	/* MrG{DRGN} sanity check*/
+	
 	if (!ent)
 	{
 		return;
 	}
-	/* END */
+	
 
 	//get start point
 	AngleVectors(ent->client->v_angle, f, r, NULL);
@@ -716,6 +716,7 @@ void Grapple_Fire(edict_t* ent)
 		hook->dmg = 15;
 
 	gi.linkentity(hook);
+	DbgPrintf("%s %s index: %d\n", __func__, ent->classname, ent->classindex);
 	ent->client->grapple = hook;
 	ent->client->grapple_state = GRAPPLE_INAIR;
 

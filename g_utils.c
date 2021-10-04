@@ -149,10 +149,10 @@ void G_UseTargets(edict_t* ent, edict_t* activator)
 {
 	edict_t* t;
 
-	/* MrG{DRGN} sanity check */
+	
 	if (!ent)
 		return;
-	/* END */
+	
 //
 // check for a delay
 //

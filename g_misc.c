@@ -78,7 +78,7 @@ void gib_touch(edict_t* self, edict_t* other, cplane_t* plane, csurface_t* surf)
 		G_FreeEdict(self);
 		return;
 	}
-	/* END */
+	
 	if (!self->groundentity)
 		return;
 
@@ -304,7 +304,7 @@ void path_corner_touch(edict_t* self, edict_t* other, cplane_t* plane, csurface_
 		G_FreeEdict(self);
 		return;
 	}
-	/* END */
+	
 	if (other->movetarget != self)
 		return;
 
@@ -574,12 +574,10 @@ This is solid bmodel that will fall if it's support it removed.
 void func_object_touch(edict_t* self, edict_t* other, cplane_t* plane, csurface_t* surf)
 {
 	// only squash thing we fall on top of
-	/* MrG{DRGN} better sanity check, & surf is unused
-	if (!plane)
-		return; */
+	
 	if (!self || !other || !plane)
 		return;
-	/* END */
+	
 	if (plane->normal[2] < 1.0)
 		return;
 	if (other->takedamage == DAMAGE_NO)
@@ -929,7 +927,7 @@ void misc_viper_bomb_touch(edict_t* self, edict_t* other, cplane_t* plane, csurf
 		G_FreeEdict(self);
 		return;
 	}
-	/* END */
+	
 
 	G_UseTargets(self, self->activator);
 
@@ -1396,7 +1394,7 @@ void teleporter_touch(edict_t* self, edict_t* other, cplane_t* plane, csurface_t
 	{
 		return;
 	}
-	/* END */
+	
 
 
 	if (!other->client && !tele_fire->value)

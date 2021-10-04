@@ -200,7 +200,7 @@ void InitGame(void)
 	flood_persecond = gi.cvar("flood_persecond", "4", 0);
 	flood_waitdelay = gi.cvar("flood_waitdelay", "10", 0);
 	filterban = gi.cvar("filterban", "1", 0);
-	/* END */
+	
 
 	// items
 	InitItems();
@@ -211,7 +211,7 @@ void InitGame(void)
 	 */
 	game.helpmessage1[0] = 0;
 	game.helpmessage2[0] = 0;
-	/* END */
+	
 
 	// initialize all entities for this game
 	game.maxentities = maxentities->value;

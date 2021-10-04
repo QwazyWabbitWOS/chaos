@@ -291,10 +291,24 @@ void CTFInit_old(void)
 	memset(&ctfgame, 0, sizeof(ctfgame));
 	techspawn = false;
 }
+void CTFSpawn(void)
+{
+	//if (!flag1_item)
+	//	flag1_item = FindItemByClassname("item_flag_team1");
+	//if (!flag2_item)
+	//	flag2_item = FindItemByClassname("item_flag_team2");
+	memset(&ctfgame, 0, sizeof(ctfgame));
+	CTFSetupTechSpawn();
+
+	if (competition->value > 1) {
+		ctfgame.match = MATCH_SETUP;
+		ctfgame.matchtime = level.time + matchsetuptime->value * 60;
+	}
+}
 
 void CTFInit(void)
 {
-	ctf = gi.cvar("ctf", "0", CVAR_SERVERINFO);
+	ctf = gi.cvar("ctf", "o", CVAR_SERVERINFO);
 	ctf_forcejoin = gi.cvar("ctf_forcejoin", "1", 0);
 	competition = gi.cvar("competition", "0", CVAR_SERVERINFO);
 	matchlock = gi.cvar("matchlock", "1", CVAR_SERVERINFO);
@@ -306,9 +320,9 @@ void CTFInit(void)
 	allow_admin = gi.cvar("allow_admin", "1", 0);
 	warp_list = gi.cvar("warp_list", "q2ctf1 q2ctf2 q2ctf3 q2ctf4 q2ctf5", 0);
 	warn_unbalanced = gi.cvar("warn_unbalanced", "1", 0);
-	memset(&ctfgame, 0, sizeof(ctfgame));
-	techspawn = false;
 }
+
+
 
 /*
 /*--------------------------------------------------------------------------*/
@@ -1803,7 +1817,7 @@ void CTFTech_teleport( edict_t* tech)
 	vec3_t  angles = { 0 };
 
 
-	/* END */
+	
 	if ((spot = FindTechDest()) == NULL)
 		return;
 
@@ -2384,6 +2398,19 @@ void SP_misc_ctf_small_banner(edict_t* ent)
 
 /*-----------------------------------------------------------------------*/
 
+static void SetLevelName(pmenu_t* p)
+{
+	static char levelname[33];
+
+	levelname[0] = '*';
+	if (g_edicts[0].message)
+		strncpy(levelname + 1, g_edicts[0].message, sizeof(levelname) - 2);
+	else
+		strncpy(levelname + 1, level.mapname, sizeof(levelname) - 2);
+	levelname[sizeof(levelname) - 1] = 0;
+	p->text = levelname;
+}
+
 
 /* ELECTIONS */
 
@@ -2449,7 +2476,7 @@ void CTFResetAllPlayers(void)
 		if (ent->client->menu)
 			PMenu_Close(ent);
 
-		//CTFPlayerResetGrapple(ent);
+		Grapple_Reset(ent);
 		CTFDeadDropFlag(ent);
 		CTFDeadDropTech(ent);
 
@@ -2953,6 +2980,18 @@ void CTFReturnToMain(edict_t* ent, pmenu_t* p)
 	CTFOpenJoinMenu(ent);
 }
 
+
+void CTFRequestMatch(edict_t* ent, pmenu_t* p)
+{
+	char text[1024];
+
+	PMenu_Close(ent);
+
+	sprintf(text, "%s has requested to switch to competition mode.",
+		ent->client->pers.netname);
+	CTFBeginElection(ent, ELECT_MATCH, text);
+}
+
 void CTFCredits(edict_t* ent, pmenu_t* p);
 
 
@@ -2967,8 +3006,9 @@ void CTFShowScores(edict_t* ent, pmenu_t* p)
 }
 
 pmenu_t creditsmenu[] = {
-	{ "*Quake II Chaos DM Lives v3.2b*",	PMENU_ALIGN_CENTER, NULL, NULL },/* MrG{DRGN} */
-	{ NULL,				PMENU_ALIGN_CENTER, NULL, NULL },/* MrG{DRGN} */
+	{ "*Quake II ",	PMENU_ALIGN_CENTER, NULL, NULL },/* MrG{DRGN} */
+	{ "Chaos DM Lives v3.2b*",				PMENU_ALIGN_CENTER, NULL, NULL},
+	{ NULL,					PMENU_ALIGN_CENTER, NULL, NULL },
 	{  "*Programming",								PMENU_ALIGN_CENTER, NULL, NULL },/* MrG{DRGN} */
 	{ "Flash (flash@telefragged.com)",					PMENU_ALIGN_CENTER, NULL, NULL },/* MrG{DRGN} */
 	{ "MrG{DRGN} (aggravationq2@hotmail.com)",	PMENU_ALIGN_CENTER, NULL, NULL },/* MrG{DRGN} */
@@ -2985,9 +3025,17 @@ pmenu_t creditsmenu[] = {
 	{ "Return to Main Menu",			PMENU_ALIGN_LEFT, NULL, CTFReturnToMain }
 };
 
+static const int jmenu_level = 2;
+static const int jmenu_match = 3;
+static const int jmenu_red = 5;
+static const int jmenu_blue = 7;
+static const int jmenu_chase = 8;
+static const int jmenu_reqmatch = 11;
+
 pmenu_t joinmenu[] = {
 	{ "*Quake II",			PMENU_ALIGN_CENTER, NULL, NULL },
-	{ "*Chaos Deathmatch",	PMENU_ALIGN_CENTER, NULL, NULL },
+	{ "*Chaos DM Lives v3.2b",	PMENU_ALIGN_CENTER, NULL, NULL },
+	{ NULL,					PMENU_ALIGN_CENTER, NULL, NULL },
 	{ NULL,					PMENU_ALIGN_CENTER, NULL, NULL },
 	{ NULL,					PMENU_ALIGN_CENTER, NULL, NULL },
 	{ "Join Red Team",		PMENU_ALIGN_LEFT, NULL, CTFJoinTeam1 },
@@ -2997,15 +3045,26 @@ pmenu_t joinmenu[] = {
 	{ "IntelliCam",			PMENU_ALIGN_LEFT, NULL, CTFChaseCam },
 	{ "Credits",			PMENU_ALIGN_LEFT, NULL, CTFCredits },
 	{ NULL,					PMENU_ALIGN_LEFT, NULL, NULL },
+	{ NULL,					PMENU_ALIGN_CENTER, NULL, NULL },
 	{ "Use [ and ] to move cursor",	PMENU_ALIGN_LEFT, NULL, NULL },
 	{ "ENTER to select",	PMENU_ALIGN_LEFT, NULL, NULL },
 	{ "ESC to Exit Menu",	PMENU_ALIGN_LEFT, NULL, NULL },
 	{ "(TAB to Return)",	PMENU_ALIGN_LEFT, NULL, NULL },
-	{ NULL,					PMENU_ALIGN_LEFT, NULL, NULL },
 	{ "v" CTF_STRING_VERSION,	PMENU_ALIGN_RIGHT, NULL, NULL },
 };
 
-int CTFUpdateJoinMenu(edict_t* ent)
+pmenu_t nochasemenu[] = {
+	{ "*Quake II",			PMENU_ALIGN_CENTER, NULL },
+	{ "*Chaos DM Lives v3.2b",	PMENU_ALIGN_CENTER, NULL },
+	{ NULL,					PMENU_ALIGN_CENTER, NULL },
+	{ NULL,					PMENU_ALIGN_CENTER, NULL },
+	{ "No one to chase",	PMENU_ALIGN_LEFT, NULL },
+	{ NULL,					PMENU_ALIGN_CENTER, NULL },
+	{ "Return to Main Menu", PMENU_ALIGN_LEFT, CTFReturnToMain }
+};
+
+
+int CTFUpdateJoinMenu_old(edict_t* ent)
 {
 	static char levelname[32] = { 0 };
 	static char team1players[32];
@@ -3075,6 +3134,102 @@ int CTFUpdateJoinMenu(edict_t* ent)
 	return (rand() & 1) ? CTF_TEAM1 : CTF_TEAM2;
 }
 
+int CTFUpdateJoinMenu(edict_t* ent)
+{
+	static char team1players[32];
+	static char team2players[32];
+	int num1, num2, i;
+
+	if (ctfgame.match >= MATCH_PREGAME && matchlock->value) {
+		joinmenu[jmenu_red].text = "MATCH IS LOCKED";
+		joinmenu[jmenu_red].SelectFunc = NULL;
+		joinmenu[jmenu_blue].text = "  (entry is not permitted)";
+		joinmenu[jmenu_blue].SelectFunc = NULL;
+	}
+	else {
+		if (ctfgame.match >= MATCH_PREGAME) {
+			joinmenu[jmenu_red].text = "Join Red MATCH Team";
+			joinmenu[jmenu_blue].text = "Join Blue MATCH Team";
+		}
+		else {
+			joinmenu[jmenu_red].text = "Join Red Team";
+			joinmenu[jmenu_blue].text = "Join Blue Team";
+		}
+		joinmenu[jmenu_red].SelectFunc = CTFJoinTeam1;
+		joinmenu[jmenu_blue].SelectFunc = CTFJoinTeam2;
+	}
+
+	if (ctf_forcejoin->string && *ctf_forcejoin->string) {
+		if (Q_stricmp(ctf_forcejoin->string, "red") == 0) {
+			joinmenu[jmenu_blue].text = NULL;
+			joinmenu[jmenu_blue].SelectFunc = NULL;
+		}
+		else if (Q_stricmp(ctf_forcejoin->string, "blue") == 0) {
+			joinmenu[jmenu_red].text = NULL;
+			joinmenu[jmenu_red].SelectFunc = NULL;
+		}
+	}
+	
+	if (ent->client->camera)
+		joinmenu[jmenu_chase].text = "Leave IntelliCam";
+	else
+		joinmenu[jmenu_chase].text = "IntelliCam";
+
+	SetLevelName(joinmenu + jmenu_level);
+
+	num1 = num2 = 0;
+	for (i = 0; i < maxclients->value; i++) {
+		if (!g_edicts[i + 1].inuse)
+			continue;
+		if (game.clients[i].resp.ctf_team == CTF_TEAM1)
+			num1++;
+		else if (game.clients[i].resp.ctf_team == CTF_TEAM2)
+			num2++;
+	}
+
+	sprintf(team1players, "  (%d players)", num1);
+	sprintf(team2players, "  (%d players)", num2);
+
+	switch (ctfgame.match) {
+	case MATCH_NONE:
+		joinmenu[jmenu_match].text = NULL;
+		break;
+
+	case MATCH_SETUP:
+		joinmenu[jmenu_match].text = "*MATCH SETUP IN PROGRESS";
+		break;
+
+	case MATCH_PREGAME:
+		joinmenu[jmenu_match].text = "*MATCH STARTING";
+		break;
+
+	case MATCH_GAME:
+		joinmenu[jmenu_match].text = "*MATCH IN PROGRESS";
+		break;
+	}
+
+	if (joinmenu[jmenu_red].text)
+		joinmenu[jmenu_red + 1].text = team1players;
+	else
+		joinmenu[jmenu_red + 1].text = NULL;
+	if (joinmenu[jmenu_blue].text)
+		joinmenu[jmenu_blue + 1].text = team2players;
+	else
+		joinmenu[jmenu_blue + 1].text = NULL;
+
+	joinmenu[jmenu_reqmatch].text = NULL;
+	joinmenu[jmenu_reqmatch].SelectFunc = NULL;
+	if (competition->value && ctfgame.match < MATCH_SETUP) {
+		joinmenu[jmenu_reqmatch].text = "Request Match";
+		joinmenu[jmenu_reqmatch].SelectFunc = CTFRequestMatch;
+	}
+
+	if (num1 > num2)
+		return CTF_TEAM1;
+	else if (num2 > num1)
+		return CTF_TEAM2;
+	return (rand() & 1) ? CTF_TEAM1 : CTF_TEAM2;
+}
 void CTFOpenJoinMenu(edict_t* ent)
 {
 	int team;
@@ -3296,7 +3451,7 @@ static void old_teleporter_touch(edict_t* self, edict_t* other, cplane_t* plane,
 		G_FreeEdict(self);
 		return;
 	}
-	/* END */
+	
 	if (!other->client && !tele_fire->value)
 		return;
 	dest = G_Find(NULL, FOFS(targetname), self->target);

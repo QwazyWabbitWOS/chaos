@@ -948,7 +948,7 @@ qboolean CheckFlood(edict_t* ent)
 	}
 	return false;
 }
-/* END */
+
 
 /*
 ==================
@@ -1036,7 +1036,7 @@ void ClientCommand(edict_t* ent)
 	*/
 	if (!ent)
 		return;
-	/* END */
+	
 
 	cmd = gi.argv(0);
 
@@ -1055,7 +1055,7 @@ void ClientCommand(edict_t* ent)
 		/* MrG{DRGN} Spectators don't have teams and shouldn't be spamming macros */
 		if (ent->solid == SOLID_NOT || ent->solid == SOLID_TRIGGER)
 			return;
-		/* END */
+		
 		CTFSay_Team(ent, gi.args());
 		return;
 	}

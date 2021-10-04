@@ -27,12 +27,6 @@ typedef enum {
 	CTF_TEAM2  // Blue Team
 } ctfteam_t;
 
-typedef enum {
-	CTF_GRAPPLE_STATE_FLY,
-	CTF_GRAPPLE_STATE_PULL,
-	CTF_GRAPPLE_STATE_HANG
-} ctfgrapplestate_t;
-
 typedef struct ghost_s {
 	char netname[16];
 	int number;
@@ -114,13 +108,6 @@ void CTFTech_teleport(edict_t* tech);
 void CTFFragBonuses(edict_t* targ, edict_t* inflictor, edict_t* attacker);
 void CTFCheckHurtCarrier(edict_t* targ, edict_t* attacker);
 
-// GRAPPLE
- /* won't be used
-void CTFWeapon_Grapple(edict_t* ent);
-void CTFPlayerResetGrapple(edict_t* ent);
-void CTFGrapplePull(edict_t* self);
-void CTFResetGrapple(edict_t* self);
-   */
 //TECH
 gitem_t* CTFWhat_Tech(edict_t* ent);
 qboolean CTFPickup_Tech(edict_t* ent, edict_t* other);

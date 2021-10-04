@@ -58,12 +58,12 @@ void P_DamageFeedback(edict_t* player)
 	static	vec3_t	acolor = { 1.0, 1.0, 1.0 };
 	static	vec3_t	bcolor = { 1.0, 0.0, 0.0 };
 
-	/* MrG{DRGN} sanity check*/
+	
 	if (!player || player->bot_player)
 	{
 		return;
 	}
-	/* END */
+	
 
 	client = player->client;
 
@@ -209,12 +209,12 @@ void SV_CalcViewOffset(edict_t* ent)
 	float		delta;
 	vec3_t		v = { 0 };
 
-	/* MrG{DRGN} sanity check*/
+	
 	if (!ent)
 	{
 		return;
 	}
-	/* END */
+	
 
 	//===================================
 
@@ -335,12 +335,12 @@ void SV_CalcGunOffset(edict_t* ent)
 	int		i;
 	float	delta;
 
-	/* MrG{DRGN} sanity check*/
+	
 	if (!ent)
 	{
 		return;
 	}
-	/* END */
+	
 
 	// gun angles from bobbing
 	ent->client->ps.gunangles[ROLL] = xyspeed * bobfracsin * 0.005F;/* MrG{DRGN} explicit float */
@@ -392,12 +392,12 @@ void SV_AddBlend(float r, float g, float b, float a, float* v_blend)
 {
 	float	a2, a3;
 
-	/* MrG{DRGN} sanity check*/
+	
 	if (!v_blend)
 	{
 		return;
 	}
-	/* END */
+	
 
 	if (a <= 0)
 		return;
@@ -422,12 +422,12 @@ void SV_CalcBlend(edict_t* ent)
 	int		remaining;
 	float alpha = 0; /* MrG{DRGN} moved out of conditional below and initialized 09/23/2020 */
 
-	/* MrG{DRGN} sanity check*/
+	
 	if (!ent)
 	{
 		return;
 	}
-	/* END */
+	
 
 	ent->client->ps.blend[0] = ent->client->ps.blend[1] =
 		ent->client->ps.blend[2] = ent->client->ps.blend[3] = 0;
@@ -628,12 +628,12 @@ void P_FallingDamage(edict_t* ent)
 	int		damage;
 	vec3_t	dir = { 0 };
 
-	/* MrG{DRGN} sanity check*/
+	
 	if (!ent)
 	{
 		return;
 	}
-	/* END */
+	
 
 	if (ent->s.modelindex != PLAYER_MODEL && ent->client->invisible != true)
 		return;		// not in the player model
@@ -880,12 +880,12 @@ void G_SetClientEffects(edict_t* ent)
 	int		pa_type;
 	int		remaining;
 
-	/* MrG{DRGN} sanity check*/
+	
 	if (!ent)
 	{
 		return;
 	}
-	/* END */
+	
 
 	ent->s.effects = 0;
 	ent->s.renderfx = RF_IR_VISIBLE; /* MrG{DRGN} was 0, but this is how it;s done in the 3.20+ source*/
@@ -949,12 +949,12 @@ G_SetClientEvent
 */
 void G_SetClientEvent(edict_t* ent)
 {
-	/* MrG{DRGN} sanity check*/
+	
 	if (!ent)
 	{
 		return;
 	}
-	/* END */
+	
 
 	if (ent->s.event)
 		return;
@@ -975,12 +975,12 @@ void G_SetClientSound(edict_t* ent)
 {
 	char* weap;
 
-	/* MrG{DRGN} sanity check*/
+	
 	if (!ent)
 	{
 		return;
 	}
-	/* END */
+	
 
 	if (ent->client->resp.game_helpchanged != game.helpchanged)
 	{
@@ -1022,12 +1022,12 @@ void G_SetClientFrame(edict_t* ent)
 	gclient_t* client;
 	qboolean	duck, run;
 
-	/* MrG{DRGN} sanity check*/
+	
 	if (!ent)
 	{
 		return;
 	}
-	/* END */
+	
 
 	if (ent->s.modelindex != PLAYER_MODEL) 
 		return;		// not in the player model
@@ -1138,12 +1138,12 @@ void ClientEndServerFrame(edict_t* ent)
 	float	bobtime;
 	int		i;
 
-	/* MrG{DRGN} sanity check*/
+	
 	if (!ent)
 	{
 		return;
 	}
-	/* END */
+	
 
 	current_player = ent;
 	current_client = ent->client;
@@ -1164,7 +1164,7 @@ void ClientEndServerFrame(edict_t* ent)
 		*/
 		current_client->ps.pmove.origin[i] = COORD2SHORT(ent->s.origin[i]);
 		current_client->ps.pmove.velocity[i] = COORD2SHORT(ent->velocity[i]);
-		/* END */
+		
 	}
 
 	//

@@ -188,7 +188,7 @@ typedef enum classindex
 	   PU_FLASHLIGHT,
 	   PU_SCANNER,
 
-	   /* END */
+	   
 	   KEY_DATACD,
 	   KEY_POWERCUBE,
 	   KEY_PYRAMID,

@@ -1061,7 +1061,7 @@ overflow int.
 */
 #define COORD2SHORT(x)  ((int)((x)*8.0f))
 #define SHORT2COORD(x)  ((x)*(1.0f/8))
-/* END */
+
 
 //
 // config strings are a general means of communication from

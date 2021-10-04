@@ -541,7 +541,7 @@ extern cvar_t* flood_msgs;
 extern cvar_t* flood_persecond;
 extern cvar_t* flood_waitdelay;
 extern cvar_t* filterban;
-/* END */
+
 
 qboolean	is_quad;     //MATTHIAS	
 byte		is_silenced;
@@ -1067,7 +1067,7 @@ struct gclient_s
 	float		flood_locktill;		// locked from talking
 	float		flood_when[10];		// when messages were said
 	int			flood_whenhead;		// head pointer for when said
-	/* END */
+	
 
 	//ZOID
 	//void* ctf_grapple;		// entity of grapple
@@ -1303,7 +1303,7 @@ extern cvar_t* allow_flagdrop;	/* MrG{DRGN} allow flag dropping */
 extern cvar_t* weapon_kick; /* MrG{DRGN} kickable weapons toggle */
 extern cvar_t* tele_fire; /* MrG{DRGN} allow certain non-client projectiles to pass through teleporters */
 
-/* END */
+
 
 int		red_base, blue_base;	//node at red/blue flag
 

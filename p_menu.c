@@ -6,10 +6,10 @@ void PMenu_Open(edict_t* ent, pmenu_t* entries, int cur, int num)
 	pmenu_t* p;
 	int i;
 
-	/* MrG{DRGN} sanity check! */
+	/* MrG{DRGN}  check! */
 	if (!ent)
 		return;
-	/* END */
+	
 
 	if (!ent->client)
 		return;
