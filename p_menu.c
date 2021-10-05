@@ -32,7 +32,7 @@ pmenuhnd_t* PMenu_Open(edict_t* ent, pmenu_t* entries, int cur, int num, void* a
 	// duplicate the strings since they may be from static memory
 	for (i = 0; i < num; i++)
 		if (entries[i].text)
-			hnd->entries[i].text = strdup(entries[i].text);
+			hnd->entries[i].text = G_CopyString(entries[i].text);
 
 	hnd->num = num;
 

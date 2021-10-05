@@ -414,7 +414,10 @@ edict_t* G_Spawn(void)
 	if (i == game.maxentities)
 		gi.error("ED_Alloc: no free edicts");
 
-	DbgPrintf("%s entity count: %d/%d\n", __func__, globals.num_edicts, game.maxentities);
+	//don't report during worldspawn
+	if (level.time)
+		DbgPrintf("%s entity count: %d/%d\n", __func__, globals.num_edicts, game.maxentities);
+	
 	globals.num_edicts++;
 	G_InitEdict(e);
 	return e;
@@ -437,7 +440,9 @@ void G_FreeEdict(edict_t* ed)
 		return;
 	}
 
-	DbgPrintf("%s edict count: %d %s index %d, time: %0.1f\n", __func__, 
+	//don't report during worldspawn
+	if(level.time)
+		DbgPrintf("%s edict count: %d %s index %d, time: %0.1f\n", __func__, 
 		globals.num_edicts, ed->classname, ed->classindex, level.time);
 
 	memset(ed, 0, sizeof(*ed));
