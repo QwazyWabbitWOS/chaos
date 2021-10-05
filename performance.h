@@ -35,6 +35,5 @@ void _START_PERFORMANCE_TIMER (void);
 #endif
 #endif
 
-void DbgPrintf (char *msg, ...);
-
 #endif /* PERFORMANCE_H */
+void DbgPrintf(char* msg, ...);
