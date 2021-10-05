@@ -1142,14 +1142,14 @@ void ClientCommand(edict_t* ent)
 		CTFNotReady(ent);	
 	else if (Q_stricmp(cmd, "ghost") == 0)
 		CTFGhost(ent);	 	
-	//else if (Q_stricmp(cmd, "admin") == 0)
-//		CTFAdmin(ent);
-	//else if (Q_stricmp(cmd, "stats") == 0)
-		//CTFStats(ent);
-//	else if (Q_stricmp(cmd, "warp") == 0) 
-	//	CTFWarp(ent);
-	//else if (Q_stricmp(cmd, "boot") == 0) 
-	//	CTFBoot(ent);
+	else if (Q_stricmp(cmd, "admin") == 0)
+		CTFAdmin(ent);
+	else if (Q_stricmp(cmd, "stats") == 0)
+		CTFStats(ent);
+	else if (Q_stricmp(cmd, "warp") == 0) 
+		CTFWarp(ent);
+	else if (Q_stricmp(cmd, "boot") == 0) 
+		CTFBoot(ent);
 	else
 		ClientCommand2(ent);
 }

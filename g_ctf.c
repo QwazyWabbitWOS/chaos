@@ -312,7 +312,7 @@ void CTFInit(void)
 	ctf_forcejoin = gi.cvar("ctf_forcejoin", "1", 0);
 	competition = gi.cvar("competition", "0", CVAR_SERVERINFO);
 	matchlock = gi.cvar("matchlock", "1", CVAR_SERVERINFO);
-	electpercentage = gi.cvar("electpercentage", "66", 0);
+	electpercentage = gi.cvar("electpercentage", "50", 0);
 	matchtime = gi.cvar("matchtime", "20", CVAR_SERVERINFO);
 	matchsetuptime = gi.cvar("matchsetuptime", "10", 0);
 	matchstarttime = gi.cvar("matchstarttime", "20", 0);
@@ -2949,17 +2949,17 @@ void CTFJoinTeam(edict_t* ent, int desired_team)
 			"***********************");
 	}
 }
-void CTFJoinTeam1(edict_t* ent, pmenu_t* p)
+void CTFJoinTeam1(edict_t* ent, pmenuhnd_t* p)
 {
 	CTFJoinTeam(ent, CTF_TEAM1);
 }
 
-void CTFJoinTeam2(edict_t* ent, pmenu_t* p)
+void CTFJoinTeam2(edict_t* ent, pmenuhnd_t* p)
 {
 	CTFJoinTeam(ent, CTF_TEAM2);
 }
 
-void CTFChaseCam(edict_t* ent, pmenu_t* p)
+void CTFChaseCam(edict_t* ent, pmenuhnd_t* p)
 {
 	if (ent->client->camera)	//switch back to player mode
 	{
@@ -2973,14 +2973,14 @@ void CTFChaseCam(edict_t* ent, pmenu_t* p)
 	PMenu_Close(ent);
 }
 
-void CTFReturnToMain(edict_t* ent, pmenu_t* p)
+void CTFReturnToMain(edict_t* ent, pmenuhnd_t* p)
 {
 	PMenu_Close(ent);
 	CTFOpenJoinMenu(ent);
 }
 
 
-void CTFRequestMatch(edict_t* ent, pmenu_t* p)
+void CTFRequestMatch(edict_t* ent, pmenuhnd_t* p)
 {
 	char text[1024];
 
@@ -2991,7 +2991,7 @@ void CTFRequestMatch(edict_t* ent, pmenu_t* p)
 	CTFBeginElection(ent, ELECT_MATCH, text);
 }
 
-void CTFCredits(edict_t* ent, pmenu_t* p);
+
 
 
 
@@ -3005,23 +3005,23 @@ void CTFShowScores(edict_t* ent, pmenu_t* p)
 }
 
 pmenu_t creditsmenu[] = {
-	{ "*Quake II ",	PMENU_ALIGN_CENTER, NULL, NULL },/* MrG{DRGN} */
+	{ "*Quake II ",	PMENU_ALIGN_CENTER, NULL },/* MrG{DRGN} */
 	{ "Chaos DM Lives v3.2b*",				PMENU_ALIGN_CENTER, NULL},
-	{ NULL,					PMENU_ALIGN_CENTER, NULL, NULL },
-	{  "*Programming",								PMENU_ALIGN_CENTER, NULL, NULL },/* MrG{DRGN} */
-	{ "Flash (flash@telefragged.com)",					PMENU_ALIGN_CENTER, NULL, NULL },/* MrG{DRGN} */
-	{ "MrG{DRGN} (aggravationq2@hotmail.com)",	PMENU_ALIGN_CENTER, NULL, NULL },/* MrG{DRGN} */
-	{ "QwazyWabbit (gandalf.2004@gmail.com)",	PMENU_ALIGN_CENTER, NULL, NULL },/* MrG{DRGN} */
-	{ "*Level Design", 					PMENU_ALIGN_CENTER, NULL, NULL },
-	{ "Nat (nnp@greennet.net)",			PMENU_ALIGN_CENTER, NULL, NULL },
-	{ "Craig (car188@psu.edu)",			PMENU_ALIGN_CENTER, NULL, NULL },
-	{ "*Art",							PMENU_ALIGN_CENTER, NULL, NULL },
-	{ "SPA (spa@telefragged.com)",		PMENU_ALIGN_CENTER, NULL, NULL },
-	{ "*Sound",							PMENU_ALIGN_CENTER, NULL, NULL },
-	{ "SPA (spa@telefragged.com)",		PMENU_ALIGN_CENTER, NULL, NULL },
-	{ "Nat (nnp@greennet.net)",			PMENU_ALIGN_CENTER, NULL, NULL },
-	{ NULL,								PMENU_ALIGN_CENTER, NULL, NULL },
-	{ "Return to Main Menu",			PMENU_ALIGN_LEFT, NULL, CTFReturnToMain }
+	{ NULL,					PMENU_ALIGN_CENTER, NULL},
+	{  "*Programming",								PMENU_ALIGN_CENTER, NULL },/* MrG{DRGN} */
+	{ "Flash (flash@telefragged.com)",					PMENU_ALIGN_CENTER, NULL},/* MrG{DRGN} */
+	{ "MrG{DRGN} (aggravationq2@hotmail.com)",	PMENU_ALIGN_CENTER, NULL },/* MrG{DRGN} */
+	{ "QwazyWabbit (gandalf.2004@gmail.com)",	PMENU_ALIGN_CENTER, NULL },/* MrG{DRGN} */
+	{ "*Level Design", 					PMENU_ALIGN_CENTER, NULL },
+	{ "Nat (nnp@greennet.net)",			PMENU_ALIGN_CENTER, NULL },
+	{ "Craig (car188@psu.edu)",			PMENU_ALIGN_CENTER, NULL },
+	{ "*Art",							PMENU_ALIGN_CENTER, NULL },
+	{ "SPA (spa@telefragged.com)",		PMENU_ALIGN_CENTER, NULL },
+	{ "*Sound",							PMENU_ALIGN_CENTER, NULL },
+	{ "SPA (spa@telefragged.com)",		PMENU_ALIGN_CENTER, NULL },
+	{ "Nat (nnp@greennet.net)",			PMENU_ALIGN_CENTER, NULL },
+	{ NULL,								PMENU_ALIGN_CENTER, NULL },
+	{ "Return to Main Menu",			PMENU_ALIGN_LEFT, CTFReturnToMain }
 };
 
 static const int jmenu_level = 2;
@@ -3032,34 +3032,34 @@ static const int jmenu_chase = 8;
 static const int jmenu_reqmatch = 11;
 
 pmenu_t joinmenu[] = {
-	{ "*Quake II",			PMENU_ALIGN_CENTER, NULL , NULL},
-	{ "*Chaos DM Lives v3.2b",	PMENU_ALIGN_CENTER, NULL, NULL },
-	{ NULL,					PMENU_ALIGN_CENTER, NULL, NULL },
-	{ NULL,					PMENU_ALIGN_CENTER, NULL, NULL },
-	{ NULL,					PMENU_ALIGN_CENTER, NULL, NULL },
-	{ "Join Red Team",		PMENU_ALIGN_LEFT, NULL, CTFJoinTeam1 },
-	{ NULL,					PMENU_ALIGN_LEFT, NULL, NULL },
-	{ "Join Blue Team",		PMENU_ALIGN_LEFT, NULL, CTFJoinTeam2 },
-	{ NULL,					PMENU_ALIGN_LEFT, NULL, NULL },
-	{ "IntelliCam",			PMENU_ALIGN_LEFT, NULL, CTFChaseCam },
-	{ "Credits",			PMENU_ALIGN_LEFT, NULL, CTFCredits },
-	{ NULL,					PMENU_ALIGN_LEFT, NULL, NULL },
-	{ NULL,					PMENU_ALIGN_CENTER, NULL, NULL },
-	{ "Use [ and ] to move cursor",	PMENU_ALIGN_LEFT, NULL, NULL },
-	{ "ENTER to select",	PMENU_ALIGN_LEFT, NULL, NULL },
-	{ "ESC to Exit Menu",	PMENU_ALIGN_LEFT, NULL, NULL },
-	{ "(TAB to Return)",	PMENU_ALIGN_LEFT, NULL, NULL },
-	{ "v" CTF_STRING_VERSION,	PMENU_ALIGN_RIGHT, NULL, NULL },
+	{ "*Quake II",			PMENU_ALIGN_CENTER, NULL},
+	{ "*Chaos DM Lives v3.2b",	PMENU_ALIGN_CENTER, NULL },
+	{ NULL,					PMENU_ALIGN_CENTER, NULL },
+	{ NULL,					PMENU_ALIGN_CENTER, NULL },
+	{ NULL,					PMENU_ALIGN_CENTER, NULL },
+	{ "Join Red Team",		PMENU_ALIGN_LEFT, CTFJoinTeam1 },
+	{ NULL,					PMENU_ALIGN_LEFT, NULL },
+	{ "Join Blue Team",		PMENU_ALIGN_LEFT, CTFJoinTeam2 },
+	{ NULL,					PMENU_ALIGN_LEFT, NULL },
+	{ "IntelliCam",			PMENU_ALIGN_LEFT, CTFChaseCam },
+	{ "Credits",			PMENU_ALIGN_LEFT, CTFCredits },
+	{ NULL,					PMENU_ALIGN_LEFT, NULL },
+	{ NULL,					PMENU_ALIGN_CENTER, NULL },
+	{ "Use [ and ] to move cursor",	PMENU_ALIGN_LEFT, NULL },
+	{ "ENTER to select",	PMENU_ALIGN_LEFT, NULL },
+	{ "ESC to Exit Menu",	PMENU_ALIGN_LEFT, NULL },
+	{ "(TAB to Return)",	PMENU_ALIGN_LEFT, NULL },
+	{ "v" CTF_STRING_VERSION,	PMENU_ALIGN_RIGHT,  NULL },
 };
 
 pmenu_t nochasemenu[] = {
-	{ "*Quake II",			PMENU_ALIGN_CENTER, NULL, NULL},
-	{ "*Chaos DM Lives v3.2b",	PMENU_ALIGN_CENTER, NULL, NULL },
-	{ NULL,					PMENU_ALIGN_CENTER, NULL, NULL },
-	{ NULL,					PMENU_ALIGN_CENTER, NULL, NULL },
-	{ "No one to chase",	PMENU_ALIGN_LEFT, NULL, NULL },
-	{ NULL,					PMENU_ALIGN_CENTER, NULL, NULL },
-	{ "Return to Main Menu", PMENU_ALIGN_LEFT, NULL, CTFReturnToMain }
+	{ "*Quake II",			PMENU_ALIGN_CENTER, NULL},
+	{ "*Chaos DM Lives v3.2b",	PMENU_ALIGN_CENTER,  NULL },
+	{ NULL,					PMENU_ALIGN_CENTER, NULL },
+	{ NULL,					PMENU_ALIGN_CENTER, NULL },
+	{ "No one to chase",	PMENU_ALIGN_LEFT, NULL },
+	{ NULL,					PMENU_ALIGN_CENTER, NULL },
+	{ "Return to Main Menu", PMENU_ALIGN_LEFT, CTFReturnToMain }
 };
 
 
@@ -3240,13 +3240,13 @@ void CTFOpenJoinMenu(edict_t* ent)
 		team = 4;
 	else
 		team = 6;
-	PMenu_Open(ent, joinmenu, team, sizeof(joinmenu) / sizeof(pmenu_t));
+	PMenu_Open(ent, joinmenu, team, sizeof(joinmenu) / sizeof(pmenu_t), NULL);
 }
 
-void CTFCredits(edict_t* ent, pmenu_t* p)
+void CTFCredits(edict_t* ent, pmenuhnd_t* p)
 {
 	PMenu_Close(ent);
-	PMenu_Open(ent, creditsmenu, -1, sizeof(creditsmenu) / sizeof(pmenu_t));
+	PMenu_Open(ent, creditsmenu, -1, sizeof(creditsmenu) / sizeof(pmenu_t), NULL);
 }
 
 qboolean CTFStartClient(edict_t* ent)
@@ -3544,3 +3544,617 @@ void SP_info_teleport_destination(edict_t* ent)
 	ent->classindex = INFO_TELEPORT_DESTINATION;
 	ent->s.origin[2] += 16;
 }
+
+/*----------------------------------------------------------------------------------*/
+/* ADMIN */
+
+typedef struct admin_settings_s {
+	int matchlen;
+	int matchsetuplen;
+	int matchstartlen;
+	qboolean weaponsstay;
+	qboolean instantitems;
+	qboolean quaddrop;
+	qboolean instantweap;
+	qboolean matchlock;
+} admin_settings_t;
+
+#define SETMENU_SIZE (7 + 5)
+
+void CTFAdmin_UpdateSettings(edict_t* ent, pmenuhnd_t* setmenu);
+void CTFOpenAdminMenu(edict_t* ent);
+
+void CTFAdmin_SettingsApply(edict_t* ent, pmenuhnd_t* p)
+{
+	admin_settings_t* settings = p->arg;
+	char st[80];
+	int i;
+
+	if (settings->matchlen != matchtime->value) {
+		bprint_botsafe(PRINT_HIGH, "%s changed the match length to %d minutes.\n",
+			ent->client->pers.netname, settings->matchlen);
+		if (ctfgame.match == MATCH_GAME) {
+			// in the middle of a match, change it on the fly
+			ctfgame.matchtime = (ctfgame.matchtime - matchtime->value * 60) + settings->matchlen * 60;
+		}
+		Com_sprintf(st, sizeof(st), "%d", settings->matchlen);
+		gi.cvar_set("matchtime", st);
+	}
+
+	if (settings->matchsetuplen != matchsetuptime->value) {
+		bprint_botsafe(PRINT_HIGH, "%s changed the match setup time to %d minutes.\n",
+			ent->client->pers.netname, settings->matchsetuplen);
+		if (ctfgame.match == MATCH_SETUP) {
+			// in the middle of a match, change it on the fly
+			ctfgame.matchtime = (ctfgame.matchtime - matchsetuptime->value * 60) + settings->matchsetuplen * 60;
+		}
+		Com_sprintf(st, sizeof(st), "%d", settings->matchsetuplen);
+		gi.cvar_set("matchsetuptime", st);
+	}
+
+	if (settings->matchstartlen != matchstarttime->value) {
+		bprint_botsafe(PRINT_HIGH, "%s changed the match start time to %d seconds.\n",
+			ent->client->pers.netname, settings->matchstartlen);
+		if (ctfgame.match == MATCH_PREGAME) {
+			// in the middle of a match, change it on the fly
+			ctfgame.matchtime = (ctfgame.matchtime - matchstarttime->value) + settings->matchstartlen;
+		}
+		Com_sprintf(st, sizeof(st), "%d", settings->matchstartlen);
+		gi.cvar_set("matchstarttime", st);
+	}
+
+	if (settings->weaponsstay != !!((int)dmflags->value & DF_WEAPONS_STAY)) {
+		bprint_botsafe(PRINT_HIGH, "%s turned %s weapons stay.\n",
+			ent->client->pers.netname, settings->weaponsstay ? "on" : "off");
+		i = (int)dmflags->value;
+		if (settings->weaponsstay)
+			i |= DF_WEAPONS_STAY;
+		else
+			i &= ~DF_WEAPONS_STAY;
+		Com_sprintf(st, sizeof(st), "%d", i);
+		gi.cvar_set("dmflags", st);
+	}
+
+	if (settings->instantitems != !!((int)dmflags->value & DF_INSTANT_ITEMS)) {
+		bprint_botsafe(PRINT_HIGH, "%s turned %s instant items.\n",
+			ent->client->pers.netname, settings->instantitems ? "on" : "off");
+		i = (int)dmflags->value;
+		if (settings->instantitems)
+			i |= DF_INSTANT_ITEMS;
+		else
+			i &= ~DF_INSTANT_ITEMS;
+		Com_sprintf(st, sizeof(st), "%d", i);
+		gi.cvar_set("dmflags", st);
+	}
+
+	if (settings->quaddrop != !!((int)dmflags->value & DF_QUAD_DROP)) {
+		bprint_botsafe(PRINT_HIGH, "%s turned %s quad drop.\n",
+			ent->client->pers.netname, settings->quaddrop ? "on" : "off");
+		i = (int)dmflags->value;
+		if (settings->quaddrop)
+			i |= DF_QUAD_DROP;
+		else
+			i &= ~DF_QUAD_DROP;
+		Com_sprintf(st, sizeof(st), "%d", i);
+		gi.cvar_set("dmflags", st);
+	}
+
+	if (settings->instantweap != !!((int)instantweap->value)) {
+		bprint_botsafe(PRINT_HIGH, "%s turned %s instant weapons.\n",
+			ent->client->pers.netname, settings->instantweap ? "on" : "off");
+		Com_sprintf(st, sizeof(st), "%d", (int)settings->instantweap);
+		gi.cvar_set("instantweap", st);
+	}
+
+	if (settings->matchlock != !!((int)matchlock->value)) {
+		bprint_botsafe(PRINT_HIGH, "%s turned %s match lock.\n",
+			ent->client->pers.netname, settings->matchlock ? "on" : "off");
+		Com_sprintf(st, sizeof(st), "%d", (int)settings->matchlock);
+		gi.cvar_set("matchlock", st);
+	}
+
+	PMenu_Close(ent);
+	CTFOpenAdminMenu(ent);
+}
+
+void CTFAdmin_SettingsCancel(edict_t* ent, pmenuhnd_t* p)
+{
+	admin_settings_t* settings = p->arg;
+
+	PMenu_Close(ent);
+	CTFOpenAdminMenu(ent);
+}
+
+void CTFAdmin_ChangeMatchLen(edict_t* ent, pmenuhnd_t* p)
+{
+	admin_settings_t* settings = p->arg;
+
+	settings->matchlen = (settings->matchlen % 60) + 5;
+	if (settings->matchlen < 5)
+		settings->matchlen = 5;
+
+	CTFAdmin_UpdateSettings(ent, p);
+}
+
+void CTFAdmin_ChangeMatchSetupLen(edict_t* ent, pmenuhnd_t* p)
+{
+	admin_settings_t* settings = p->arg;
+
+	settings->matchsetuplen = (settings->matchsetuplen % 60) + 5;
+	if (settings->matchsetuplen < 5)
+		settings->matchsetuplen = 5;
+
+	CTFAdmin_UpdateSettings(ent, p);
+}
+
+void CTFAdmin_ChangeMatchStartLen(edict_t* ent, pmenuhnd_t* p)
+{
+	admin_settings_t* settings = p->arg;
+
+	settings->matchstartlen = (settings->matchstartlen % 600) + 10;
+	if (settings->matchstartlen < 20)
+		settings->matchstartlen = 20;
+
+	CTFAdmin_UpdateSettings(ent, p);
+}
+
+void CTFAdmin_ChangeWeapStay(edict_t* ent, pmenuhnd_t* p)
+{
+	admin_settings_t* settings = p->arg;
+
+	settings->weaponsstay = !settings->weaponsstay;
+	CTFAdmin_UpdateSettings(ent, p);
+}
+
+void CTFAdmin_ChangeInstantItems(edict_t* ent, pmenuhnd_t* p)
+{
+	admin_settings_t* settings = p->arg;
+
+	settings->instantitems = !settings->instantitems;
+	CTFAdmin_UpdateSettings(ent, p);
+}
+
+void CTFAdmin_ChangeQuadDrop(edict_t* ent, pmenuhnd_t* p)
+{
+	admin_settings_t* settings = p->arg;
+
+	settings->quaddrop = !settings->quaddrop;
+	CTFAdmin_UpdateSettings(ent, p);
+}
+
+void CTFAdmin_ChangeInstantWeap(edict_t* ent, pmenuhnd_t* p)
+{
+	admin_settings_t* settings = p->arg;
+
+	settings->instantweap = !settings->instantweap;
+	CTFAdmin_UpdateSettings(ent, p);
+}
+
+void CTFAdmin_ChangeMatchLock(edict_t* ent, pmenuhnd_t* p)
+{
+	admin_settings_t* settings = p->arg;
+
+	settings->matchlock = !settings->matchlock;
+	CTFAdmin_UpdateSettings(ent, p);
+}
+
+void CTFAdmin_UpdateSettings(edict_t* ent, pmenuhnd_t* setmenu)
+{
+	int i = 2;
+	char text[64];
+	admin_settings_t* settings = setmenu->arg;
+
+	Com_sprintf(text, sizeof(text), "Match Len:       %2d mins", settings->matchlen);
+	PMenu_UpdateEntry(setmenu->entries + i, text, PMENU_ALIGN_LEFT, CTFAdmin_ChangeMatchLen);
+	i++;
+
+	Com_sprintf(text, sizeof(text), "Match Setup Len: %2d mins", settings->matchsetuplen);
+	PMenu_UpdateEntry(setmenu->entries + i, text, PMENU_ALIGN_LEFT, CTFAdmin_ChangeMatchSetupLen);
+	i++;
+
+	Com_sprintf(text, sizeof(text), "Match Start Len: %2d secs", settings->matchstartlen);
+	PMenu_UpdateEntry(setmenu->entries + i, text, PMENU_ALIGN_LEFT, CTFAdmin_ChangeMatchStartLen);
+	i++;
+
+	Com_sprintf(text, sizeof(text), "Weapons Stay:    %s", settings->weaponsstay ? "Yes" : "No");
+	PMenu_UpdateEntry(setmenu->entries + i, text, PMENU_ALIGN_LEFT, CTFAdmin_ChangeWeapStay);
+	i++;
+
+	Com_sprintf(text, sizeof(text), "Instant Items:   %s", settings->instantitems ? "Yes" : "No");
+	PMenu_UpdateEntry(setmenu->entries + i, text, PMENU_ALIGN_LEFT, CTFAdmin_ChangeInstantItems);
+	i++;
+
+	Com_sprintf(text, sizeof(text), "Quad Drop:       %s", settings->quaddrop ? "Yes" : "No");
+	PMenu_UpdateEntry(setmenu->entries + i, text, PMENU_ALIGN_LEFT, CTFAdmin_ChangeQuadDrop);
+	i++;
+
+	Com_sprintf(text, sizeof(text), "Instant Weapons: %s", settings->instantweap ? "Yes" : "No");
+	PMenu_UpdateEntry(setmenu->entries + i, text, PMENU_ALIGN_LEFT, CTFAdmin_ChangeInstantWeap);
+	i++;
+
+	Com_sprintf(text, sizeof(text), "Match Lock:      %s", settings->matchlock ? "Yes" : "No");
+	PMenu_UpdateEntry(setmenu->entries + i, text, PMENU_ALIGN_LEFT, CTFAdmin_ChangeMatchLock);
+	i++;
+
+	PMenu_Update(ent);
+}
+
+pmenu_t def_setmenu[] = {
+	{ "*Settings Menu", PMENU_ALIGN_CENTER, NULL },
+	{ NULL,				PMENU_ALIGN_CENTER, NULL },
+	{ NULL,				PMENU_ALIGN_LEFT, NULL },	//int matchlen;         
+	{ NULL,				PMENU_ALIGN_LEFT, NULL },	//int matchsetuplen;    
+	{ NULL,				PMENU_ALIGN_LEFT, NULL },	//int matchstartlen;    
+	{ NULL,				PMENU_ALIGN_LEFT, NULL },	//qboolean weaponsstay; 
+	{ NULL,				PMENU_ALIGN_LEFT, NULL },	//qboolean instantitems;
+	{ NULL,				PMENU_ALIGN_LEFT, NULL },	//qboolean quaddrop;    
+	{ NULL,				PMENU_ALIGN_LEFT, NULL },	//qboolean instantweap; 
+	{ NULL,				PMENU_ALIGN_LEFT, NULL },	//qboolean matchlock; 
+	{ NULL,				PMENU_ALIGN_LEFT, NULL },
+	{ "Apply",			PMENU_ALIGN_LEFT, CTFAdmin_SettingsApply },
+	{ "Cancel",			PMENU_ALIGN_LEFT, CTFAdmin_SettingsCancel }
+};
+
+void CTFAdmin_Settings(edict_t* ent, pmenuhnd_t* p)
+{
+	admin_settings_t* settings;
+	pmenuhnd_t* menu;
+
+	PMenu_Close(ent);
+
+	//	settings = malloc(sizeof(*settings));
+	settings = gi.TagMalloc(sizeof(*settings), TAG_LEVEL);
+
+	settings->matchlen = matchtime->value;
+	settings->matchsetuplen = matchsetuptime->value;
+	settings->matchstartlen = matchstarttime->value;
+	settings->weaponsstay = !!((int)dmflags->value & DF_WEAPONS_STAY);
+	settings->instantitems = !!((int)dmflags->value & DF_INSTANT_ITEMS);
+	settings->quaddrop = !!((int)dmflags->value & DF_QUAD_DROP);
+	settings->instantweap = instantweap->value != 0;
+	settings->matchlock = matchlock->value != 0;
+
+	menu = PMenu_Open(ent, def_setmenu, -1, sizeof(def_setmenu) / sizeof(pmenu_t), settings);
+	CTFAdmin_UpdateSettings(ent, menu);
+}
+
+void CTFAdmin_MatchSet(edict_t* ent, pmenuhnd_t* p)
+{
+	PMenu_Close(ent);
+
+	if (ctfgame.match == MATCH_SETUP) {
+		bprint_botsafe(PRINT_CHAT, "Match has been forced to start.\n");
+		ctfgame.match = MATCH_PREGAME;
+		ctfgame.matchtime = level.time + matchstarttime->value;
+		gi.positioned_sound(world->s.origin, world, CHAN_AUTO | CHAN_RELIABLE, gi.soundindex("misc/talk1.wav"), 1, ATTN_NONE, 0);
+		ctfgame.countdown = false;
+	}
+	else if (ctfgame.match == MATCH_GAME) {
+		bprint_botsafe(PRINT_CHAT, "Match has been forced to terminate.\n");
+		ctfgame.match = MATCH_SETUP;
+		ctfgame.matchtime = level.time + matchsetuptime->value * 60;
+		CTFResetAllPlayers();
+	}
+}
+
+void CTFAdmin_MatchMode(edict_t* ent, pmenuhnd_t* p)
+{
+	PMenu_Close(ent);
+
+	if (ctfgame.match != MATCH_SETUP) {
+		if (competition->value < 3)
+			gi.cvar_set("competition", "2");
+		ctfgame.match = MATCH_SETUP;
+		CTFResetAllPlayers();
+	}
+}
+
+void CTFAdmin_Reset(edict_t* ent, pmenuhnd_t* p)
+{
+	PMenu_Close(ent);
+
+	// go back to normal mode
+	bprint_botsafe(PRINT_CHAT, "Match mode has been terminated, reseting to normal game.\n");
+	ctfgame.match = MATCH_NONE;
+	gi.cvar_set("competition", "1");
+	CTFResetAllPlayers();
+}
+
+void CTFAdmin_Cancel(edict_t* ent, pmenuhnd_t* p)
+{
+	PMenu_Close(ent);
+}
+
+
+pmenu_t adminmenu[] = {
+	{ "*Administration Menu",	PMENU_ALIGN_CENTER, NULL },
+	{ NULL,						PMENU_ALIGN_CENTER, NULL }, // blank
+	{ "Settings",				PMENU_ALIGN_LEFT, CTFAdmin_Settings },
+	{ NULL,						PMENU_ALIGN_LEFT, NULL },
+	{ NULL,						PMENU_ALIGN_LEFT, NULL },
+	{ "Cancel",					PMENU_ALIGN_LEFT, CTFAdmin_Cancel },
+	{ NULL,						PMENU_ALIGN_CENTER, NULL },
+};
+
+void CTFOpenAdminMenu(edict_t* ent)
+{
+	adminmenu[3].text = NULL;
+	adminmenu[3].SelectFunc = NULL;
+	adminmenu[4].text = NULL;
+	adminmenu[4].SelectFunc = NULL;
+	if (ctfgame.match == MATCH_SETUP) {
+		adminmenu[3].text = "Force start match";
+		adminmenu[3].SelectFunc = CTFAdmin_MatchSet;
+		adminmenu[4].text = "Reset to pickup mode";
+		adminmenu[4].SelectFunc = CTFAdmin_Reset;
+	}
+	else if (ctfgame.match == MATCH_GAME || ctfgame.match == MATCH_PREGAME) {
+		adminmenu[3].text = "Cancel match";
+		adminmenu[3].SelectFunc = CTFAdmin_MatchSet;
+	}
+	else if (ctfgame.match == MATCH_NONE && competition->value) {
+		adminmenu[3].text = "Switch to match mode";
+		adminmenu[3].SelectFunc = CTFAdmin_MatchMode;
+	}
+
+
+	//	if (ent->client->menu)
+	//		PMenu_Close(ent->client->menu);
+
+	PMenu_Open(ent, adminmenu, -1, sizeof(adminmenu) / sizeof(pmenu_t), NULL);
+}
+
+void CTFAdmin(edict_t* ent)
+{
+	char text[1024];
+
+	if (!allow_admin->value) {
+		cprint_botsafe(ent, PRINT_HIGH, "Administration is disabled\n");
+		return;
+	}
+
+	if (gi.argc() > 1 && admin_password->string && *admin_password->string &&
+		!ent->client->resp.admin && strcmp(admin_password->string, gi.argv(1)) == 0) {
+		ent->client->resp.admin = true;
+		bprint_botsafe(PRINT_HIGH, "%s has become an admin.\n", ent->client->pers.netname);
+		cprint_botsafe(ent, PRINT_HIGH, "Type 'admin' to access the adminstration menu.\n");
+	}
+
+	if (!ent->client->resp.admin) {
+		Com_sprintf(text, sizeof(text), "%s has requested admin rights.",
+			ent->client->pers.netname);
+		CTFBeginElection(ent, ELECT_ADMIN, text);
+		return;
+	}
+
+	if (ent->client->menu)
+		PMenu_Close(ent);
+
+	CTFOpenAdminMenu(ent);
+}
+
+/*----------------------------------------------------------------*/
+
+void CTFStats(edict_t* ent)
+{
+	int i, e;
+	ghost_t* g;
+	char st[80];
+	char text[1024];
+	edict_t* e2;
+
+	*text = 0;
+	if (ctfgame.match == MATCH_SETUP)
+	{
+		for (i = 1; i <= maxclients->value; i++)
+		{
+			e2 = g_edicts + i;
+			if (!e2->inuse)
+				continue;
+			if (!e2->client->resp.ready && e2->client->resp.ctf_team != CTF_NOTEAM)
+			{
+				Com_sprintf(st, sizeof(st), "%s is not ready.\n", e2->client->pers.netname);
+				if (strlen(text) + strlen(st) < sizeof(text) - 50)
+					//	strncat(text, st);
+					Q_strncatz(text, sizeof(text), st);
+			}
+		}
+	}
+
+	for (i = 0, g = ctfgame.ghosts; i < MAX_CLIENTS; i++, g++)
+		if (g->ent)
+			break;
+
+	if (i == MAX_CLIENTS)
+	{
+		if (*text)
+			cprint_botsafe(ent, PRINT_HIGH, "%s", text);
+		cprint_botsafe(ent, PRINT_HIGH, "No statistics available.\n");
+		return;
+	}
+
+	//	strncat(text, "  #|Name            |Score|Kills|Death|BasDf|CarDf|Effcy|\n");
+	Q_strncatz(text, sizeof(text), "  #|Name            |Score|Kills|Death|BasDf|CarDf|Effcy|\n");
+
+	for (i = 0, g = ctfgame.ghosts; i < MAX_CLIENTS; i++, g++)
+	{
+		if (!*g->netname)
+			continue;
+
+		if (g->deaths + g->kills == 0)
+			e = 50;
+		else
+			e = g->kills * 100 / (g->kills + g->deaths);
+		Com_sprintf(st, sizeof(st), "%3d|%-16.16s|%5d|%5d|%5d|%5d|%5d|%4d%%|\n",
+			g->number,
+			g->netname,
+			g->score,
+			g->kills,
+			g->deaths,
+			g->basedef,
+			g->carrierdef,
+			e);
+		if (strlen(text) + strlen(st) > sizeof(text) - 50)
+		{
+			sprintf(text + strlen(text), "And more...\n");
+			cprint_botsafe(ent, PRINT_HIGH, "%s", text);
+			return;
+		}
+		//	strncat(text, st);
+		Q_strncatz(text, sizeof(text), st);
+	}
+	cprint_botsafe(ent, PRINT_HIGH, "%s", text);
+}
+
+void CTFPlayerList(edict_t* ent)
+{
+	int i;
+	char st[80];
+	char text[1400];
+	edict_t* e2;
+
+#if 0
+	* text = 0;
+	if (ctfgame.match == MATCH_SETUP)
+	{
+		for (i = 1; i <= maxclients->value; i++)
+		{
+			e2 = g_edicts + i;
+			if (!e2->inuse)
+				continue;
+			if (!e2->client->resp.ready && e2->client->resp.ctf_team != CTF_NOTEAM) {
+				Com_sprintf(st, sizeof(st), "%s is not ready.\n", e2->client->pers.netname);
+				if (strlen(text) + strlen(st) < sizeof(text) - 50)
+					//	strncat(text, st);
+					Q_strncatz(text, sizeof(text), st);
+			}
+		}
+	}
+#endif
+
+	// number, name, connect time, ping, score, admin
+
+	* text = 0;
+	for (i = 1; i <= maxclients->value; i++) {
+		e2 = g_edicts + i;
+		if (!e2->inuse)
+			continue;
+
+		Com_sprintf(st, sizeof(st), "%3d %-16.16s %02d:%02d %4d %3d%s%s\n",
+			i,
+			e2->client->pers.netname,
+			(level.framenum - e2->client->resp.enterframe) / 600,
+			((level.framenum - e2->client->resp.enterframe) % 600) / 10,
+			e2->client->ping,
+			e2->client->resp.score,
+			(ctfgame.match == MATCH_SETUP || ctfgame.match == MATCH_PREGAME) ?
+			(e2->client->resp.ready ? " (ready)" : " (notready)") : "",
+			e2->client->resp.admin ? " (admin)" : "");
+
+		if (strlen(text) + strlen(st) > sizeof(text) - 50) {
+			sprintf(text + strlen(text), "And more...\n");
+			cprint_botsafe(ent, PRINT_HIGH, "%s", text);
+			return;
+		}
+		//	strncat(text, st);
+		Q_strncatz(text, sizeof(text), st);
+	}
+	cprint_botsafe(ent, PRINT_HIGH, "%s", text);
+}
+
+
+void CTFWarp(edict_t* ent)
+{
+	char text[1024];
+	char* mlist, * token;
+	static const char* seps = " \t\n\r";
+
+	if (gi.argc() < 2) {
+		cprint_botsafe(ent, PRINT_HIGH, "Where do you want to warp to?\n");
+		cprint_botsafe(ent, PRINT_HIGH, "Available levels are: %s\n", warp_list->string);
+		return;
+	}
+
+	mlist = strdup(warp_list->string);
+
+	token = strtok(mlist, seps);
+	while (token != NULL) {
+		if (Q_stricmp(token, gi.argv(1)) == 0)
+			break;
+		token = strtok(NULL, seps);
+	}
+
+	if (token == NULL) {
+		cprint_botsafe(ent, PRINT_HIGH, "Unknown CTF level.\n");
+		cprint_botsafe(ent, PRINT_HIGH, "Available levels are: %s\n", warp_list->string);
+		free(mlist);
+		return;
+	}
+
+	free(mlist);
+
+
+	if (ent->client->resp.admin) {
+		bprint_botsafe(PRINT_HIGH, "%s is warping to level %s.\n",
+			ent->client->pers.netname, gi.argv(1));
+		//	strncpy(level.forcemap, gi.argv(1), sizeof(level.forcemap) - 1);
+		Q_strncpyz(level.forcemap, sizeof(level.forcemap), gi.argv(1));
+		EndDMLevel();
+		return;
+	}
+
+	Com_sprintf(text, sizeof(text), "%s has requested warping to level %s.",
+		ent->client->pers.netname, gi.argv(1));
+	if (CTFBeginElection(ent, ELECT_MAP, text))
+		//	strncpy(ctfgame.elevel, gi.argv(1), sizeof(ctfgame.elevel) - 1);
+		Q_strncpyz(ctfgame.elevel,  sizeof(ctfgame.elevel), gi.argv(1));
+}
+
+void CTFBoot(edict_t* ent)
+{
+	int i;
+	edict_t* targ;
+	char text[80];
+
+	if (!ent->client->resp.admin) {
+		cprint_botsafe(ent, PRINT_HIGH, "You are not an admin.\n");
+		return;
+	}
+
+	if (gi.argc() < 2) {
+		cprint_botsafe(ent, PRINT_HIGH, "Who do you want to kick?\n");
+		return;
+	}
+
+	if (*gi.argv(1) < '0' && *gi.argv(1) > '9') {
+		cprint_botsafe(ent, PRINT_HIGH, "Specify the player number to kick.\n");
+		return;
+	}
+
+	i = atoi(gi.argv(1));
+	if (i < 1 || i > maxclients->value) {
+		cprint_botsafe(ent, PRINT_HIGH, "Invalid player number.\n");
+		return;
+	}
+
+	targ = g_edicts + i;
+	if (!targ->inuse) {
+		cprint_botsafe(ent, PRINT_HIGH, "That player number is not connected.\n");
+		return;
+	}
+
+	Com_sprintf(text, sizeof(text), "kick %d\n", i - 1);
+	gi.AddCommandString(text);
+}
+
+
+void CTFSetPowerUpEffect(edict_t* ent, int def)
+{
+	if (ent->client->resp.ctf_team == CTF_TEAM1)
+		ent->s.effects |= EF_PENT; // red
+	else if (ent->client->resp.ctf_team == CTF_TEAM2)
+		ent->s.effects |= EF_QUAD; // red
+	else
+		ent->s.effects |= def;
+}
+

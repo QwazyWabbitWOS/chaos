@@ -147,13 +147,7 @@ void SP_misc_ctf_banner(edict_t* ent);
 void SP_misc_ctf_small_banner(edict_t* ent);
 
 extern char* ctf_statusbar;
- /* won't be used
-void UpdateChaseCam(edict_t* ent);
-void ChaseNext(edict_t* ent);
-void ChasePrev(edict_t* ent);
-
-void CTFObserver(edict_t* ent);
- */
+void CTFCredits(edict_t* ent, pmenuhnd_t* p);
 void SP_trigger_teleport(edict_t* ent);
 void SP_info_teleport_destination(edict_t* ent);
 
