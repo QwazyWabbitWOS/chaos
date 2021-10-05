@@ -106,6 +106,7 @@ GAME_OBJS = \
 	$(BUILDDIR)/g_weapon.o \
 	$(BUILDDIR)/gslog.o \
 	$(BUILDDIR)/m_move.o \
+	$(BUILDDIR)/performance.o \
 	$(BUILDDIR)/p_client.o \
 	$(BUILDDIR)/p_hud.o \
 	$(BUILDDIR)/p_menu.o \
@@ -193,6 +194,9 @@ $(BUILDDIR)/gslog.o : gslog.c
 	$(DO_SHLIB_CC)
 
 $(BUILDDIR)/m_move.o : m_move.c
+	$(DO_SHLIB_CC)
+	
+$(BUILDDIR)/performance.o : performance.c
 	$(DO_SHLIB_CC)
 
 $(BUILDDIR)/p_client.o : p_client.c
