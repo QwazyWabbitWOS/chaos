@@ -1132,6 +1132,24 @@ void ClientCommand(edict_t* ent)
 		CTFTeam_f(ent);
 	else if (Q_stricmp(cmd, "id") == 0)
 		CTFID_f(ent);
+	else if (Q_stricmp(cmd, "yes") == 0) 
+		CTFVoteYes(ent);	
+	else if (Q_stricmp(cmd, "no") == 0)
+		CTFVoteNo(ent);		
+	else if (Q_stricmp(cmd, "ready") == 0) 
+		CTFReady(ent);		
+	else if (Q_stricmp(cmd, "notready") == 0)
+		CTFNotReady(ent);	
+	else if (Q_stricmp(cmd, "ghost") == 0)
+		CTFGhost(ent);	 	
+	//else if (Q_stricmp(cmd, "admin") == 0)
+//		CTFAdmin(ent);
+	//else if (Q_stricmp(cmd, "stats") == 0)
+		//CTFStats(ent);
+//	else if (Q_stricmp(cmd, "warp") == 0) 
+	//	CTFWarp(ent);
+	//else if (Q_stricmp(cmd, "boot") == 0) 
+	//	CTFBoot(ent);
 	else
 		ClientCommand2(ent);
 }

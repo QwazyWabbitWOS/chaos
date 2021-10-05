@@ -22,6 +22,7 @@ cvar_t* fraglimit;
 cvar_t* timelimit;
 //ZOID
 cvar_t* capturelimit;
+cvar_t* instantweap;
 //ZOID
 cvar_t* password;
 cvar_t* maxclients;

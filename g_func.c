@@ -1188,7 +1188,7 @@ void door_touch(edict_t* self, edict_t* other, cplane_t* plane, csurface_t* surf
 		return;
 	self->touch_debounce_time = level.time + 5.0;
 
-	if (strcmp(other->classname, "bot") != 0)
+	if (!other->bot_player)
 		gi.centerprintf(other, "%s", self->message);
 	gi.sound(other, CHAN_AUTO, gi.soundindex("misc/talk1.wav"), 1, ATTN_NORM, 0);
 }

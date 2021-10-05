@@ -308,7 +308,7 @@ void CTFSpawn(void)
 
 void CTFInit(void)
 {
-	ctf = gi.cvar("ctf", "o", CVAR_SERVERINFO);
+	ctf = gi.cvar("ctf", "0", CVAR_SERVERINFO);
 	ctf_forcejoin = gi.cvar("ctf_forcejoin", "1", 0);
 	competition = gi.cvar("competition", "0", CVAR_SERVERINFO);
 	matchlock = gi.cvar("matchlock", "1", CVAR_SERVERINFO);
@@ -323,8 +323,6 @@ void CTFInit(void)
 }
 
 
-
-/*
 /*--------------------------------------------------------------------------*/
 
 char* CTFTeamName(int team)
@@ -2268,7 +2266,7 @@ void CTFSay_Team(edict_t* who, char* msg)
 				CTFSay_Team_Location(who, buf);
 				if (strlen(buf) + (p - outmsg) < sizeof(outmsg) - 2)
 				{
-					strcpy(p, buf);
+					Com_strcpy(p, sizeof p,  buf);
 					p += strlen(buf);
 				}
 				break;
@@ -2276,7 +2274,7 @@ void CTFSay_Team(edict_t* who, char* msg)
 				CTFSay_Team_Armor(who, buf);
 				if (strlen(buf) + (p - outmsg) < sizeof(outmsg) - 2)
 				{
-					strcpy(p, buf);
+					Com_strcpy(p, sizeof p, buf);
 					p += strlen(buf);
 				}
 				break;
@@ -2284,7 +2282,7 @@ void CTFSay_Team(edict_t* who, char* msg)
 				CTFSay_Team_Health(who, buf);
 				if (strlen(buf) + (p - outmsg) < sizeof(outmsg) - 2)
 				{
-					strcpy(p, buf);
+					Com_strcpy(p, sizeof p, buf);
 					p += strlen(buf);
 				}
 				break;
@@ -2292,7 +2290,7 @@ void CTFSay_Team(edict_t* who, char* msg)
 				CTFSay_Team_Tech(who, buf);
 				if (strlen(buf) + (p - outmsg) < sizeof(outmsg) - 2)
 				{
-					strcpy(p, buf);
+					Com_strcpy(p, sizeof p, buf);
 					p += strlen(buf);
 				}
 				break;
@@ -2300,7 +2298,7 @@ void CTFSay_Team(edict_t* who, char* msg)
 				CTFSay_Team_Weapon(who, buf);
 				if (strlen(buf) + (p - outmsg) < sizeof(outmsg) - 2)
 				{
-					strcpy(p, buf);
+					Com_strcpy(p, sizeof p, buf);
 					p += strlen(buf);
 				}
 				break;
@@ -2308,7 +2306,7 @@ void CTFSay_Team(edict_t* who, char* msg)
 				CTFSay_Team_Sight(who, buf);
 				if (strlen(buf) + (p - outmsg) < sizeof(outmsg) - 2)
 				{
-					strcpy(p, buf);
+					Com_strcpy(p, sizeof p, buf);
 					p += strlen(buf);
 				}
 				break;
@@ -2453,9 +2451,9 @@ qboolean CTFBeginElection(edict_t* ent, elect_t type, char* msg)
 	strncpy(ctfgame.emsg, msg, sizeof(ctfgame.emsg) - 1);
 
 	// tell everyone
-	gi.bprintf(PRINT_CHAT, "%s\n", ctfgame.emsg);
-	gi.bprintf(PRINT_HIGH, "Type YES or NO to vote on this request.\n");
-	gi.bprintf(PRINT_HIGH, "Votes: %d  Needed: %d  Time left: %ds\n", ctfgame.evotes, ctfgame.needvotes,
+	bprint_botsafe(PRINT_CHAT, "%s\n", ctfgame.emsg);
+	bprint_botsafe(PRINT_HIGH, "Type YES or NO to vote on this request.\n");
+	bprint_botsafe(PRINT_HIGH, "Votes: %d  Needed: %d  Time left: %ds\n", ctfgame.evotes, ctfgame.needvotes,
 		(int)(ctfgame.electtime - level.time));
 
 	return true;
@@ -2525,7 +2523,7 @@ void CTFAssignGhost(edict_t* ent)
 			break;
 	}
 	ctfgame.ghosts[ghost].ent = ent;
-	strcpy(ctfgame.ghosts[ghost].netname, ent->client->pers.netname);
+	Com_strcpy(ctfgame.ghosts[ghost].netname,sizeof ctfgame.ghosts[ghost].netname, ent->client->pers.netname);
 	ent->client->resp.ghost = ctfgame.ghosts + ghost;
 	gi.cprintf(ent, PRINT_CHAT, "Your ghost code is **** %d ****\n", ctfgame.ghosts[ghost].code);
 	gi.cprintf(ent, PRINT_HIGH, "If you lose connection, you can rejoin with your score "
@@ -2556,6 +2554,7 @@ void CTFStartMatch(void)
 		ent->client->resp.ctf_state = CTF_STATE_START;
 		ent->client->resp.ghost = NULL;
 
+		if (!ent->bot_player)
 		gi.centerprintf(ent, "******************\n\nMATCH HAS STARTED!\n\n******************");
 
 		if (ent->client->resp.ctf_team != CTF_NOTEAM) {
@@ -2581,29 +2580,29 @@ void CTFStartMatch(void)
 void CTFEndMatch(void)
 {
 	ctfgame.match = MATCH_POST;
-	gi.bprintf(PRINT_CHAT, "MATCH COMPLETED!\n");
+	bprint_botsafe(PRINT_CHAT, "MATCH COMPLETED!\n");
 
 	CTFCalcScores();
 
-	gi.bprintf(PRINT_HIGH, "RED TEAM:  %d captures, %d points\n",
+	bprint_botsafe(PRINT_HIGH, "RED TEAM:  %d captures, %d points\n",
 		ctfgame.team1, ctfgame.total1);
-	gi.bprintf(PRINT_HIGH, "BLUE TEAM:  %d captures, %d points\n",
+	bprint_botsafe(PRINT_HIGH, "BLUE TEAM:  %d captures, %d points\n",
 		ctfgame.team2, ctfgame.total2);
 
 	if (ctfgame.team1 > ctfgame.team2)
-		gi.bprintf(PRINT_CHAT, "RED team won over the BLUE team by %d CAPTURES!\n",
+		bprint_botsafe(PRINT_CHAT, "RED team won over the BLUE team by %d CAPTURES!\n",
 			ctfgame.team1 - ctfgame.team2);
 	else if (ctfgame.team2 > ctfgame.team1)
-		gi.bprintf(PRINT_CHAT, "BLUE team won over the RED team by %d CAPTURES!\n",
+		bprint_botsafe(PRINT_CHAT, "BLUE team won over the RED team by %d CAPTURES!\n",
 			ctfgame.team2 - ctfgame.team1);
 	else if (ctfgame.total1 > ctfgame.total2) // frag tie breaker
-		gi.bprintf(PRINT_CHAT, "RED team won over the BLUE team by %d POINTS!\n",
+		bprint_botsafe(PRINT_CHAT, "RED team won over the BLUE team by %d POINTS!\n",
 			ctfgame.total1 - ctfgame.total2);
 	else if (ctfgame.total2 > ctfgame.total1)
-		gi.bprintf(PRINT_CHAT, "BLUE team won over the RED team by %d POINTS!\n",
+		bprint_botsafe(PRINT_CHAT, "BLUE team won over the RED team by %d POINTS!\n",
 			ctfgame.total2 - ctfgame.total1);
 	else
-		gi.bprintf(PRINT_CHAT, "TIE GAME!\n");
+		bprint_botsafe(PRINT_CHAT, "TIE GAME!\n");
 
 	EndDMLevel();
 }
@@ -2631,12 +2630,12 @@ void CTFWinElection(void)
 
 	case ELECT_ADMIN:
 		ctfgame.etarget->client->resp.admin = true;
-		gi.bprintf(PRINT_HIGH, "%s has become an admin.\n", ctfgame.etarget->client->pers.netname);
+		bprint_botsafe(PRINT_HIGH, "%s has become an admin.\n", ctfgame.etarget->client->pers.netname);
 		gi.cprintf(ctfgame.etarget, PRINT_HIGH, "Type 'admin' to access the adminstration menu.\n");
 		break;
 
 	case ELECT_MAP:
-		gi.bprintf(PRINT_HIGH, "%s is warping to level %s.\n",
+		bprint_botsafe(PRINT_HIGH, "%s is warping to level %s.\n",
 			ctfgame.etarget->client->pers.netname, ctfgame.elevel);
 		strncpy(level.forcemap, ctfgame.elevel, sizeof(level.forcemap) - 1);
 		EndDMLevel();
@@ -2668,8 +2667,8 @@ void CTFVoteYes(edict_t* ent)
 		CTFWinElection();
 		return;
 	}
-	gi.bprintf(PRINT_HIGH, "%s\n", ctfgame.emsg);
-	gi.bprintf(PRINT_CHAT, "Votes: %d  Needed: %d  Time left: %ds\n", ctfgame.evotes, ctfgame.needvotes,
+	bprint_botsafe(PRINT_HIGH, "%s\n", ctfgame.emsg);
+	bprint_botsafe(PRINT_CHAT, "Votes: %d  Needed: %d  Time left: %ds\n", ctfgame.evotes, ctfgame.needvotes,
 		(int)(ctfgame.electtime - level.time));
 }
 
@@ -2690,8 +2689,8 @@ void CTFVoteNo(edict_t* ent)
 
 	ent->client->resp.voted = true;
 
-	gi.bprintf(PRINT_HIGH, "%s\n", ctfgame.emsg);
-	gi.bprintf(PRINT_CHAT, "Votes: %d  Needed: %d  Time left: %ds\n", ctfgame.evotes, ctfgame.needvotes,
+	bprint_botsafe(PRINT_HIGH, "%s\n", ctfgame.emsg);
+	bprint_botsafe(PRINT_CHAT, "Votes: %d  Needed: %d  Time left: %ds\n", ctfgame.evotes, ctfgame.needvotes,
 		(int)(ctfgame.electtime - level.time));
 }
 
@@ -2717,7 +2716,7 @@ void CTFReady(edict_t* ent)
 	}
 
 	ent->client->resp.ready = true;
-	gi.bprintf(PRINT_HIGH, "%s is ready.\n", ent->client->pers.netname);
+	bprint_botsafe(PRINT_HIGH, "%s is ready.\n", ent->client->pers.netname);
 
 	t1 = t2 = 0;
 	for (j = 0, i = 1; i <= maxclients->value; i++) {
@@ -2733,7 +2732,7 @@ void CTFReady(edict_t* ent)
 	}
 	if (!j && t1 && t2) {
 		// everyone has commited
-		gi.bprintf(PRINT_CHAT, "All players have commited.  Match starting\n");
+		bprint_botsafe(PRINT_CHAT, "All players have commited.  Match starting\n");
 		ctfgame.match = MATCH_PREGAME;
 		ctfgame.matchtime = level.time + matchstarttime->value;
 		ctfgame.countdown = false;
@@ -2759,10 +2758,10 @@ void CTFNotReady(edict_t* ent)
 	}
 
 	ent->client->resp.ready = false;
-	gi.bprintf(PRINT_HIGH, "%s is no longer ready.\n", ent->client->pers.netname);
+	bprint_botsafe(PRINT_HIGH, "%s is no longer ready.\n", ent->client->pers.netname);
 
 	if (ctfgame.match == MATCH_PREGAME) {
-		gi.bprintf(PRINT_CHAT, "Match halted.\n");
+		bprint_botsafe(PRINT_CHAT, "Match halted.\n");
 		ctfgame.match = MATCH_SETUP;
 		ctfgame.matchtime = level.time + matchsetuptime->value * 60;
 	}
@@ -2801,7 +2800,7 @@ void CTFGhost(edict_t* ent)
 			ent->svflags = 0;
 			ent->flags &= ~FL_GODMODE;
 			PutClientInServer(ent);
-			gi.bprintf(PRINT_HIGH, "%s has been reinstated to %s team.\n",
+			bprint_botsafe(PRINT_HIGH, "%s has been reinstated to %s team.\n",
 				ent->client->pers.netname, CTFTeamName(ent->client->resp.ctf_team));
 			return;
 		}
@@ -3007,7 +3006,7 @@ void CTFShowScores(edict_t* ent, pmenu_t* p)
 
 pmenu_t creditsmenu[] = {
 	{ "*Quake II ",	PMENU_ALIGN_CENTER, NULL, NULL },/* MrG{DRGN} */
-	{ "Chaos DM Lives v3.2b*",				PMENU_ALIGN_CENTER, NULL, NULL},
+	{ "Chaos DM Lives v3.2b*",				PMENU_ALIGN_CENTER, NULL},
 	{ NULL,					PMENU_ALIGN_CENTER, NULL, NULL },
 	{  "*Programming",								PMENU_ALIGN_CENTER, NULL, NULL },/* MrG{DRGN} */
 	{ "Flash (flash@telefragged.com)",					PMENU_ALIGN_CENTER, NULL, NULL },/* MrG{DRGN} */
@@ -3033,7 +3032,7 @@ static const int jmenu_chase = 8;
 static const int jmenu_reqmatch = 11;
 
 pmenu_t joinmenu[] = {
-	{ "*Quake II",			PMENU_ALIGN_CENTER, NULL, NULL },
+	{ "*Quake II",			PMENU_ALIGN_CENTER, NULL , NULL},
 	{ "*Chaos DM Lives v3.2b",	PMENU_ALIGN_CENTER, NULL, NULL },
 	{ NULL,					PMENU_ALIGN_CENTER, NULL, NULL },
 	{ NULL,					PMENU_ALIGN_CENTER, NULL, NULL },
@@ -3055,7 +3054,7 @@ pmenu_t joinmenu[] = {
 
 pmenu_t nochasemenu[] = {
 	{ "*Quake II",			PMENU_ALIGN_CENTER, NULL, NULL},
-	{ "*Chaos DM Lives v3.2b",	PMENU_ALIGN_CENTER, NULL },
+	{ "*Chaos DM Lives v3.2b",	PMENU_ALIGN_CENTER, NULL, NULL },
 	{ NULL,					PMENU_ALIGN_CENTER, NULL, NULL },
 	{ NULL,					PMENU_ALIGN_CENTER, NULL, NULL },
 	{ "No one to chase",	PMENU_ALIGN_LEFT, NULL, NULL },
@@ -3255,7 +3254,7 @@ qboolean CTFStartClient(edict_t* ent)
 	if (ent->client->resp.ctf_team != CTF_NOTEAM)
 		return false;
 
-	if (!((int)dmflags->value & DF_CTF_FORCEJOIN)) {
+	if (!((int)dmflags->value & DF_CTF_FORCEJOIN) || ctfgame.match >= MATCH_SETUP) {
 		// start as 'observer'
 		ent->movetype = MOVETYPE_NOCLIP;
 		ent->solid = SOLID_NOT;
@@ -3296,7 +3295,7 @@ qboolean CTFCheckRules(void)
 	edict_t* ent;
 
 	if (ctfgame.election != ELECT_NONE && ctfgame.electtime <= level.time) {
-		gi.bprintf(PRINT_CHAT, "Election timed out and has been cancelled.\n");
+		bprint_botsafe(PRINT_CHAT, "Election timed out and has been cancelled.\n");
 		ctfgame.election = ELECT_NONE;
 	}
 
@@ -3430,7 +3429,7 @@ qboolean CTFCheckRules(void)
 	if (capturelimit->value &&
 		(ctfgame.team1 >= capturelimit->value ||
 			ctfgame.team2 >= capturelimit->value)) {
-		gi.bprintf(PRINT_HIGH, "Capturelimit hit.\n");
+		bprint_botsafe(PRINT_HIGH, "Capturelimit hit.\n");
 		return true;
 	}
 	return false;

@@ -728,9 +728,10 @@ static void Weapon_Generic2(edict_t* ent, int FRAME_ACTIVATE_LAST, int FRAME_FIR
 		return;
 	}
 
+
 	if (ent->client->weaponstate == WEAPON_ACTIVATING)
 	{
-		if (ent->client->ps.gunframe == FRAME_ACTIVATE_LAST)
+		if (ent->client->ps.gunframe == FRAME_ACTIVATE_LAST || instantweap->value)
 		{
 			ent->client->weaponstate = WEAPON_READY;
 			ent->client->ps.gunframe = FRAME_IDLE_FIRST;
@@ -743,6 +744,12 @@ static void Weapon_Generic2(edict_t* ent, int FRAME_ACTIVATE_LAST, int FRAME_FIR
 
 	if ((ent->client->newweapon) && (ent->client->weaponstate != WEAPON_FIRING))
 	{
+		ent->client->weaponstate = WEAPON_DROPPING;
+		if (instantweap->value) {
+			ChangeWeapon(ent);
+			return;
+		}
+		else
 		ent->client->weaponstate = WEAPON_DROPPING;
 		ent->client->ps.gunframe = FRAME_DEACTIVATE_FIRST;
 		return;

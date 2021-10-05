@@ -184,7 +184,10 @@ void InitGame(void)
 	dmflags = gi.cvar("dmflags", "0", CVAR_SERVERINFO);
 	fraglimit = gi.cvar("fraglimit", "0", CVAR_SERVERINFO);
 	timelimit = gi.cvar("timelimit", "0", CVAR_SERVERINFO);
+	//ZOID
 	capturelimit = gi.cvar("capturelimit", "0", CVAR_SERVERINFO);
+	instantweap = gi.cvar("instantweap", "0", CVAR_SERVERINFO);
+	//ZOID
 	password = gi.cvar("password", "", CVAR_USERINFO);
 
 	g_select_empty = gi.cvar("g_select_empty", "0", CVAR_ARCHIVE);
