@@ -1296,6 +1296,7 @@ extern cvar_t* lasermine_health;
 extern cvar_t* ex_arrow_damage;
 extern cvar_t* ex_arrow_radius;
 extern cvar_t* start_invulnerable_time;
+extern cvar_t* developer;
 
 /* MrG{DRGN} Chaos DM Lives cvars */
 extern cvar_t* drop_tech;	/* MrG{DRGN} tech drop prevention */

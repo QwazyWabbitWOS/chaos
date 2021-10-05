@@ -53,6 +53,8 @@ cvar_t* flood_msgs;
 cvar_t* flood_persecond;
 cvar_t* flood_waitdelay;
 cvar_t* filterban;
+cvar_t* developer;
+
 void SVCmd_killbot_f(char* name);
 
 
