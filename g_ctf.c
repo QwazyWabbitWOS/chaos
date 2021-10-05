@@ -2535,7 +2535,6 @@ void CTFStartMatch(void)
 {
 	int i;
 	edict_t* ent;
-	int ghost = 0;
 
 	ctfgame.match = MATCH_GAME;
 	ctfgame.matchtime = level.time + matchtime->value * 60;
@@ -3659,8 +3658,6 @@ void CTFAdmin_SettingsApply(edict_t* ent, pmenuhnd_t* p)
 
 void CTFAdmin_SettingsCancel(edict_t* ent, pmenuhnd_t* p)
 {
-	admin_settings_t* settings = p->arg;
-
 	PMenu_Close(ent);
 	CTFOpenAdminMenu(ent);
 }
@@ -4075,7 +4072,7 @@ void CTFWarp(edict_t* ent)
 		return;
 	}
 
-	mlist = strdup(warp_list->string);
+	mlist = G_CopyString(warp_list->string);//OK MrG{DRGN}
 
 	token = strtok(mlist, seps);
 	while (token != NULL) {
@@ -4091,7 +4088,7 @@ void CTFWarp(edict_t* ent)
 		return;
 	}
 
-	free(mlist);
+	gi.TagFree(mlist);
 
 
 	if (ent->client->resp.admin) {

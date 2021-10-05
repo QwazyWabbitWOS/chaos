@@ -4689,9 +4689,7 @@ void BlackHole_Think(edict_t* ent)
  */
 int Valid_Target(edict_t* ent, edict_t* blip)
 {
-	/* int dummy; MrG{DRGN} unused */
 
-	
 	if (!ent || !blip)
 	{
 		return false;
@@ -4772,8 +4770,6 @@ int Valid_Target(edict_t* ent, edict_t* blip)
 
 		if (Q_stricmp(ent->classname, "proxymine") == 0)
 		{
-			/* dummy = 0; MrG{DRGN} unused */
-
 			if ((Q_stricmp(blip->classname, "rocket_turret") == 0) &&
 				(blip->owner != ent->owner))
 				return true;

@@ -73,10 +73,11 @@ void PMenu_Close(edict_t* ent)
 void PMenu_UpdateEntry(pmenu_t* entry, const char* text, int align, SelectFunc_t SelectFunc)
 {
 	if (entry->text)
-		free(entry->text);
-	entry->text = strdup(text);
+		gi.TagFree(entry->text);
+	entry->text = G_CopyString(text);
 	entry->align = align;
 	entry->SelectFunc = SelectFunc;
+	
 }
 
 
