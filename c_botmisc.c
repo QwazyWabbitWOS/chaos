@@ -1659,7 +1659,8 @@ void Load_BotChat(void)
 		if (buffer == ';')	//comment, strip the rest of the line
 		{
 			while (!feof(fp) && (buffer != '\n'))
-				if (fscanf(fp, "%c", &buffer) != EOF); /* MrG{DRGN} check should this if be here, it's an empty body? */
+				if (fscanf(fp, "%c", &buffer) != EOF)
+					; /* Dangle this to silence clang (maybe needs -Wno-empty-body?) */
 
 		}
 		else if (section > NUM_CHATSECTIONS - 1)
@@ -1673,7 +1674,8 @@ void Load_BotChat(void)
 			line = -1;
 
 			while (!feof(fp) && (buffer != '\n'))	// read the end of the line
-				if (fscanf(fp, "%c", &buffer) !=EOF); /* MrG{DRGN} check should this if be here, it's an empty body? */
+				if (fscanf(fp, "%c", &buffer) !=EOF)
+					; /* Empty body */
 		}
 		else if ((((buffer >= 'a') && (buffer <= 'z')) ||	// a chat line...read it
 			((buffer >= 'A') && (buffer <= 'Z')) ||
@@ -1691,7 +1693,8 @@ void Load_BotChat(void)
 			{
 				chat_text[section][line][i++] = buffer;
 
-				if (fscanf(fp, "%c", &buffer) != EOF); /* MrG{DRGN} check should this if be here, it's an empty body? */
+				if (fscanf(fp, "%c", &buffer) != EOF)
+					; /* Empty body? */
 			}
 
 			if (i > 0)
