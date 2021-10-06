@@ -957,9 +957,9 @@ void Bot_Think(edict_t* ent)
 			VectorCopy(ent->s.origin, oorigin);
 			oorigin[2] += 24;
 
-			/* MrG{DRGN} operator has equivalent nested operands
-			tr = gi.trace(oorigin, mins, maxs, dir, ent, MASK_SOLID | MASK_PLAYERSOLID);*/
-			tr = gi.trace(oorigin, mins, maxs, dir, ent, MASK_PLAYERSOLID);
+			//MrG{DRGN} operator has equivalent nested operands
+			tr = gi.trace(oorigin, mins, maxs, dir, ent, MASK_SOLID | MASK_PLAYERSOLID);
+			//tr = gi.trace(oorigin, mins, maxs, dir, ent, MASK_PLAYERSOLID);
 
 			if ((tr.fraction != 1) || tr.startsolid)
 			{
@@ -968,7 +968,7 @@ void Bot_Think(edict_t* ent)
 				{
 					ent->client->b_waittime = level.time + 2;
 				}
-				else if (tr.surface)
+				else if (tr.contents)
 				{
 					vectoangles(tr.plane.normal, wallangles);
 					if (ent->client->b_rundir == 0)
