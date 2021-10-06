@@ -4750,8 +4750,7 @@ int Valid_Target(edict_t* ent, edict_t* blip)
 			return false;
 
 		/* Check for invisible?  */
-		if (blip->client && blip->health > 0 &&
-			blip->client->invisible)
+		if (blip->client && blip->client->invisible)
 			return false;
 
 		/*		if( blip == ent->owner ||
