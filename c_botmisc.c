@@ -1658,24 +1658,20 @@ void Load_BotChat(void)
 
 		if (buffer == ';')	//comment, strip the rest of the line
 		{
-			while (!feof(fp) && (buffer != '\n'))
-				if (fscanf(fp, "%c", &buffer) != EOF)
-					; /* Dangle this to silence clang (maybe needs -Wno-empty-body?) */
-
+			// skip to end of line
+			while (!feof(fp) && (buffer != '\n') && fscanf(fp, "%c", &buffer) != EOF);
 		}
 		else if (section > NUM_CHATSECTIONS - 1)
 		{
 			fclose(fp);
 			return;
 		}
-		else if (buffer == '[')	//section
+		else if (buffer == '[')	// section begin
 		{
 			section++;
 			line = -1;
 
-			while (!feof(fp) && (buffer != '\n'))	// read the end of the line
-				if (fscanf(fp, "%c", &buffer) !=EOF)
-					; /* Empty body */
+			while (!feof(fp) && (buffer != '\n') && fscanf(fp, "%c", &buffer) != EOF);	// read the end of the line
 		}
 		else if ((((buffer >= 'a') && (buffer <= 'z')) ||	// a chat line...read it
 			((buffer >= 'A') && (buffer <= 'Z')) ||
@@ -1684,22 +1680,24 @@ void Load_BotChat(void)
 			i = 0;
 			line++;
 
+			// allow for potential resizes of botchat files
+			int size = NUM_CHATSECTIONS * MAX_LINES_PER_SECTION;
 			// allocate memory
-
-			chat_text[section][line] = gi.TagMalloc(256, TAG_GAME);
-			memset(chat_text[section][line], 0, 256);
+			chat_text[section][line] = gi.TagMalloc(size, TAG_GAME);
+			memset(chat_text[section][line], 0, size);
 
 			while (!feof(fp) && (buffer != '\n'))
 			{
 				chat_text[section][line][i++] = buffer;
 
 				if (fscanf(fp, "%c", &buffer) != EOF)
-					; /* Empty body? */
+					; /* Empty body */
 			}
 
 			if (i > 0)
 			{
-				chat_text[section][line][i] = '\0';	//append ascii null
+				chat_text[section][line][i] = '\0';	//append nul
+				//DbgPrintf("%s S%i L%i\n", chat_text[section][line], section, line);
 			}
 			else	//empty line ?
 				line--;
