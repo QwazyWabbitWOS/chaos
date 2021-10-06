@@ -11,12 +11,7 @@ pmenuhnd_t* PMenu_Open(edict_t* ent, pmenu_t* entries, int cur, int num, void* a
 	pmenu_t* p;
 	int i;
 
-	/* MrG{DRGN}  check! */
-	if (!ent)
-		return NULL;
-
-
-	if (!ent->client)
+	if (!ent || !ent->client)
 		return NULL;
 
 	if (ent->client->menu) {
