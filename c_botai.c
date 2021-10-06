@@ -843,8 +843,6 @@ void Bot_Think(edict_t* ent)
 	else
 	{
 		vec3_t	forward, dir = { 0 }, oorigin = { 0 }, wallangles;
-		/* assigned a value that is never used
-		vec_t	dist; */
 		trace_t	tr;
 
 		/* MrG{DRGN} no longer needed
@@ -970,7 +968,7 @@ void Bot_Think(edict_t* ent)
 				{
 					ent->client->b_waittime = level.time + 2;
 				}
-				else if (&tr.plane)
+				else if (tr.surface)
 				{
 					vectoangles(tr.plane.normal, wallangles);
 					if (ent->client->b_rundir == 0)
