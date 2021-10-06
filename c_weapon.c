@@ -366,7 +366,7 @@ void Turret_Die(edict_t* ent, edict_t* inflictor, edict_t* attacker, int damage,
 			bprint_botsafe(PRINT_MEDIUM, "%s receives an extra frag for killing %s's turret.\n", attacker->client->pers.netname, ent->owner->client->pers.netname);
 		}
 		else 
-			if (attacker->owner->client)
+			if (attacker->owner && attacker->owner->client) //QW FIXME: bots don't own turrets? needs testing. nullptr exception if owner is nil
 			{
 				attacker->owner->client->resp.score += 1;
 				bprint_botsafe(PRINT_MEDIUM, "%s receives an extra frag for killing %s's turret.\n", attacker->owner->client->pers.netname, ent->owner->client->pers.netname);
