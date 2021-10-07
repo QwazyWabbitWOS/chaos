@@ -381,7 +381,6 @@ void trigger_push_touch(edict_t* self, edict_t* other, cplane_t* plane, csurface
 	{
 		return;
 	}
-	
 
 	if (strcmp(other->classname, "grenade") == 0)
 	{
@@ -463,7 +462,6 @@ void hurt_touch(edict_t* self, edict_t* other, cplane_t* plane, csurface_t* surf
 		G_FreeEdict(self);
 		return;
 	}
-	
 
 	if (!other->takedamage)
 		return;
@@ -531,7 +529,7 @@ void trigger_gravity_touch(edict_t* self, edict_t* other, cplane_t* plane, csurf
 	{
 		return;
 	}
-	
+
 	other->gravity = self->gravity;
 }
 

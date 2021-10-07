@@ -1,4 +1,3 @@
-
 #define	AK42_FREQ				0.6f
 #define	SHOTGUN_FREQ			1
 #define	SUPERSHOTGUN_FREQ		1
@@ -23,7 +22,7 @@
 #define	IDEAL_ENEMY_DIST		200
 #define	MELEE_DIST				80
 #define	CHANGEWEAPON_DELAY		0.8f
-#define	SIGHT_FIRE_DELAY		0.5f	
+#define	SIGHT_FIRE_DELAY		0.5f
 
 #define	STATE_TOP			0
 #define	STATE_BOTTOM		1
@@ -40,7 +39,6 @@
 
 char* chat_text[NUM_CHATSECTIONS][MAX_LINES_PER_SECTION];
 int		chat_linecount[NUM_CHATSECTIONS];
-
 
 //Bot functions
 void SVCmd_addbots_f(void);
@@ -97,4 +95,3 @@ qboolean Node_LavaMove(edict_t* self, short forwardmove, short sidemove, vec3_t 
 
 char* Get_RandomBotSkin(void);
 void Load_BotChat(void);
-

@@ -1,5 +1,4 @@
-﻿
-#include "g_local.h"
+﻿#include "g_local.h"
 
 // Note that the pmenu entries are duplicated
 // this is so that a static set of pmenu entries can be used
@@ -51,7 +50,7 @@ pmenuhnd_t* PMenu_Open(edict_t* ent, pmenu_t* entries, int cur, int num, void* a
 	PMenu_Update(ent);
 	gi.unicast(ent, true);
 
-	return hnd; 
+	return hnd;
 }
 
 void PMenu_Close(edict_t* ent)
@@ -72,9 +71,7 @@ void PMenu_UpdateEntry(pmenu_t* entry, const char* text, int align, SelectFunc_t
 	entry->text = G_CopyString(text);
 	entry->align = align;
 	entry->SelectFunc = SelectFunc;
-	
 }
-
 
 void PMenu_Do_Update(edict_t* ent)
 {
@@ -197,7 +194,6 @@ void PMenu_Update(edict_t* ent)
 	gi.WriteString(string);
 }
 
-
 void PMenu_Next(edict_t* ent)
 {
 	pmenuhnd_t* hnd;
@@ -285,4 +281,3 @@ void PMenu_Select(edict_t* ent)
 	if (p->SelectFunc)
 		p->SelectFunc(ent, hnd);
 }
-

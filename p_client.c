@@ -5,7 +5,6 @@
 #include "stdlog.h"
 #include "gslog.h"
 
-
 //
 // Gross, ugly, disgustuing hack section
 //
@@ -20,7 +19,6 @@
 
 static void SP_FixCoopSpots(edict_t* self)
 {
-
 	edict_t* spot;
 	vec3_t	d;
 
@@ -104,7 +102,6 @@ potential spawning position for deathmatch games
 */
 void SP_info_player_deathmatch(edict_t* self)
 {
-
 	if (!deathmatch->value)
 	{
 		G_FreeEdict(self);
@@ -144,10 +141,7 @@ void SP_info_player_coop(edict_t* self)
 		self->think = SP_FixCoopSpots;
 		self->nextthink = level.time + FRAMETIME;
 	}
-
 }
-
-
 
 /*QUAKED info_player_intermission (1 0 1) (-16 -16 -24) (16 16 32)
 The deathmatch intermission point will be at one of these
@@ -155,7 +149,6 @@ Use 'angles' instead of 'angle', so you can set pitch or roll as well as yaw.  '
 */
 void SP_info_player_intermission(edict_t* ent)
 {
-
 }
 
 //=======================================================================
@@ -191,7 +184,6 @@ qboolean IsNeutral(edict_t* ent)
 		return true;
 	return false;
 }
-
 
 void ClientObituary(edict_t* self, edict_t* inflictor, edict_t* attacker)
 {
@@ -302,7 +294,7 @@ void ClientObituary(edict_t* self, edict_t* inflictor, edict_t* attacker)
 			case MOD_TURRET:
 				message = "got perforated by their own turret";
 				break;
-				
+
 			default:
 				if (IsFemale(self))
 					message = "killed herself";
@@ -318,9 +310,9 @@ void ClientObituary(edict_t* self, edict_t* inflictor, edict_t* attacker)
 			int i;
 
 			bprint_botsafe(PRINT_MEDIUM, "%s %s.\n", self->client->pers.netname, message);
-			
+
 			if (deathmatch->value)
-			self->client->resp.score--;
+				self->client->resp.score--;
 			self->enemy = NULL;
 
 			if (strcmp(self->classname, "bot") == 0)
@@ -673,7 +665,6 @@ void TossClientWeapon(edict_t* self)
 	if (!deathmatch->value)
 		return;
 
-
 	item = self->client->pers.weapon;
 	if (!self->client->pers.inventory[self->client->ammo_index])
 		item = NULL;
@@ -760,14 +751,12 @@ player_die
 */
 void player_die(edict_t* self, edict_t* inflictor, edict_t* attacker, int damage, vec3_t point)
 {
-
 	VectorClear(self->avelocity);
 
 	self->takedamage = DAMAGE_YES;
 	self->movetype = MOVETYPE_TOSS;
 
 	self->s.modelindex2 = REMOVED_MODEL;	// remove linked weapon model
-
 
 	self->s.angles[0] = 0;
 	self->s.angles[2] = 0;
@@ -823,8 +812,6 @@ void player_die(edict_t* self, edict_t* inflictor, edict_t* attacker, int damage
 	self->client->beltactive = 0; /* MrG{DRGN} fix for being warned about not having enough cells to run belt, if you die with the belt active */
 	// clear inventory
 	memset(self->client->pers.inventory, 0, sizeof(self->client->pers.inventory));
-
-
 
 	if (self->health < -40)
 	{	// gib
@@ -1169,7 +1156,6 @@ void SaveClientData(void)
 
 		if (coop->value)
 			game.clients[i].pers.score = ent->client->resp.score;
-
 	}
 }
 
@@ -1182,7 +1168,6 @@ void FetchClientEntData(edict_t* ent)
 
 	if (coop->value)
 		ent->client->resp.score = ent->client->pers.score;
-
 }
 
 /*
@@ -1518,7 +1503,6 @@ void respawn(edict_t* self)
 
 	// restart the entire server
 	gi.AddCommandString("menu_loadgame\n");
-
 }
 
 //==============================================================
@@ -1634,7 +1618,6 @@ void PutClientInServer(edict_t* ent)
 	for (i = 0; i < 3; i++) {
 		client->ps.pmove.origin[i] = COORD2SHORT(spawn_origin[i]);
 	}
-	
 
 	//ZOID
 	client->ps.pmove.pm_flags &= ~PMF_NO_PREDICTION;
@@ -1680,7 +1663,6 @@ void PutClientInServer(edict_t* ent)
 	/* MrG{DRGN} added */
 	gi.cvar_set("cl_blend", "1");
 	gi.cvar_set("gl_polyblend", "1");
-	
 
 	//MATTHIAS
 	client->BlindBase = 0;
@@ -1863,7 +1845,7 @@ void ClientBegin(edict_t* ent)
 
 	// make sure all view stuff is valid
 	ClientEndServerFrame(ent);
-}
+	}
 
 /*
 ===========
@@ -1973,7 +1955,7 @@ qboolean ClientConnect(edict_t* ent, char* userinfo)
 		InitClientResp(ent->client);
 		if (!game.autosaved || !ent->client->pers.weapon)
 			InitClientPersistant(ent->client);
-	}
+}
 
 	ClientUserinfoChanged(ent, userinfo);
 
@@ -2053,8 +2035,7 @@ void ClientDisconnect(edict_t* ent)
 	else if (ent->client->resp.ctf_team == 2)
 		numblue--;
 
-	
-//ZOID
+	//ZOID
 	CTFDeadDropFlag(ent);
 	CTFDeadDropTech(ent);
 	//ZOID
@@ -2306,7 +2287,6 @@ void ClientThink(edict_t* ent, usercmd_t* ucmd)
 		ent->client->pers.inventory[ITEM_INDEX(it_rockets)] = 0;
 		ent->client->pers.inventory[ITEM_INDEX(it_grenades)] = 0;
 		ent->client->pers.inventory[ITEM_INDEX(it_homings)] = 0;
-		
 
 		client->kamikazetime = 0;
 	}
@@ -2433,7 +2413,6 @@ void ClientThink(edict_t* ent, usercmd_t* ucmd)
 		*/
 		pm.s.origin[i] = COORD2SHORT(ent->s.origin[i]);
 		pm.s.velocity[i] = COORD2SHORT(ent->velocity[i]);
-		
 	}
 
 	if (memcmp(&client->old_pmove, &pm.s, sizeof(pm.s)))
@@ -2465,7 +2444,6 @@ void ClientThink(edict_t* ent, usercmd_t* ucmd)
 			ent->velocity[i] = pm.s.velocity[i] * 0.125;
 		*/
 			ent->velocity[i] = SHORT2COORD(pm.s.velocity[i]);
-		
 	}
 
 	VectorCopy(pm.mins, ent->mins);

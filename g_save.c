@@ -110,7 +110,6 @@ is loaded.
 */
 void InitGame(void)
 {
-
 #ifdef	_WIN32
 	_CrtMemCheckpoint(&startup1);
 #endif
@@ -205,7 +204,6 @@ void InitGame(void)
 	filterban = gi.cvar("filterban", "1", 0);
 	developer = gi.cvar("developer", "0", 0);
 
-
 	// items
 	InitItems();
 
@@ -215,7 +213,6 @@ void InitGame(void)
 	 */
 	game.helpmessage1[0] = 0;
 	game.helpmessage2[0] = 0;
-	
 
 	// initialize all entities for this game
 	game.maxentities = maxentities->value;
@@ -234,7 +231,6 @@ void InitGame(void)
 
 void WriteGame(char* filename, qboolean autosave)
 {
-	
 	/* Unused */
 }
 

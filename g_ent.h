@@ -1,5 +1,5 @@
 /*
-	g_ent.h 
+	g_ent.h
 	add #include "g_ent.h"
 	at the top of g_spawn.c
 */

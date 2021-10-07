@@ -11,10 +11,9 @@ qboolean visible(edict_t* self, edict_t* other)
 {
 	vec3_t	spot1 = { 0 }, spot2 = { 0 };
 	trace_t	trace;
-	
+
 	if (!self || !other)
 		return false;
-	
 
 	VectorCopy(self->s.origin, spot1);
 	spot1[2] += self->viewheight;
@@ -33,10 +32,8 @@ qboolean infront(edict_t* self, edict_t* other)
 	float	dot;
 	vec3_t	forward;
 
-	
 	if (!self || !other)
 		return false;
-	
 
 	AngleVectors(self->s.angles, forward, NULL, NULL);
 	VectorSubtract(other->s.origin, self->s.origin, vec);
@@ -81,10 +78,8 @@ void ShowGun(edict_t* ent)	//QW from WOD:LOX for vwep
 
 qboolean TouchingLadder(edict_t* self)
 {
-	
 	if (!self)
 		return false;
-	
 
 	vec3_t org = { 0 };
 
@@ -371,7 +366,6 @@ void GetSettings(void)
 	start_silencer = gi.cvar("start_silencer", "0", CVAR_LATCH);
 	start_rebreather = gi.cvar("start_rebreather", "0", CVAR_LATCH);
 	start_environmentsuit = gi.cvar("start_environmentsuit", "0", CVAR_LATCH);
-
 }
 
 qboolean infront2(edict_t* self, edict_t* other)
@@ -380,10 +374,8 @@ qboolean infront2(edict_t* self, edict_t* other)
 	float	dot;
 	vec3_t	forward;
 
-	
 	if (!self || !other)
 		return false;
-	
 
 	AngleVectors(self->s.angles, forward, NULL, NULL);
 	VectorSubtract(other->s.origin, self->s.origin, vec);
@@ -401,10 +393,8 @@ qboolean infront3(edict_t* self, edict_t* other)
 	float	dot;
 	vec3_t	forward;
 
-	
 	if (!self || !other)
 		return false;
-	
 
 	AngleVectors(self->s.angles, forward, NULL, NULL);
 	VectorSubtract(other->s.origin, self->s.origin, vec);
@@ -422,10 +412,8 @@ qboolean infront4(edict_t* self, edict_t* other)
 	float	dot;
 	vec3_t	forward;
 
-	
 	if (!self || !other)
 		return false;
-	
 
 	AngleVectors(self->s.angles, forward, NULL, NULL);
 	VectorSubtract(other->s.origin, self->s.origin, vec);
@@ -698,12 +686,9 @@ void FakeDeath(edict_t* self)
 	vec3_t              mins = { -16, -16, -24 };
 	vec3_t              maxs = { 16, 16, 32 };
 
-	
 	if (!self)
 		return;
-	
 
-	
 	if (self->client->camera || self->movetype == MOVETYPE_NOCLIP)/* MrG{DRGN} if you haven't joined a team yet. you can't fakedeath! */
 		return;
 
@@ -851,10 +836,9 @@ void FlashLightThink(edict_t* ent)
 	vec3_t forward, right, up;
 	trace_t tr;
 
-	
 	if (!ent)
 		return;
-	
+
 	if (!ent->owner ||
 		!ent->owner->client)
 		return;
@@ -1070,12 +1054,10 @@ void Teleport(edict_t* ent)
 	edict_t* telep = NULL;
 	vec3_t spawn_origin = { 0 };
 
-	
 	if (!ent || !ent->client)
 	{
 		return;
 	}
-	
 
 	if (ent->client->teleporter)	//teleport
 	{
@@ -1097,7 +1079,7 @@ void Teleport(edict_t* ent)
 		for (i = 0; i < 3; i++) {
 			ent->client->ps.pmove.origin[i] = COORD2SHORT(spawn_origin[i]);
 		}
-		
+
 		ent->s.event = EV_ITEM_RESPAWN;
 		spawn_origin[2] += 1;
 		VectorCopy(spawn_origin, ent->s.origin);
@@ -1495,10 +1477,10 @@ void Cmd_Grapple_f(edict_t* ent)
 		return;
 	}
 }
+
 void Cmd_Zoom_f(edict_t* ent)
 {
 	int zoomtype = atoi(gi.argv(1));
-
 
 	if (ent->health <= 0)
 		return;
@@ -1515,6 +1497,7 @@ void Cmd_Zoom_f(edict_t* ent)
 		else ent->client->ps.fov = atoi(Info_ValueForKey(ent->client->pers.userinfo, "fov")); /* MrG{DRGN} fix zoom */
 	}
 }
+
 void Cmd_Camera_f(edict_t* ent)
 {
 	if (Q_stricmp(gi.argv(1), "0") == 0)	//cam off
@@ -1603,6 +1586,7 @@ void Cmd_Pathdebug_f(edict_t* ent)
 		cprint_botsafe(ent, PRINT_HIGH, "Pathdebug OFF!\n");
 	}
 }
+
 void Cmd_PlaceNode_f(edict_t* ent)
 {
 	if (dntg->value)
@@ -1803,6 +1787,7 @@ void Cmd_Belt_f(edict_t* ent)
 		}
 	}
 }
+
 void Cmd_Flashlight_f(edict_t* ent)
 {
 	if (ent->client->camera || ent->movetype == MOVETYPE_NOCLIP)/* MrG{DRGN} if you haven't joined a team yet. you can't use the flashlight! */
@@ -1848,6 +1833,7 @@ void Cmd_Flashlight_f(edict_t* ent)
 		cprint_botsafe(ent, PRINT_HIGH, "Flashlight ON\n");
 	}
 }
+
 void Cmd_Teleport_f(edict_t* ent)
 {
 	if (ent->client->camera || ent->movetype == MOVETYPE_NOCLIP)/* MrG{DRGN} if you haven't joined a team yet. you can't teleport! */
@@ -1874,6 +1860,7 @@ void Cmd_Teleport_f(edict_t* ent)
 		}
 	}
 }
+
 void Cmd_Kamikaze_f(edict_t* ent)
 {
 	if (ent->client->camera || ent->movetype == MOVETYPE_NOCLIP)/* MrG{DRGN} if you haven't joined a team yet. you can't Kamikaze! */
@@ -1897,6 +1884,7 @@ void Cmd_Kamikaze_f(edict_t* ent)
 	ent->s.effects = EF_ROCKET;
 	gi.sound(ent, CHAN_VOICE, gi.soundindex("misc/kamikaze.wav"), 1, ATTN_NORM, 0);
 }
+
 void Cmd_ToggleGrenades_f(edict_t* ent)
 {
 	if (ent->client->camera || ent->movetype == MOVETYPE_NOCLIP)/* MrG{DRGN} if you haven't joined a team yet. you can't toggle nades */
@@ -1963,7 +1951,6 @@ void Cmd_Kick_f(edict_t* ent)
 					if (!infront(ent, blip))
 						continue;
 
-
 					AngleVectors(ent->client->v_angle, forward, NULL, NULL);
 
 					VectorScale(forward, 400, blip->velocity);
@@ -1983,7 +1970,6 @@ void Cmd_Kick_f(edict_t* ent)
 ///------------------------------------------------------------------------------------------
 /// Command handling
 ///------------------------------------------------------------------------------------------
-
 void ClientCommand2(edict_t* ent)
 {
 	char* cmd;
@@ -2077,7 +2063,7 @@ void ClientCommand2(edict_t* ent)
 			return;
 		Use_Grenades(ent);
 	}
-	
+
 	else if (Q_stricmp(cmd, "zoom") == 0)
 	{
 		Cmd_Zoom_f(ent);
@@ -2120,7 +2106,7 @@ void ClientCommand2(edict_t* ent)
 	}
 	else if (Q_stricmp(cmd, "weaponlist") == 0)
 	{
-		Cmd_Weaponlist_f(ent);		
+		Cmd_Weaponlist_f(ent);
 	}
 	else if (Q_stricmp(cmd, "healthlist") == 0)
 	{
@@ -2144,7 +2130,7 @@ void ClientCommand2(edict_t* ent)
 	}
 	else if (Q_stricmp(cmd, "scanner") == 0)
 	{
-	if (ent->client->camera || ent->movetype == MOVETYPE_NOCLIP)/* MrG{DRGN} if you haven't joined a team yet. you can't use the scanner */
+		if (ent->client->camera || ent->movetype == MOVETYPE_NOCLIP)/* MrG{DRGN} if you haven't joined a team yet. you can't use the scanner */
 			return;
 
 		Toggle_Scanner(ent);
@@ -2172,7 +2158,7 @@ void ClientCommand2(edict_t* ent)
 	else if (Q_stricmp(cmd, "fakedeath") == 0)
 	{
 		if (ent->health <= 0)
-		return;
+			return;
 
 		FakeDeath(ent);
 	}

@@ -149,13 +149,12 @@ void G_UseTargets(edict_t* ent, edict_t* activator)
 {
 	edict_t* t;
 
-	
 	if (!ent)
 		return;
-	
-//
-// check for a delay
-//
+
+	//
+	// check for a delay
+	//
 	if (ent->delay)
 	{
 		// create a temp object to fire at a later time
@@ -178,7 +177,6 @@ void G_UseTargets(edict_t* ent, edict_t* activator)
 	//
 	if (ent->message)
 	{
-
 		/* MrG{DRGN} if (strcmp(activator->classname, "bot") != 0)*/
 		if (!activator->bot_player)
 			gi.centerprintf(activator, "%s", ent->message);
@@ -417,7 +415,7 @@ edict_t* G_Spawn(void)
 	//don't report during worldspawn
 	if (level.time)
 		DbgPrintf("%s entity count: %d/%d\n", __func__, globals.num_edicts, game.maxentities);
-	
+
 	globals.num_edicts++;
 	G_InitEdict(e);
 	return e;
@@ -441,9 +439,9 @@ void G_FreeEdict(edict_t* ed)
 	}
 
 	//don't report during worldspawn
-	if(level.time)
-		DbgPrintf("%s edict count: %d %s index %d, time: %0.1f\n", __func__, 
-		globals.num_edicts, ed->classname, ed->classindex, level.time);
+	if (level.time)
+		DbgPrintf("%s edict count: %d %s index %d, time: %0.1f\n", __func__,
+			globals.num_edicts, ed->classname, ed->classindex, level.time);
 
 	memset(ed, 0, sizeof(*ed));
 	ed->classname = "freed";

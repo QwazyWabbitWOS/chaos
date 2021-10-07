@@ -195,10 +195,9 @@ Changes level to "map" when fired
 */
 void use_target_changelevel(edict_t* self, edict_t* other, edict_t* activator)
 {
-	
 	if (!self || !other)
 		return;
-	
+
 	if (level.intermissiontime)
 		return;		// allready activated
 
@@ -691,8 +690,6 @@ void SP_target_lightramp(edict_t* self)
 		return;
 	}
 
-
-
 	if (!self->target)
 	{
 		gi.dprintf("%s with no target at %s\n", self->classname, vtos(self->s.origin));
@@ -708,7 +705,6 @@ void SP_target_lightramp(edict_t* self)
 	self->movedir[0] = (float)(self->message[0] - 'a');/* MrG{DRGN} type conversion */
 	self->movedir[1] = (float)(self->message[1] - 'a');/* MrG{DRGN} type conversion */
 	self->movedir[2] = (self->movedir[1] - self->movedir[0]) / (self->speed / FRAMETIME);
-
 }
 
 //==========================================================

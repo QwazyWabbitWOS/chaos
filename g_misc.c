@@ -78,7 +78,7 @@ void gib_touch(edict_t* self, edict_t* other, cplane_t* plane, csurface_t* surf)
 		G_FreeEdict(self);
 		return;
 	}
-	
+
 	if (!self->groundentity)
 		return;
 
@@ -264,10 +264,10 @@ void BecomeExplosion1(edict_t* self)
 	// FWP fix for weapon killer bug - respawn weapon after showing cute explosion
 
 	if (self->item && (self->item->flags & (IT_WEAPON | IT_POWERUP | IT_AMMO | IT_ARMOR)))
-	{		DoRespawn(self); // this frees self!
-			return;
+	{
+		DoRespawn(self); // this frees self!
+		return;
 	}
-	
 
 	G_FreeEdict(self);
 }
@@ -303,7 +303,7 @@ void path_corner_touch(edict_t* self, edict_t* other, cplane_t* plane, csurface_
 		G_FreeEdict(self);
 		return;
 	}
-	
+
 	if (other->movetarget != self)
 		return;
 
@@ -481,7 +481,6 @@ void SP_light(edict_t* self)
 		else
 			gi.configstring(CS_LIGHTS + self->style, "m");
 	}
-	
 }
 
 /*QUAKED func_wall (0 .5 .8) ? TRIGGER_SPAWN TOGGLE START_ON ANIMATED ANIMATED_FAST
@@ -573,10 +572,10 @@ This is solid bmodel that will fall if it's support it removed.
 void func_object_touch(edict_t* self, edict_t* other, cplane_t* plane, csurface_t* surf)
 {
 	// only squash thing we fall on top of
-	
+
 	if (!self || !other || !plane)
 		return;
-	
+
 	if (plane->normal[2] < 1.0)
 		return;
 	if (other->takedamage == DAMAGE_NO)
@@ -926,7 +925,6 @@ void misc_viper_bomb_touch(edict_t* self, edict_t* other, cplane_t* plane, csurf
 		G_FreeEdict(self);
 		return;
 	}
-	
 
 	G_UseTargets(self, self->activator);
 
@@ -1393,11 +1391,9 @@ void teleporter_touch(edict_t* self, edict_t* other, cplane_t* plane, csurface_t
 	{
 		return;
 	}
-	
-
 
 	if (!other->client && !tele_fire->value)
-		return;	
+		return;
 	dest = G_Find(NULL, FOFS(targetname), self->target);
 	if (!dest)
 	{
@@ -1445,19 +1441,18 @@ void teleporter_touch(edict_t* self, edict_t* other, cplane_t* plane, csurface_t
 	if (other->client)
 	{
 		VectorClear(other->velocity);
-		// set angles	
+		// set angles
 		other->client->ps.pmove.pm_time = 160 >> 3;		// hold time
 		other->client->ps.pmove.pm_flags |= PMF_TIME_TELEPORT;
 	}
-		// draw the teleport splash at source and on the player
-		self->owner->s.event = EV_PLAYER_TELEPORT;
-		other->s.event = EV_PLAYER_TELEPORT;
+	// draw the teleport splash at source and on the player
+	self->owner->s.event = EV_PLAYER_TELEPORT;
+	other->s.event = EV_PLAYER_TELEPORT;
 	if (other->client)
 	{
 		for (i = 0; i < 3; i++)
 			other->client->ps.pmove.delta_angles[i] = ANGLE2SHORT(dest->s.angles[i] - other->client->resp.cmd_angles[i]);
 
-		
 		VectorClear(other->client->ps.viewangles);
 		VectorClear(other->client->v_angle);
 	}

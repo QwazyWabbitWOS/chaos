@@ -1,5 +1,3 @@
-
-
 // Basic functions
 
 void T_RadiusDamage2(edict_t* attacker, vec3_t position, float damage, float radius, int mod);
@@ -33,7 +31,6 @@ void FakeDeath(edict_t* self);
 void ThrowUpNow(edict_t* self);
 void Drop_Weapon(edict_t* ent, gitem_t* item);
 void Cmd_Hook_f(edict_t* ent);
-
 
 // Weapon banning console variables
 

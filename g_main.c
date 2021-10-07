@@ -57,7 +57,6 @@ cvar_t* developer;
 
 void SVCmd_killbot_f(char* name);
 
-
 cvar_t* sv_cheats;
 
 //===================================================================
@@ -88,7 +87,6 @@ and global variables
 */
 game_export_t* GetGameAPI(game_import_t* import)
 {
-
 #ifdef DEBUG
 	LOGPRINTF("GetGameAPI\n");
 #endif
@@ -135,7 +133,6 @@ void Sys_Error(const char* error, ...) /* MrG{DRGN} changed to const */
 	gi.error (ERR_FATAL, "%s", text);
 	*/
 	gi.error("%s", text);
-	
 }
 
 void Com_Printf(char* msg, ...)

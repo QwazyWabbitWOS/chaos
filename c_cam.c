@@ -1,15 +1,12 @@
 ﻿#include "g_local.h"
 
-
 #define CAMERA_SWITCH_TIME  15
-
 
 void CreateCamera(edict_t* ent)
 {
-	
 	if (!ent)
 		return;
-	
+
 	gi.unlinkentity(ent);
 	ent->groundentity = NULL;
 	ent->takedamage = DAMAGE_NO;
@@ -28,9 +25,9 @@ void CreateCamera(edict_t* ent)
 	ent->watertype = 0;
 	ent->flags = FL_FLY;
 	//ent->client->camera = 1;	/* MrG{DRGN} I don't think this needs to be here */
-	ent->client->ps.fov = 90;	
+	ent->client->ps.fov = 90;
 	ent->client->kamikazetime = 0;/* MrG{DRGN} no kami stuck screen! */
-   	ent->client->grapple = NULL;
+	ent->client->grapple = NULL;
 	ent->client->grapple_state = GRAPPLE_OFF;
 	ent->client->grenade_blew_up = false;
 	ent->client->grenade_time = 0;
@@ -39,7 +36,7 @@ void CreateCamera(edict_t* ent)
 	ent->client->PoisonTime = 0;
 	ent->client->invisible = 0;
 	ent->client->nextscannercell = 0;
-	ent->client->scanneractive = 0;	
+	ent->client->scanneractive = 0;
 	ent->client->quad_framenum = 0;
 	ent->client->invincible_framenum = 0;
 	ent->client->invisible_framenum = 0;
@@ -83,7 +80,7 @@ void CreateCamera(edict_t* ent)
 	/* MrG{DRGN} moved these up here, since I clear the clients inventory below! */
 	CTFDeadDropFlag(ent);
 	CTFDeadDropTech(ent);
-	
+
 	memset(ent->client->ps.stats, 0, sizeof(ent->client->ps.stats));
 	//memset(ent->client->pers.inventory, 0, sizeof(ent->client->pers.inventory)); /* MrG{DRGN} prevented in cliendcomannd now*/
 	//VectorClear(ent->maxs);
@@ -97,12 +94,10 @@ int NumVisiblePlayers(edict_t* ent)
 {
 	int		i, num = 0;
 
-	
 	if (!ent)
 	{
 		return false;
 	}
-	
 
 	for (i = 0; i < numplayers; i++)
 	{
@@ -130,12 +125,10 @@ edict_t* ClosestVisible(edict_t* ent)
 	int		i;
 	vec_t	dist, bestdist = 9999;
 
-	
 	if (!ent)
 	{
 		return NULL;
 	}
-	
 
 	for (i = 0; i < numplayers; i++)
 	{
@@ -259,12 +252,10 @@ edict_t* GetNextValidPlayer(edict_t* current)
 {
 	int i;
 
-	
 	if (!current)
 	{
 		return NULL;
 	}
-	
 
 	//find num of current target
 	for (i = 0; i < numplayers; i++)
@@ -296,12 +287,10 @@ edict_t* GetPrevValidPlayer(edict_t* current)
 {
 	int i;
 
-	
 	if (!current)
 	{
 		return NULL;
 	}
-	
 
 	//find num of current target
 	for (i = 0; i < numplayers; i++)
@@ -331,12 +320,10 @@ edict_t* GetPrevValidPlayer(edict_t* current)
 
 void CamNext(edict_t* ent)
 {
-	
 	if (!ent || ent->client->camera == 5)
 	{
 		return;
 	}
-	
 
 	if (ent->client->camera > 1)
 	{
@@ -353,14 +340,12 @@ void CamNext(edict_t* ent)
 
 void CamPrev(edict_t* ent)
 {
-	
-	if (!ent||ent->client->camera == 5)
+	if (!ent || ent->client->camera == 5)
 	{
 		return;
 	}
-	
 
-	if (ent->client->camera> 1)
+	if (ent->client->camera > 1)
 	{
 		if ((ent->client->pTarget != NULL) && ent->client->pTarget->client && ent->client->pTarget->inuse)
 		{
@@ -377,12 +362,10 @@ void PointCamAtSpot(edict_t* ent, vec3_t spot)
 {
 	vec3_t	dir = { 0 }, angles;
 
-	
 	if (!ent || !spot)
 	{
 		return;
 	}
-	
 
 	VectorSubtract(spot, ent->s.origin, dir);
 
@@ -399,12 +382,10 @@ void PointCamAtPlayer(edict_t* ent)
 	float	diff;
 	int		na;
 
-	
 	if (!ent)
 	{
 		return;
 	}
-	
 
 	VectorSubtract(ent->client->pTarget->s.origin, ent->s.origin, dir);
 	vectoangles(dir, angles);
@@ -478,11 +459,11 @@ void RepositionAtPlayer(edict_t* ent)
 	vec3_t        diff = { 0 };
 	vec3_t        pos = { 0 }, forward;
 	trace_t       tr;
-	
+
 	if (!ent)
 	{
 		return;
-	}	 	
+	}
 
 	AngleVectors(ent->client->pTarget->client->v_angle, forward, NULL, NULL);
 	forward[2] = 0;
@@ -585,12 +566,10 @@ void FindNewTVSpot(edict_t* ent)
 	vec3_t	dir = { 0 };
 	vec_t	dist, bestdist = 9999;
 
-	
 	if (!ent)
 	{
 		return;
 	}
-	
 
 	dummy = g_edicts;
 
@@ -668,12 +647,11 @@ trace_t	PM_trace(vec3_t start, vec3_t mins, vec3_t maxs, vec3_t end);
 
 void CameraThink(edict_t* ent, usercmd_t* ucmd)
 {
-	
 	if (!ent)
 	{
 		return;
 	}
-	
+
 	//vec3_t	dir = {0};
 	if (ent->client->camera != 5)
 	{
@@ -754,7 +732,7 @@ void CameraThink(edict_t* ent, usercmd_t* ucmd)
 		else
 			ent->client->pTarget = GetFirstValidPlayer();
 	}
-	 case 4://TV Cam mode
+	case 4://TV Cam mode
 	{
 		if (ent->client->pTarget && ent->client->pTarget->client && ent->client->pTarget->inuse)
 		{
@@ -777,16 +755,16 @@ void CameraThink(edict_t* ent, usercmd_t* ucmd)
 		else
 			ent->client->pTarget = GetFirstValidPlayer();
 	}
-	 case 5:// Free-View Camera
-	 {
-		 ent->movetype = MOVETYPE_NOCLIP;
-		 ent->solid = SOLID_NOT;
-		 ent->svflags |= SVF_NOCLIENT;
-		 ent->client->ps.pmove.pm_flags &= PMF_NO_PREDICTION;
-		 ent->client->ps.pmove.pm_type = PM_SPECTATOR;
-		 ent->flags = 0;
-		 ent->health = 100;
-		 ent->mass = 200;
-	 }
+	case 5:// Free-View Camera
+	{
+		ent->movetype = MOVETYPE_NOCLIP;
+		ent->solid = SOLID_NOT;
+		ent->svflags |= SVF_NOCLIENT;
+		ent->client->ps.pmove.pm_flags &= PMF_NO_PREDICTION;
+		ent->client->ps.pmove.pm_type = PM_SPECTATOR;
+		ent->flags = 0;
+		ent->health = 100;
+		ent->mass = 200;
+	}
 	}
 }

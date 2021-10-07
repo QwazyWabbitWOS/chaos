@@ -2,7 +2,6 @@
 #include "c_base.h"
 #include "c_botnav.h"
 
-
 /*
 Init the note table system
 */

@@ -73,7 +73,7 @@ qboolean SV_movestep(edict_t* ent, vec3_t move, qboolean relink)
 	// check point traces down for dangling corners
 	VectorCopy(trace.endpos, ent->s.origin);
 
-	if (!M_CheckBottom(ent)) 
+	if (!M_CheckBottom(ent))
 	{
 		if (ent->flags & FL_PARTIALGROUND)
 		{	// entity had floor mostly pulled out from underneath it
@@ -90,19 +90,19 @@ qboolean SV_movestep(edict_t* ent, vec3_t move, qboolean relink)
 	}
 
 	if (ent->flags & FL_PARTIALGROUND)
-		{
-			ent->flags &= ~FL_PARTIALGROUND;
-		}
-		ent->groundentity = trace.ent;
-		ent->groundentity_linkcount = trace.ent->linkcount;
+	{
+		ent->flags &= ~FL_PARTIALGROUND;
+	}
+	ent->groundentity = trace.ent;
+	ent->groundentity_linkcount = trace.ent->linkcount;
 
 	// the move is ok
-		if (relink)
-		{
-			gi.linkentity (ent);
-			G_TouchTriggers (ent);
-		}
-		return true;
+	if (relink)
+	{
+		gi.linkentity(ent);
+		G_TouchTriggers(ent);
+	}
+	return true;
 }
 
 //============================================================================

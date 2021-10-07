@@ -22,7 +22,7 @@ void MoveClientToIntermission(edict_t* ent)
 	ent->client->ps.pmove.origin[0] = COORD2SHORT(level.intermission_origin[0]);
 	ent->client->ps.pmove.origin[1] = COORD2SHORT(level.intermission_origin[1]);
 	ent->client->ps.pmove.origin[2] = COORD2SHORT(level.intermission_origin[2]);
-	
+
 	VectorCopy(level.intermission_angle, ent->client->ps.viewangles);
 	ent->client->ps.pmove.pm_type = PM_FREEZE;
 	ent->client->ps.gunindex = 0;
@@ -111,7 +111,6 @@ void BeginIntermission(edict_t* targ)
 
 	level.intermissiontime = level.time;
 	level.changemap = targ->map;
-
 
 	if (strstr(level.changemap, "*"))
 	{

@@ -389,9 +389,9 @@ void plat_blocked(edict_t* self, edict_t* other)
 		// give it a chance to go away on its own terms (like gibs)
 		T_Damage(other, self, self, vec3_origin, other->s.origin, vec3_origin, 100000, 1, 0, MOD_CRUSH);
 		// if it's still there, nuke it
-		
+
 		if (other->inuse)
-			
+
 			BecomeExplosion1(other);
 
 		return;
@@ -633,7 +633,6 @@ void rotating_touch(edict_t* self, edict_t* other, cplane_t* plane, csurface_t* 
 		G_FreeEdict(self);
 		return;
 	}
-	
 
 	if (self->avelocity[0] || self->avelocity[1] || self->avelocity[2])
 		T_Damage(other, self, self, vec3_origin, other->s.origin, vec3_origin, self->dmg, 1, 0, MOD_CRUSH);
@@ -646,7 +645,7 @@ void rotating_use(edict_t* self, edict_t* other, edict_t* activator)
 	{
 		return;
 	}
-	
+
 	if (!VectorCompare(self->avelocity, vec3_origin))
 	{
 		self->s.sound = 0;
@@ -790,7 +789,7 @@ void button_touch(edict_t* self, edict_t* other, cplane_t* plane, csurface_t* su
 		G_FreeEdict(self);
 		return;
 	}
-	
+
 	if (!other->client)
 		return;
 
@@ -819,7 +818,7 @@ void SP_func_button(edict_t* ent)
 	ent->solid = SOLID_BSP;
 	ent->classindex = FUNC_BUTTON; /* MrG{DRGN} */
 	gi.setmodel(ent, ent->model);
-	
+
 	if (ent->sounds != 1)
 		ent->moveinfo.sound_start = gi.soundindex("switches/butn2.wav");
 
@@ -1129,9 +1128,9 @@ void door_blocked(edict_t* self, edict_t* other)
 		// give it a chance to go away on it's own terms (like gibs)
 		T_Damage(other, self, self, vec3_origin, other->s.origin, vec3_origin, 100000, 1, 0, MOD_CRUSH);
 		// if it's still there, nuke it
-		
+
 		if (other->inuse)
-			
+
 			BecomeExplosion1(other);
 
 		return;
@@ -1179,7 +1178,6 @@ void door_touch(edict_t* self, edict_t* other, cplane_t* plane, csurface_t* surf
 		G_FreeEdict(self);
 		return;
 	}
-	
 
 	if (!other->client)
 		return;
@@ -1523,9 +1521,9 @@ void train_blocked(edict_t* self, edict_t* other)
 		// give it a chance to go away on it's own terms (like gibs)
 		T_Damage(other, self, self, vec3_origin, other->s.origin, vec3_origin, 100000, 1, 0, MOD_CRUSH);
 		// if it's still there, nuke it
-		
+
 		if (other->inuse)
-			
+
 			BecomeExplosion1(other);
 
 		return;
@@ -2001,9 +1999,9 @@ void door_secret_blocked(edict_t* self, edict_t* other)
 		// give it a chance to go away on it's own terms (like gibs)
 		T_Damage(other, self, self, vec3_origin, other->s.origin, vec3_origin, 100000, 1, 0, MOD_CRUSH);
 		// if it's still there, nuke it
-		
+
 		if (other->inuse)
-			
+
 			BecomeExplosion1(other);
 
 		return;

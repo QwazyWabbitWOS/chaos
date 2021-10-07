@@ -6,18 +6,16 @@
 #define GRENADE_MINSPEED			400
 #define GRENADE_MAXSPEED			800
 
-
 /* MrG{DRGN} moved here, since it's a CHaos specific weapon.*/
 void Weapon_AK42_Fire(edict_t* ent)
 {
 	int		damage;
 
-	
 	if (!ent)
 	{
 		return;
 	}
-	
+
 	if (ent->client->fakedeath != 0)
 		return;
 
@@ -44,12 +42,10 @@ void weapon_chainsaw_fire(edict_t* ent)
 	vec3_t		start = { 0 }, end, forward, bloodvec = { 0 }, mins = { -3, -3, -3 }, maxs = { 3, 3, 3 };
 	trace_t		tr;
 
-	
 	if (!ent)
 	{
 		return;
 	}
-	
 
 	damage = 10 + (int)(random() * 3.0);
 
@@ -102,12 +98,10 @@ void Weapon_Chainsaw(edict_t* ent)
 	// 36-55   idle  : rumdragen halt  pött-pött-pött  :)
 	// 56-60   putdown  : runternehmen
 
-	
 	if (!ent)
 	{
 		return;
 	}
-	
 
 	if (ent->client->weaponstate == WEAPON_ENDFIRE)
 	{
@@ -274,12 +268,11 @@ void Weapon_Chainsaw(edict_t* ent)
 
 void Turret_Rocket_Think(edict_t* ent)
 {
-	
 	if (!ent)
 	{
 		return;
 	}
-	
+
 	ent->velocity[0] += crandom() * 40;
 	ent->velocity[1] += crandom() * 40;
 	ent->velocity[2] += crandom() * 40;
@@ -291,12 +284,10 @@ void Turret_Explode(edict_t* ent)
 {
 	int			i;
 
-	
 	if (!ent)
 	{
 		return;
 	}
-	
 
 	gi.WriteByte(svc_temp_entity);
 	gi.WriteByte(TE_ROCKET_EXPLOSION);
@@ -351,12 +342,10 @@ void Turret_Explode(edict_t* ent)
 
 void Turret_Die(edict_t* ent, edict_t* inflictor, edict_t* attacker, int damage, vec3_t point)
 {
-	
 	if (!ent || !attacker)
 	{
 		return;
 	}
-	
 
 	if (attacker != ent->owner && !TeamMembers(ent->owner, attacker)) /* MrG{DRGN} don't get teammates get frags for killing their partner's turrets. */
 	{
@@ -365,7 +354,7 @@ void Turret_Die(edict_t* ent, edict_t* inflictor, edict_t* attacker, int damage,
 			attacker->client->resp.score += 1;
 			bprint_botsafe(PRINT_MEDIUM, "%s receives an extra frag for killing %s's turret.\n", attacker->client->pers.netname, ent->owner->client->pers.netname);
 		}
-		else 
+		else
 			if (attacker->owner && attacker->owner->client) //QW FIXME: bots don't own turrets? needs testing. nullptr exception if owner is nil
 			{
 				attacker->owner->client->resp.score += 1;
@@ -386,12 +375,10 @@ void Turret_Pain(edict_t* ent, edict_t* other, float kickback, int damage)
 {
 	vec3_t	blipdir = { 0 }, blipangles;
 
-	
 	if (!ent || !other)
 	{
 		return;
 	}
-	
 
 	if (ent != other)
 	{
@@ -410,12 +397,10 @@ void fire_turretrocket(edict_t* self, vec3_t start, vec3_t dir, float speed)
 {
 	edict_t* rocket;
 
-	
 	if (!self)
 	{
 		return;
 	}
-	
 
 	rocket = G_Spawn();
 	VectorCopy(start, rocket->s.origin);
@@ -456,12 +441,11 @@ void fire_lead3(edict_t* self, vec3_t start, vec3_t aimdir, int damage, int kick
 	int			content_mask = MASK_SHOT | MASK_WATER;
 	edict_t* oldowner;
 
-	
 	if (!self)
 	{
 		return;
 	}
-	
+
 	oldowner = self->owner;
 	self->owner = NULL;
 
@@ -594,12 +578,10 @@ void LaserTurret_Think(edict_t* ent)
 	edict_t* blip = NULL;
 	vec3_t			blipdir = { 0 }, blipangles, forigin = { 0 }, forward, right, side;
 
-	
 	if (!ent)
 	{
 		return;
 	}
-	
 
 	ent->nextthink = level.time + FRAMETIME;
 	ent->touch = NULL;
@@ -784,12 +766,10 @@ void RocketTurret_Think(edict_t* ent)
 	edict_t* blip = NULL;
 	vec3_t			blipdir = { 0 }, blipangles, forigin = { 0 }, forward, right, side;
 
-	
 	if (!ent)
 	{
 		return;
 	}
-	
 
 	ent->nextthink = level.time + FRAMETIME;
 	ent->touch = NULL;
@@ -948,7 +928,6 @@ void Turret_Touch(edict_t* ent, edict_t* other, cplane_t* plane, csurface_t* sur
 		G_FreeEdict(ent);
 		return;
 	}
-	
 
 	if (other == ent->owner)
 		return;
@@ -971,7 +950,6 @@ void Turret_Touch(edict_t* ent, edict_t* other, cplane_t* plane, csurface_t* sur
 			ent->think = LaserTurret_Think;
 		else if (ent->classindex == RTURRET)
 			ent->think = RocketTurret_Think;
-		
 
 		ent->touch = NULL;
 	}
@@ -981,12 +959,10 @@ void fire_lturret(edict_t* self, vec3_t start, vec3_t dir, int speed)
 {
 	edict_t* turret;
 
-	
 	if (!self)
 	{
 		return;
 	}
-	
 
 	turret = G_Spawn();
 	VectorCopy(start, turret->s.origin);
@@ -1023,12 +999,10 @@ void fire_rturret(edict_t* self, vec3_t start, vec3_t dir, int speed)
 {
 	edict_t* turret;
 
-	
 	if (!self)
 	{
 		return;
 	}
-	
 
 	turret = G_Spawn();
 	VectorCopy(start, turret->s.origin);
@@ -1065,12 +1039,10 @@ void weapon_lturret_fire(edict_t* ent)
 	vec3_t	offset = { 0 }, forward, right, start, endpos = { 0 };
 	trace_t	tr;
 
-	
 	if (!ent)
 	{
 		return;
 	}
-	
 
 	VectorSet(offset, 8, 8, ent->viewheight - 8);
 	AngleVectors(ent->client->v_angle, forward, right, NULL);
@@ -1108,12 +1080,10 @@ void weapon_rturret_fire(edict_t* ent)
 	vec3_t	offset = { 0 }, forward, right, start, endpos = { 0 };
 	trace_t	tr;
 
-	
 	if (!ent)
 	{
 		return;
 	}
-	
 
 	VectorSet(offset, 8, 8, ent->viewheight - 8);
 	AngleVectors(ent->client->v_angle, forward, right, NULL);
@@ -1148,12 +1118,10 @@ void weapon_rturret_fire(edict_t* ent)
 
 void Weapon_LaserTurret(edict_t* ent)
 {
-	
 	if (!ent)
 	{
 		return;
 	}
-	
 
 	/* MrG{DRGN} no longer needed
 	it_lturret = FindItem("automatic defence turret");	//bugfix
@@ -1256,12 +1224,10 @@ void Weapon_LaserTurret(edict_t* ent)
 
 void Weapon_RocketTurret(edict_t* ent)
 {
-	
 	if (!ent)
 	{
 		return;
 	}
-	
 
 	if ((ent->client->newweapon) && (ent->client->weaponstate == WEAPON_READY))
 	{
@@ -1366,12 +1332,10 @@ void weapon_sword_fire(edict_t* ent)
 	vec3_t		forward, start = { 0 }, end, mins = { -3, -3, -3 }, maxs = { 3, 3, 3 };
 	trace_t		tr;
 
-	
 	if (!ent)
 	{
 		return;
 	}
-	
 
 	damage = 60 + (int)(random() * 60);
 
@@ -1442,12 +1406,10 @@ void weapon_sword_fire(edict_t* ent)
 
 void Weapon_Sword(edict_t* ent)
 {
-	
 	if (!ent)
 	{
 		return;
 	}
-	
 
 	if (ent->client->weaponstate == WEAPON_DROPPING)
 	{
@@ -1573,12 +1535,10 @@ void Weapon_Sword(edict_t* ent)
 
 void airstuff_touch(edict_t* self, edict_t* other, cplane_t* plane, csurface_t* surf)
 {
-	
 	if (!self)
 	{
 		return;
 	}
-	
 
 	self->nextthink = level.time + FRAMETIME;
 	self->think = G_FreeEdict;
@@ -1592,12 +1552,10 @@ void fire_air(edict_t* self, vec3_t start, vec3_t dir)
 	vec_t   dist;
 	int     i;
 
-	
 	if (!self)
 	{
 		return;
 	}
-	
 
 	AngleVectors(self->client->v_angle, forward, right, NULL);
 
@@ -1698,12 +1656,10 @@ void Weapon_Airfist_Fire(edict_t* ent)
 	vec3_t	forward, right, end = { 0 };
 	int     i;
 
-	
 	if (!ent)
 	{
 		return;
 	}
-	
 
 	AngleVectors(ent->client->v_angle, forward, right, NULL);
 
@@ -1781,12 +1737,10 @@ void fire_lead2(edict_t* self, vec3_t start, vec3_t aimdir, int damage, int kick
 	qboolean	water = false;
 	int			content_mask = MASK_SHOT | MASK_WATER;
 
-	
 	if (!self)
 	{
 		return;
 	}
-	
 
 	tr = gi.trace(self->s.origin, NULL, NULL, start, self, MASK_SHOT);
 	if (!(tr.fraction < 1.0))
@@ -1915,12 +1869,10 @@ void fire_eshotgun(edict_t* self, vec3_t start, vec3_t aimdir, int damage, int k
 {
 	int		i;
 
-	
 	if (!self)
 	{
 		return;
 	}
-	
 
 	for (i = 0; i < count; i++)
 		fire_lead2(self, start, aimdir, damage, kick, TE_SHOTGUN, hspread, vspread, mod);
@@ -1935,12 +1887,10 @@ void weapon_esupershotgun_fire(edict_t* ent)
 	int		damage = 15;
 	int			kick = 12;
 
-	
 	if (!ent)
 	{
 		return;
 	}
-	
 
 	AngleVectors(ent->client->v_angle, forward, right, NULL);
 
@@ -1983,12 +1933,10 @@ void weapon_esupershotgun_fire(edict_t* ent)
 
 void Weapon_ExplosiveSuperShotgun(edict_t* ent)
 {
-	
 	if (!ent)
 	{
 		return;
 	}
-	
 
 	static int	pause_frames[] = { 29, 42, 57, 0 };
 	static int	fire_frames[] = { 7, 0 };
@@ -2008,7 +1956,6 @@ void arrow_touch(edict_t* self, edict_t* other, cplane_t* plane, csurface_t* sur
 		G_FreeEdict(self);
 		return;
 	}
-	
 
 	if (other == self->owner)
 		return;
@@ -2087,12 +2034,11 @@ void fire_arrow(edict_t* self, vec3_t start, vec3_t dir, int damage, int speed)
 {
 	edict_t* arrow;
 
-	
 	if (!self)
 	{
 		return;
 	}
-	
+
 	arrow = G_Spawn();
 	VectorCopy(start, arrow->s.origin);
 	VectorCopy(dir, arrow->movedir);
@@ -2123,12 +2069,10 @@ void Weapon_Crossbow_Fire(edict_t* ent)
 	vec3_t	forward, right;
 	int		damage;
 
-	
 	if (!ent)
 	{
 		return;
 	}
-	
 
 	damage = 40 + (int)(random() * 20.0);
 
@@ -2159,12 +2103,10 @@ void Weapon_Crossbow_Fire(edict_t* ent)
 
 void Weapon_Crossbow(edict_t* ent)
 {
-	
 	if (!ent)
 	{
 		return;
 	}
-	
 
 	static int	pause_frames[] = { 25, 33, 42, 50, 0 };
 	static int	fire_frames[] = { 5, 0 };
@@ -2178,12 +2120,10 @@ void Weapon_Crossbow(edict_t* ent)
 
 void parrow_touch(edict_t* self, edict_t* other, cplane_t* plane, csurface_t* surf)
 {
-	
 	if (!self || !other)
 	{
 		return;
 	}
-	
 
 	if (other == self->owner)
 		return;
@@ -2270,12 +2210,10 @@ void fire_poisonarrow(edict_t* self, vec3_t start, vec3_t dir, int damage, int s
 {
 	edict_t* arrow;
 
-	
 	if (!self)
 	{
 		return;
 	}
-	
 
 	arrow = G_Spawn();
 	VectorCopy(start, arrow->s.origin);
@@ -2306,12 +2244,10 @@ void Weapon_PoisonCrossbow_Fire(edict_t* ent)
 	vec3_t	forward, right;
 	int		damage;
 
-	
 	if (!ent)
 	{
 		return;
 	}
-	
 
 	damage = 20 + (int)(random() * 20.0);
 
@@ -2342,12 +2278,10 @@ void Weapon_PoisonCrossbow_Fire(edict_t* ent)
 
 void Weapon_PoisonCrossbow(edict_t* ent)
 {
-	
 	if (!ent)
 	{
 		return;
 	}
-	
 
 	static int	pause_frames[] = { 25, 33, 42, 50, 0 };
 	static int	fire_frames[] = { 5, 0 };
@@ -2368,12 +2302,10 @@ void Arrow_Explode(edict_t* ent)
 	vec3_t		origin;
 	int			mod;
 
-	
 	if (!ent)
 	{
 		return;
 	}
-	
 
 	if (ent->owner && ent->owner->client)
 		PlayerNoise(ent->owner, ent->s.origin, PNOISE_IMPACT);
@@ -2430,7 +2362,7 @@ void earrow_touch(edict_t* self, edict_t* other, cplane_t* plane, csurface_t* su
 		G_FreeEdict(self);
 		return;
 	}
-	
+
 	if (other == self->owner)
 		return;
 
@@ -2453,12 +2385,10 @@ void fire_explosivearrow(edict_t* self, vec3_t start, vec3_t dir, int damage, in
 {
 	edict_t* arrow;
 
-	
 	if (!self)
 	{
 		return;
 	}
-	
 
 	arrow = G_Spawn();
 	VectorCopy(start, arrow->s.origin);
@@ -2490,12 +2420,10 @@ void Weapon_ExplosiveCrossbow_Fire(edict_t* ent)
 	vec3_t	forward, right;
 	int		damage;
 
-	
 	if (!ent)
 	{
 		return;
 	}
-	
 
 	damage = ex_arrow_damage->value;
 
@@ -2543,12 +2471,10 @@ void homing_think(edict_t* ent)
 	vec_t	speed;
 	int		i;
 
-	
 	if (!ent)
 	{
 		return;
 	}
-	
 
 	if (level.time >= ent->delay)
 	{
@@ -2624,12 +2550,10 @@ void fire_homing(edict_t* self, vec3_t start, vec3_t dir, int damage, int speed,
 {
 	edict_t* rocket;
 
-	
 	if (!self)
 	{
 		return;
 	}
-	
 
 	rocket = G_Spawn();
 	VectorCopy(start, rocket->s.origin);
@@ -2666,12 +2590,10 @@ void Weapon_HomingLauncher_Fire(edict_t* ent)
 	float	damage_radius;
 	int		radius_damage;
 
-	
 	if (!ent)
 	{
 		return;
 	}
-	
 
 	damage = 50 + (int)(random() * 20.0);
 	radius_damage = 50;
@@ -2707,12 +2629,10 @@ void Weapon_HomingLauncher_Fire(edict_t* ent)
 
 void Weapon_HomingLauncher(edict_t* ent)
 {
-	
 	if (!ent)
 	{
 		return;
 	}
-	
 
 	static int	pause_frames[] = { 25, 33, 42, 50, 0 };
 	static int	fire_frames[] = { 5, 0 };
@@ -2732,7 +2652,6 @@ void buzz_touch(edict_t* self, edict_t* other, cplane_t* plane, csurface_t* surf
 		G_FreeEdict(self);
 		return;
 	}
-	
 
 	if (other == self->owner)
 		return;
@@ -2798,12 +2717,11 @@ void buzz_touch(edict_t* self, edict_t* other, cplane_t* plane, csurface_t* surf
 
 void buzz_think(edict_t* ent)
 {
-	
 	if (!ent)
 	{
 		return;
 	}
-	
+
 	ent->movetype = MOVETYPE_BOUNCE;
 	ent->s.sound = 0;
 	ent->nextthink = level.time + 5;
@@ -2814,12 +2732,10 @@ void fire_buzz(edict_t* self, vec3_t start, vec3_t dir, int damage, int speed)
 {
 	edict_t* buzz;
 
-	
 	if (!self)
 	{
 		return;
 	}
-	
 
 	buzz = G_Spawn();
 	VectorCopy(start, buzz->s.origin);
@@ -2850,12 +2766,10 @@ void Weapon_Buzzsaw_Fire(edict_t* ent)
 	vec3_t	forward, right;
 	int		damage;
 
-	
 	if (!ent)
 	{
 		return;
 	}
-	
 
 	damage = 90 + (int)(random() * 20.0);
 
@@ -2886,12 +2800,10 @@ void Weapon_Buzzsaw_Fire(edict_t* ent)
 
 void Weapon_Buzzsaw(edict_t* ent)
 {
-	
 	if (!ent)
 	{
 		return;
 	}
-	
 
 	static int	pause_frames[] = { 25, 33, 42, 50, 0 };
 	static int	fire_frames[] = { 5, 0 };
@@ -2909,12 +2821,10 @@ void FlashGrenade_Explode(edict_t* ent)
 	edict_t* target;
 	float		Distance, BlindTimeAdd;
 
-	
 	if (!ent)
 	{
 		return;
 	}
-	
 
 	VectorSet(offset, 0, 0, 10);
 	VectorAdd(ent->s.origin, offset, ent->s.origin);
@@ -2989,7 +2899,6 @@ void FlashGrenade_Touch(edict_t* ent, edict_t* other, cplane_t* plane, csurface_
 		G_FreeEdict(ent);
 		return;
 	}
-	
 
 	if (other == ent->owner)
 		return;
@@ -3026,12 +2935,10 @@ void fire_flashgrenade(edict_t* self, vec3_t start, vec3_t aimdir, int damage, i
 	vec3_t	dir;
 	vec3_t	forward, right, up;
 
-	
 	if (!self)
 	{
 		return;
 	}
-	
 
 	vectoangles(aimdir, dir);
 	AngleVectors(dir, forward, right, up);
@@ -3066,12 +2973,10 @@ void fire_flashgrenade2(edict_t* self, vec3_t start, vec3_t aimdir, int damage, 
 	vec3_t	dir;
 	vec3_t	forward, right, up;
 
-	
 	if (!self)
 	{
 		return;
 	}
-	
 
 	vectoangles(aimdir, dir);
 	AngleVectors(dir, forward, right, up);
@@ -3122,12 +3027,10 @@ void weapon_flashgrenade_fire(edict_t* ent, qboolean held)
 	int		speed;
 	float	radius;
 
-	
 	if (!ent)
 	{
 		return;
 	}
-	
 
 	radius = damage + 40;
 	if (is_quad)
@@ -3163,12 +3066,10 @@ void weapon_flashgrenade_fire(edict_t* ent, qboolean held)
 
 void Weapon_FlashGrenade(edict_t* ent)
 {
-	
 	if (!ent)
 	{
 		return;
 	}
-	
 
 	if ((ent->client->newweapon) && (ent->client->weaponstate == WEAPON_READY))
 	{
@@ -3280,24 +3181,21 @@ void Weapon_FlashGrenade(edict_t* ent)
 
 void pre_target_laser_think(edict_t* self)
 {
-	
 	if (!self)
 	{
 		return;
 	}
-	
+
 	target_laser_on(self);
 	self->think = target_laser_think;
 }
 
 void LaserMine_Explode(edict_t* ent)
 {
-	
 	if (!ent)
 	{
 		return;
 	}
-	
 
 	gi.WriteByte(svc_temp_entity);
 	gi.WriteByte(TE_ROCKET_EXPLOSION);
@@ -3313,12 +3211,10 @@ void LaserMine_Explode(edict_t* ent)
 
 void LaserMine_Die(edict_t* ent, edict_t* inflictor, edict_t* attacker, int damage, vec3_t point)
 {
-	
 	if (!ent)
 	{
 		return;
 	}
-	
 
 	LaserMine_Explode(ent);
 }
@@ -3338,7 +3234,6 @@ void LaserMine_Touch(edict_t* ent, edict_t* other, cplane_t* plane, csurface_t* 
 		G_FreeEdict(ent);
 		return;
 	}
-	
 
 	if (other == ent->owner)
 		return;
@@ -3356,7 +3251,7 @@ void LaserMine_Touch(edict_t* ent, edict_t* other, cplane_t* plane, csurface_t* 
 	if ((other->classindex == INFO_PLAYER_DEATHMATCH)
 		|| (other->classindex == INFO_PLAYER_START)
 		|| (other->classindex == FUNC_DOOR)
-		|| (other->classindex == FUNC_PLAT)) 
+		|| (other->classindex == FUNC_PLAT))
 	{
 		T_RadiusDamage(ent, ent, 60, NULL, 60, MOD_TARGET_LASER);
 
@@ -3447,12 +3342,10 @@ void fire_lasermine2(edict_t* self, vec3_t start, vec3_t aimdir, int damage, int
 	vec3_t	dir;
 	vec3_t	forward, right, up;
 
-	
 	if (!self)
 	{
 		return;
 	}
-	
 
 	vectoangles(aimdir, dir);
 	AngleVectors(dir, forward, right, up);
@@ -3495,12 +3388,10 @@ void weapon_lasergrenade_fire(edict_t* ent, qboolean held)
 	int		speed;
 	float	radius;
 
-	
 	if (!ent)
 	{
 		return;
 	}
-	
 
 	radius = damage + 40;
 	if (is_quad)
@@ -3536,12 +3427,10 @@ void weapon_lasergrenade_fire(edict_t* ent, qboolean held)
 
 void Weapon_LaserGrenade(edict_t* ent)
 {
-	
 	if (!ent)
 	{
 		return;
 	}
-	
 
 	if ((ent->client->newweapon) && (ent->client->weaponstate == WEAPON_READY))
 	{
@@ -3657,12 +3546,10 @@ void PoisonGrenade_Explode(edict_t* ent)
 	edict_t* target;
 	float		Distance, PoisonTimeAdd;
 
-	
 	if (!ent)
 	{
 		return;
 	}
-	
 
 	VectorSet(offset, 0, 0, 10);
 	VectorAdd(ent->s.origin, offset, ent->s.origin);
@@ -3741,7 +3628,6 @@ void PoisonGrenade_Touch(edict_t* ent, edict_t* other, cplane_t* plane, csurface
 		G_FreeEdict(ent);
 		return;
 	}
-	
 
 	if (other == ent->owner)
 		return;
@@ -3778,12 +3664,10 @@ void fire_poisongrenade(edict_t* self, vec3_t start, vec3_t aimdir, int damage, 
 	vec3_t	dir;
 	vec3_t	forward, right, up;
 
-	
 	if (!self)
 	{
 		return;
 	}
-	
 
 	vectoangles(aimdir, dir);
 	AngleVectors(dir, forward, right, up);
@@ -3819,12 +3703,10 @@ void fire_poisongrenade2(edict_t* self, vec3_t start, vec3_t aimdir, int damage,
 	vec3_t	dir;
 	vec3_t	forward, right, up;
 
-	
 	if (!self)
 	{
 		return;
 	}
-	
 
 	vectoangles(aimdir, dir);
 	AngleVectors(dir, forward, right, up);
@@ -3875,12 +3757,10 @@ void weapon_poisongrenade_fire(edict_t* ent, qboolean held)
 	int		speed;
 	float	radius;
 
-	
 	if (!ent)
 	{
 		return;
 	}
-	
 
 	radius = damage + 40;
 	if (is_quad)
@@ -3916,12 +3796,10 @@ void weapon_poisongrenade_fire(edict_t* ent, qboolean held)
 
 void Weapon_PoisonGrenade(edict_t* ent)
 {
-	
 	if (!ent)
 	{
 		return;
 	}
-	
 
 	if ((ent->client->newweapon) && (ent->client->weaponstate == WEAPON_READY))
 	{
@@ -4040,12 +3918,10 @@ void Proxy_Explode(edict_t* ent)
 	vec3_t	v = { 0 };
 	vec3_t	dir = { 0 };
 
-	
 	if (!ent)
 	{
 		return;
 	}
-	
 
 	while ((blip = findradius(blip, ent->s.origin, 200)) != NULL)
 	{
@@ -4080,12 +3956,11 @@ void Proxy_Explode(edict_t* ent)
 
 void Proxy_Die(edict_t* self, edict_t* inflictor, edict_t* attacker, int damage, vec3_t point)
 {
-	
 	if (!self)
 	{
 		return;
 	}
-	
+
 	self->takedamage = DAMAGE_NO;
 	self->nextthink = level.time + FRAMETIME;
 	self->think = Proxy_Explode;
@@ -4097,12 +3972,10 @@ void Proxy_Think(edict_t* ent)
 	vec3_t  blipdir = { 0 }, bestdir = { 0 }, bestangles;
 	vec_t	dist, bestdist = 9999;
 
-	
 	if (!ent)
 	{
 		return;
 	}
-	
 
 	ent->nextthink = level.time + 0.2;
 
@@ -4116,7 +3989,6 @@ void Proxy_Think(edict_t* ent)
 		/* MrG{DRGN}
 		Grenade_Explode(ent); */
 		Proxy_Explode(ent);
-
 	}
 
 	while ((blip = findradius2(blip, ent->s.origin, 600)) != NULL)
@@ -4125,9 +3997,8 @@ void Proxy_Think(edict_t* ent)
 			continue;
 
 		/* MrG{DRGN} Don't target spectators or Camera users */
-		if (blip->solid == SOLID_NOT||blip->solid == SOLID_TRIGGER)
+		if (blip->solid == SOLID_NOT || blip->solid == SOLID_TRIGGER)
 			continue;
-	
 
 		VectorSubtract(blip->s.origin, ent->s.origin, blipdir);
 		dist = VectorLength(blipdir);
@@ -4240,12 +4111,10 @@ void EvilProxy_Think(edict_t* ent)
 	vec_t	dist, bestdist = 9999;
 	int	i;
 
-	
 	if (!ent)
 	{
 		return;
 	}
-	
 
 	ent->nextthink = level.time + FRAMETIME;
 
@@ -4271,7 +4140,7 @@ void EvilProxy_Think(edict_t* ent)
 			continue;
 
 		/* MrG{DRGN} Don't target spectators or camera users*/
-		if (players[i]->solid == SOLID_NOT|| players[i]->solid == SOLID_TRIGGER)
+		if (players[i]->solid == SOLID_NOT || players[i]->solid == SOLID_TRIGGER)
 			continue;
 
 		VectorSubtract(players[i]->s.origin, ent->s.origin, blipdir);
@@ -4367,7 +4236,6 @@ void Proxy_Touch(edict_t* ent, edict_t* other, cplane_t* plane, csurface_t* surf
 		G_FreeEdict(ent);
 		return;
 	}
-	
 
 	if (other == ent->owner)
 		return;
@@ -4408,12 +4276,10 @@ void fire_proxymine(edict_t* self, vec3_t start, vec3_t aimdir, int damage, int 
 	vec3_t	dir;
 	vec3_t	forward, right, up;
 
-	
 	if (!self)
 	{
 		return;
 	}
-	
 
 	vectoangles(aimdir, dir);
 	AngleVectors(dir, forward, right, up);
@@ -4467,12 +4333,10 @@ void weapon_flashgrenadelauncher_fire(edict_t* ent)
 	int		damage = 120;
 	float	radius;
 
-	
 	if (!ent)
 	{
 		return;
 	}
-	
 
 	radius = damage + 40;
 	if (is_quad)
@@ -4502,12 +4366,10 @@ void weapon_flashgrenadelauncher_fire(edict_t* ent)
 
 void Weapon_FlashGrenadeLauncher(edict_t* ent)
 {
-	
 	if (!ent)
 	{
 		return;
 	}
-	
 
 	static int	pause_frames[] = { 34, 51, 59, 0 };
 	static int	fire_frames[] = { 6, 0 };
@@ -4527,12 +4389,10 @@ void weapon_poisongrenadelauncher_fire(edict_t* ent)
 	int		damage = 120;
 	float	radius;
 
-	
 	if (!ent)
 	{
 		return;
 	}
-	
 
 	radius = damage + 40;
 	if (is_quad)
@@ -4562,12 +4422,10 @@ void weapon_poisongrenadelauncher_fire(edict_t* ent)
 
 void Weapon_PoisonGrenadeLauncher(edict_t* ent)
 {
-	
 	if (!ent)
 	{
 		return;
 	}
-	
 
 	static int	pause_frames[] = { 34, 51, 59, 0 };
 	static int	fire_frames[] = { 6, 0 };
@@ -4587,12 +4445,10 @@ void weapon_proxyminelauncher_fire(edict_t* ent)
 	int		damage = 120;
 	float	radius;
 
-	
 	if (!ent)
 	{
 		return;
 	}
-	
 
 	radius = damage + 40;
 	if (is_quad)
@@ -4622,12 +4478,10 @@ void weapon_proxyminelauncher_fire(edict_t* ent)
 
 void Weapon_ProxyMineLauncher(edict_t* ent)
 {
-	
 	if (!ent)
 	{
 		return;
 	}
-	
 
 	static int	pause_frames[] = { 34, 51, 59, 0 };
 	static int	fire_frames[] = { 6, 0 };
@@ -4647,12 +4501,10 @@ void Weapon_ProxyMineLauncher(edict_t* ent)
 
 void Vortex_Free(edict_t* ent)
 {
-	
 	if (!ent)
 	{
 		return;
 	}
-	
 
 	vortex_pointer = NULL;
 	vortexstate = VORTEX_INACTIVE;
@@ -4661,12 +4513,10 @@ void Vortex_Free(edict_t* ent)
 
 void BlackHole_Think(edict_t* ent)
 {
-	
 	if (!ent)
 	{
 		return;
 	}
-	
 
 	if (level.time > ent->delay)
 	{
@@ -4689,12 +4539,10 @@ void BlackHole_Think(edict_t* ent)
  */
 int Valid_Target(edict_t* ent, edict_t* blip)
 {
-
 	if (!ent || !blip)
 	{
 		return false;
 	}
-	
 
 	/*
 	 * For every item we never allow it to legally target itself
@@ -4837,7 +4685,6 @@ int Valid_Target(edict_t* ent, edict_t* blip)
 		/*
 		switch (blip->classname[0])
 		{
-
 		case 'a':
 			if (Q_stricmp(blip->classname, "arrow") == 0)
 				return true;
@@ -4950,12 +4797,10 @@ void Vortex_Think(edict_t* ent)
 	vec_t	dist;
 	static	edict_t* black;
 
-	
 	if (!ent)
 	{
 		return;
 	}
-	
 
 	ent->nextthink = level.time + FRAMETIME;
 
@@ -5121,7 +4966,6 @@ void Vortex_Touch(edict_t* ent, edict_t* other, cplane_t* plane, csurface_t* sur
 		G_FreeEdict(ent);
 		return;
 	}
-	
 
 	if (other == ent->owner)
 		return;
@@ -5176,12 +5020,10 @@ void weapon_vortex_fire(edict_t* ent)
 	vec3_t	offset = { 0 }, forward, right, start;
 	float   timer, speed;
 
-	
 	if (!ent)
 	{
 		return;
 	}
-	
 
 	if (vortexstate != VORTEX_INACTIVE)
 	{
@@ -5209,12 +5051,10 @@ void weapon_vortex_fire(edict_t* ent)
 
 void Weapon_Vortex(edict_t* ent)
 {
-	
 	if (!ent)
 	{
 		return;
 	}
-	
 
 	if ((ent->client->newweapon) && (ent->client->weaponstate == WEAPON_READY))
 	{

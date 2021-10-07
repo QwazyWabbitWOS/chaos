@@ -221,7 +221,6 @@ void Bot_Spawn(edict_t* ent)
 	client_persistant_t  pers;
 	client_respawn_t     resp = { 0 };
 
-
 	if (!deathmatch->value)
 	{
 		gi.dprintf("Must be in Deathmatch to spawn as Bot!\n");
@@ -243,7 +242,6 @@ void Bot_Spawn(edict_t* ent)
 	}
 	else
 		memset(&resp, 0, sizeof(client_respawn_t));
-
 
 	pers = ent->client->pers;
 	memset(ent->client, 0, sizeof(gclient_t));
@@ -373,7 +371,6 @@ void bot_die(edict_t* self, edict_t* inflictor, edict_t* attacker, int damage, v
 
 	self->s.modelindex2 = REMOVED_MODEL;	// remove linked weapon model
 
-
 	self->s.angles[0] = 0;
 	self->s.angles[2] = 0;
 
@@ -473,7 +470,7 @@ void bot_die(edict_t* self, edict_t* inflictor, edict_t* attacker, int damage, v
 				break;
 			}
 			gi.sound(self, CHAN_VOICE, gi.soundindex(va("*death%i.wav", (rand() % 4) + 1)), 1, ATTN_NORM, 0);
-			self->s.modelindex = PLAYER_MODEL; 
+			self->s.modelindex = PLAYER_MODEL;
 		}
 	}
 
@@ -1235,16 +1232,12 @@ qboolean Bot_CanPickupItem(edict_t* ent, edict_t* eitem)
 	if (item == it_jetpack && ent->client->pers.inventory[ITEM_INDEX(it_jetpack)] > 0 && ent->client->jet_remaining == 600)
 		return 0;
 
-	
-
-
 	/* MrG{DRGN} Tweak Havoc bot health hunting routine
 	if (item == FindItem("Health") && ent->health >= ent->max_health)
 		return 0; */
 	if (item == FindItem("Health") && ent->health >= ent->max_health && (item->classindex != (ITEM_HEALTH_MEGA | ITEM_HEALTH_SMALL)))
 
 		return 0;
-	
 
 	if (item == it_tech2
 		|| item == it_tech3
@@ -1558,9 +1551,8 @@ void RemoveFromList(edict_t* ent)
 		|| ent->classindex == FREED
 		|| ent->classindex == ITEM_HEALTH_SMALL)
 		return;
-	
 
-   //find the list head
+	//find the list head
 	if (ent->item->pickup == Pickup_Weapon)
 	{
 		if (!weapon_list)	//list is empty
@@ -1616,7 +1608,6 @@ void RemoveFromList(edict_t* ent)
 			current->next_listitem = NULL;
 	}
 }
-
 
 void Load_BotChat(void)
 {
@@ -1702,7 +1693,6 @@ void Load_BotChat(void)
 			else	//empty line ?
 				line--;
 
-
 			chat_linecount[section] = line;
 		}
 	}
@@ -1713,7 +1703,6 @@ void Load_BotChat(void)
 
 char* Get_RandomBotSkin(void)
 {
-
 	switch ((int)(random() * 28))
 	{
 	case 0:  	return "male/cipher"; break;

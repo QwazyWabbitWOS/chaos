@@ -2,7 +2,6 @@
 #include "c_botai.h"
 #include "c_base.h"
 
-
 static void	SVCmd_Test_f(void)
 {
 	gi.cprintf(NULL, PRINT_HIGH, "SVCmd_Test_f()\n");
@@ -171,7 +170,7 @@ static void SVCmd_AddIP_f(void)
 SVCmd_RemoveIP_f
 sv addip - remove addresses from the filter list with:
 sv removeip <ip>
-sv removeip will only remove an address specified exactly the same way.  
+sv removeip will only remove an address specified exactly the same way.
 You cannot addip a subnet, then removeip a single host.
 =================
 */
@@ -203,7 +202,7 @@ static void SVCmd_RemoveIP_f(void)
 
 /*
 =================
-SVCmd_ListIP_f  
+SVCmd_ListIP_f
 sv listip Prints the current list of filters.
 =================
 */
@@ -223,7 +222,7 @@ static void SVCmd_ListIP_f(void)
 /*
 =================
 SVCmd_WriteIP_f
-sv writeip -	Dumps "addip <ip>" commands to listip.cfg so it can be extended at a later date.		
+sv writeip -	Dumps "addip <ip>" commands to listip.cfg so it can be extended at a later date.
 				The filter lists are not saved and restored by default, because I believe it would cause too much confusion.
 =================
 */
@@ -268,7 +267,7 @@ void SVCmd_nextmap_f(void)
 // Turn on sequential map rotation
 void SVCmd_sequential_f(void)
 {
-	if (maplist.nummaps > 0)  // does a maplist exist? 
+	if (maplist.nummaps > 0)  // does a maplist exist?
 	{
 		maplist.mlflag = ML_ROTATE_SEQ;
 		maplist.currentmap = -1;
@@ -282,7 +281,7 @@ void SVCmd_sequential_f(void)
 // Turn on randomized map rotation
 void SVCmd_random_f(void)
 {
-	if (maplist.nummaps > 0)  // does a maplist exist? 
+	if (maplist.nummaps > 0)  // does a maplist exist?
 	{
 		maplist.mlflag = ML_ROTATE_RANDOM;
 		maplist.currentmap = -1;
@@ -295,7 +294,7 @@ void SVCmd_random_f(void)
 	}
 }
 
-void SVCmd_goto_f(char *mapnum)
+void SVCmd_goto_f(char* mapnum)
 {
 	char command[MAX_QPATH] = { 0 };
 
@@ -324,7 +323,7 @@ void SVCmd_goto_f(char *mapnum)
 
 void SVCmd_show_f(void)
 {
-	if (maplist.nummaps > 0)  // does a maplist exist? 
+	if (maplist.nummaps > 0)  // does a maplist exist?
 	{
 		int i;
 

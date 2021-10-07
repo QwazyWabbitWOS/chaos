@@ -240,7 +240,6 @@ void R_ConcatTransforms(float in1[3][4], float in2[3][4], float out[3][4])
 
 //============================================================================
 
-
 /*
 ===============
 LerpAngle
@@ -784,8 +783,6 @@ char* va(char* format, ...)
 	return string;
 }
 
-
-
 /* MrG{DRGN} Fix COM_Parse buffer overflow. TY QW
 
 */
@@ -878,7 +875,6 @@ finish:
 	return s;
 }
 
-
 /*
 ===============
 Com_PageInMemory
@@ -965,7 +961,7 @@ void Com_sprintf(char* dest, int size, char* fmt, ...)
 	}
 }
 /* END*/
- 
+
 int Q_strnicmp(const char* s1, const char* s2, size_t count)
 {
 	if (count == 0)
@@ -1192,7 +1188,7 @@ void Info_RemoveKey(char* s, char* key)
 		*o = 0;
 
 		if (!strcmp(key, pkey))
-		{			
+		{
 			Com_strcpy(start, sizeof(start), s);	// remove this part
 			return;
 		}

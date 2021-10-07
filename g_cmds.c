@@ -10,7 +10,7 @@ char* ClientTeam(edict_t* ent)
 
 	if (!ent->client)
 		return value;
-	
+
 	Com_strcpy(value, sizeof(value), Info_ValueForKey(ent->client->pers.userinfo, "skin"));
 	p = strchr(value, '/');
 	if (!p)
@@ -34,7 +34,6 @@ qboolean OnSameTeam(edict_t* ent1, edict_t* ent2)
 	if (!((int)(dmflags->value) & (DF_MODELTEAMS | DF_SKINTEAMS)))
 		return false;
 
-	
 	Com_strcpy(ent1Team, sizeof(ent1Team), ClientTeam(ent1));
 	Com_strcpy(ent2Team, sizeof(ent2Team), ClientTeam(ent2));
 
@@ -746,8 +745,6 @@ Cmd_Kill_f
 */
 void Cmd_Kill_f(edict_t* ent)
 {
-	
-
 	/*
 	 * Fix for invincible bug
 	 * Major
@@ -820,8 +817,6 @@ void Cmd_Players_f(edict_t* ent)
 			count++;
 		}
 
-
-
 	// sort by frags
 	qsort(index, count, sizeof(index[0]), PlayerSort);
 
@@ -835,13 +830,11 @@ void Cmd_Players_f(edict_t* ent)
 			game.clients[index[i]].pers.netname);
 		if (strlen(small) + strlen(large) > sizeof(large) - 100)
 		{	// can't print all of them in one packet
-			
 			Com_strcat(large, sizeof(large), "...\n");
 			break;
 		}
-		
-		Com_strcat(large, sizeof(large), small);
 
+		Com_strcat(large, sizeof(large), small);
 	}
 
 	cprint_botsafe(ent, PRINT_HIGH, "%s\n%i players\n", large, count);
@@ -939,7 +932,6 @@ qboolean CheckFlood(edict_t* ent)
 	return false;
 }
 
-
 /*
 ==================
 Cmd_Say_f
@@ -965,7 +957,6 @@ void Cmd_Say_f(edict_t* ent, qboolean team, qboolean arg0)
 
 	if (arg0)
 	{
-		
 		Com_strcat(text, sizeof(text), gi.argv(0));
 		Com_strcat(text, sizeof(text), " ");
 		Com_strcat(text, sizeof(text), gi.args());
@@ -978,14 +969,14 @@ void Cmd_Say_f(edict_t* ent, qboolean team, qboolean arg0)
 		{
 			p++;
 			p[strlen(p) - 1] = 0;
-		}			  		
+		}
 		Com_strcat(text, sizeof(text), p);
 	}
 
 	// don't let text be too long for malicious reasons
 	if (strlen(text) > 150)
 		text[150] = 0;
-	
+
 	Com_strcat(text, sizeof(text), "\n");
 
 	if (CheckFlood(ent))/* MrG{DRGN} */
@@ -1025,7 +1016,7 @@ void ClientCommand(edict_t* ent)
 	if (!ent->client || !ent->classname) // FWP Check ent->classname too
 	*/
 	if (!ent)
-		return;	   	
+		return;
 
 	cmd = gi.argv(0);
 
@@ -1044,7 +1035,7 @@ void ClientCommand(edict_t* ent)
 		/* MrG{DRGN} Spectators don't have teams and shouldn't be spamming macros */
 		if (ent->client->camera || ent->movetype == MOVETYPE_NOCLIP)
 			return;
-		
+
 		CTFSay_Team(ent, gi.args());
 		return;
 	}
@@ -1131,25 +1122,25 @@ void ClientCommand(edict_t* ent)
 		CTFTeam_f(ent);
 	else if (Q_stricmp(cmd, "id") == 0)
 		CTFID_f(ent);
-	else if (Q_stricmp(cmd, "yes") == 0) 
-		CTFVoteYes(ent);	
+	else if (Q_stricmp(cmd, "yes") == 0)
+		CTFVoteYes(ent);
 	else if (Q_stricmp(cmd, "no") == 0)
-		CTFVoteNo(ent);		
-	else if (Q_stricmp(cmd, "ready") == 0) 
-		CTFReady(ent);		
+		CTFVoteNo(ent);
+	else if (Q_stricmp(cmd, "ready") == 0)
+		CTFReady(ent);
 	else if (Q_stricmp(cmd, "notready") == 0)
-		CTFNotReady(ent);	
+		CTFNotReady(ent);
 	else if (Q_stricmp(cmd, "ghost") == 0)
-		CTFGhost(ent);	 	
+		CTFGhost(ent);
 	else if (Q_stricmp(cmd, "admin") == 0)
 		CTFAdmin(ent);
 	else if (Q_stricmp(cmd, "stats") == 0)
 		CTFStats(ent);
-	else if (Q_stricmp(cmd, "warp") == 0) 
+	else if (Q_stricmp(cmd, "warp") == 0)
 		CTFWarp(ent);
-	else if (Q_stricmp(cmd, "boot") == 0) 
+	else if (Q_stricmp(cmd, "boot") == 0)
 		CTFBoot(ent);
-	else if ((Q_stricmp(cmd, "observer") == 0)|| (Q_stricmp(cmd, "spectator") == 0))
+	else if ((Q_stricmp(cmd, "observer") == 0) || (Q_stricmp(cmd, "spectator") == 0))
 		CTFObserver(ent);
 	else
 		ClientCommand2(ent);

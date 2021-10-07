@@ -188,7 +188,6 @@ typedef enum classindex
 	   PU_FLASHLIGHT,
 	   PU_SCANNER,
 
-	   
 	   KEY_DATACD,
 	   KEY_POWERCUBE,
 	   KEY_PYRAMID,
@@ -239,6 +238,4 @@ typedef enum classindex
 
 	   SELFTELEPORTER,
 	   NODE_TABLE,
-
-
 } classindex_t;

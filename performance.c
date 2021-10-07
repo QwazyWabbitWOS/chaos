@@ -1,4 +1,3 @@
-
 // **********************************************
 //        Windows high performance counter
 // **********************************************
@@ -46,7 +45,6 @@ void _STOP_PERFORMANCE_TIMER(char* str)
 }
 #endif
 #endif
-
 
 //QW//
 /*

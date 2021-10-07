@@ -211,29 +211,29 @@ typedef struct
 typedef struct gitem_s
 {
 	unsigned int	classindex; /* MrG{DRGN} added */
-	char*	classname;	// spawning name
+	char* classname;	// spawning name
 	qboolean(*pickup)(struct edict_s* ent, struct edict_s* other);
 	void	(*use)(struct edict_s* ent, struct gitem_s* item);
 	void	(*drop)(struct edict_s* ent, struct gitem_s* item);
 	void	(*weaponthink)(struct edict_s* ent);
-	char*	pickup_sound;
-	char*	world_model;
+	char* pickup_sound;
+	char* world_model;
 	int		world_model_flags;
-	char*	view_model;
+	char* view_model;
 
 	// client side info
-	char*	icon;
-	char*	pickup_name;	// for printing on pickup
+	char* icon;
+	char* pickup_name;	// for printing on pickup
 	int		count_width;		// number of digits to display by icon
 
 	int		quantity;		// for ammo how much, for weapons how much is used per shot
-	char*	ammo;			// for weapons
+	char* ammo;			// for weapons
 	int		flags;			// IT_* flags
 
-	void*	info;
+	void* info;
 	int		tag;
 
-	char*	precaches;		// string of all models, sounds, and images this item will use
+	char* precaches;		// string of all models, sounds, and images this item will use
 } gitem_t;
 
 //
@@ -542,8 +542,7 @@ extern cvar_t* flood_persecond;
 extern cvar_t* flood_waitdelay;
 extern cvar_t* filterban;
 
-
-qboolean	is_quad;     //MATTHIAS	
+qboolean	is_quad;     //MATTHIAS
 byte		is_silenced;
 
 #define world	(&g_edicts[0])
@@ -563,7 +562,6 @@ byte		is_silenced;
 //
 #define FFL_SPAWNTEMP		1
 #define FFL_NOSPAWN		2
-
 
 typedef enum {
 	F_INT,
@@ -589,7 +587,6 @@ typedef struct
 
 extern	field_t fields[];
 extern	gitem_t	itemlist[];
-
 
 //
 // g_spawn.c
@@ -657,7 +654,6 @@ void Touch_Item(edict_t* ent, edict_t* other, cplane_t* plane, csurface_t* surf)
 void DoRespawn(edict_t* ent); /* MrG{DRGN} added this prototype */
 void	Use_Weapon(edict_t* ent, gitem_t* item);
 void	Drop_Weapon(edict_t* ent, gitem_t* item);
-
 
 //
 // g_utils.c
@@ -1061,13 +1057,10 @@ struct gclient_s
 
 	float		respawn_time;		// can respawn when time > this
 
-
-
 	/* MrG{DRGN} */
 	float		flood_locktill;		// locked from talking
 	float		flood_when[10];		// when messages were said
 	int			flood_whenhead;		// head pointer for when said
-	
 
 	//ZOID
 	//void* ctf_grapple;		// entity of grapple
@@ -1082,7 +1075,7 @@ struct gclient_s
 	qboolean	menudirty;
 	//ZOID
 	int    camera;	//MATTHIAS Camera
-	
+
 	edict_t* pTarget;
 };
 
@@ -1303,8 +1296,6 @@ extern cvar_t* drop_tech;	/* MrG{DRGN} tech drop prevention */
 extern cvar_t* allow_flagdrop;	/* MrG{DRGN} allow flag dropping */
 extern cvar_t* weapon_kick; /* MrG{DRGN} kickable weapons toggle */
 extern cvar_t* tele_fire; /* MrG{DRGN} allow certain non-client projectiles to pass through teleporters */
-
-
 
 int		red_base, blue_base;	//node at red/blue flag
 

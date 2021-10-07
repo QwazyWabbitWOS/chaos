@@ -145,7 +145,6 @@ void Bot_Think(edict_t* ent)
 	usercmd_t   cmd;
 	vec3_t      angles = { 0,0,0 }, mins = { -16,-16,0 }, maxs = { 16,16,10 };
 
-	
 	if (!ent || !ent->client)
 		return;
 
@@ -1305,7 +1304,7 @@ edict_t* Bot_FindBestAmmo(edict_t* ent)
 			|| current->item->classindex == AM_EXPLOSIVESHELLS
 			/* MrG{DRGN} this should never be in game, but might be used by node creation if it looks at the entities in the mapfile, and not the substitue spawn replacements */
 			|| current->item->classindex == AM_BULLETS
-			
+
 			|| current->item->classindex == AM_LASERGRENADES)
 			goto next;
 
@@ -1400,7 +1399,7 @@ void Bot_Aim(edict_t* ent, vec3_t target, vec3_t angles)
 	speed = 90;
 	*/
 	speed = ent->yaw_speed;
-	
+
 	for (int i = 0; i < 2; i++)
 	{
 		current = anglemod(ent->client->v_angle[i]);
@@ -1480,7 +1479,6 @@ void Bot_Attack(edict_t* ent, usercmd_t* cmd, vec3_t angles, vec3_t target)
 
 	if (ent->enemy)
 	{
-
 		// fire
 		if (level.time >= ent->client->b_nextshot)
 		{
@@ -1496,8 +1494,6 @@ void Bot_Attack(edict_t* ent, usercmd_t* cmd, vec3_t angles, vec3_t target)
 			/* MrG{DRGN} classindex instead of classname */
 			else if ((weapon->classindex == W_ROCKETLAUNCHER) || (ent->enemy->client && (ent->enemy->client->ps.pmove.pm_flags & PMF_DUCKED)))
 				target[2] -= 12;
-
-			
 
 			VectorSubtract(target, ent->s.origin, dir);
 			vectoangles(dir, t_angles);
@@ -1540,7 +1536,6 @@ void Bot_Attack(edict_t* ent, usercmd_t* cmd, vec3_t angles, vec3_t target)
 
 void bot_pain(edict_t* ent, edict_t* other, float kickback, int damage)
 {
-	
 	if (!ent)
 		return;
 
@@ -2087,7 +2082,7 @@ void Bot_Say(edict_t* ent, qboolean team, char* fmt, ...)
 		return;
 
 	va_start(argptr, fmt);
-	
+
 	vsnprintf(BotSayBuff, sizeof(BotSayBuff), fmt, argptr);
 	va_end(argptr);
 
@@ -2109,7 +2104,6 @@ void Bot_Say(edict_t* ent, qboolean team, char* fmt, ...)
 		gi.cprintf(cl_ent, PRINT_CHAT, BotSayBuff);
 	}
 }
-
 
 qboolean Bot_CanJump(edict_t* ent)
 {

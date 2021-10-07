@@ -47,7 +47,6 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 typedef unsigned char 		byte;
 typedef enum { false, true }	qboolean;
 
-
 #ifndef NULL
 #define NULL ((void *)0)
 #endif
@@ -1060,7 +1059,6 @@ overflow int.
 */
 #define COORD2SHORT(x)  ((int)((x)*8.0f))
 #define SHORT2COORD(x)  ((x)*(1.0f/8))
-
 
 //
 // config strings are a general means of communication from

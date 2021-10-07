@@ -9,7 +9,6 @@ typedef struct
 	void	(*spawn)(edict_t* ent);
 } spawn_t;
 
-
 void SP_item_health(edict_t* self);
 void SP_item_health_small(edict_t* self);
 void SP_item_health_large(edict_t* self);
@@ -100,7 +99,6 @@ void SP_misc_easterchick(edict_t* self);
 void SP_misc_easterchick2(edict_t* self);
 
 void SP_monster_commander_body(edict_t* self);
-
 
 unsigned int getClassindexFromClassname(char* classname);
 /* MrG{DRGN} added classindex field */
@@ -223,7 +221,6 @@ Finds the spawn function for the entity and calls it
 ===============
 */
 
-
 unsigned int getClassindexFromClassname(char* classname) {
 	spawn_t* s;
 	gitem_t* item;
@@ -272,14 +269,14 @@ void ED_CallSpawn(edict_t* ent)
 	/* If this fails, edict is freed. */
 	if (!ent)
 		return;
-/*
-	if (!ent->classname)
-	{
-		gi.dprintf("ED_CallSpawn: NULL classname\n");
-		G_FreeEdict(ent);
-		return;
-	}
-*/
+	/*
+		if (!ent->classname)
+		{
+			gi.dprintf("ED_CallSpawn: NULL classname\n");
+			G_FreeEdict(ent);
+			return;
+		}
+	*/
 	if (!ent->classname) {
 		ent->classname = getClassnameFromClassindex(ent->classindex);
 	}
@@ -475,7 +472,7 @@ void ED_ParseField(char* key, char* value, edict_t* ent)
 			case F_ITEM:
 			case F_CLIENT:
 				break;
-				
+
 			default:
 				break;
 			}
@@ -484,7 +481,6 @@ void ED_ParseField(char* key, char* value, edict_t* ent)
 	}
 	gi.dprintf("%s is not a field\n", key);
 }
-
 
 /*
 ====================
@@ -592,7 +588,7 @@ void G_FindTeams(void)
 }
 
 //MATTHIAS
-//QW// If node table isn't filled by now, turn off 
+//QW// If node table isn't filled by now, turn off
 // dynamic node table generation and free the nodetable edict.
 void NodeCheck(edict_t* ent)
 {
@@ -681,7 +677,6 @@ void SpawnEntities(char* mapname, char* entities, char* spawnpoint)
 		else
 			ent = G_Spawn();
 
-
 		if (!ent)/* MrG{DRGN} sanitiy check*/
 		{
 			gi.error("%s failed parsing entities.\n", __func__);
@@ -721,7 +716,7 @@ void SpawnEntities(char* mapname, char* entities, char* spawnpoint)
 	// so we can track it. It spawns and schedules itself for "checking".
 	// Chaos' InitEdict and G_Spawn are unremarkable.
 	// This seems to depend on at least one player being connected the moment the
-	// new level starts with dntg set to ON. 
+	// new level starts with dntg set to ON.
 	// (command the map, turn on dntg via client rcon, etc.)
 	//MATTHIAS
 	dummy = G_Spawn();
@@ -854,7 +849,6 @@ Only used for the world.
 */
 void SP_worldspawn(edict_t * ent)
 {
-
 	ent->movetype = MOVETYPE_PUSH;
 	ent->solid = SOLID_BSP;
 	ent->inuse = true;			// since the world doesn't use G_Spawn()
@@ -867,7 +861,6 @@ void SP_worldspawn(edict_t * ent)
 	*/
 	//srand(time(0));
 	srand((unsigned int)(time(0)));
-	
 
 	//---------------
 
@@ -876,7 +869,7 @@ void SP_worldspawn(edict_t * ent)
 
 	SetItemNames();
 
-	if (st.nextmap)		
+	if (st.nextmap)
 		Com_strcpy(level.nextmap, sizeof(level.nextmap), st.nextmap);
 	// make some data visible to the server
 
@@ -905,8 +898,6 @@ void SP_worldspawn(edict_t * ent)
 
 	// status bar program
 
-
-
 	//---------------
 	if (!st.gravity)
 		gi.cvar_set("sv_gravity", "800");
@@ -929,8 +920,6 @@ void SP_worldspawn(edict_t * ent)
 	}
 	else
 		gi.configstring(CS_STATUSBAR, dm_statusbar);
-
-
 
 	PrecacheItem(it_ak42);
 	PreCacheAll();
@@ -1061,7 +1050,6 @@ void SP_worldspawn(edict_t * ent)
 		//12 Wierd flashing
 		gi.configstring(CS_LIGHTS + 12, "a");
 	}
-
 
 	LoadMOTD();
 

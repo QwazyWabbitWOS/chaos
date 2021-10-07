@@ -165,11 +165,11 @@ int SV_FlyMove(edict_t* ent, float time, int mask)
 	vec3_t		dir;
 	float		d;
 	int			numplanes;
-	vec3_t		planes[MAX_CLIP_PLANES] = {0};
-	vec3_t		primal_velocity = {0}, original_velocity = {0}, new_velocity;
+	vec3_t		planes[MAX_CLIP_PLANES] = { 0 };
+	vec3_t		primal_velocity = { 0 }, original_velocity = { 0 }, new_velocity;
 	int			i, j;
 	trace_t		trace;
-	vec3_t		end = {0};
+	vec3_t		end = { 0 };
 	float		time_left;
 	int			blocked;
 
@@ -317,8 +317,8 @@ Does not change the entities velocity at all
 trace_t SV_PushEntity(edict_t* ent, vec3_t push)
 {
 	trace_t	trace;
-	vec3_t	start = {0};
-	vec3_t	end = {0};
+	vec3_t	start = { 0 };
+	vec3_t	end = { 0 };
 	int		mask;
 
 	VectorCopy(ent->s.origin, start);
@@ -378,14 +378,12 @@ qboolean SV_Push(edict_t* pusher, vec3_t move, vec3_t amove)
 {
 	int			i, e;
 	edict_t* check, * block;
-	vec3_t		mins = {0}, maxs = {0};
+	vec3_t		mins = { 0 }, maxs = { 0 };
 	pushed_t* p;
-	vec3_t		org = {0}, org2 = {0}, move2 = {0}, forward, right, up;
+	vec3_t		org = { 0 }, org2 = { 0 }, move2 = { 0 }, forward, right, up;
 
-	
 	if (!pusher)
 		return false;
-	
 
 	// clamp the move to 1/8 units, so the position will
 	// be accurate for client side prediction
@@ -569,9 +567,8 @@ void SV_Physics_Pusher(edict_t* ent)
 	if (pushed_p > &pushed[MAX_EDICTS])
 		gi.error (ERR_FATAL, "pushed_p > &pushed[MAX_EDICTS], memory corrupted");
 	*/
-	if (pushed_p > & pushed[MAX_EDICTS - 1])
+	if (pushed_p > &pushed[MAX_EDICTS - 1])
 		gi.error("pushed_p > &pushed[MAX_EDICTS - 1], memory corrupted");
-	
 
 	if (part)
 	{
@@ -600,7 +597,7 @@ void SV_Physics_Pusher(edict_t* ent)
 			SV_RunThink(part);
 		}
 	}
-}
+	}
 
 //==================================================================
 
@@ -659,7 +656,7 @@ void SV_Physics_Toss(edict_t* ent)
 	edict_t* slave;
 	qboolean	wasinwater;
 	qboolean	isinwater;
-	vec3_t		old_origin = {0};
+	vec3_t		old_origin = { 0 };
 
 	// regular thinking
 	SV_RunThink(ent);
