@@ -2559,7 +2559,7 @@ void CTFStartMatch(void)
 		if (ent->client->resp.ctf_team != CTF_NOTEAM) {
 			// make up a ghost code
 			CTFAssignGhost(ent);
-			//CTFPlayerResetGrapple(ent);
+			Grapple_Reset(ent);
 			ent->svflags = SVF_NOCLIENT;
 			ent->flags &= ~FL_GODMODE;
 
@@ -3072,9 +3072,9 @@ int CTFUpdateJoinMenu_old(edict_t* ent)
 	int num1, num2, i;
 
 	/* MrG{DRGN} something is broken with ctf camera this should prevent grapple firing and
-	*  other things, but appropriate checks need to be made in g_cmds.c
+	*  other things, but appropriate checks need to be made in g_cmds.c		 */
 
-	memset(ent->client->pers.inventory, 0, sizeof(ent->client->pers.inventory));*/
+	memset(ent->client->pers.inventory, 0, sizeof(ent->client->pers.inventory));
 
 	joinmenu[4].text = "Join Red Team";
 	joinmenu[4].SelectFunc = CTFJoinTeam1;
@@ -3273,7 +3273,30 @@ qboolean CTFStartClient(edict_t* ent)
 	}
 	return false;
 }
+void CTFObserver(edict_t* ent)
+{
+	char		userinfo[MAX_INFO_STRING];
 
+	// start as 'observer'
+	if (ent->movetype == MOVETYPE_NOCLIP)
+
+	Grapple_Reset (ent);
+	CTFDeadDropFlag(ent);
+	CTFDeadDropTech(ent);
+
+	ent->deadflag = DEAD_NO;
+	ent->movetype = MOVETYPE_NOCLIP;
+	ent->solid = SOLID_NOT;
+	ent->svflags |= SVF_NOCLIENT;
+	ent->client->resp.ctf_team = CTF_NOTEAM;
+	ent->client->ps.gunindex = 0;
+	ent->client->resp.score = 0;
+	memcpy(userinfo, ent->client->pers.userinfo, sizeof(userinfo));
+	InitClientPersistant(ent->client);
+	ClientUserinfoChanged(ent, userinfo);
+	gi.linkentity(ent);
+	CTFOpenJoinMenu(ent);
+}
 qboolean CTFCheckRules_Old()
 {
 	if (capturelimit->value &&

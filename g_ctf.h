@@ -148,6 +148,8 @@ void SP_misc_ctf_small_banner(edict_t* ent);
 
 extern char* ctf_statusbar;
 void CTFCredits(edict_t* ent, pmenuhnd_t* p);
+
+void CTFObserver(edict_t* ent);
 void SP_trigger_teleport(edict_t* ent);
 void SP_info_teleport_destination(edict_t* ent);
 

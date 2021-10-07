@@ -477,7 +477,7 @@ void P_ProjectSource2(gclient_t* client, vec3_t point, vec3_t distance, vec3_t f
 void Grapple_Reset(edict_t* ent)
 {
 	
-	if (!ent)
+	if (!ent||!ent->owner)
 	{
 		return;
 	}

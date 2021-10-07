@@ -746,24 +746,14 @@ Cmd_Kill_f
 */
 void Cmd_Kill_f(edict_t* ent)
 {
-	//ZOID
-	if (ent->solid == SOLID_NOT)
-		return;
-	//ZOID
+	
 
 	/*
 	 * Fix for invincible bug
 	 * Major
 	 */
-
-	 /* MrG{DRGN} replaced with integer comparision
-		if (ent->classindex == CAMPLAYER)
-		 if (!Q_stricmp (ent->classname, "camera") */
-	if (ent->classindex == CAMPLAYER || ent->client->camera)
+	if (ent->solid == SOLID_NOT || ent->client->camera)
 		return;
-	/*
-	 * End Fix
-	 */
 
 	if ((level.time - ent->client->respawn_time) < 5)
 		return;
@@ -1053,7 +1043,7 @@ void ClientCommand(edict_t* ent)
 	if (Q_stricmp(cmd, "say_team") == 0 || Q_stricmp(cmd, "steam") == 0)
 	{
 		/* MrG{DRGN} Spectators don't have teams and shouldn't be spamming macros */
-		if (ent->solid == SOLID_NOT || ent->solid == SOLID_TRIGGER)
+		if (ent->client->camera || ent->movetype == MOVETYPE_NOCLIP)
 			return;
 		
 		CTFSay_Team(ent, gi.args());
@@ -1074,9 +1064,19 @@ void ClientCommand(edict_t* ent)
 		return;
 
 	if (Q_stricmp(cmd, "use") == 0)
+	{
+		/* MrG{DRGN} Spectators shouldn't be using anything*/
+		if (ent->client->camera || ent->movetype == MOVETYPE_NOCLIP)
+			return;
+
 		Cmd_Use_f(ent);
+	}
 	else if (Q_stricmp(cmd, "drop") == 0)
 	{
+		/* MrG{DRGN} Spectators shouldn't be dropping anything*/
+		if (ent->client->camera || ent->movetype == MOVETYPE_NOCLIP)
+			return;
+
 		/* MrG{DRGN} tech drop prevention */
 		if ((Q_stricmp(gi.args(), "tech") == 0) && (!drop_tech->value))
 		{
@@ -1150,6 +1150,8 @@ void ClientCommand(edict_t* ent)
 		CTFWarp(ent);
 	else if (Q_stricmp(cmd, "boot") == 0) 
 		CTFBoot(ent);
+	else if ((Q_stricmp(cmd, "observer") == 0)|| (Q_stricmp(cmd, "spectator") == 0))
+		CTFObserver(ent);
 	else
 		ClientCommand2(ent);
 }

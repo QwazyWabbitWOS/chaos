@@ -8,12 +8,9 @@ void CreateCamera(edict_t* ent)
 {
 	
 	if (!ent)
-	{
 		return;
-	}
 	
 	gi.unlinkentity(ent);
-
 	ent->groundentity = NULL;
 	ent->takedamage = DAMAGE_NO;
 	ent->movetype = MOVETYPE_FLY;
@@ -30,12 +27,10 @@ void CreateCamera(edict_t* ent)
 	ent->waterlevel = 0;
 	ent->watertype = 0;
 	ent->flags = FL_FLY;
-	ent->client->camera = 1;
-	ent->client->ps.fov = 90;
-	/* MrG{DRGN} no kami stuck screen! */
-	ent->client->kamikazetime = 0;
-
-	ent->client->grapple = NULL;
+	//ent->client->camera = 1;	/* MrG{DRGN} I don't think this needs to be here */
+	ent->client->ps.fov = 90;	
+	ent->client->kamikazetime = 0;/* MrG{DRGN} no kami stuck screen! */
+   	ent->client->grapple = NULL;
 	ent->client->grapple_state = GRAPPLE_OFF;
 	ent->client->grenade_blew_up = false;
 	ent->client->grenade_time = 0;
@@ -44,8 +39,7 @@ void CreateCamera(edict_t* ent)
 	ent->client->PoisonTime = 0;
 	ent->client->invisible = 0;
 	ent->client->nextscannercell = 0;
-	ent->client->scanneractive = 0;
-	
+	ent->client->scanneractive = 0;	
 	ent->client->quad_framenum = 0;
 	ent->client->invincible_framenum = 0;
 	ent->client->invisible_framenum = 0;
@@ -91,9 +85,9 @@ void CreateCamera(edict_t* ent)
 	CTFDeadDropTech(ent);
 	
 	memset(ent->client->ps.stats, 0, sizeof(ent->client->ps.stats));
-	memset(ent->client->pers.inventory, 0, sizeof(ent->client->pers.inventory)); /* MrG{DRGN} to avoid items being used */
-	VectorClear(ent->maxs);
-	VectorClear(ent->mins);
+	//memset(ent->client->pers.inventory, 0, sizeof(ent->client->pers.inventory)); /* MrG{DRGN} prevented in cliendcomannd now*/
+	//VectorClear(ent->maxs);
+	//VectorClear(ent->mins);
 
 	gi.linkentity(ent);
 	gi.setmodel(ent, ent->model);
@@ -338,7 +332,7 @@ edict_t* GetPrevValidPlayer(edict_t* current)
 void CamNext(edict_t* ent)
 {
 	
-	if (!ent)
+	if (!ent || ent->client->camera == 5)
 	{
 		return;
 	}
@@ -360,7 +354,7 @@ void CamNext(edict_t* ent)
 void CamPrev(edict_t* ent)
 {
 	
-	if (!ent)
+	if (!ent||ent->client->camera == 5)
 	{
 		return;
 	}
@@ -484,13 +478,11 @@ void RepositionAtPlayer(edict_t* ent)
 	vec3_t        diff = { 0 };
 	vec3_t        pos = { 0 }, forward;
 	trace_t       tr;
-
 	
 	if (!ent)
 	{
 		return;
-	}
-	
+	}	 	
 
 	AngleVectors(ent->client->pTarget->client->v_angle, forward, NULL, NULL);
 	forward[2] = 0;
@@ -683,8 +675,11 @@ void CameraThink(edict_t* ent, usercmd_t* ucmd)
 	}
 	
 	//vec3_t	dir = {0};
-	ent->client->ps.pmove.pm_type = PM_FREEZE;
-	ent->client->ps.pmove.gravity = 0;
+	if (ent->client->camera != 5)
+	{
+		ent->client->ps.pmove.pm_type = PM_FREEZE;
+		ent->client->ps.pmove.gravity = 0;
+	}
 	/* MrG{DRGN} changed to switch cases  form if else */
 	switch (ent->client->camera)
 	{
@@ -782,5 +777,16 @@ void CameraThink(edict_t* ent, usercmd_t* ucmd)
 		else
 			ent->client->pTarget = GetFirstValidPlayer();
 	}
+	 case 5:// Free-View Camera
+	 {
+		 ent->movetype = MOVETYPE_NOCLIP;
+		 ent->solid = SOLID_NOT;
+		 ent->svflags |= SVF_NOCLIENT;
+		 ent->client->ps.pmove.pm_flags &= PMF_NO_PREDICTION;
+		 ent->client->ps.pmove.pm_type = PM_SPECTATOR;
+		 ent->flags = 0;
+		 ent->health = 100;
+		 ent->mass = 200;
+	 }
 	}
 }

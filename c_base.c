@@ -703,8 +703,8 @@ void FakeDeath(edict_t* self)
 		return;
 	
 
-	/* MrG{DRGN} classindex instead of classname */
-	if (self->classindex == CAMPLAYER || self->movetype == MOVETYPE_NOCLIP)/* MrG{DRGN} if you haven't joined a team yet. you can't fakedeath! */
+	
+	if (self->client->camera || self->movetype == MOVETYPE_NOCLIP)/* MrG{DRGN} if you haven't joined a team yet. you can't fakedeath! */
 		return;
 
 	if (self->client->fakedeath == 0)	//fake
@@ -1494,7 +1494,7 @@ void ClientCommand2(edict_t* ent)
 	if (!Q_stricmp(cmd, "grapple"))
 	{
 		/* MrG{DRGN} if you haven't joined a team yet. you can't use the hook! */
-		if (ent->classindex == CAMPLAYER || ent->movetype == MOVETYPE_NOCLIP)
+		if (ent->client->camera || ent->movetype == MOVETYPE_NOCLIP)
 			return;
 		if (ent->health <= 0)
 			return;
@@ -1591,20 +1591,7 @@ void ClientCommand2(edict_t* ent)
 			return;
 		Use_Grenades(ent);
 	}
-	else if (Q_stricmp(cmd, "throwup") == 0)
-	{
-		if (ent->classindex == CAMPLAYER || ent->movetype == MOVETYPE_NOCLIP)/* MrG{DRGN} if you haven't joined a team yet. you can't puke! */
-			return;
-		if (ent->health <= 0)
-			return;
-		if (ent->client->fakedeath > 0)
-			return;
-		if (level.time > ent->client->nextvomit)
-		{
-			ThrowUpNow(ent);
-			ent->client->nextvomit = level.time + 1;
-		}
-	}
+	
 	else if (Q_stricmp(cmd, "zoom") == 0)
 	{
 		int zoomtype = atoi(gi.argv(1));
@@ -1683,6 +1670,14 @@ void ClientCommand2(edict_t* ent)
 			ent->client->camera = 4;
 			cprint_botsafe(ent, PRINT_HIGH, "TV-Cam Mode!\n");
 		}
+		else if (Q_stricmp(gi.argv(1), "5") == 0)	// TV cam mode
+		{
+			if (!ent->client->camera)
+				CreateCamera(ent);
+
+			ent->client->camera = 5;
+			cprint_botsafe(ent, PRINT_HIGH, "Free-View Mode!\n");
+		}
 	}
 	else if (Q_stricmp(cmd, "pathdebug") == 0)
 	{
@@ -1704,13 +1699,6 @@ void ClientCommand2(edict_t* ent)
 		}
 
 
-	}
-	else if (Q_stricmp(cmd, "scanner") == 0)
-	{
-		if (ent->classindex == CAMPLAYER || ent->movetype == MOVETYPE_NOCLIP)/* MrG{DRGN} if you haven't joined a team yet. you can't puke! */
-			return;
-
-		Toggle_Scanner(ent);
 	}
 	else if (Q_stricmp(cmd, "placenode") == 0)
 	{
@@ -1756,219 +1744,6 @@ void ClientCommand2(edict_t* ent)
 		}
 		else
 			cprint_botsafe(ent, PRINT_HIGH, "Dynamic Node Table Generation is off activate it with <set dntg 1>!\n");
-	}
-	else if (Q_stricmp(cmd, "belt") == 0)
-	{
-		if (ent->classindex == CAMPLAYER || ent->movetype == MOVETYPE_NOCLIP)/* MrG{DRGN} if you haven't joined a team yet. you can't puke! */
-			return;
-
-		if (ent->client->fakedeath > 0)
-			return;
-		if (ent->health <= 0)
-			return;
-		if (ent->client->beltactive > 0)
-		{
-			cprint_botsafe(ent, PRINT_HIGH, "Anti gravity belt OFF\n");
-			ent->client->beltactive = 0;
-			ent->client->nextbeltcell = level.time;
-		}
-		else
-		{
-			if (ent->client->pers.inventory[ITEM_INDEX(it_cells)] <= 0)
-			{
-				cprint_botsafe(ent, PRINT_HIGH, "You don't have enough cells to run your anti gravity belt!\n");
-				ent->client->beltactive = 0;
-				ent->client->nextbeltcell = level.time;
-			}
-			else
-			{
-				cprint_botsafe(ent, PRINT_HIGH, "Anti gravity belt ON\n");
-				ent->client->beltactive = 1;
-				ent->client->nextbeltcell = level.time + 2;
-			}
-		}
-	}
-	else if (Q_stricmp(cmd, "flashlight") == 0)
-	{
-		if (ent->classindex == CAMPLAYER || ent->movetype == MOVETYPE_NOCLIP)/* MrG{DRGN} if you haven't joined a team yet. you can't use the flashlight! */
-			return;
-
-		if (ent->client->fakedeath > 0)
-			return;
-		if (ent->health <= 0)
-			return;
-		if (ent->client->flashlightactive)
-		{
-			ent->client->flashlightactive = false;
-			if (ent->client->flashlight)
-				ent->client->flashlight->think = G_FreeEdict;
-			cprint_botsafe(ent, PRINT_HIGH, "Flashlight OFF\n");
-		}
-		else
-		{
-			vec3_t  start, forward, right, end = { 0 };
-
-			ent->client->flashlightactive = true;
-
-			AngleVectors(ent->client->v_angle, forward, right, NULL);
-
-			VectorSet(end, 100, 0, 0);
-			G_ProjectSource(ent->s.origin, end, forward, right, start);
-
-			ent->client->flashlight = G_Spawn();
-			ent->client->flashlight->think = FlashLightThink;
-			ent->client->flashlight->nextthink = level.time + FRAMETIME;
-			ent->client->flashlight->s.effects = EF_HYPERBLASTER;
-			ent->client->flashlight->s.modelindex = gi.modelindex("models/objects/dummy/tris.md2");
-			ent->client->flashlight->solid = SOLID_NOT;
-			ent->client->flashlight->owner = ent;
-			ent->client->flashlight->classname = "flashlight";
-			ent->client->flashlight->classindex = FLASHLIGHT;
-			ent->client->flashlight->movetype = MOVETYPE_NOCLIP;
-			ent->client->flashlight->clipmask = MASK_SHOT;
-			VectorCopy(end, ent->client->flashlight->s.origin);
-
-			gi.linkentity(ent->client->flashlight);
-
-			cprint_botsafe(ent, PRINT_HIGH, "Flashlight ON\n");
-		}
-	}
-	else if (Q_stricmp(cmd, "teleport") == 0)
-	{
-		if (ent->classindex == CAMPLAYER || ent->movetype == MOVETYPE_NOCLIP)/* MrG{DRGN} if you haven't joined a team yet. you can't teleport! */
-			return;
-		if (ent->health <= 0)
-			return;
-		if (ent->client->fakedeath > 0)
-			return;
-		if (ent->client->teleporter)	//teleport
-		{
-			Teleport(ent);
-		}
-		else	//create teleporter
-		{
-			if (ent->client->pers.inventory[ITEM_INDEX(it_cells)] < 100)
-			{
-				cprint_botsafe(ent, PRINT_HIGH, "You need 100 cells to place a self teleporter!\n");
-			}
-			else
-			{
-				ent->client->pers.inventory[ITEM_INDEX(it_cells)] -= 100;
-				Teleport(ent);
-				cprint_botsafe(ent, PRINT_HIGH, "Self Teleporter placed! Use cmd teleport again to use it.\n");
-			}
-		}
-	}
-	else if (Q_stricmp(cmd, "kamikaze") == 0)
-	{
-		if (ent->classindex == CAMPLAYER || ent->movetype == MOVETYPE_NOCLIP)/* MrG{DRGN} if you haven't joined a team yet. you can't puke! */
-			return;
-		if (ent->health <= 0)
-			return;
-		if (ent->client->kamikazetime != 0)
-			return;
-		if (ent->flags & FL_GODMODE)
-		{
-			cprint_botsafe(ent, PRINT_MEDIUM, "You can't go kamikaze in god mode, cheater!\n");
-			return;
-		}
-		if (ent->client->pers.inventory[ITEM_INDEX(it_rockets)] + ent->client->pers.inventory[ITEM_INDEX(it_grenades)] + ent->client->pers.inventory[ITEM_INDEX(it_homings)] < 10)
-		{
-			cprint_botsafe(ent, PRINT_MEDIUM, "You need at least 10 rockets or grenades to go kamikaze!\n");
-			return;
-		}
-
-		ent->client->kamikazetime = 50;
-		ent->s.effects = EF_ROCKET;
-		gi.sound(ent, CHAN_VOICE, gi.soundindex("misc/kamikaze.wav"), 1, ATTN_NORM, 0);
-	}
-	else if (Q_stricmp(cmd, "togglegrenades") == 0)
-	{
-		if (ent->classindex == CAMPLAYER || ent->movetype == MOVETYPE_NOCLIP)/* MrG{DRGN} if you haven't joined a team yet. you can't toggle nades */
-			return;
-		if (ent->client->grenadesactive == 1)
-		{
-			ent->client->grenadesactive = 0;
-			cprint_botsafe(ent, PRINT_HIGH, "Grenades OFF\n");
-		}
-		else
-		{
-			cprint_botsafe(ent, PRINT_HIGH, "Grenades ON\n");
-			ent->client->grenadesactive = 1;
-		}
-	}
-	else if (Q_stricmp(cmd, "fakedeath") == 0)
-	{
-		if (ent->health <= 0)
-			return;
-
-		FakeDeath(ent);
-	}
-	else if (Q_stricmp(cmd, "kick") == 0)
-	{
-		edict_t* blip = NULL;
-		vec3_t	forward;
-
-		if (ent->classindex == CAMPLAYER || ent->movetype == MOVETYPE_NOCLIP)/* MrG{DRGN} if you haven't joined a team yet. you can't kick */
-			return;
-		if (ent->client->fakedeath > 0)
-			return;
-		if (ent->health <= 0)
-			return;
-
-		while ((blip = findradius2(blip, ent->s.origin, 100)) != NULL)
-		{
-			if ((blip->classindex >= W_BLASTER && blip->classindex <= W_BFG) && (!weapon_kick->value))
-				return;
-			/* MrG{DRGN} classindex instead of classname */
-			if (blip->client
-				|| blip->item
-				|| blip->classindex == BOLT
-				|| blip->classindex == ARROW
-				|| blip->classindex == GRENADE
-				|| blip->classindex == HGRENADE
-				|| blip->classindex == FLASHGRENADE
-				|| blip->classindex == LASERMINE
-				|| blip->classindex == PGRENADE
-				|| blip->classindex == PROXYMINE
-				|| blip->classindex == ROCKET
-				|| blip->classindex == HOMING
-				|| blip->classindex == BUZZ
-				|| blip->classindex == BFG_BLAST
-				|| blip->classindex == ITEM_FLAG_TEAM1
-				|| blip->classindex == ITEM_FLAG_TEAM2
-				|| blip->classindex == BODYQUE
-				|| blip->classindex == GIBHEAD)
-
-				if (blip->classindex != TBASE
-					&& blip->classindex != LTURRET
-					&& blip->classindex != RTURRET
-					&& blip->classindex != ITEM_FLAG_TEAM1
-					&& blip->classindex != ITEM_FLAG_TEAM2)
-				{
-					{
-						if (blip == ent)
-							continue;
-						if (!visible(ent, blip))
-							continue;
-						if (!infront(ent, blip))
-							continue;
-
-
-						AngleVectors(ent->client->v_angle, forward, NULL, NULL);
-
-						VectorScale(forward, 400, blip->velocity);
-						blip->velocity[2] = 400;
-
-						gi.sound(ent, CHAN_ITEM, gi.soundindex("misc/kick.wav"), 1, ATTN_NORM, 0);
-
-						if (blip->client && blip->client->camera)
-							ent->client->b_waittime = level.time + 3;
-
-						return;
-					}
-				}
-		}
 	}
 	else if (Q_stricmp(cmd, "load_nodes") == 0)
 	{
@@ -2081,7 +1856,240 @@ void ClientCommand2(edict_t* ent)
 	{
 		gi.cprintf(ent, PRINT_HIGH, "%s : %s : %s\n", GAMEVERSION, __DATE__, __TIME__);
 	}
-	
+	else if (Q_stricmp(cmd, "throwup") == 0)
+	{
+	if (ent->client->camera || ent->movetype == MOVETYPE_NOCLIP)/* MrG{DRGN} if you haven't joined a team yet. you can't puke! */
+			return;
+		if (ent->health <= 0)
+			return;
+		if (ent->client->fakedeath > 0)
+			return;
+		if (level.time > ent->client->nextvomit)
+		{
+			ThrowUpNow(ent);
+			ent->client->nextvomit = level.time + 1;
+		}
+	}
+	else if (Q_stricmp(cmd, "scanner") == 0)
+	{
+	if (ent->client->camera || ent->movetype == MOVETYPE_NOCLIP)/* MrG{DRGN} if you haven't joined a team yet. you can't use the scanner */
+			return;
+
+		Toggle_Scanner(ent);
+	}
+	else if (Q_stricmp(cmd, "belt") == 0)
+	{
+	if (ent->client->camera || ent->movetype == MOVETYPE_NOCLIP)/* MrG{DRGN} if you haven't joined a team yet. you can't AG belt! */
+			return;
+
+		if (ent->client->fakedeath > 0)
+			return;
+		if (ent->health <= 0)
+			return;
+		if (ent->client->beltactive > 0)
+		{
+			cprint_botsafe(ent, PRINT_HIGH, "Anti gravity belt OFF\n");
+			ent->client->beltactive = 0;
+			ent->client->nextbeltcell = level.time;
+		}
+		else
+		{
+			if (ent->client->pers.inventory[ITEM_INDEX(it_cells)] <= 0)
+			{
+				cprint_botsafe(ent, PRINT_HIGH, "You don't have enough cells to run your anti gravity belt!\n");
+				ent->client->beltactive = 0;
+				ent->client->nextbeltcell = level.time;
+			}
+			else
+			{
+				cprint_botsafe(ent, PRINT_HIGH, "Anti gravity belt ON\n");
+				ent->client->beltactive = 1;
+				ent->client->nextbeltcell = level.time + 2;
+			}
+		}
+	}
+	else if (Q_stricmp(cmd, "flashlight") == 0)
+	{
+	if (ent->client->camera || ent->movetype == MOVETYPE_NOCLIP)/* MrG{DRGN} if you haven't joined a team yet. you can't use the flashlight! */
+			return;
+
+		if (ent->client->fakedeath > 0)
+			return;
+		if (ent->health <= 0)
+			return;
+		if (ent->client->flashlightactive)
+		{
+			ent->client->flashlightactive = false;
+			if (ent->client->flashlight)
+				ent->client->flashlight->think = G_FreeEdict;
+			cprint_botsafe(ent, PRINT_HIGH, "Flashlight OFF\n");
+		}
+		else
+		{
+			vec3_t  start, forward, right, end = { 0 };
+
+			ent->client->flashlightactive = true;
+
+			AngleVectors(ent->client->v_angle, forward, right, NULL);
+
+			VectorSet(end, 100, 0, 0);
+			G_ProjectSource(ent->s.origin, end, forward, right, start);
+
+			ent->client->flashlight = G_Spawn();
+			ent->client->flashlight->think = FlashLightThink;
+			ent->client->flashlight->nextthink = level.time + FRAMETIME;
+			ent->client->flashlight->s.effects = EF_HYPERBLASTER;
+			ent->client->flashlight->s.modelindex = gi.modelindex("models/objects/dummy/tris.md2");
+			ent->client->flashlight->solid = SOLID_NOT;
+			ent->client->flashlight->owner = ent;
+			ent->client->flashlight->classname = "flashlight";
+			ent->client->flashlight->classindex = FLASHLIGHT;
+			ent->client->flashlight->movetype = MOVETYPE_NOCLIP;
+			ent->client->flashlight->clipmask = MASK_SHOT;
+			VectorCopy(end, ent->client->flashlight->s.origin);
+
+			gi.linkentity(ent->client->flashlight);
+
+			cprint_botsafe(ent, PRINT_HIGH, "Flashlight ON\n");
+		}
+	}
+	else if (Q_stricmp(cmd, "teleport") == 0)
+	{
+	if (ent->client->camera || ent->movetype == MOVETYPE_NOCLIP)/* MrG{DRGN} if you haven't joined a team yet. you can't teleport! */
+			return;
+		if (ent->health <= 0)
+			return;
+		if (ent->client->fakedeath > 0)
+			return;
+		if (ent->client->teleporter)	//teleport
+		{
+			Teleport(ent);
+		}
+		else	//create teleporter
+		{
+			if (ent->client->pers.inventory[ITEM_INDEX(it_cells)] < 100)
+			{
+				cprint_botsafe(ent, PRINT_HIGH, "You need 100 cells to place a self teleporter!\n");
+			}
+			else
+			{
+				ent->client->pers.inventory[ITEM_INDEX(it_cells)] -= 100;
+				Teleport(ent);
+				cprint_botsafe(ent, PRINT_HIGH, "Self Teleporter placed! Use cmd teleport again to use it.\n");
+			}
+		}
+	}
+	else if (Q_stricmp(cmd, "kamikaze") == 0)
+	{
+	if (ent->client->camera || ent->movetype == MOVETYPE_NOCLIP)/* MrG{DRGN} if you haven't joined a team yet. you can't Kamikaze! */
+		return;
+	if (ent->health <= 0)
+		return;
+	if (ent->client->kamikazetime != 0)
+		return;
+	if (ent->flags & FL_GODMODE)
+	{
+		cprint_botsafe(ent, PRINT_MEDIUM, "You can't go kamikaze in god mode, cheater!\n");
+		return;
+	}
+	if (ent->client->pers.inventory[ITEM_INDEX(it_rockets)] + ent->client->pers.inventory[ITEM_INDEX(it_grenades)] + ent->client->pers.inventory[ITEM_INDEX(it_homings)] < 10)
+	{
+		cprint_botsafe(ent, PRINT_MEDIUM, "You need at least 10 rockets or grenades to go kamikaze!\n");
+		return;
+	}
+
+	ent->client->kamikazetime = 50;
+	ent->s.effects = EF_ROCKET;
+	gi.sound(ent, CHAN_VOICE, gi.soundindex("misc/kamikaze.wav"), 1, ATTN_NORM, 0);
+	}
+	else if (Q_stricmp(cmd, "togglegrenades") == 0)
+	{
+	if (ent->client->camera || ent->movetype == MOVETYPE_NOCLIP)/* MrG{DRGN} if you haven't joined a team yet. you can't toggle nades */
+		return;
+	if (ent->client->grenadesactive == 1)
+	{
+		ent->client->grenadesactive = 0;
+		cprint_botsafe(ent, PRINT_HIGH, "Grenades OFF\n");
+	}
+	else
+	{
+		cprint_botsafe(ent, PRINT_HIGH, "Grenades ON\n");
+		ent->client->grenadesactive = 1;
+	}
+	}
+	else if (Q_stricmp(cmd, "fakedeath") == 0)
+	{
+	if (ent->health <= 0)
+		return;
+
+	FakeDeath(ent);
+	}
+	else if (Q_stricmp(cmd, "kick") == 0)
+	{
+	edict_t* blip = NULL;
+	vec3_t	forward;
+
+	if (ent->client->camera || ent->movetype == MOVETYPE_NOCLIP)/* MrG{DRGN} if you haven't joined a team yet. you can't kick */
+		return;
+	if (ent->client->fakedeath > 0)
+		return;
+	if (ent->health <= 0)
+		return;
+
+	while ((blip = findradius2(blip, ent->s.origin, 100)) != NULL)
+	{
+		if ((blip->classindex >= W_BLASTER && blip->classindex <= W_BFG) && (!weapon_kick->value))
+			return;
+		/* MrG{DRGN} classindex instead of classname */
+		if (blip->client
+			|| blip->item
+			|| blip->classindex == BOLT
+			|| blip->classindex == ARROW
+			|| blip->classindex == GRENADE
+			|| blip->classindex == HGRENADE
+			|| blip->classindex == FLASHGRENADE
+			|| blip->classindex == LASERMINE
+			|| blip->classindex == PGRENADE
+			|| blip->classindex == PROXYMINE
+			|| blip->classindex == ROCKET
+			|| blip->classindex == HOMING
+			|| blip->classindex == BUZZ
+			|| blip->classindex == BFG_BLAST
+			|| blip->classindex == ITEM_FLAG_TEAM1
+			|| blip->classindex == ITEM_FLAG_TEAM2
+			|| blip->classindex == BODYQUE
+			|| blip->classindex == GIBHEAD)
+
+			if (blip->classindex != TBASE
+				&& blip->classindex != LTURRET
+				&& blip->classindex != RTURRET
+				&& blip->classindex != ITEM_FLAG_TEAM1
+				&& blip->classindex != ITEM_FLAG_TEAM2)
+			{
+				{
+					if (blip == ent)
+						continue;
+					if (!visible(ent, blip))
+						continue;
+					if (!infront(ent, blip))
+						continue;
+
+
+					AngleVectors(ent->client->v_angle, forward, NULL, NULL);
+
+					VectorScale(forward, 400, blip->velocity);
+					blip->velocity[2] = 400;
+
+					gi.sound(ent, CHAN_ITEM, gi.soundindex("misc/kick.wav"), 1, ATTN_NORM, 0);
+
+					if (blip->client && blip->client->camera)
+						ent->client->b_waittime = level.time + 3;
+
+					return;
+				}
+			}
+	}
+	}
 	else
 		Cmd_Say_f(ent, false, true);
 }
