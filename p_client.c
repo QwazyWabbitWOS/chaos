@@ -1761,7 +1761,6 @@ void ClientBeginDeathmatch(edict_t* ent)
 	// locate ent at a spawn point
 	PutClientInServer(ent);
 	ent->client->camera = 0;
-	ent->client->cammode = 1;
 	// locate ent at a spawn point
 	PutClientInServer(ent);
 

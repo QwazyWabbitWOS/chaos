@@ -1081,8 +1081,8 @@ struct gclient_s
 	float		menutime;			// time to update menu
 	qboolean	menudirty;
 	//ZOID
-	qboolean    camera;	//MATTHIAS Camera
-	int         cammode;
+	int    camera;	//MATTHIAS Camera
+	
 	edict_t* pTarget;
 };
 

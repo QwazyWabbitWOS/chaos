@@ -1656,7 +1656,7 @@ void ClientCommand2(edict_t* ent)
 			if (!ent->client->camera)
 				CreateCamera(ent);
 
-			ent->client->cammode = 1;
+			ent->client->camera = 1;
 			cprint_botsafe(ent, PRINT_HIGH, "IntelliCam Mode!\n");
 		}
 		else if (Q_stricmp(gi.argv(1), "2") == 0)	//chase cam mode
@@ -1664,7 +1664,7 @@ void ClientCommand2(edict_t* ent)
 			if (!ent->client->camera)
 				CreateCamera(ent);
 
-			ent->client->cammode = 2;
+			ent->client->camera = 2;
 			cprint_botsafe(ent, PRINT_HIGH, "ChaseCam Mode!\n");
 		}
 		else if (Q_stricmp(gi.argv(1), "3") == 0)	// birdview chase cam
@@ -1672,7 +1672,7 @@ void ClientCommand2(edict_t* ent)
 			if (!ent->client->camera)
 				CreateCamera(ent);
 
-			ent->client->cammode = 3;
+			ent->client->camera = 3;
 			cprint_botsafe(ent, PRINT_HIGH, "Birdview ChaseCam Mode!\n");
 		}
 		else if (Q_stricmp(gi.argv(1), "4") == 0)	// TV cam mode
@@ -1680,7 +1680,7 @@ void ClientCommand2(edict_t* ent)
 			if (!ent->client->camera)
 				CreateCamera(ent);
 
-			ent->client->cammode = 4;
+			ent->client->camera = 4;
 			cprint_botsafe(ent, PRINT_HIGH, "TV-Cam Mode!\n");
 		}
 	}

@@ -2969,7 +2969,7 @@ void CTFChaseCam(edict_t* ent, pmenuhnd_t* p)
 		return;
 	}
 
-	ent->client->cammode = 1;
+	ent->client->camera = 1;
 	CreateCamera(ent);	//switch to intelli cam mode
 	PMenu_Close(ent);
 }

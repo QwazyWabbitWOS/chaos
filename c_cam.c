@@ -344,7 +344,7 @@ void CamNext(edict_t* ent)
 	}
 	
 
-	if (ent->client->cammode > 1)
+	if (ent->client->camera > 1)
 	{
 		if ((ent->client->pTarget != NULL) && ent->client->pTarget->client && ent->client->pTarget->inuse)
 		{
@@ -366,7 +366,7 @@ void CamPrev(edict_t* ent)
 	}
 	
 
-	if (ent->client->cammode > 1)
+	if (ent->client->camera> 1)
 	{
 		if ((ent->client->pTarget != NULL) && ent->client->pTarget->client && ent->client->pTarget->inuse)
 		{
@@ -497,7 +497,7 @@ void RepositionAtPlayer(edict_t* ent)
 
 	VectorNormalize(forward);
 
-	if (ent->client->cammode == 3)
+	if (ent->client->camera == 3)
 	{
 		pos[0] = ent->client->pTarget->s.origin[0] + forward[0];
 		pos[1] = ent->client->pTarget->s.origin[1] + forward[1];
@@ -686,7 +686,7 @@ void CameraThink(edict_t* ent, usercmd_t* ucmd)
 	ent->client->ps.pmove.pm_type = PM_FREEZE;
 	ent->client->ps.pmove.gravity = 0;
 	/* MrG{DRGN} changed to switch cases  form if else */
-	switch (ent->client->cammode)
+	switch (ent->client->camera)
 	{
 	case 1:	//Intelli Cam mode
 	{
@@ -759,7 +759,7 @@ void CameraThink(edict_t* ent, usercmd_t* ucmd)
 		else
 			ent->client->pTarget = GetFirstValidPlayer();
 	}
-	case 4://TV Cam mode
+	 case 4://TV Cam mode
 	{
 		if (ent->client->pTarget && ent->client->pTarget->client && ent->client->pTarget->inuse)
 		{
