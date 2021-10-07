@@ -1025,8 +1025,7 @@ void ClientCommand(edict_t* ent)
 	if (!ent->client || !ent->classname) // FWP Check ent->classname too
 	*/
 	if (!ent)
-		return;
-	
+		return;	   	
 
 	cmd = gi.argv(0);
 

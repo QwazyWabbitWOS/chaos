@@ -1475,8 +1475,510 @@ void Use_Grenades(edict_t* ent)
 			ent->client->newweapon = it_poisongrenades;
 	}
 }
+void Cmd_Grapple_f(edict_t* ent)
+{
+	/* MrG{DRGN} if you haven't joined a team yet. you can't use the hook! */
+	if (ent->client->camera || ent->movetype == MOVETYPE_NOCLIP)
+		return;
+	if (ent->health <= 0)
+		return;
+	if (ent->client->fakedeath > 0)
+		return;
+
+	if (ent->client->pers.inventory[ITEM_INDEX(it_grapple)] >= 1)
+		Cmd_Hook_f(ent);
+	else
+	{
+		if (!ent->bot_player)/* MrG{DRGN} */
+			gi.centerprintf(ent, "\nYou don't have a grappling hook!\n");//MATTHIAS
+
+		return;
+	}
+}
+void Cmd_Zoom_f(edict_t* ent)
+{
+	int zoomtype = atoi(gi.argv(1));
 
 
+	if (ent->health <= 0)
+		return;
+
+	if (zoomtype == 0)
+	{
+		ent->client->ps.fov = 90;
+	}
+	else if (zoomtype == 1)
+	{
+		if (ent->client->ps.fov == atoi(Info_ValueForKey(ent->client->pers.userinfo, "fov"))) ent->client->ps.fov = 40;		/* MrG{DRGN} fix zoom */
+		else if (ent->client->ps.fov == 40) ent->client->ps.fov = 20;
+		else if (ent->client->ps.fov == 20) ent->client->ps.fov = 10;
+		else ent->client->ps.fov = atoi(Info_ValueForKey(ent->client->pers.userinfo, "fov")); /* MrG{DRGN} fix zoom */
+	}
+}
+void Cmd_Camera_f(edict_t* ent)
+{
+	if (Q_stricmp(gi.argv(1), "0") == 0)	//cam off
+	{
+		if (ent->client->camera)
+		{
+			char name[MAX_INFO_KEY], skin[MAX_INFO_KEY], hand[MAX_INFO_KEY], fov[MAX_INFO_KEY];
+
+			Com_sprintf(name, sizeof name, Info_ValueForKey(ent->client->pers.userinfo, "name"));
+			Com_sprintf(skin, sizeof skin, Info_ValueForKey(ent->client->pers.userinfo, "skin"));
+			Com_sprintf(hand, sizeof hand, Info_ValueForKey(ent->client->pers.userinfo, "hand"));
+			Com_sprintf(fov, sizeof fov, Info_ValueForKey(ent->client->pers.userinfo, "fov"));
+
+			ClientDisconnect(ent);
+			ClientConnect(ent, ent->client->pers.userinfo);
+			Info_SetValueForKey(ent->client->pers.userinfo, "name", name);
+			Info_SetValueForKey(ent->client->pers.userinfo, "skin", skin);
+			Info_SetValueForKey(ent->client->pers.userinfo, "hand", hand);
+			Info_SetValueForKey(ent->client->pers.userinfo, "fov", fov);
+
+			//ent->client->resp.fov_start = ent->client->ps.fov;
+
+			ClientBegin(ent);
+			cprint_botsafe(ent, PRINT_HIGH, "Camera OFF!\n");
+		}
+	}
+	else if (Q_stricmp(gi.argv(1), "1") == 0)	//intelli mode
+	{
+		if (!ent->client->camera)
+			CreateCamera(ent);
+
+		ent->client->camera = 1;
+		cprint_botsafe(ent, PRINT_HIGH, "IntelliCam Mode!\n");
+	}
+	else if (Q_stricmp(gi.argv(1), "2") == 0)	//chase cam mode
+	{
+		if (!ent->client->camera)
+			CreateCamera(ent);
+
+		ent->client->camera = 2;
+		cprint_botsafe(ent, PRINT_HIGH, "ChaseCam Mode!\n");
+	}
+	else if (Q_stricmp(gi.argv(1), "3") == 0)	// birdview chase cam
+	{
+		if (!ent->client->camera)
+			CreateCamera(ent);
+
+		ent->client->camera = 3;
+		cprint_botsafe(ent, PRINT_HIGH, "Birdview ChaseCam Mode!\n");
+	}
+	else if (Q_stricmp(gi.argv(1), "4") == 0)	// TV cam mode
+	{
+		if (!ent->client->camera)
+			CreateCamera(ent);
+
+		ent->client->camera = 4;
+		cprint_botsafe(ent, PRINT_HIGH, "TV-Cam Mode!\n");
+	}
+	else if (Q_stricmp(gi.argv(1), "5") == 0)	// TV cam mode
+	{
+		if (!ent->client->camera)
+			CreateCamera(ent);
+
+		ent->client->camera = 5;
+		cprint_botsafe(ent, PRINT_HIGH, "Free-View Mode!\n");
+	}
+}
+
+/* Node Table Tools */
+void Cmd_Pathdebug_f(edict_t* ent)
+{
+	if (!ent->client->b_target)
+	{
+		ent->client->b_target = G_Spawn();
+		ent->client->b_target->movetype = MOVETYPE_NONE;
+		ent->client->b_target->solid = SOLID_NOT;
+		ent->client->b_target->s.modelindex = gi.modelindex("models/objects/gibs/skull/tris.md2");
+		VectorCopy(ent->s.origin, ent->client->b_target->s.origin);
+		gi.linkentity(ent->client->b_target);
+		cprint_botsafe(ent, PRINT_HIGH, "Pathdebug ON!\n");
+	}
+	else
+	{
+		G_FreeEdict(ent->client->b_target);
+		ent->client->b_target = NULL;
+		cprint_botsafe(ent, PRINT_HIGH, "Pathdebug OFF!\n");
+	}
+}
+void Cmd_PlaceNode_f(edict_t* ent)
+{
+	if (dntg->value)
+	{
+		vec3_t	end = { 0 }, spot = { 0 };
+		trace_t	tr;
+
+		//check if node is in air
+		VectorCopy(ent->s.origin, end);
+		end[2] -= 40;
+
+		tr = gi.trace(ent->s.origin, ent->mins, ent->maxs, end, ent, MASK_SOLID);
+
+		/*
+		gi.WriteByte (svc_temp_entity);
+		gi.WriteByte (TE_BFG_LASER);
+		gi.WritePosition (nodes[nindex].origin);
+		gi.WritePosition (end);
+		gi.multicast (nodes[nindex].origin, MULTICAST_PHS);
+		*/
+
+		if (!tr.startsolid && (tr.fraction == 1))
+		{
+			Bot_PlaceNode(ent->s.origin, INAIR_NODE, 1);
+		}
+		else
+		{
+			VectorCopy(ent->s.origin, spot);
+
+			if (!(ent->client->ps.pmove.pm_flags & PMF_DUCKED))
+			{
+				spot[2] += 5;
+				Bot_PlaceNode(spot, NORMAL_NODE, 0);
+			}
+			else
+			{
+				Bot_PlaceNode(spot, NORMAL_NODE, 1);
+			}
+		}
+
+		Bot_CalcNode(ent, numnodes);
+	}
+	else
+		cprint_botsafe(ent, PRINT_HIGH, "Dynamic Node Table Generation is off activate it with <set dntg 1>!\n");
+}
+/* END */
+
+void Cmd_Join_Team_f(edict_t* ent)
+{
+	int team = atoi(gi.argv(1));
+
+	if (team < 0 || team > 99)
+		cprint_botsafe(ent, PRINT_HIGH, "\nPlease select a team between 1 and 99!\nSelect 0 for no team!\n");
+	else
+	{
+		if (team == 0)
+			cprint_botsafe(ent, PRINT_HIGH, "\nYou have joined team 0 that means you are in NO team!\n");
+		else
+			cprint_botsafe(ent, PRINT_HIGH, "\nYou have joined team %d!\n", team);
+
+		ent->client->resp.team = team;
+	}
+}
+
+void Cmd_Nums_f(edict_t* ent)
+{
+	cprint_botsafe(ent, PRINT_HIGH, "numplayers=%d\n", numplayers);
+	cprint_botsafe(ent, PRINT_HIGH, "numbots=%d\n", numbots);
+	cprint_botsafe(ent, PRINT_HIGH, "numred=%d\n", numred);
+	cprint_botsafe(ent, PRINT_HIGH, "numblue=%d\n", numblue);
+	cprint_botsafe(ent, PRINT_HIGH, "red_base=%d\n", red_base);
+	cprint_botsafe(ent, PRINT_HIGH, "blue_base=%d\n", blue_base);
+	cprint_botsafe(ent, PRINT_HIGH, "numturrets=%d\n", numturrets);
+}
+
+void Cmd_Playerlist_f(edict_t* ent)
+{
+	int		i;
+
+	for (i = 0; i < MAX_CLIENTS; i++)
+	{
+		if (players[i])
+			if (players[i]->client)
+				cprint_botsafe(ent, PRINT_HIGH, "%d: %s\n", i, players[i]->client->pers.netname);
+	}
+}
+
+void Cmd_Turretlist_f(edict_t* ent)
+{
+	int		i;
+
+	for (i = 0; i < numturrets; i++)
+	{
+		if (turrets[i] && turrets[i]->inuse)
+			cprint_botsafe(ent, PRINT_HIGH, "turret %d active\n", i);
+	}
+}
+
+void Cmd_Weaponlist_f(edict_t* ent)
+{
+	edict_t* current = NULL;
+
+	current = weapon_list;	// start with the head
+
+	//go through all items in the list
+	while (current)
+	{
+		cprint_botsafe(ent, PRINT_HIGH, "%s\n", current->classname);
+		current = current->next_listitem;	//go to next item in list
+	}
+}
+
+void Cmd_Healthlist_f(edict_t* ent)
+{
+	edict_t* current = NULL;
+
+	current = health_list;	// start with the head
+
+	//go through all items in the list
+	while (current)
+	{
+		cprint_botsafe(ent, PRINT_HIGH, "%s\n", current->classname);
+		current = current->next_listitem;	//go to next item in list
+	}
+}
+
+void Cmd_Ammolist_f(edict_t* ent)
+{
+	edict_t* current = NULL;
+
+	current = ammo_list;	// start with the head
+
+	//go through all items in the list
+	while (current)
+	{
+		cprint_botsafe(ent, PRINT_HIGH, "%s\n", current->classname);
+		current = current->next_listitem;	//go to next item in list
+	}
+}
+
+void Cmd_Poweruplist_f(edict_t* ent)
+{
+	edict_t* current = NULL;
+
+	current = powerup_list;	// start with the head
+
+	//go through all items in the list
+	while (current)
+	{
+		cprint_botsafe(ent, PRINT_HIGH, "%s\n", current->classname);
+		current = current->next_listitem;	//go to next item in list
+	}
+}
+
+void Cmd_Throwup_f(edict_t* ent)
+{
+	if (ent->client->camera || ent->movetype == MOVETYPE_NOCLIP)/* MrG{DRGN} if you haven't joined a team yet. you can't puke! */
+		return;
+	if (ent->health <= 0)
+		return;
+	if (ent->client->fakedeath > 0)
+		return;
+	if (level.time > ent->client->nextvomit)
+	{
+		ThrowUpNow(ent);
+		ent->client->nextvomit = level.time + 1;
+	}
+}
+
+void Cmd_Belt_f(edict_t* ent)
+{
+	if (ent->client->camera || ent->movetype == MOVETYPE_NOCLIP)/* MrG{DRGN} if you haven't joined a team yet. you can't AG belt! */
+		return;
+
+	if (ent->client->fakedeath > 0)
+		return;
+	if (ent->health <= 0)
+		return;
+	if (ent->client->beltactive > 0)
+	{
+		cprint_botsafe(ent, PRINT_HIGH, "Anti gravity belt OFF\n");
+		ent->client->beltactive = 0;
+		ent->client->nextbeltcell = level.time;
+	}
+	else
+	{
+		if (ent->client->pers.inventory[ITEM_INDEX(it_cells)] <= 0)
+		{
+			cprint_botsafe(ent, PRINT_HIGH, "You don't have enough cells to run your anti gravity belt!\n");
+			ent->client->beltactive = 0;
+			ent->client->nextbeltcell = level.time;
+		}
+		else
+		{
+			cprint_botsafe(ent, PRINT_HIGH, "Anti gravity belt ON\n");
+			ent->client->beltactive = 1;
+			ent->client->nextbeltcell = level.time + 2;
+		}
+	}
+}
+void Cmd_Flashlight_f(edict_t* ent)
+{
+	if (ent->client->camera || ent->movetype == MOVETYPE_NOCLIP)/* MrG{DRGN} if you haven't joined a team yet. you can't use the flashlight! */
+		return;
+
+	if (ent->client->fakedeath > 0)
+		return;
+	if (ent->health <= 0)
+		return;
+	if (ent->client->flashlightactive)
+	{
+		ent->client->flashlightactive = false;
+		if (ent->client->flashlight)
+			ent->client->flashlight->think = G_FreeEdict;
+		cprint_botsafe(ent, PRINT_HIGH, "Flashlight OFF\n");
+	}
+	else
+	{
+		vec3_t  start, forward, right, end = { 0 };
+
+		ent->client->flashlightactive = true;
+
+		AngleVectors(ent->client->v_angle, forward, right, NULL);
+
+		VectorSet(end, 100, 0, 0);
+		G_ProjectSource(ent->s.origin, end, forward, right, start);
+
+		ent->client->flashlight = G_Spawn();
+		ent->client->flashlight->think = FlashLightThink;
+		ent->client->flashlight->nextthink = level.time + FRAMETIME;
+		ent->client->flashlight->s.effects = EF_HYPERBLASTER;
+		ent->client->flashlight->s.modelindex = gi.modelindex("models/objects/dummy/tris.md2");
+		ent->client->flashlight->solid = SOLID_NOT;
+		ent->client->flashlight->owner = ent;
+		ent->client->flashlight->classname = "flashlight";
+		ent->client->flashlight->classindex = FLASHLIGHT;
+		ent->client->flashlight->movetype = MOVETYPE_NOCLIP;
+		ent->client->flashlight->clipmask = MASK_SHOT;
+		VectorCopy(end, ent->client->flashlight->s.origin);
+
+		gi.linkentity(ent->client->flashlight);
+
+		cprint_botsafe(ent, PRINT_HIGH, "Flashlight ON\n");
+	}
+}
+void Cmd_Teleport_f(edict_t* ent)
+{
+	if (ent->client->camera || ent->movetype == MOVETYPE_NOCLIP)/* MrG{DRGN} if you haven't joined a team yet. you can't teleport! */
+		return;
+	if (ent->health <= 0)
+		return;
+	if (ent->client->fakedeath > 0)
+		return;
+	if (ent->client->teleporter)	//teleport
+	{
+		Teleport(ent);
+	}
+	else	//create teleporter
+	{
+		if (ent->client->pers.inventory[ITEM_INDEX(it_cells)] < 100)
+		{
+			cprint_botsafe(ent, PRINT_HIGH, "You need 100 cells to place a self teleporter!\n");
+		}
+		else
+		{
+			ent->client->pers.inventory[ITEM_INDEX(it_cells)] -= 100;
+			Teleport(ent);
+			cprint_botsafe(ent, PRINT_HIGH, "Self Teleporter placed! Use cmd teleport again to use it.\n");
+		}
+	}
+}
+void Cmd_Kamikaze_f(edict_t* ent)
+{
+	if (ent->client->camera || ent->movetype == MOVETYPE_NOCLIP)/* MrG{DRGN} if you haven't joined a team yet. you can't Kamikaze! */
+		return;
+	if (ent->health <= 0)
+		return;
+	if (ent->client->kamikazetime != 0)
+		return;
+	if (ent->flags & FL_GODMODE)
+	{
+		cprint_botsafe(ent, PRINT_MEDIUM, "You can't go kamikaze in god mode, cheater!\n");
+		return;
+	}
+	if (ent->client->pers.inventory[ITEM_INDEX(it_rockets)] + ent->client->pers.inventory[ITEM_INDEX(it_grenades)] + ent->client->pers.inventory[ITEM_INDEX(it_homings)] < 10)
+	{
+		cprint_botsafe(ent, PRINT_MEDIUM, "You need at least 10 rockets or grenades to go kamikaze!\n");
+		return;
+	}
+
+	ent->client->kamikazetime = 50;
+	ent->s.effects = EF_ROCKET;
+	gi.sound(ent, CHAN_VOICE, gi.soundindex("misc/kamikaze.wav"), 1, ATTN_NORM, 0);
+}
+void Cmd_ToggleGrenades_f(edict_t* ent)
+{
+	if (ent->client->camera || ent->movetype == MOVETYPE_NOCLIP)/* MrG{DRGN} if you haven't joined a team yet. you can't toggle nades */
+		return;
+	if (ent->client->grenadesactive == 1)
+	{
+		ent->client->grenadesactive = 0;
+		cprint_botsafe(ent, PRINT_HIGH, "Grenades OFF\n");
+	}
+	else
+	{
+		cprint_botsafe(ent, PRINT_HIGH, "Grenades ON\n");
+		ent->client->grenadesactive = 1;
+	}
+}
+
+void Cmd_Kick_f(edict_t* ent)
+{
+	edict_t* blip = NULL;
+	vec3_t	forward;
+
+	if (ent->client->camera || ent->movetype == MOVETYPE_NOCLIP)/* MrG{DRGN} if you haven't joined a team yet. you can't kick */
+		return;
+	if (ent->client->fakedeath > 0)
+		return;
+	if (ent->health <= 0)
+		return;
+
+	while ((blip = findradius2(blip, ent->s.origin, 100)) != NULL)
+	{
+		if ((blip->classindex >= W_BLASTER && blip->classindex <= W_BFG) && (!weapon_kick->value))
+			return;
+		/* MrG{DRGN} classindex instead of classname */
+		if (blip->client
+			|| blip->item
+			|| blip->classindex == BOLT
+			|| blip->classindex == ARROW
+			|| blip->classindex == GRENADE
+			|| blip->classindex == HGRENADE
+			|| blip->classindex == FLASHGRENADE
+			|| blip->classindex == LASERMINE
+			|| blip->classindex == PGRENADE
+			|| blip->classindex == PROXYMINE
+			|| blip->classindex == ROCKET
+			|| blip->classindex == HOMING
+			|| blip->classindex == BUZZ
+			|| blip->classindex == BFG_BLAST
+			|| blip->classindex == ITEM_FLAG_TEAM1
+			|| blip->classindex == ITEM_FLAG_TEAM2
+			|| blip->classindex == BODYQUE
+			|| blip->classindex == GIBHEAD)
+
+			if (blip->classindex != TBASE
+				&& blip->classindex != LTURRET
+				&& blip->classindex != RTURRET
+				&& blip->classindex != ITEM_FLAG_TEAM1
+				&& blip->classindex != ITEM_FLAG_TEAM2)
+			{
+				{
+					if (blip == ent)
+						continue;
+					if (!visible(ent, blip))
+						continue;
+					if (!infront(ent, blip))
+						continue;
+
+
+					AngleVectors(ent->client->v_angle, forward, NULL, NULL);
+
+					VectorScale(forward, 400, blip->velocity);
+					blip->velocity[2] = 400;
+
+					gi.sound(ent, CHAN_ITEM, gi.soundindex("misc/kick.wav"), 1, ATTN_NORM, 0);
+
+					if (blip->client && blip->client->camera)
+						ent->client->b_waittime = level.time + 3;
+
+					return;
+				}
+			}
+	}
+}
 
 ///------------------------------------------------------------------------------------------
 /// Command handling
@@ -1493,23 +1995,7 @@ void ClientCommand2(edict_t* ent)
 
 	if (!Q_stricmp(cmd, "grapple"))
 	{
-		/* MrG{DRGN} if you haven't joined a team yet. you can't use the hook! */
-		if (ent->client->camera || ent->movetype == MOVETYPE_NOCLIP)
-			return;
-		if (ent->health <= 0)
-			return;
-		if (ent->client->fakedeath > 0)
-			return;
-
-		if (ent->client->pers.inventory[ITEM_INDEX(it_grapple)] >= 1)
-			Cmd_Hook_f(ent);
-		else
-		{
-			if (!ent->bot_player)/* MrG{DRGN} */
-				gi.centerprintf(ent, "\nYou don't have a grappling hook!\n");//MATTHIAS
-
-			return;
-		}
+		Cmd_Grapple_f(ent);
 	}
 	else if (Q_stricmp(cmd, "class2") == 0)
 	{
@@ -1594,156 +2080,19 @@ void ClientCommand2(edict_t* ent)
 	
 	else if (Q_stricmp(cmd, "zoom") == 0)
 	{
-		int zoomtype = atoi(gi.argv(1));
-
-
-		if (ent->health <= 0)
-			return;
-
-		if (zoomtype == 0)
-		{
-			ent->client->ps.fov = 90;
-		}
-		else if (zoomtype == 1)
-		{
-			if (ent->client->ps.fov == atoi(Info_ValueForKey(ent->client->pers.userinfo, "fov"))) ent->client->ps.fov = 40;		/* MrG{DRGN} fix zoom */
-			else if (ent->client->ps.fov == 40) ent->client->ps.fov = 20;
-			else if (ent->client->ps.fov == 20) ent->client->ps.fov = 10;
-			else ent->client->ps.fov = atoi(Info_ValueForKey(ent->client->pers.userinfo, "fov")); /* MrG{DRGN} fix zoom */
-		}
+		Cmd_Zoom_f(ent);
 	}
 	else if (Q_stricmp(cmd, "camera") == 0)
 	{
-		if (Q_stricmp(gi.argv(1), "0") == 0)	//cam off
-		{
-			if (ent->client->camera)
-			{
-				char name[MAX_INFO_KEY], skin[MAX_INFO_KEY], hand[MAX_INFO_KEY], fov[MAX_INFO_KEY];
-
-				Com_sprintf(name, sizeof name, Info_ValueForKey(ent->client->pers.userinfo, "name"));
-				Com_sprintf(skin, sizeof skin, Info_ValueForKey(ent->client->pers.userinfo, "skin"));
-				Com_sprintf(hand, sizeof hand, Info_ValueForKey(ent->client->pers.userinfo, "hand"));
-				Com_sprintf(fov, sizeof fov, Info_ValueForKey(ent->client->pers.userinfo, "fov"));
-
-				ClientDisconnect(ent);
-				ClientConnect(ent, ent->client->pers.userinfo);
-				Info_SetValueForKey(ent->client->pers.userinfo, "name", name);
-				Info_SetValueForKey(ent->client->pers.userinfo, "skin", skin);
-				Info_SetValueForKey(ent->client->pers.userinfo, "hand", hand);
-				Info_SetValueForKey(ent->client->pers.userinfo, "fov", fov);
-
-				//ent->client->resp.fov_start = ent->client->ps.fov;
-
-				ClientBegin(ent);
-				cprint_botsafe(ent, PRINT_HIGH, "Camera OFF!\n");		
-			}
-		}
-		else if (Q_stricmp(gi.argv(1), "1") == 0)	//intelli mode
-		{
-			if (!ent->client->camera)
-				CreateCamera(ent);
-
-			ent->client->camera = 1;
-			cprint_botsafe(ent, PRINT_HIGH, "IntelliCam Mode!\n");
-		}
-		else if (Q_stricmp(gi.argv(1), "2") == 0)	//chase cam mode
-		{
-			if (!ent->client->camera)
-				CreateCamera(ent);
-
-			ent->client->camera = 2;
-			cprint_botsafe(ent, PRINT_HIGH, "ChaseCam Mode!\n");
-		}
-		else if (Q_stricmp(gi.argv(1), "3") == 0)	// birdview chase cam
-		{
-			if (!ent->client->camera)
-				CreateCamera(ent);
-
-			ent->client->camera = 3;
-			cprint_botsafe(ent, PRINT_HIGH, "Birdview ChaseCam Mode!\n");
-		}
-		else if (Q_stricmp(gi.argv(1), "4") == 0)	// TV cam mode
-		{
-			if (!ent->client->camera)
-				CreateCamera(ent);
-
-			ent->client->camera = 4;
-			cprint_botsafe(ent, PRINT_HIGH, "TV-Cam Mode!\n");
-		}
-		else if (Q_stricmp(gi.argv(1), "5") == 0)	// TV cam mode
-		{
-			if (!ent->client->camera)
-				CreateCamera(ent);
-
-			ent->client->camera = 5;
-			cprint_botsafe(ent, PRINT_HIGH, "Free-View Mode!\n");
-		}
+		Cmd_Camera_f(ent);
 	}
 	else if (Q_stricmp(cmd, "pathdebug") == 0)
 	{
-		if (!ent->client->b_target)
-		{
-			ent->client->b_target = G_Spawn();
-			ent->client->b_target->movetype = MOVETYPE_NONE;
-			ent->client->b_target->solid = SOLID_NOT;
-			ent->client->b_target->s.modelindex = gi.modelindex("models/objects/gibs/skull/tris.md2");
-			VectorCopy(ent->s.origin, ent->client->b_target->s.origin);
-			gi.linkentity(ent->client->b_target);
-			cprint_botsafe(ent, PRINT_HIGH, "Pathdebug ON!\n");
-		}
-		else
-		{
-			G_FreeEdict(ent->client->b_target);
-			ent->client->b_target = NULL;
-			cprint_botsafe(ent, PRINT_HIGH, "Pathdebug OFF!\n");
-		}
-
-
+		Cmd_Pathdebug_f(ent);
 	}
 	else if (Q_stricmp(cmd, "placenode") == 0)
 	{
-		if (dntg->value)
-		{
-			vec3_t	end = { 0 }, spot = { 0 };
-			trace_t	tr;
-
-			//check if node is in air
-			VectorCopy(ent->s.origin, end);
-			end[2] -= 40;
-
-			tr = gi.trace(ent->s.origin, ent->mins, ent->maxs, end, ent, MASK_SOLID);
-
-			/*
-			gi.WriteByte (svc_temp_entity);
-			gi.WriteByte (TE_BFG_LASER);
-			gi.WritePosition (nodes[nindex].origin);
-			gi.WritePosition (end);
-			gi.multicast (nodes[nindex].origin, MULTICAST_PHS);
-			*/
-
-			if (!tr.startsolid && (tr.fraction == 1))
-			{
-				Bot_PlaceNode(ent->s.origin, INAIR_NODE, 1);
-			}
-			else
-			{
-				VectorCopy(ent->s.origin, spot);
-
-				if (!(ent->client->ps.pmove.pm_flags & PMF_DUCKED))
-				{
-					spot[2] += 5;
-					Bot_PlaceNode(spot, NORMAL_NODE, 0);
-				}
-				else
-				{
-					Bot_PlaceNode(spot, NORMAL_NODE, 1);
-				}
-			}
-
-			Bot_CalcNode(ent, numnodes);
-		}
-		else
-			cprint_botsafe(ent, PRINT_HIGH, "Dynamic Node Table Generation is off activate it with <set dntg 1>!\n");
+		Cmd_PlaceNode_f(ent);
 	}
 	else if (Q_stricmp(cmd, "load_nodes") == 0)
 	{
@@ -1755,102 +2104,35 @@ void ClientCommand2(edict_t* ent)
 	}
 	else if (Q_stricmp(cmd, "nums") == 0)
 	{
-		cprint_botsafe(ent, PRINT_HIGH, "numplayers=%d\n", numplayers);
-		cprint_botsafe(ent, PRINT_HIGH, "numbots=%d\n", numbots);
-		cprint_botsafe(ent, PRINT_HIGH, "numred=%d\n", numred);
-		cprint_botsafe(ent, PRINT_HIGH, "numblue=%d\n", numblue);
-		cprint_botsafe(ent, PRINT_HIGH, "red_base=%d\n", red_base);
-		cprint_botsafe(ent, PRINT_HIGH, "blue_base=%d\n", blue_base);
-		cprint_botsafe(ent, PRINT_HIGH, "numturrets=%d\n", numturrets);
+		Cmd_Nums_f(ent);
 	}
 	else if (Q_stricmp(cmd, "join_team") == 0)
 	{
-		int team = atoi(gi.argv(1));
-
-		if (team < 0 || team > 99)
-			cprint_botsafe(ent, PRINT_HIGH, "\nPlease select a team between 1 and 99!\nSelect 0 for no team!\n");
-		else
-		{
-			if (team == 0)
-				cprint_botsafe(ent, PRINT_HIGH, "\nYou have joined team 0 that means you are in NO team!\n");
-			else
-				cprint_botsafe(ent, PRINT_HIGH, "\nYou have joined team %d!\n", team);
-
-			ent->client->resp.team = team;
-		}
+		Cmd_Join_Team_f(ent);
 	}
 	else if (Q_stricmp(cmd, "playerlist") == 0)
 	{
-		int		i;
-
-		for (i = 0; i < MAX_CLIENTS; i++)
-		{
-			if (players[i])
-				if (players[i]->client)
-					cprint_botsafe(ent, PRINT_HIGH, "%d: %s\n", i, players[i]->client->pers.netname);
-		}
+		Cmd_Playerlist_f(ent);
 	}
 	else if (Q_stricmp(cmd, "turretlist") == 0)
 	{
-		int		i;
-
-		for (i = 0; i < numturrets; i++)
-		{
-			if (turrets[i] && turrets[i]->inuse)
-				cprint_botsafe(ent, PRINT_HIGH, "turret %d active\n", i);
-		}
+		Cmd_Turretlist_f(ent);
 	}
 	else if (Q_stricmp(cmd, "weaponlist") == 0)
 	{
-		edict_t* current = NULL;
-
-		current = weapon_list;	// start with the head
-
-		//go through all items in the list
-		while (current)
-		{
-			cprint_botsafe(ent, PRINT_HIGH, "%s\n", current->classname);
-			current = current->next_listitem;	//go to next item in list
-		}
+		Cmd_Weaponlist_f(ent);		
 	}
 	else if (Q_stricmp(cmd, "healthlist") == 0)
 	{
-		edict_t* current = NULL;
-
-		current = health_list;	// start with the head
-
-		//go through all items in the list
-		while (current)
-		{
-			cprint_botsafe(ent, PRINT_HIGH, "%s\n", current->classname);
-			current = current->next_listitem;	//go to next item in list
-		}
+		Cmd_Healthlist_f(ent);
 	}
 	else if (Q_stricmp(cmd, "ammolist") == 0)
 	{
-		edict_t* current = NULL;
-
-		current = ammo_list;	// start with the head
-
-		//go through all items in the list
-		while (current)
-		{
-			cprint_botsafe(ent, PRINT_HIGH, "%s\n", current->classname);
-			current = current->next_listitem;	//go to next item in list
-		}
+		Cmd_Ammolist_f(ent);
 	}
 	else if (Q_stricmp(cmd, "poweruplist") == 0)
 	{
-		edict_t* current = NULL;
-
-		current = powerup_list;	// start with the head
-
-		//go through all items in the list
-		while (current)
-		{
-			cprint_botsafe(ent, PRINT_HIGH, "%s\n", current->classname);
-			current = current->next_listitem;	//go to next item in list
-		}
+		Cmd_Poweruplist_f(ent);
 	}
 	else if (Q_stricmp(cmd, "gameversion") == 0)
 	{
@@ -1858,17 +2140,7 @@ void ClientCommand2(edict_t* ent)
 	}
 	else if (Q_stricmp(cmd, "throwup") == 0)
 	{
-	if (ent->client->camera || ent->movetype == MOVETYPE_NOCLIP)/* MrG{DRGN} if you haven't joined a team yet. you can't puke! */
-			return;
-		if (ent->health <= 0)
-			return;
-		if (ent->client->fakedeath > 0)
-			return;
-		if (level.time > ent->client->nextvomit)
-		{
-			ThrowUpNow(ent);
-			ent->client->nextvomit = level.time + 1;
-		}
+		Cmd_Throwup_f(ent);
 	}
 	else if (Q_stricmp(cmd, "scanner") == 0)
 	{
@@ -1879,216 +2151,34 @@ void ClientCommand2(edict_t* ent)
 	}
 	else if (Q_stricmp(cmd, "belt") == 0)
 	{
-	if (ent->client->camera || ent->movetype == MOVETYPE_NOCLIP)/* MrG{DRGN} if you haven't joined a team yet. you can't AG belt! */
-			return;
-
-		if (ent->client->fakedeath > 0)
-			return;
-		if (ent->health <= 0)
-			return;
-		if (ent->client->beltactive > 0)
-		{
-			cprint_botsafe(ent, PRINT_HIGH, "Anti gravity belt OFF\n");
-			ent->client->beltactive = 0;
-			ent->client->nextbeltcell = level.time;
-		}
-		else
-		{
-			if (ent->client->pers.inventory[ITEM_INDEX(it_cells)] <= 0)
-			{
-				cprint_botsafe(ent, PRINT_HIGH, "You don't have enough cells to run your anti gravity belt!\n");
-				ent->client->beltactive = 0;
-				ent->client->nextbeltcell = level.time;
-			}
-			else
-			{
-				cprint_botsafe(ent, PRINT_HIGH, "Anti gravity belt ON\n");
-				ent->client->beltactive = 1;
-				ent->client->nextbeltcell = level.time + 2;
-			}
-		}
+		Cmd_Belt_f(ent);
 	}
 	else if (Q_stricmp(cmd, "flashlight") == 0)
 	{
-	if (ent->client->camera || ent->movetype == MOVETYPE_NOCLIP)/* MrG{DRGN} if you haven't joined a team yet. you can't use the flashlight! */
-			return;
-
-		if (ent->client->fakedeath > 0)
-			return;
-		if (ent->health <= 0)
-			return;
-		if (ent->client->flashlightactive)
-		{
-			ent->client->flashlightactive = false;
-			if (ent->client->flashlight)
-				ent->client->flashlight->think = G_FreeEdict;
-			cprint_botsafe(ent, PRINT_HIGH, "Flashlight OFF\n");
-		}
-		else
-		{
-			vec3_t  start, forward, right, end = { 0 };
-
-			ent->client->flashlightactive = true;
-
-			AngleVectors(ent->client->v_angle, forward, right, NULL);
-
-			VectorSet(end, 100, 0, 0);
-			G_ProjectSource(ent->s.origin, end, forward, right, start);
-
-			ent->client->flashlight = G_Spawn();
-			ent->client->flashlight->think = FlashLightThink;
-			ent->client->flashlight->nextthink = level.time + FRAMETIME;
-			ent->client->flashlight->s.effects = EF_HYPERBLASTER;
-			ent->client->flashlight->s.modelindex = gi.modelindex("models/objects/dummy/tris.md2");
-			ent->client->flashlight->solid = SOLID_NOT;
-			ent->client->flashlight->owner = ent;
-			ent->client->flashlight->classname = "flashlight";
-			ent->client->flashlight->classindex = FLASHLIGHT;
-			ent->client->flashlight->movetype = MOVETYPE_NOCLIP;
-			ent->client->flashlight->clipmask = MASK_SHOT;
-			VectorCopy(end, ent->client->flashlight->s.origin);
-
-			gi.linkentity(ent->client->flashlight);
-
-			cprint_botsafe(ent, PRINT_HIGH, "Flashlight ON\n");
-		}
+		Cmd_Flashlight_f(ent);
 	}
 	else if (Q_stricmp(cmd, "teleport") == 0)
 	{
-	if (ent->client->camera || ent->movetype == MOVETYPE_NOCLIP)/* MrG{DRGN} if you haven't joined a team yet. you can't teleport! */
-			return;
-		if (ent->health <= 0)
-			return;
-		if (ent->client->fakedeath > 0)
-			return;
-		if (ent->client->teleporter)	//teleport
-		{
-			Teleport(ent);
-		}
-		else	//create teleporter
-		{
-			if (ent->client->pers.inventory[ITEM_INDEX(it_cells)] < 100)
-			{
-				cprint_botsafe(ent, PRINT_HIGH, "You need 100 cells to place a self teleporter!\n");
-			}
-			else
-			{
-				ent->client->pers.inventory[ITEM_INDEX(it_cells)] -= 100;
-				Teleport(ent);
-				cprint_botsafe(ent, PRINT_HIGH, "Self Teleporter placed! Use cmd teleport again to use it.\n");
-			}
-		}
+		Cmd_Teleport_f(ent);
 	}
 	else if (Q_stricmp(cmd, "kamikaze") == 0)
 	{
-	if (ent->client->camera || ent->movetype == MOVETYPE_NOCLIP)/* MrG{DRGN} if you haven't joined a team yet. you can't Kamikaze! */
-		return;
-	if (ent->health <= 0)
-		return;
-	if (ent->client->kamikazetime != 0)
-		return;
-	if (ent->flags & FL_GODMODE)
-	{
-		cprint_botsafe(ent, PRINT_MEDIUM, "You can't go kamikaze in god mode, cheater!\n");
-		return;
-	}
-	if (ent->client->pers.inventory[ITEM_INDEX(it_rockets)] + ent->client->pers.inventory[ITEM_INDEX(it_grenades)] + ent->client->pers.inventory[ITEM_INDEX(it_homings)] < 10)
-	{
-		cprint_botsafe(ent, PRINT_MEDIUM, "You need at least 10 rockets or grenades to go kamikaze!\n");
-		return;
-	}
-
-	ent->client->kamikazetime = 50;
-	ent->s.effects = EF_ROCKET;
-	gi.sound(ent, CHAN_VOICE, gi.soundindex("misc/kamikaze.wav"), 1, ATTN_NORM, 0);
+		Cmd_Kamikaze_f(ent);
 	}
 	else if (Q_stricmp(cmd, "togglegrenades") == 0)
 	{
-	if (ent->client->camera || ent->movetype == MOVETYPE_NOCLIP)/* MrG{DRGN} if you haven't joined a team yet. you can't toggle nades */
-		return;
-	if (ent->client->grenadesactive == 1)
-	{
-		ent->client->grenadesactive = 0;
-		cprint_botsafe(ent, PRINT_HIGH, "Grenades OFF\n");
-	}
-	else
-	{
-		cprint_botsafe(ent, PRINT_HIGH, "Grenades ON\n");
-		ent->client->grenadesactive = 1;
-	}
+		Cmd_ToggleGrenades_f(ent);
 	}
 	else if (Q_stricmp(cmd, "fakedeath") == 0)
 	{
-	if (ent->health <= 0)
+		if (ent->health <= 0)
 		return;
 
-	FakeDeath(ent);
+		FakeDeath(ent);
 	}
 	else if (Q_stricmp(cmd, "kick") == 0)
 	{
-	edict_t* blip = NULL;
-	vec3_t	forward;
-
-	if (ent->client->camera || ent->movetype == MOVETYPE_NOCLIP)/* MrG{DRGN} if you haven't joined a team yet. you can't kick */
-		return;
-	if (ent->client->fakedeath > 0)
-		return;
-	if (ent->health <= 0)
-		return;
-
-	while ((blip = findradius2(blip, ent->s.origin, 100)) != NULL)
-	{
-		if ((blip->classindex >= W_BLASTER && blip->classindex <= W_BFG) && (!weapon_kick->value))
-			return;
-		/* MrG{DRGN} classindex instead of classname */
-		if (blip->client
-			|| blip->item
-			|| blip->classindex == BOLT
-			|| blip->classindex == ARROW
-			|| blip->classindex == GRENADE
-			|| blip->classindex == HGRENADE
-			|| blip->classindex == FLASHGRENADE
-			|| blip->classindex == LASERMINE
-			|| blip->classindex == PGRENADE
-			|| blip->classindex == PROXYMINE
-			|| blip->classindex == ROCKET
-			|| blip->classindex == HOMING
-			|| blip->classindex == BUZZ
-			|| blip->classindex == BFG_BLAST
-			|| blip->classindex == ITEM_FLAG_TEAM1
-			|| blip->classindex == ITEM_FLAG_TEAM2
-			|| blip->classindex == BODYQUE
-			|| blip->classindex == GIBHEAD)
-
-			if (blip->classindex != TBASE
-				&& blip->classindex != LTURRET
-				&& blip->classindex != RTURRET
-				&& blip->classindex != ITEM_FLAG_TEAM1
-				&& blip->classindex != ITEM_FLAG_TEAM2)
-			{
-				{
-					if (blip == ent)
-						continue;
-					if (!visible(ent, blip))
-						continue;
-					if (!infront(ent, blip))
-						continue;
-
-
-					AngleVectors(ent->client->v_angle, forward, NULL, NULL);
-
-					VectorScale(forward, 400, blip->velocity);
-					blip->velocity[2] = 400;
-
-					gi.sound(ent, CHAN_ITEM, gi.soundindex("misc/kick.wav"), 1, ATTN_NORM, 0);
-
-					if (blip->client && blip->client->camera)
-						ent->client->b_waittime = level.time + 3;
-
-					return;
-				}
-			}
-	}
+		Cmd_Kick_f(ent);
 	}
 	else
 		Cmd_Say_f(ent, false, true);
