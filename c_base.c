@@ -2142,9 +2142,7 @@ void ClientCommand2(edict_t* ent)
 	}
 	else if (Q_stricmp(cmd, "scanner") == 0)
 	{
-		/* MrG{DRGN} if you haven't joined a team yet. you can't use the scanner */
-		if (!ent->client->camera && !ent->movetype == MOVETYPE_NOCLIP)
-			Toggle_Scanner(ent);
+		Toggle_Scanner(ent);
 	}
 	else if (Q_stricmp(cmd, "belt") == 0)
 	{

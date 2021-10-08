@@ -392,6 +392,9 @@ void Toggle_Scanner(edict_t* ent)
 		return;
 	if (ent->health <= 0)
 		return;
+	/* MrG{DRGN} if you haven't joined a team yet. you can't use the scanner */
+	if (ent->client->camera && ent->movetype == MOVETYPE_NOCLIP)
+		return;
 
 	if (ent->client->scanneractive <= 0)
 	{
