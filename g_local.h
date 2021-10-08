@@ -763,6 +763,8 @@ void door_use(edict_t* self, edict_t* other, edict_t* activator);
 edict_t* SelectRandomDeathmatchSpawnPoint(void);
 edict_t* SelectFarthestDeathmatchSpawnPoint(void);
 float	PlayersRangeFromSpot(edict_t* spot);
+trace_t	PM_trace(vec3_t start, vec3_t mins, vec3_t maxs, vec3_t end);
+
 
 //
 // g_player.c

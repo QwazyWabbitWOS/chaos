@@ -24,7 +24,6 @@ void CreateCamera(edict_t* ent)
 	ent->waterlevel = 0;
 	ent->watertype = 0;
 	ent->flags = FL_FLY;
-	//ent->client->camera = 1;	/* MrG{DRGN} I don't think this needs to be here */
 	ent->client->ps.fov = 90;
 	ent->client->kamikazetime = 0;/* MrG{DRGN} no kami stuck screen! */
 	ent->client->grapple = NULL;
@@ -109,6 +108,10 @@ int NumVisiblePlayers(edict_t* ent)
 			continue;
 		if (players[i]->client->camera)
 			continue;
+		if (players[i]->movetype == MOVETYPE_FLY)
+			continue;
+		if (players[i]->movetype == MOVETYPE_NOCLIP)
+			continue;
 
 		if (visible2(players[i]->s.origin, ent->s.origin))
 		{
@@ -140,6 +143,10 @@ edict_t* ClosestVisible(edict_t* ent)
 			continue;
 		if (players[i]->client->camera)
 			continue;
+		if (players[i]->movetype == MOVETYPE_FLY)
+			continue;
+		if (players[i]->movetype == MOVETYPE_NOCLIP)
+			continue;
 
 		if (visible2(players[i]->s.origin, ent->s.origin))
 		{
@@ -170,6 +177,10 @@ edict_t* BestViewPlayer(void)
 			continue;
 		if (players[i]->client->camera)
 			continue;
+		if (players[i]->movetype == MOVETYPE_FLY)
+			continue;
+		if (players[i]->movetype == MOVETYPE_NOCLIP)
+			continue;
 
 		views = NumVisiblePlayers(players[i]);
 
@@ -192,6 +203,10 @@ edict_t* GetFirstValidPlayer(void)
 			continue;
 		if (players[i]->client->camera)
 			continue;
+		if (players[i]->movetype == MOVETYPE_FLY)
+			continue;
+		if (players[i]->movetype == MOVETYPE_NOCLIP)
+			continue;
 
 		return players[i];
 	}
@@ -207,6 +222,10 @@ edict_t* GetRandomValidPlayer(void)
 		if (!players[i]->client)
 			continue;
 		if (players[i]->client->camera)
+			continue;
+		if (players[i]->movetype == MOVETYPE_FLY)
+			continue;
+		if (players[i]->movetype == MOVETYPE_NOCLIP)
 			continue;
 		if (random() < 0.5)
 			continue;
@@ -320,11 +339,6 @@ edict_t* GetPrevValidPlayer(edict_t* current)
 
 void CamNext(edict_t* ent)
 {
-	if (!ent || ent->client->camera == 5)
-	{
-		return;
-	}
-
 	if (ent->client->camera > 1)
 	{
 		if ((ent->client->pTarget != NULL) && ent->client->pTarget->client && ent->client->pTarget->inuse)
@@ -340,11 +354,6 @@ void CamNext(edict_t* ent)
 
 void CamPrev(edict_t* ent)
 {
-	if (!ent || ent->client->camera == 5)
-	{
-		return;
-	}
-
 	if (ent->client->camera > 1)
 	{
 		if ((ent->client->pTarget != NULL) && ent->client->pTarget->client && ent->client->pTarget->inuse)
@@ -382,7 +391,7 @@ void PointCamAtPlayer(edict_t* ent)
 	float	diff;
 	int		na;
 
-	if (!ent)
+	if (!ent || ent->movetype == MOVETYPE_NOCLIP)
 	{
 		return;
 	}
@@ -460,7 +469,7 @@ void RepositionAtPlayer(edict_t* ent)
 	vec3_t        pos = { 0 }, forward;
 	trace_t       tr;
 
-	if (!ent)
+	if (!ent || ent->movetype == MOVETYPE_NOCLIP)
 	{
 		return;
 	}
@@ -643,8 +652,6 @@ void FindNewTVSpot(edict_t* ent)
 	}
 }
 
-trace_t	PM_trace(vec3_t start, vec3_t mins, vec3_t maxs, vec3_t end);
-
 void CameraThink(edict_t* ent, usercmd_t* ucmd)
 {
 	if (!ent)
@@ -652,17 +659,15 @@ void CameraThink(edict_t* ent, usercmd_t* ucmd)
 		return;
 	}
 
-	//vec3_t	dir = {0};
-	if (ent->client->camera != 5)
+	if (ent->client->camera)
 	{
 		ent->client->ps.pmove.pm_type = PM_FREEZE;
 		ent->client->ps.pmove.gravity = 0;
 	}
-	/* MrG{DRGN} changed to switch cases  form if else */
+	/* MrG{DRGN} changed to switch cases from if else */
 	switch (ent->client->camera)
 	{
 	case 1:	//Intelli Cam mode
-	{
 		if (NumVisiblePlayers(ent) < 2)
 		{
 			if (ent->last_move_time >= level.time)
@@ -709,31 +714,20 @@ void CameraThink(edict_t* ent, usercmd_t* ucmd)
 		{
 			ent->client->pTarget = BestViewPlayer();
 		}
-	}
-	break;
+		break;
+
 	case 2:	//Chase Cam mode
-	{
+	case 3:	//Birdview Cam mode, a special case of chasecam
 		if ((ent->client->pTarget != NULL) && ent->client->pTarget->client && ent->client->pTarget->inuse)
 		{
-			RepositionAtPlayer(ent);
+			RepositionAtPlayer(ent); //QW// handles camera == 3 for birdview
 			PointCamAtPlayer(ent);
 		}
 		else
 			ent->client->pTarget = GetFirstValidPlayer();
-	}
-	break;
-	case 3:	//Birdview Cam mode
-	{
-		if ((ent->client->pTarget != NULL) && ent->client->pTarget->client && ent->client->pTarget->inuse)
-		{
-			RepositionAtPlayer(ent);
-			PointCamAtPlayer(ent);
-		}
-		else
-			ent->client->pTarget = GetFirstValidPlayer();
-	}
+		break;
+
 	case 4://TV Cam mode
-	{
 		if (ent->client->pTarget && ent->client->pTarget->client && ent->client->pTarget->inuse)
 		{
 			if (visible(ent, ent->client->pTarget))
@@ -754,17 +748,9 @@ void CameraThink(edict_t* ent, usercmd_t* ucmd)
 		}
 		else
 			ent->client->pTarget = GetFirstValidPlayer();
-	}
-	case 5:// Free-View Camera
-	{
-		ent->movetype = MOVETYPE_NOCLIP;
-		ent->solid = SOLID_NOT;
-		ent->svflags |= SVF_NOCLIENT;
-		ent->client->ps.pmove.pm_flags &= PMF_NO_PREDICTION;
-		ent->client->ps.pmove.pm_type = PM_SPECTATOR;
-		ent->flags = 0;
-		ent->health = 100;
-		ent->mass = 200;
-	}
+		break;
+
+	default:
+		break;
 	}
 }

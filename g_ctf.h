@@ -155,6 +155,9 @@ void SP_info_teleport_destination(edict_t* ent);
 
 void CTFSetPowerUpEffect(edict_t* ent, int def);
 
+void CTFAdmin_UpdateSettings(edict_t* ent, pmenuhnd_t* setmenu);
+void CTFOpenAdminMenu(edict_t* ent);
+
 typedef enum {
 	CTF_STATE_START,
 	CTF_STATE_PLAYING

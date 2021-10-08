@@ -916,7 +916,6 @@ edict_t* findradius2(edict_t* from, vec3_t org, float rad)	//find all entities
 	return NULL;
 }
 
-static char	BPrint2Buff[0x2000]; /*  MrG{DRGN} move this here  and reduce the size*/
 
 void bprint_botsafe(int printlevel, char* fmt, ...)
 {
@@ -924,6 +923,7 @@ void bprint_botsafe(int printlevel, char* fmt, ...)
 
 	va_list		argptr;
 	edict_t* cl_ent;
+	char	BPrint2Buff[0x2000]; /*  MrG{DRGN} reduce the size*/
 
 	va_start(argptr, fmt);
 	vsnprintf(BPrint2Buff, sizeof(BPrint2Buff), fmt, argptr);
@@ -943,12 +943,12 @@ void bprint_botsafe(int printlevel, char* fmt, ...)
 	}
 }
 
-static char	CPrint2Buff[0x2000]; /*  MrG{DRGN} move this here  and reduce the size*/
 
 // bot-safe cprint
 void cprint_botsafe(edict_t* ent, int printlevel, char* fmt, ...)
 {
 	va_list		argptr;
+	char	CPrint2Buff[0x2000]; /*  MrG{DRGN} reduce the size*/
 
 	if (!ent || ent->bot_player)/* MrG{DRGN} */
 		return;
@@ -963,12 +963,11 @@ void cprint_botsafe(edict_t* ent, int printlevel, char* fmt, ...)
 		gi.cprintf(ent, printlevel, CPrint2Buff);
 	}
 }
-static char	NPrintBuff[0x2000]; /*  MrG{DRGN} move this here  and reduce the size*/
+
 void nprintf(int printlevel, char* fmt, ...)
 {
 	int i;
-	//char	bigbuffer[0x10000];
-	/* int		len;  MrG{DRGN} unused! */
+	char	NPrintBuff[0x2000];
 	va_list		argptr;
 	edict_t* cl_ent;
 
@@ -1500,6 +1499,27 @@ void Cmd_Zoom_f(edict_t* ent)
 
 void Cmd_Camera_f(edict_t* ent)
 {
+	if (Q_stricmp(gi.argv(1), "") == 0)
+	{
+		switch (ent->client->camera)
+		{
+		case 1:
+			gi.cprintf(ent, PRINT_HIGH, "IntelliCam Mode!\n");
+			break;
+		case 2:
+			gi.cprintf(ent, PRINT_HIGH, "Chasecam Mode!\n");
+			break;
+		case 3:
+			gi.cprintf(ent, PRINT_HIGH, "Birdview ChaseCam Mode!\n");
+			break;
+		case 4:
+			gi.cprintf(ent, PRINT_HIGH, "TV-Cam Mode!\n");
+			break;
+		default:
+			gi.cprintf(ent, PRINT_HIGH, "Your camera mode is %d.\n", ent->client->camera);
+			break;
+		}
+	}
 	if (Q_stricmp(gi.argv(1), "0") == 0)	//cam off
 	{
 		if (ent->client->camera)
@@ -1521,7 +1541,7 @@ void Cmd_Camera_f(edict_t* ent)
 			//ent->client->resp.fov_start = ent->client->ps.fov;
 
 			ClientBegin(ent);
-			cprint_botsafe(ent, PRINT_HIGH, "Camera OFF!\n");
+			gi.cprintf(ent, PRINT_HIGH, "Camera OFF!\n");
 		}
 	}
 	else if (Q_stricmp(gi.argv(1), "1") == 0)	//intelli mode
@@ -1530,7 +1550,7 @@ void Cmd_Camera_f(edict_t* ent)
 			CreateCamera(ent);
 
 		ent->client->camera = 1;
-		cprint_botsafe(ent, PRINT_HIGH, "IntelliCam Mode!\n");
+		gi.cprintf(ent, PRINT_HIGH, "IntelliCam Mode!\n");
 	}
 	else if (Q_stricmp(gi.argv(1), "2") == 0)	//chase cam mode
 	{
@@ -1538,7 +1558,7 @@ void Cmd_Camera_f(edict_t* ent)
 			CreateCamera(ent);
 
 		ent->client->camera = 2;
-		cprint_botsafe(ent, PRINT_HIGH, "ChaseCam Mode!\n");
+		gi.cprintf(ent, PRINT_HIGH, "ChaseCam Mode!\n");
 	}
 	else if (Q_stricmp(gi.argv(1), "3") == 0)	// birdview chase cam
 	{
@@ -1546,7 +1566,7 @@ void Cmd_Camera_f(edict_t* ent)
 			CreateCamera(ent);
 
 		ent->client->camera = 3;
-		cprint_botsafe(ent, PRINT_HIGH, "Birdview ChaseCam Mode!\n");
+		gi.cprintf(ent, PRINT_HIGH, "Birdview ChaseCam Mode!\n");
 	}
 	else if (Q_stricmp(gi.argv(1), "4") == 0)	// TV cam mode
 	{
@@ -1554,15 +1574,7 @@ void Cmd_Camera_f(edict_t* ent)
 			CreateCamera(ent);
 
 		ent->client->camera = 4;
-		cprint_botsafe(ent, PRINT_HIGH, "TV-Cam Mode!\n");
-	}
-	else if (Q_stricmp(gi.argv(1), "5") == 0)	// TV cam mode
-	{
-		if (!ent->client->camera)
-			CreateCamera(ent);
-
-		ent->client->camera = 5;
-		cprint_botsafe(ent, PRINT_HIGH, "Free-View Mode!\n");
+		gi.cprintf(ent, PRINT_HIGH, "TV-Cam Mode!\n");
 	}
 }
 

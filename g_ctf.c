@@ -3251,6 +3251,7 @@ qboolean CTFStartClient(edict_t* ent)
 	}
 	return false;
 }
+
 void CTFObserver(edict_t* ent)
 {
 	char		userinfo[MAX_INFO_STRING];
@@ -3275,6 +3276,7 @@ void CTFObserver(edict_t* ent)
 	gi.linkentity(ent);
 	CTFOpenJoinMenu(ent);
 }
+
 qboolean CTFCheckRules_Old()
 {
 	if (capturelimit->value &&
@@ -3447,10 +3449,10 @@ qboolean CTFCheckRules(void)
 	}
 	return false;
 }
+
 /*--------------------------------------------------------------------------
  * just here to help old map conversions
  *--------------------------------------------------------------------------*/
-
 static void old_teleporter_touch(edict_t* self, edict_t* other, cplane_t* plane, csurface_t* surf)
 {
 	edict_t* dest;
@@ -3573,9 +3575,6 @@ typedef struct admin_settings_s {
 } admin_settings_t;
 
 #define SETMENU_SIZE (7 + 5)
-
-void CTFAdmin_UpdateSettings(edict_t* ent, pmenuhnd_t* setmenu);
-void CTFOpenAdminMenu(edict_t* ent);
 
 void CTFAdmin_SettingsApply(edict_t* ent, pmenuhnd_t* p)
 {
