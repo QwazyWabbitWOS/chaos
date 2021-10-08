@@ -2142,10 +2142,9 @@ void ClientCommand2(edict_t* ent)
 	}
 	else if (Q_stricmp(cmd, "scanner") == 0)
 	{
-		if (ent->client->camera || ent->movetype == MOVETYPE_NOCLIP)/* MrG{DRGN} if you haven't joined a team yet. you can't use the scanner */
-			return;
-
-		Toggle_Scanner(ent);
+		/* MrG{DRGN} if you haven't joined a team yet. you can't use the scanner */
+		if (!ent->client->camera && !ent->movetype == MOVETYPE_NOCLIP)
+			Toggle_Scanner(ent);
 	}
 	else if (Q_stricmp(cmd, "belt") == 0)
 	{
@@ -2169,10 +2168,8 @@ void ClientCommand2(edict_t* ent)
 	}
 	else if (Q_stricmp(cmd, "fakedeath") == 0)
 	{
-		if (ent->health <= 0)
-			return;
-
-		FakeDeath(ent);
+		if (ent->health > 0)
+			FakeDeath(ent);
 	}
 	else if (Q_stricmp(cmd, "kick") == 0)
 	{
