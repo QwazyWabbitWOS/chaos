@@ -1124,6 +1124,8 @@ static void CTFSetIDView(edict_t* ent)
 		who = g_edicts + i;
 		if (!who->inuse)
 			continue;
+		if (who->solid == SOLID_NOT||who->solid == SOLID_TRIGGER)
+			continue;
 		VectorSubtract(who->s.origin, ent->s.origin, dir);
 		VectorNormalize(dir);
 		d = DotProduct(forward, dir);
@@ -2846,43 +2848,6 @@ void CTFBotJoinTeam(edict_t* ent, int desired_team)	//MATTHIAS
 	}
 }
 
-void CTFJoinTeam_old(edict_t* ent, int desired_team)
-{
-	char* s;
-
-	PMenu_Close(ent);
-
-	ent->svflags &= ~SVF_NOCLIENT;
-	ent->client->resp.ctf_team = desired_team;
-	ent->client->resp.ctf_state = CTF_STATE_START;
-	s = Info_ValueForKey(ent->client->pers.userinfo, "skin");
-	CTFAssignSkin(ent, s);
-
-	// Log Join Team - Mark Davies
-	sl_LogPlayerName(&gi,
-		ent->client->pers.netname,
-		CTFTeamName(ent->client->resp.ctf_team),
-		level.time);
-
-	PutClientInServer(ent);
-	// add a teleportation effect
-	ent->s.event = EV_PLAYER_TELEPORT;
-	// hold in place briefly
-	ent->client->ps.pmove.pm_flags = PMF_TIME_TELEPORT;
-	ent->client->ps.pmove.pm_time = 14;
-	bprint_botsafe(PRINT_HIGH, "%s joined the %s team.\n", ent->client->pers.netname, CTFTeamName(desired_team));
-
-	if (desired_team == 1)
-	{
-		numred++;
-	}
-	else if (desired_team == 2)
-	{
-		numblue++;
-	}
-	if (!ent->bot_player)
-		gi.centerprintf(ent, motd);//MATTHIAS
-}
 void CTFJoinTeam(edict_t* ent, int desired_team)
 {
 	char* s;
@@ -2987,7 +2952,7 @@ void CTFShowScores(edict_t* ent, pmenu_t* p)
 
 pmenu_t creditsmenu[] = {
 	{ "*Quake II ",	PMENU_ALIGN_CENTER, NULL },/* MrG{DRGN} */
-	{ "Chaos DM Lives v3.2b*",				PMENU_ALIGN_CENTER, NULL},
+	{ "Chaos DM Lives v3.2.9b*",				PMENU_ALIGN_CENTER, NULL},
 	{ NULL,					PMENU_ALIGN_CENTER, NULL},
 	{  "*Programming",								PMENU_ALIGN_CENTER, NULL },/* MrG{DRGN} */
 	{ "Flash (flash@telefragged.com)",					PMENU_ALIGN_CENTER, NULL},/* MrG{DRGN} */
@@ -3014,7 +2979,7 @@ static const int jmenu_reqmatch = 11;
 
 pmenu_t joinmenu[] = {
 	{ "*Quake II",			PMENU_ALIGN_CENTER, NULL},
-	{ "*Chaos DM Lives v3.2b",	PMENU_ALIGN_CENTER, NULL },
+	{ "*Chaos DM Lives v3.2.9b",	PMENU_ALIGN_CENTER, NULL },
 	{ NULL,					PMENU_ALIGN_CENTER, NULL },
 	{ NULL,					PMENU_ALIGN_CENTER, NULL },
 	{ NULL,					PMENU_ALIGN_CENTER, NULL },
@@ -3035,7 +3000,7 @@ pmenu_t joinmenu[] = {
 
 pmenu_t nochasemenu[] = {
 	{ "*Quake II",			PMENU_ALIGN_CENTER, NULL},
-	{ "*Chaos DM Lives v3.2b",	PMENU_ALIGN_CENTER,  NULL },
+	{ "*Chaos DM Lives v3.2.9b",	PMENU_ALIGN_CENTER,  NULL },
 	{ NULL,					PMENU_ALIGN_CENTER, NULL },
 	{ NULL,					PMENU_ALIGN_CENTER, NULL },
 	{ "No one to chase",	PMENU_ALIGN_LEFT, NULL },
