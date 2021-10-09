@@ -751,9 +751,9 @@ qboolean CTFPickup_Flag(edict_t* ent, edict_t* other)
 	gitem_t* flag_item, * enemy_flag_item;
 
 	// figure out what team this flag is
-	if (strcmp(ent->classname, "item_flag_team1") == 0)
+	if (ent->classindex == ITEM_FLAG_TEAM1)
 		ctf_team = CTF_TEAM1;
-	else if (strcmp(ent->classname, "item_flag_team2") == 0)
+	else if (ent->classindex == ITEM_FLAG_TEAM2)
 		ctf_team = CTF_TEAM2;
 	else {
 		cprint_botsafe(ent, PRINT_HIGH, "Don't know what team the flag is on.\n");
@@ -922,12 +922,12 @@ static void CTFDropFlagThink(edict_t* ent)
 {
 	// auto return the flag
 	// reset flag will remove ourselves
-	if (strcmp(ent->classname, "item_flag_team1") == 0) {
+	if (ent->classindex == ITEM_FLAG_TEAM1) {
 		CTFResetFlag(CTF_TEAM1);
 		bprint_botsafe(PRINT_HIGH, "The %s flag has returned!\n",
 			CTFTeamName(CTF_TEAM1));
 	}
-	else if (strcmp(ent->classname, "item_flag_team2") == 0) {
+	else if (ent->classindex == ITEM_FLAG_TEAM2) {
 		CTFResetFlag(CTF_TEAM2);
 		bprint_botsafe(PRINT_HIGH, "The %s flag has returned!\n",
 			CTFTeamName(CTF_TEAM2));

@@ -1538,13 +1538,6 @@ void RemoveFromList(edict_t* ent)
 	if (!ent->item->pickup)
 		return;
 
-	/* MrG{DRGN} classindex vs classname
-	if (Q_stricmp(ent->classname, "item_armor_shard") == 0
-		|| Q_stricmp(ent->classname, "item_flag_team1") == 0
-		|| Q_stricmp(ent->classname, "item_flag_team2") == 0
-		|| Q_stricmp(ent->classname, "freed") == 0
-		|| Q_stricmp(ent->classname, "item_health_small") == 0)
-		return;	 */
 	if (ent->classindex == AR_SHARD
 		|| ent->classindex == ITEM_FLAG_TEAM1
 		|| ent->classindex == ITEM_FLAG_TEAM2
