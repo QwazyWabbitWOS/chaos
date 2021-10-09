@@ -1490,10 +1490,14 @@ void Cmd_Zoom_f(edict_t* ent)
 	}
 	else if (zoomtype == 1)
 	{
-		if (ent->client->ps.fov == atoi(Info_ValueForKey(ent->client->pers.userinfo, "fov"))) ent->client->ps.fov = 40;		/* MrG{DRGN} fix zoom */
-		else if (ent->client->ps.fov == 40) ent->client->ps.fov = 20;
-		else if (ent->client->ps.fov == 20) ent->client->ps.fov = 10;
-		else ent->client->ps.fov = atoi(Info_ValueForKey(ent->client->pers.userinfo, "fov")); /* MrG{DRGN} fix zoom */
+		if (ent->client->ps.fov == atoi(Info_ValueForKey(ent->client->pers.userinfo, "fov")))
+			ent->client->ps.fov = 40;	/* MrG{DRGN} fix zoom */
+		else if (ent->client->ps.fov == 40)
+			ent->client->ps.fov = 20;
+		else if (ent->client->ps.fov == 20)
+			ent->client->ps.fov = 10;
+		else
+			ent->client->ps.fov = atoi(Info_ValueForKey(ent->client->pers.userinfo, "fov")); /* MrG{DRGN} fix zoom */
 	}
 }
 
@@ -1501,25 +1505,18 @@ void Cmd_Camera_f(edict_t* ent)
 {
 	if (Q_stricmp(gi.argv(1), "") == 0)
 	{
-		switch (ent->client->camera)
-		{
-		case 1:
+		if(ent->client->camera == 1)
 			gi.cprintf(ent, PRINT_HIGH, "IntelliCam Mode!\n");
-			break;
-		case 2:
+		if (ent->client->camera == 2)
 			gi.cprintf(ent, PRINT_HIGH, "Chasecam Mode!\n");
-			break;
-		case 3:
+		if (ent->client->camera == 3)
 			gi.cprintf(ent, PRINT_HIGH, "Birdview ChaseCam Mode!\n");
-			break;
-		case 4:
+		if (ent->client->camera == 4)
 			gi.cprintf(ent, PRINT_HIGH, "TV-Cam Mode!\n");
-			break;
-		default:
+		else
 			gi.cprintf(ent, PRINT_HIGH, "Your camera mode is %d.\n", ent->client->camera);
-			break;
-		}
 	}
+
 	if (Q_stricmp(gi.argv(1), "0") == 0)	//cam off
 	{
 		if (ent->client->camera)
@@ -1543,8 +1540,10 @@ void Cmd_Camera_f(edict_t* ent)
 			ClientBegin(ent);
 			gi.cprintf(ent, PRINT_HIGH, "Camera OFF!\n");
 		}
+		return;
 	}
-	else if (Q_stricmp(gi.argv(1), "1") == 0)	//intelli mode
+
+	if (Q_stricmp(gi.argv(1), "1") == 0)	//intelli mode
 	{
 		if (!ent->client->camera)
 			CreateCamera(ent);
