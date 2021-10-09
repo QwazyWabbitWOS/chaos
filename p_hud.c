@@ -239,7 +239,7 @@ void DeathmatchScoreboardMessage(edict_t* ent, edict_t* killer /* MrG{DRGN} can 
 		for (i = 0; i < game.maxclients; i++)
 		{
 			cl_ent = g_edicts + 1 + i;
-			if ((!cl_ent->inuse)||
+			if ((!cl_ent->inuse) ||
 				(cl_ent->client->camera))
 				continue;
 			score = game.clients[i].resp.score;
@@ -303,14 +303,13 @@ void DeathmatchScoreboardMessage(edict_t* ent, edict_t* killer /* MrG{DRGN} can 
 			strcpy(string + stringlength, entry);  //QW// Can't use Com_strcpy here.
 			stringlength += j;
 		}
-
 	}
-	
+
 	// put in spectators if we have enough room
 	if (last[0] > last[1])
 		j = last[0];
 	else
-		j = last[1]; 
+		j = last[1];
 	j = (j + 2) * 8 + 42;
 
 	k = 0;
@@ -330,13 +329,12 @@ void DeathmatchScoreboardMessage(edict_t* ent, edict_t* killer /* MrG{DRGN} can 
 				Com_strcat(string, sizeof(string), entry);
 				len = strlen(string);
 				j += 8;
-				
 			}
 
 			sprintf(entry + strlen(entry),
 				"ctf %i %i %i %i %i ",
 				(n & 1) ? 160 : 0, // x
-				
+
 				j, // y
 				i, // playernum
 				cl->resp.score,
@@ -351,7 +349,7 @@ void DeathmatchScoreboardMessage(edict_t* ent, edict_t* killer /* MrG{DRGN} can 
 			n++;
 		}
 	}
-	 // Scanner active ?
+	// Scanner active ?
 	if (ent->client->scanneractive > 0)
 		ShowScanner(ent, string);
 	gi.WriteByte(svc_layout);

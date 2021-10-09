@@ -239,7 +239,7 @@ void DoRespawn(edict_t* ent)
 		}
 		else if (ent->classindex == AM_GRENADES
 			|| ent->classindex == AM_FLASHGRENADES
-			||ent->classindex == AM_LASERGRENADES
+			|| ent->classindex == AM_LASERGRENADES
 			|| ent->classindex == AM_POISONGRENADES
 			|| ent->classindex == AM_PROXYMINES)
 		{
@@ -318,7 +318,7 @@ void DoRespawn(edict_t* ent)
 			newit = 1;
 		}
 		else if (ent->classindex == W_GRENADELAUNCHER
-			|| ent->classindex ==  W_PROXYMINELAUNCHER)
+			|| ent->classindex == W_PROXYMINELAUNCHER)
 		{
 			if (random() < 0.3)
 			{
@@ -332,8 +332,8 @@ void DoRespawn(edict_t* ent)
 			}
 			newit = 1;
 		}
-		else if (ent->classindex ==  W_RAILGUN
-			|| ent->classindex ==  W_BUZZSAW)
+		else if (ent->classindex == W_RAILGUN
+			|| ent->classindex == W_BUZZSAW)
 		{
 			if (random() < 0.5)
 			{
@@ -347,10 +347,10 @@ void DoRespawn(edict_t* ent)
 			}
 			newit = 1;
 		}
-		else if (ent->classindex ==  W_BFG
-			|| ent->classindex ==  AM_VORTEX
-			|| ent->classindex ==  AM_LTURRET
-			|| ent->classindex ==  AM_RTURRET)
+		else if (ent->classindex == W_BFG
+			|| ent->classindex == AM_VORTEX
+			|| ent->classindex == AM_LTURRET
+			|| ent->classindex == AM_RTURRET)
 		{
 			rn = random();
 
@@ -378,7 +378,7 @@ void DoRespawn(edict_t* ent)
 		}
 		//MATTHIAS - Weapon banning
 
-		if (ent->classindex ==  W_SWORD && ban_sword->value)
+		if (ent->classindex == W_SWORD && ban_sword->value)
 		{
 			if (ban_chainsaw->value) //banned,too
 			{
@@ -432,7 +432,7 @@ void DoRespawn(edict_t* ent)
 				ent->classname = "weapon_proxyminelauncher";
 			}
 		}
-		else if (ent->classindex ==  W_PROXYMINELAUNCHER && ban_proxylauncher->value > 0)
+		else if (ent->classindex == W_PROXYMINELAUNCHER && ban_proxylauncher->value > 0)
 		{
 			if (ban_grenadelauncher->value > 0) //banned,too
 			{
@@ -450,7 +450,7 @@ void DoRespawn(edict_t* ent)
 			G_FreeEdict(ent);
 			return;
 		}
-		else if (ent->classindex ==  W_RAILGUN && ban_railgun->value > 0)
+		else if (ent->classindex == W_RAILGUN && ban_railgun->value > 0)
 		{
 			if (ban_buzzsaw->value > 0) //banned,too
 			{
@@ -463,7 +463,7 @@ void DoRespawn(edict_t* ent)
 				ent->classname = "weapon_buzzsaw";
 			}
 		}
-		else if (ent->classindex ==  W_BUZZSAW && ban_buzzsaw->value > 0)
+		else if (ent->classindex == W_BUZZSAW && ban_buzzsaw->value > 0)
 		{
 			if (ban_railgun->value > 0) //banned,too
 			{
@@ -476,7 +476,7 @@ void DoRespawn(edict_t* ent)
 				ent->classname = "weapon_railgun";
 			}
 		}
-		else if (ent->classindex ==  W_BFG && ban_bfg->value > 0)
+		else if (ent->classindex == W_BFG && ban_bfg->value > 0)
 		{
 			if (ban_vortex->value == 0)
 			{
@@ -522,7 +522,7 @@ void DoRespawn(edict_t* ent)
 				return;
 			}
 		}
-		else if (ent->classindex ==  AM_LTURRET && ban_defenseturret->value > 0)
+		else if (ent->classindex == AM_LTURRET && ban_defenseturret->value > 0)
 		{
 			if (ban_bfg->value == 0)
 			{
@@ -545,7 +545,7 @@ void DoRespawn(edict_t* ent)
 				return;
 			}
 		}
-		else if (ent->classindex ==  AM_RTURRET && ban_rocketturret->value > 0)
+		else if (ent->classindex == AM_RTURRET && ban_rocketturret->value > 0)
 		{
 			if (ban_bfg->value == 0)
 			{
@@ -624,7 +624,7 @@ void DoRespawn(edict_t* ent)
 				return;
 			}
 		}
-		else if (ent->classindex ==  AM_LASERGRENADES && ban_ammo_lasergrenades->value > 0)
+		else if (ent->classindex == AM_LASERGRENADES && ban_ammo_lasergrenades->value > 0)
 		{
 			if (ban_ammo_poisongrenades->value == 0)
 			{
@@ -2379,7 +2379,6 @@ void SpawnItem(edict_t* ent, gitem_t* item)
 
 	PrecacheItem(item);
 
-
 	if (ent->spawnflags)
 	{
 		if (ent->classindex != KEY_POWERCUBE)
@@ -2417,7 +2416,7 @@ void SpawnItem(edict_t* ent, gitem_t* item)
 	}
 	if ((int)dmflags->value & DF_INFINITE_AMMO)
 	{
-		if ((item->flags == IT_AMMO) || (ent->classindex ==  W_BFG))
+		if ((item->flags == IT_AMMO) || (ent->classindex == W_BFG))
 		{
 			G_FreeEdict(ent);
 			return;
@@ -2637,7 +2636,7 @@ void SpawnItem(edict_t* ent, gitem_t* item)
 			ent->classname = "weapon_chainsaw";
 		}
 	}
-	else if (ent->classindex == W_MACHINEGUN )
+	else if (ent->classindex == W_MACHINEGUN)
 	{
 		item = it_crossbow;
 		ent->classname = "weapon_crossbow";
@@ -2655,7 +2654,7 @@ void SpawnItem(edict_t* ent, gitem_t* item)
 			ent->classname = "weapon_proxyminelauncher";
 		}
 	}
-	else if (ent->classindex ==  W_RAILGUN)
+	else if (ent->classindex == W_RAILGUN)
 	{
 		if (random() < 0.5)
 		{
@@ -2663,7 +2662,7 @@ void SpawnItem(edict_t* ent, gitem_t* item)
 			ent->classname = "weapon_buzzsaw";
 		}
 	}
-	else if (ent->classindex ==  W_BFG)
+	else if (ent->classindex == W_BFG)
 	{
 		rn = random();
 
@@ -2727,7 +2726,7 @@ void SpawnItem(edict_t* ent, gitem_t* item)
 		G_FreeEdict(ent);
 		return;
 	}
-	else if (ent->classindex ==  W_RAILGUN && ban_railgun->value > 0)
+	else if (ent->classindex == W_RAILGUN && ban_railgun->value > 0)
 	{
 		if (ban_buzzsaw->value > 0) //banned,too
 		{
@@ -2740,7 +2739,7 @@ void SpawnItem(edict_t* ent, gitem_t* item)
 			ent->classname = "weapon_buzzsaw";
 		}
 	}
-	else if (ent->classindex ==  W_BUZZSAW && ban_buzzsaw->value > 0)
+	else if (ent->classindex == W_BUZZSAW && ban_buzzsaw->value > 0)
 	{
 		if (ban_railgun->value > 0) //banned,too
 		{
@@ -2754,7 +2753,7 @@ void SpawnItem(edict_t* ent, gitem_t* item)
 		}
 	}
 	//BFG
-	else if (ent->classindex ==  W_BFG && ban_bfg->value > 0)
+	else if (ent->classindex == W_BFG && ban_bfg->value > 0)
 	{
 		if (ban_vortex->value == 0)
 		{
@@ -2778,7 +2777,7 @@ void SpawnItem(edict_t* ent, gitem_t* item)
 		}
 	}
 	//Vortex
-	else if (ent->classindex ==  AM_VORTEX && ban_vortex->value > 0)
+	else if (ent->classindex == AM_VORTEX && ban_vortex->value > 0)
 	{
 		if (ban_defenseturret->value == 0)
 		{
@@ -2802,7 +2801,7 @@ void SpawnItem(edict_t* ent, gitem_t* item)
 		}
 	}
 	//defense turret
-	else if (ent->classindex ==  AM_LTURRET && ban_defenseturret->value > 0)
+	else if (ent->classindex == AM_LTURRET && ban_defenseturret->value > 0)
 	{
 		if (ban_rocketturret->value == 0)
 		{
@@ -2826,7 +2825,7 @@ void SpawnItem(edict_t* ent, gitem_t* item)
 		}
 	}
 	//rocket turret
-	else if (ent->classindex ==  AM_RTURRET && ban_rocketturret->value > 0)
+	else if (ent->classindex == AM_RTURRET && ban_rocketturret->value > 0)
 	{
 		if (ban_bfg->value == 0)
 		{
@@ -2905,7 +2904,7 @@ void SpawnItem(edict_t* ent, gitem_t* item)
 			return;
 		}
 	}
-	else if (ent->classindex ==  AM_LASERGRENADES && ban_ammo_lasergrenades->value > 0)
+	else if (ent->classindex == AM_LASERGRENADES && ban_ammo_lasergrenades->value > 0)
 	{
 		if (ban_ammo_poisongrenades->value == 0)
 		{

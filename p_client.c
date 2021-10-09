@@ -1845,7 +1845,7 @@ void ClientBegin(edict_t* ent)
 
 	// make sure all view stuff is valid
 	ClientEndServerFrame(ent);
-	}
+}
 
 /*
 ===========
@@ -1955,7 +1955,7 @@ qboolean ClientConnect(edict_t* ent, char* userinfo)
 		InitClientResp(ent->client);
 		if (!game.autosaved || !ent->client->pers.weapon)
 			InitClientPersistant(ent->client);
-}
+	}
 
 	ClientUserinfoChanged(ent, userinfo);
 

@@ -167,7 +167,7 @@ typedef enum classindex
 	AM_PROXYMINES,
 	AM_HOMING,
 	AM_BUZZES,
-	// Chaos Special 
+	// Chaos Special
 	AM_VORTEX,
 	AM_LTURRET,
 	AM_RTURRET,

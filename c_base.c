@@ -916,7 +916,6 @@ edict_t* findradius2(edict_t* from, vec3_t org, float rad)	//find all entities
 	return NULL;
 }
 
-
 void bprint_botsafe(int printlevel, char* fmt, ...)
 {
 	int i;
@@ -942,7 +941,6 @@ void bprint_botsafe(int printlevel, char* fmt, ...)
 		gi.cprintf(cl_ent, printlevel, BPrint2Buff);
 	}
 }
-
 
 // bot-safe cprint
 void cprint_botsafe(edict_t* ent, int printlevel, char* fmt, ...)
@@ -1505,7 +1503,7 @@ void Cmd_Camera_f(edict_t* ent)
 {
 	if (Q_stricmp(gi.argv(1), "") == 0)
 	{
-		if(ent->client->camera == 1)
+		if (ent->client->camera == 1)
 			gi.cprintf(ent, PRINT_HIGH, "IntelliCam Mode!\n");
 		if (ent->client->camera == 2)
 			gi.cprintf(ent, PRINT_HIGH, "Chasecam Mode!\n");

@@ -4068,7 +4068,7 @@ void CTFPlayerList(edict_t* ent)
 		Q_strncatz(text, sizeof(text), st);
 	}
 	cprint_botsafe(ent, PRINT_HIGH, "%s", text);
-	}
+}
 
 void CTFWarp(edict_t* ent)
 {
