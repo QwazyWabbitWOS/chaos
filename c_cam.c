@@ -81,7 +81,7 @@ void CreateCamera(edict_t* ent)
 	CTFDeadDropTech(ent);
 
 	memset(ent->client->ps.stats, 0, sizeof(ent->client->ps.stats));
-	//memset(ent->client->pers.inventory, 0, sizeof(ent->client->pers.inventory)); /* MrG{DRGN} prevented in cliendcomannd now*/
+	memset(ent->client->pers.inventory, 0, sizeof(ent->client->pers.inventory)); /* MrG{DRGN} prevented inventory in camera */
 	//VectorClear(ent->maxs);
 	//VectorClear(ent->mins);
 

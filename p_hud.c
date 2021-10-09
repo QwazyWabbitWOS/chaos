@@ -205,8 +205,12 @@ void DeathmatchScoreboardMessage(edict_t* ent, edict_t* killer /* MrG{DRGN} can 
 	char	string[1400] = { 0 };
 	size_t	stringlength;
 	int		i;
-	int		j;
+	int		j = 0;
 	int		k;
+	int		n = 0, maxsize = 1400;
+	size_t	len = 0;
+	int		last[2] = { 0 };
+	last[0] = last[1] = 0;
 	int		sorted[MAX_CLIENTS] = { 0 };
 	int		sortedscores[MAX_CLIENTS] = { 0 };
 	int		score, total;
@@ -214,6 +218,7 @@ void DeathmatchScoreboardMessage(edict_t* ent, edict_t* killer /* MrG{DRGN} can 
 	gclient_t* cl;
 	edict_t* cl_ent;
 	char* tag;
+	last[0] = last[1] = 0;
 
 	if (!ent)
 		return;
@@ -234,7 +239,8 @@ void DeathmatchScoreboardMessage(edict_t* ent, edict_t* killer /* MrG{DRGN} can 
 		for (i = 0; i < game.maxclients; i++)
 		{
 			cl_ent = g_edicts + 1 + i;
-			if (!cl_ent->inuse)
+			if ((!cl_ent->inuse)||
+				(cl_ent->client->camera))
 				continue;
 			score = game.clients[i].resp.score;
 			for (j = 0; j < total; j++)
@@ -297,12 +303,57 @@ void DeathmatchScoreboardMessage(edict_t* ent, edict_t* killer /* MrG{DRGN} can 
 			strcpy(string + stringlength, entry);  //QW// Can't use Com_strcpy here.
 			stringlength += j;
 		}
-	}
 
-	// Scanner active ?
+	}
+	
+	// put in spectators if we have enough room
+	if (last[0] > last[1])
+		j = last[0];
+	else
+		j = last[1]; 
+	j = (j + 2) * 8 + 42;
+
+	k = 0;
+	n += 16;
+	if (maxsize - len > 50) {
+		for (i = 0; i < maxclients->value; i++) {
+			cl_ent = g_edicts + 1 + i;
+			cl = &game.clients[i];
+			if (!cl_ent->inuse ||
+				(cl_ent->solid != SOLID_TRIGGER && cl_ent->solid != SOLID_NOT))
+				continue;
+
+			if (!k) {
+				k = 1;
+				j += 10;
+				sprintf(entry, "xv 0 yv %d string2 \"Spectators\" ", j);
+				Com_strcat(string, sizeof(string), entry);
+				len = strlen(string);
+				j += 8;
+				
+			}
+
+			sprintf(entry + strlen(entry),
+				"ctf %i %i %i %i %i ",
+				(n & 1) ? 160 : 0, // x
+				
+				j, // y
+				i, // playernum
+				cl->resp.score,
+				cl->ping > 999 ? 999 : cl->ping);
+			if (maxsize - len > strlen(entry)) {
+				Com_strcat(string, sizeof(string), entry);
+				len = strlen(string);
+			}
+
+			if (n & 1)
+				j += 8;
+			n++;
+		}
+	}
+	 // Scanner active ?
 	if (ent->client->scanneractive > 0)
 		ShowScanner(ent, string);
-
 	gi.WriteByte(svc_layout);
 	gi.WriteString(string);
 }
