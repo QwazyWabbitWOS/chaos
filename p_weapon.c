@@ -1211,6 +1211,7 @@ void Blaster_Fire(edict_t* ent, vec3_t g_offset, int damage, qboolean hyper, int
 		chunk->nextthink = level.time + 2;
 		chunk->s.frame = 0;
 		chunk->flags = 0;
+		chunk->s.renderfx = RF_FULLBRIGHT;
 		chunk->classname = "shell";
 		gi.linkentity(chunk);
 	}
@@ -1582,6 +1583,8 @@ void weapon_supershotgun_fire(edict_t* ent)
 	vec3_t		v;
 	int			damage = 6;
 	int			kick = 12;
+	edict_t* chunk1 = NULL;
+	edict_t* chunk2 = NULL;
 
 	if (!ent)
 	{
@@ -1607,10 +1610,52 @@ void weapon_supershotgun_fire(edict_t* ent)
 	v[ROLL] = ent->client->v_angle[ROLL];
 	AngleVectors(v, forward, NULL, NULL);
 	fire_shotgun(ent, start, forward, damage, kick, DEFAULT_SHOTGUN_HSPREAD, DEFAULT_SHOTGUN_VSPREAD, DEFAULT_SSHOTGUN_COUNT / 2, MOD_SSHOTGUN);
+
+	chunk1 = G_Spawn();
+	VectorCopy(start, chunk1->s.origin);
+	VectorCopy(ent->s.angles, chunk1->s.angles);
+	chunk1->s.origin[2] += 8;
+	chunk1->s.angles[YAW] -= 60;
+	gi.setmodel(chunk1, "models/objects/shell1/tris.md2");
+	chunk1->velocity[0] = right[0] * -80 - random() * 30;
+	chunk1->velocity[1] = right[1] * -80 - random() * 30;
+	chunk1->velocity[2] = 80;
+	chunk1->movetype = MOVETYPE_BOUNCE;
+	chunk1->solid = SOLID_NOT;
+	chunk1->avelocity[0] = random() * 500;
+	chunk1->avelocity[1] = random() * 500;
+	chunk1->avelocity[2] = random() * 500;
+	chunk1->think = G_FreeEdict;
+	chunk1->nextthink = level.time + 2;
+	chunk1->s.frame = 0;
+	chunk1->flags = 0;
+	chunk1->s.renderfx = RF_FULLBRIGHT;
+	chunk1->classname = "shell";
+	gi.linkentity(chunk1);
 	v[YAW] = ent->client->v_angle[YAW] + 5;
 	AngleVectors(v, forward, NULL, NULL);
 	fire_shotgun(ent, start, forward, damage, kick, DEFAULT_SHOTGUN_HSPREAD, DEFAULT_SHOTGUN_VSPREAD, DEFAULT_SSHOTGUN_COUNT / 2, MOD_SSHOTGUN);
-
+	chunk2 = G_Spawn();
+	VectorCopy(start, chunk2->s.origin);
+	VectorCopy(ent->s.angles, chunk2->s.angles);
+	chunk2->s.origin[2] += 8;
+	chunk2->s.angles[YAW] += 60;
+	gi.setmodel(chunk2, "models/objects/shell1/tris.md2");
+	chunk2->velocity[0] = right[0] * +80 + random() * 30;
+	chunk2->velocity[1] = right[1] * +80 + random() * 30;
+	chunk2->velocity[2] = 80;
+	chunk2->movetype = MOVETYPE_BOUNCE;
+	chunk2->solid = SOLID_NOT;
+	chunk2->avelocity[0] = random() * 500;
+	chunk2->avelocity[1] = random() * 500;
+	chunk2->avelocity[2] = random() * 500;
+	chunk2->think = G_FreeEdict;
+	chunk2->nextthink = level.time + 2;
+	chunk2->s.frame = 0;
+	chunk2->flags = 0;
+	chunk2->s.renderfx = RF_FULLBRIGHT;
+	chunk2->classname = "shell";
+	gi.linkentity(chunk2);
 	// send muzzle flash
 	gi.WriteByte(svc_muzzleflash);
 	gi.WriteShort(ent - g_edicts);
