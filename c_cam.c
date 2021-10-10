@@ -6,8 +6,16 @@ void CreateCamera(edict_t* ent)
 {
 	if (!ent)
 		return;
+	/* MrG{DRGN} set some values so there's a visible model at the outcome */
+	ent->svflags = 0;
+	ent->client->ps.pmove.pm_type = PM_NORMAL;
+	ent->solid = SOLID_BBOX;
+	ent->movetype = MOVETYPE_WALK;
+	ent->size[0] =  32.0;
+	ent->size[1] = 32.0;
+	ent->size[2] = 56.0;
 
-	gi.unlinkentity(ent);
+	gi.unlinkentity(ent);	
 	ent->groundentity = NULL;
 	ent->takedamage = DAMAGE_NO;
 	ent->movetype = MOVETYPE_FLY;
@@ -675,11 +683,9 @@ void CameraThink(edict_t* ent, usercmd_t* ucmd)
 		return;
 	}
 
-	if (ent->client->camera)
-	{
-		ent->client->ps.pmove.pm_type = PM_FREEZE;
-		ent->client->ps.pmove.gravity = 0;
-	}
+	ent->client->ps.pmove.pm_type = PM_FREEZE;
+	ent->client->ps.pmove.gravity = 0;
+
 	/* MrG{DRGN} changed to switch cases from if else */
 	switch (ent->client->camera)
 	{
