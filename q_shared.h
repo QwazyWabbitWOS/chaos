@@ -975,7 +975,7 @@ typedef enum
 #define	STAT_FRAGS				14
 #define	STAT_FLASHES			15		// cleared each frame, 1 = health, 2 = armor
 #define STAT_CHASE				16
-#define STAT_SPECTATOR			17
+#define STAT_SPECTATOR			31 /* MrG{DRGN} get out of the way ot the STAT_CTF */
 
 #define	MAX_STATS				32
 
