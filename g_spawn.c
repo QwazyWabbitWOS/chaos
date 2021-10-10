@@ -622,10 +622,6 @@ void SpawnEntities(char* mapname, char* entities, char* spawnpoint)
 	int			i;
 	float		bot_skill;
 
-#ifdef DEBUG
-	LOGPRINTF("SpawnEntites\n");
-#endif
-
 	bot_skill = floor(skill->value);
 	if (bot_skill < 0)
 		bot_skill = 0;

@@ -87,10 +87,6 @@ and global variables
 */
 game_export_t* GetGameAPI(game_import_t* import)
 {
-#ifdef DEBUG
-	LOGPRINTF("GetGameAPI\n");
-#endif
-
 	gi = *import;
 
 	globals.apiversion = GAME_API_VERSION;

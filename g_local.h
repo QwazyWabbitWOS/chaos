@@ -26,7 +26,7 @@ _CrtMemState startup1;	// memory diagnostics
 #include "game.h"
 /* MrG{DRGN} */
 #include "classindex.h"
-#include "b_log.h"
+
 //ZOID
 #include "p_menu.h"
 //ZOID

@@ -1782,10 +1782,6 @@ void ClientBegin(edict_t* ent)
 {
 	int		i;
 
-#ifdef DEBUG
-	LOGPRINTF("ClientBegin\n");
-#endif
-
 	ent->client = game.clients + (ent - g_edicts - 1);
 
 	// make sure numplayers >= 0   FWP
@@ -1928,10 +1924,6 @@ loadgames will.
 qboolean ClientConnect(edict_t* ent, char* userinfo)
 {
 	char* value;
-
-#ifdef DEBUG
-	LOGPRINTF("ClientConnect\n");
-#endif
 
 	// check to see if they are on the banned IP list
 	value = Info_ValueForKey(userinfo, "ip");
