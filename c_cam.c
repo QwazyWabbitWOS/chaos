@@ -7,6 +7,7 @@ void CreateCamera(edict_t* ent)
 	if (!ent)
 		return;
 	/* MrG{DRGN} set some values so there's a visible model at the outcome */
+	PMenu_Close(ent);
 	ent->svflags = 0;
 	ent->client->ps.pmove.pm_type = PM_NORMAL;
 	ent->solid = SOLID_BBOX;
@@ -14,7 +15,7 @@ void CreateCamera(edict_t* ent)
 	ent->size[0] =  32.0;
 	ent->size[1] = 32.0;
 	ent->size[2] = 56.0;
-
+	
 	gi.unlinkentity(ent);	
 	ent->groundentity = NULL;
 	ent->takedamage = DAMAGE_NO;
