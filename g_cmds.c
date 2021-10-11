@@ -50,18 +50,18 @@ void SelectNextItem(edict_t* ent, int itflags)
 
 	cl = ent->client;
 
-	//Matthias
-	if (cl->menu)
-	{
-		PMenu_Next(ent);
-		return;
-	}
-	else if (cl->camera)
+	
+	if (cl->camera)
 	{
 		CamNext(ent);
 		return;
 	}
-
+	//Matthias
+	else if (cl->menu)
+	{
+		PMenu_Next(ent);
+		return;
+	}
 	// scan  for the next valid one
 	for (i = 1; i <= MAX_ITEMS; i++)
 	{
@@ -89,18 +89,18 @@ void SelectPrevItem(edict_t* ent, int itflags)
 
 	cl = ent->client;
 
-	//Matthias
-	if (cl->menu)
-	{
-		PMenu_Prev(ent);
-		return;
-	}
-	else if (cl->camera)
+	
+	if (cl->camera)
 	{
 		CamPrev(ent);
 		return;
 	}
-
+	//Matthias
+	else if (cl->menu)
+	{
+		PMenu_Prev(ent);
+		return;
+	}
 	// scan  for the next valid one
 	for (i = 1; i <= MAX_ITEMS; i++)
 	{
