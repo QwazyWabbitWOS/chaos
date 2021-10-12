@@ -756,7 +756,7 @@ qboolean CTFPickup_Flag(edict_t* ent, edict_t* other)
 	else if (ent->classindex == ITEM_FLAG_TEAM2)
 		ctf_team = CTF_TEAM2;
 	else {
-		cprint_botsafe(ent, PRINT_HIGH, "Don't know what team the flag is on.\n");
+		cprint_botsafe(other, PRINT_HIGH, "Don't know what team the flag is on.\n");
 		return false;
 	}
 

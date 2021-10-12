@@ -948,7 +948,7 @@ void cprint_botsafe(edict_t* ent, int printlevel, char* fmt, ...)
 	va_list		argptr;
 	char	CPrint2Buff[0x2000]; /*  MrG{DRGN} reduce the size*/
 
-	if (!ent || ent->bot_player)/* MrG{DRGN} */
+	if (!ent || !ent->client || ent->bot_player)/* MrG{DRGN} */
 		return;
 
 	va_start(argptr, fmt);
