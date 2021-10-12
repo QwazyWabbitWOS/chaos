@@ -419,6 +419,10 @@ void Cmd_Use_f(edict_t* ent)
 	if (ent->client->fakedeath > 0)
 		return;
 
+	/* MrG{DRGN} Spectators shouldn't be using anything*/
+	if (ent->client->camera || ent->movetype == MOVETYPE_NOCLIP)
+		return;
+
 	s = gi.args();
 	it = FindItem(s);
 	if (!it)
@@ -454,6 +458,9 @@ void Cmd_Drop_f(edict_t* ent)
 	gitem_t* it;
 	char* s;
 
+	/* MrG{DRGN} Spectators shouldn't be dropping anything*/
+	if (ent->client->camera || ent->movetype == MOVETYPE_NOCLIP)
+		return;
 	//ZOID--special case for tech powerups
 	if (Q_stricmp(gi.args(), "tech") == 0 && (it = CTFWhat_Tech(ent)) != NULL)
 	{
@@ -1032,10 +1039,6 @@ void ClientCommand(edict_t* ent)
 	}
 	if (Q_stricmp(cmd, "say_team") == 0 || Q_stricmp(cmd, "steam") == 0)
 	{
-		/* MrG{DRGN} Spectators don't have teams and shouldn't be spamming macros */
-		if (ent->client->camera || ent->movetype == MOVETYPE_NOCLIP)
-			return;
-
 		CTFSay_Team(ent, gi.args());
 		return;
 	}
@@ -1055,18 +1058,10 @@ void ClientCommand(edict_t* ent)
 
 	if (Q_stricmp(cmd, "use") == 0)
 	{
-		/* MrG{DRGN} Spectators shouldn't be using anything*/
-		if (ent->client->camera || ent->movetype == MOVETYPE_NOCLIP)
-			return;
-
 		Cmd_Use_f(ent);
 	}
 	else if (Q_stricmp(cmd, "drop") == 0)
 	{
-		/* MrG{DRGN} Spectators shouldn't be dropping anything*/
-		if (ent->client->camera || ent->movetype == MOVETYPE_NOCLIP)
-			return;
-
 		/* MrG{DRGN} tech drop prevention */
 		if ((Q_stricmp(gi.args(), "tech") == 0) && (!drop_tech->value))
 		{

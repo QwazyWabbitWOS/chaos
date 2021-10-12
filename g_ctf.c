@@ -2243,6 +2243,10 @@ void CTFSay_Team(edict_t* who, char* msg)
 	if (CheckFlood(who))
 		return;
 
+	/* MrG{DRGN} Spectators don't have teams and shouldn't be spamming macros */
+	if (who->client->camera || who->movetype == MOVETYPE_NOCLIP)
+		return;
+
 	outmsg[0] = 0;
 
 	if (*msg == '\"') {
