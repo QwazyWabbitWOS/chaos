@@ -464,8 +464,18 @@ void Cmd_Drop_f(edict_t* ent)
 	//ZOID--special case for tech powerups
 	if (Q_stricmp(gi.args(), "tech") == 0 && (it = CTFWhat_Tech(ent)) != NULL)
 	{
-		it->drop(ent, it);
-		return;
+
+		/* MrG{DRGN} tech drop prevention */
+		if (!drop_tech->value)
+		{
+			cprint_botsafe(ent, PRINT_HIGH, "Tech drop is disabled by the admin!\n");
+			return;
+		}
+		else
+		{
+			it->drop(ent, it);
+			return;
+		}
 	}
 	//ZOID
 
@@ -1062,14 +1072,7 @@ void ClientCommand(edict_t* ent)
 	}
 	else if (Q_stricmp(cmd, "drop") == 0)
 	{
-		/* MrG{DRGN} tech drop prevention */
-		if ((Q_stricmp(gi.args(), "tech") == 0) && (!drop_tech->value))
-		{
-			cprint_botsafe(ent, PRINT_HIGH, "Tech drop is disabled by the admin!\n");
-			return;
-		}
-		else
-			Cmd_Drop_f(ent);
+		Cmd_Drop_f(ent);
 	}
 	else if (Q_stricmp(cmd, "give") == 0)
 		Cmd_Give_f(ent);
