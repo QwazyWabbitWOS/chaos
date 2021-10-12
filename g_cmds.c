@@ -50,7 +50,6 @@ void SelectNextItem(edict_t* ent, int itflags)
 
 	cl = ent->client;
 
-	
 	if (cl->camera)
 	{
 		CamNext(ent);
@@ -89,7 +88,6 @@ void SelectPrevItem(edict_t* ent, int itflags)
 
 	cl = ent->client;
 
-	
 	if (cl->camera)
 	{
 		CamPrev(ent);
@@ -464,7 +462,6 @@ void Cmd_Drop_f(edict_t* ent)
 	//ZOID--special case for tech powerups
 	if (Q_stricmp(gi.args(), "tech") == 0 && (it = CTFWhat_Tech(ent)) != NULL)
 	{
-
 		/* MrG{DRGN} tech drop prevention */
 		if (!drop_tech->value)
 		{

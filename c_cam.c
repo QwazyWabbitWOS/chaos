@@ -12,11 +12,11 @@ void CreateCamera(edict_t* ent)
 	ent->client->ps.pmove.pm_type = PM_NORMAL;
 	ent->solid = SOLID_BBOX;
 	ent->movetype = MOVETYPE_WALK;
-	ent->size[0] =  32.0;
+	ent->size[0] = 32.0;
 	ent->size[1] = 32.0;
 	ent->size[2] = 56.0;
-	
-	gi.unlinkentity(ent);	
+
+	gi.unlinkentity(ent);
 	ent->groundentity = NULL;
 	ent->takedamage = DAMAGE_NO;
 	ent->movetype = MOVETYPE_FLY;

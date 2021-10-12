@@ -602,7 +602,7 @@ void SV_Physics_Pusher(edict_t* ent)
 		if (!obstacle->inuse && part->inuse)
 			goto retry;
 #endif
-	}
+}
 	else
 	{
 		// the move succeeded, so call all think functions

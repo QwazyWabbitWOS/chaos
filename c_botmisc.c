@@ -341,7 +341,7 @@ void Bot_Spawn(edict_t* ent)
 	gi.unlinkentity(ent);
 	KillBox(ent);
 	gi.linkentity(ent);
-	
+
 	ent->client->newweapon = ent->client->pers.weapon;
 	ChangeWeapon(ent);
 

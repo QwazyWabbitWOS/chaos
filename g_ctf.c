@@ -1124,7 +1124,7 @@ static void CTFSetIDView(edict_t* ent)
 		who = g_edicts + i;
 		if (!who->inuse)
 			continue;
-		if (who->solid == SOLID_NOT||who->solid == SOLID_TRIGGER)
+		if (who->solid == SOLID_NOT || who->solid == SOLID_TRIGGER)
 			continue;
 		VectorSubtract(who->s.origin, ent->s.origin, dir);
 		VectorNormalize(dir);
@@ -2231,7 +2231,7 @@ static void CTFSay_Team_Sight(edict_t* who, char* buf)
 
 void CTFSay_Team(edict_t* who, char* msg)
 {
-	char outmsg[256];
+	char outmsg[512];
 	char buf[1024];
 	int i;
 	char* p;
@@ -2259,7 +2259,7 @@ void CTFSay_Team(edict_t* who, char* msg)
 				CTFSay_Team_Location(who, buf);
 				if (strlen(buf) + (p - outmsg) < sizeof(outmsg) - 2)
 				{
-					Com_strcpy(p, sizeof p, buf);
+					strcpy(p, buf);
 					p += strlen(buf);
 				}
 				break;
@@ -2267,7 +2267,7 @@ void CTFSay_Team(edict_t* who, char* msg)
 				CTFSay_Team_Armor(who, buf);
 				if (strlen(buf) + (p - outmsg) < sizeof(outmsg) - 2)
 				{
-					Com_strcpy(p, sizeof p, buf);
+					strcpy(p, buf);
 					p += strlen(buf);
 				}
 				break;
@@ -2275,7 +2275,7 @@ void CTFSay_Team(edict_t* who, char* msg)
 				CTFSay_Team_Health(who, buf);
 				if (strlen(buf) + (p - outmsg) < sizeof(outmsg) - 2)
 				{
-					Com_strcpy(p, sizeof p, buf);
+					strcpy(p, buf);
 					p += strlen(buf);
 				}
 				break;
@@ -2283,7 +2283,7 @@ void CTFSay_Team(edict_t* who, char* msg)
 				CTFSay_Team_Tech(who, buf);
 				if (strlen(buf) + (p - outmsg) < sizeof(outmsg) - 2)
 				{
-					Com_strcpy(p, sizeof p, buf);
+					strcpy(p, buf);
 					p += strlen(buf);
 				}
 				break;
@@ -2291,7 +2291,7 @@ void CTFSay_Team(edict_t* who, char* msg)
 				CTFSay_Team_Weapon(who, buf);
 				if (strlen(buf) + (p - outmsg) < sizeof(outmsg) - 2)
 				{
-					Com_strcpy(p, sizeof p, buf);
+					strcpy(p, buf);
 					p += strlen(buf);
 				}
 				break;
@@ -2299,7 +2299,7 @@ void CTFSay_Team(edict_t* who, char* msg)
 				CTFSay_Team_Sight(who, buf);
 				if (strlen(buf) + (p - outmsg) < sizeof(outmsg) - 2)
 				{
-					Com_strcpy(p, sizeof p, buf);
+					strcpy(p, buf);
 					p += strlen(buf);
 				}
 				break;
@@ -2313,8 +2313,8 @@ void CTFSay_Team(edict_t* who, char* msg)
 	}
 	*p = 0;
 
-	if (strlen(outmsg) > 150)
-		outmsg[150] = 0;
+	//if (strlen(outmsg) > 150)
+	//	outmsg[150] = 0;
 
 	for (i = 0; i < maxclients->value; i++)
 	{
