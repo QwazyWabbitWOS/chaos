@@ -2137,6 +2137,7 @@ edict_t* Drop_Item(edict_t* ent, gitem_t* item)
 	dropped = G_Spawn();
 
 	dropped->classname = item->classname;
+	dropped->classindex = item->classindex;
 	dropped->item = item;
 	dropped->spawnflags = DROPPED_ITEM;
 	dropped->s.effects = item->world_model_flags;
