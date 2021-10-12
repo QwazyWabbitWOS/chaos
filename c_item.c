@@ -691,7 +691,7 @@ void Grapple_Fire(edict_t* ent)
 		hook->dmg = 15;
 
 	gi.linkentity(hook);
-	DbgPrintf("%s %s index: %d\n", __func__, ent->classname, ent->classindex);
+
 	ent->client->grapple = hook;
 	ent->client->grapple_state = GRAPPLE_INAIR;
 

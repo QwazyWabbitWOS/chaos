@@ -1913,7 +1913,10 @@ void weapon_esupershotgun_fire(edict_t* ent)
 	v[ROLL] = ent->client->v_angle[ROLL];
 	AngleVectors(v, forward, NULL, NULL);
 	fire_eshotgun(ent, start, forward, damage, kick, 300, 300, 1, MOD_ESSHOTGUN);
+
 	chunk1 = G_Spawn();
+	chunk1->classname = "shell";
+	chunk1->classindex = SHELL2;
 	VectorCopy(start, chunk1->s.origin);
 	VectorCopy(ent->s.angles, chunk1->s.angles);
 	chunk1->s.origin[2] += 8;
@@ -1932,15 +1935,18 @@ void weapon_esupershotgun_fire(edict_t* ent)
 	chunk1->s.frame = 0;
 	chunk1->flags = 0;
 	chunk1->s.renderfx = RF_FULLBRIGHT;
-	chunk1->classname = "shell";
 	gi.linkentity(chunk1);
+
 	v[YAW] = ent->client->v_angle[YAW];
 	AngleVectors(v, forward, NULL, NULL);
 	fire_eshotgun(ent, start, forward, damage, kick, 300, 300, 1, MOD_ESSHOTGUN);
 	v[YAW] = ent->client->v_angle[YAW] + 3;
 	AngleVectors(v, forward, NULL, NULL);
 	fire_eshotgun(ent, start, forward, damage, kick, 300, 300, 1, MOD_ESSHOTGUN);
+
 	chunk2 = G_Spawn();
+	chunk1->classname = "shell";
+	chunk1->classindex = SHELL3;
 	VectorCopy(start, chunk2->s.origin);
 	VectorCopy(ent->s.angles, chunk2->s.angles);
 	chunk2->s.origin[2] += 8;
@@ -1959,8 +1965,8 @@ void weapon_esupershotgun_fire(edict_t* ent)
 	chunk2->s.frame = 0;
 	chunk2->flags = 0;
 	chunk2->s.renderfx = RF_FULLBRIGHT;
-	chunk2->classname = "shell";
 	gi.linkentity(chunk2);
+
 	// send muzzle flash
 	gi.WriteByte(svc_muzzleflash);
 	gi.WriteShort(ent - g_edicts);

@@ -85,8 +85,22 @@ qboolean SV_RunThink(edict_t* ent)
 		gi.error("NULL ent->think");
 		return false;
 	}
+
+	//int set = 0;
+
+	//if (developer->value && (ent->classindex == SHELL || ent->classindex == GIB))
+	//{
+	//	gi.dprintf("%s 1 movetype %d inuse: %d classname: %s classindex: %d time: %.1f\n",
+	//		__func__, ent->movetype, ent->inuse, ent->classname, ent->classindex, level.time);
+	//	set = 1;
+	//}
 	ent->think(ent);
 
+	//if (developer->value && set)
+	//{
+	//	gi.dprintf("%s 2 movetype %d inuse: %d classname: %s classindex: %d time: %.1f\n",
+	//		__func__, ent->movetype, ent->inuse, ent->classname, ent->classindex, level.time);
+	//}
 	return false;
 }
 
@@ -658,8 +672,18 @@ void SV_Physics_Toss(edict_t* ent)
 	qboolean	isinwater;
 	vec3_t		old_origin = { 0 };
 
+	//if (developer->value && (ent->classindex == NOCLASS || ent->classindex == GIB))
+	//	gi.dprintf("%s 1 movetype %d inuse: %d classname: %s index: %d time: %.1f\n",
+	//		__func__, ent->movetype, ent->inuse, ent->classname, ent->classindex, level.time);
+
 	// regular thinking
 	SV_RunThink(ent);
+	if (!ent->inuse)
+		return;
+
+	//if (developer->value && (ent->classindex == NOCLASS || ent->classindex == GIB))
+	//	gi.dprintf("%s 2 movetype %d inuse: %d classname: %s index: %d time: %.1f\n",
+	//		__func__, ent->movetype, ent->inuse, ent->classname, ent->classindex, level.time);
 
 	// if not a team captain, so movement will be handled elsewhere
 	if (ent->flags & FL_TEAMSLAVE)

@@ -1193,6 +1193,8 @@ void Blaster_Fire(edict_t* ent, vec3_t g_offset, int damage, qboolean hyper, int
 		gi.sound(ent, CHAN_WEAPON, gi.soundindex("weapons/ak42.wav"), 1, ATTN_NORM, 0);
 
 		chunk = G_Spawn();
+		chunk->classname = "shell";
+		chunk->classindex = SHELL0;
 		VectorCopy(start, chunk->s.origin);
 		VectorCopy(ent->s.angles, chunk->s.angles);
 		chunk->s.origin[2] += 8;
@@ -1201,7 +1203,6 @@ void Blaster_Fire(edict_t* ent, vec3_t g_offset, int damage, qboolean hyper, int
 		chunk->velocity[0] = right[0] * -80 - random() * 30;
 		chunk->velocity[1] = right[1] * -80 - random() * 30;
 		chunk->velocity[2] = 80;
-
 		chunk->movetype = MOVETYPE_BOUNCE;
 		chunk->solid = SOLID_NOT;
 		chunk->avelocity[0] = random() * 500;
@@ -1212,7 +1213,6 @@ void Blaster_Fire(edict_t* ent, vec3_t g_offset, int damage, qboolean hyper, int
 		chunk->s.frame = 0;
 		chunk->flags = 0;
 		chunk->s.renderfx = RF_FULLBRIGHT;
-		chunk->classname = "shell";
 		gi.linkentity(chunk);
 	}
 
@@ -1612,6 +1612,8 @@ void weapon_supershotgun_fire(edict_t* ent)
 	fire_shotgun(ent, start, forward, damage, kick, DEFAULT_SHOTGUN_HSPREAD, DEFAULT_SHOTGUN_VSPREAD, DEFAULT_SSHOTGUN_COUNT / 2, MOD_SSHOTGUN);
 
 	chunk1 = G_Spawn();
+	chunk1->classname = "shell";
+	chunk1->classindex = SHELL1;
 	VectorCopy(start, chunk1->s.origin);
 	VectorCopy(ent->s.angles, chunk1->s.angles);
 	chunk1->s.origin[2] += 8;
@@ -1630,12 +1632,15 @@ void weapon_supershotgun_fire(edict_t* ent)
 	chunk1->s.frame = 0;
 	chunk1->flags = 0;
 	chunk1->s.renderfx = RF_FULLBRIGHT;
-	chunk1->classname = "shell";
 	gi.linkentity(chunk1);
+
 	v[YAW] = ent->client->v_angle[YAW] + 5;
 	AngleVectors(v, forward, NULL, NULL);
 	fire_shotgun(ent, start, forward, damage, kick, DEFAULT_SHOTGUN_HSPREAD, DEFAULT_SHOTGUN_VSPREAD, DEFAULT_SSHOTGUN_COUNT / 2, MOD_SSHOTGUN);
+
 	chunk2 = G_Spawn();
+	chunk2->classname = "shell";
+	chunk2->classindex = SHELL1;
 	VectorCopy(start, chunk2->s.origin);
 	VectorCopy(ent->s.angles, chunk2->s.angles);
 	chunk2->s.origin[2] += 8;
@@ -1654,8 +1659,8 @@ void weapon_supershotgun_fire(edict_t* ent)
 	chunk2->s.frame = 0;
 	chunk2->flags = 0;
 	chunk2->s.renderfx = RF_FULLBRIGHT;
-	chunk2->classname = "shell";
 	gi.linkentity(chunk2);
+
 	// send muzzle flash
 	gi.WriteByte(svc_muzzleflash);
 	gi.WriteShort(ent - g_edicts);
