@@ -550,8 +550,6 @@ float Bot_Fire_Freq(edict_t* ent)
 		return  1;
 }
 
-void Turret_Die(edict_t* ent, edict_t* inflictor, edict_t* attacker, int damage, vec3_t point);
-
 void Bot_BestMidWeapon(edict_t* self)
 {
 	gclient_t* client;
@@ -1267,10 +1265,6 @@ qboolean Bot_CanPickupItem(edict_t* ent, edict_t* eitem)
 	return 1;
 }
 
-extern gitem_armor_t jacketarmor_info;
-extern gitem_armor_t combatarmor_info;
-extern gitem_armor_t bodyarmor_info;
-
 int Bot_CanPickupArmor(edict_t* self, edict_t* ent)
 {
 	int				old_armor_index;
@@ -1376,51 +1370,7 @@ qboolean Bot_CanReachSpotDirectly(edict_t* ent, vec3_t target)
 	//if ((dist = VectorLength(dir)) < 32)
 	return true;
 }
-/*VectorNormalize2(dir, dir);
 
-inc = 12;		// do more thorough checking
-
-for (progressive_dist = 32; progressive_dist < (dist - 16) ; progressive_dist += inc)
-{
-	VectorMA(start, progressive_dist, dir, midpos2);
-	VectorSubtract(midpos2, tv(0,0,28), end_trace);
-
-	trace = gi.trace(midpos2, mins, self->maxs, end_trace, self, MASK_SOLID);
-
-	if (trace.fraction == 1)
-		return false;
-}
-
-retu
-}
-
-	vec3_t	dir, midpos, end, start;
-	vec3_t              mins = {-5, -5, -10};
-	vec3_t              maxs = {5, 5, 10};
-	trace_t	tr;
-
-	VectorCopy(self->s.origin, start);
-
-	tr = gi.trace(start, NULL, NULL, target, self, MASK_SOLID);
-
-	if (tr.fraction == 1)
-		return false;
-
-	VectorCopy(self->s.origin, start);
-
-	VectorSubtract(target, self->s.origin, dir);
-	VectorMA(start, 0.5, dir, midpos);
-
-	VectorSubtract(midpos, tv(0,0,50), end);
-
-	tr = gi.trace(midpos, mins, maxs, end, self, MASK_SOLID);
-
-	if (tr.fraction == 1)
-		return false;
-
-	return true;
-}
-*/
 qboolean Bot_CheckObstacle(edict_t* self)
 {
 	vec3_t  mins = { -16, -16, -10 }, maxs = { 16, 16, 0 };
@@ -1441,11 +1391,6 @@ qboolean Bot_CheckObstacle(edict_t* self)
 
 	return false;
 }
-
-qboolean	Pickup_Weapon(edict_t* ent, edict_t* other);
-qboolean	Pickup_NoAmmoWeapon(edict_t* ent, edict_t* other);
-qboolean	Pickup_Health(edict_t* ent, edict_t* other);
-qboolean	Pickup_Ammo(edict_t* ent, edict_t* other);
 
 void AddItemToList(edict_t* ent)
 {

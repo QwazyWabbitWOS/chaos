@@ -347,24 +347,29 @@ void Turret_Die(edict_t* ent, edict_t* inflictor, edict_t* attacker, int damage,
 		return;
 	}
 
-	if (attacker != ent->owner && !TeamMembers(ent->owner, attacker)) /* MrG{DRGN} don't get teammates get frags for killing their partner's turrets. */
+	/* MrG{DRGN} don't get teammates get frags for killing their partner's turrets. */
+	if (attacker != ent->owner && !TeamMembers(ent->owner, attacker))
 	{
 		if (attacker->client)
 		{
 			attacker->client->resp.score += 1;
-			bprint_botsafe(PRINT_MEDIUM, "%s receives an extra frag for killing %s's turret.\n", attacker->client->pers.netname, ent->owner->client->pers.netname);
+			bprint_botsafe(PRINT_MEDIUM, "%s receives an extra frag for killing %s's turret.\n",
+				attacker->client->pers.netname, ent->owner->client->pers.netname);
 		}
 		else
-			if (attacker->owner && attacker->owner->client) //QW FIXME: bots don't own turrets? needs testing. nullptr exception if owner is nil
+			//QW FIXME: bots don't own turrets? needs testing. nullptr exception if owner is nil
+			if (attacker->owner && attacker->owner->client)
 			{
 				attacker->owner->client->resp.score += 1;
-				bprint_botsafe(PRINT_MEDIUM, "%s receives an extra frag for killing %s's turret.\n", attacker->owner->client->pers.netname, ent->owner->client->pers.netname);
+				bprint_botsafe(PRINT_MEDIUM, "%s receives an extra frag for killing %s's turret.\n",
+					attacker->owner->client->pers.netname, ent->owner->client->pers.netname);
 			}
 	}
 	else if (TeamMembers(ent->owner, attacker))
 	{
 		attacker->client->resp.score -= 1;
-		bprint_botsafe(PRINT_MEDIUM, "%s loses a frag for killing %s's turret.\n", attacker->client->pers.netname, ent->owner->client->pers.netname);
+		bprint_botsafe(PRINT_MEDIUM, "%s loses a frag for killing %s's turret.\n",
+			attacker->client->pers.netname, ent->owner->client->pers.netname);
 	}
 	else
 		bprint_botsafe(PRINT_HIGH, "%s killed their own turret!\n", attacker->client->pers.netname);
@@ -1265,7 +1270,10 @@ void Weapon_RocketTurret(edict_t* ent)
 			return;
 		}
 
-		if ((ent->client->ps.gunframe == 29) || (ent->client->ps.gunframe == 34) || (ent->client->ps.gunframe == 39) || (ent->client->ps.gunframe == 48))
+		if ((ent->client->ps.gunframe == 29) ||
+			(ent->client->ps.gunframe == 34) ||
+			(ent->client->ps.gunframe == 39) ||
+			(ent->client->ps.gunframe == 48))
 		{
 			if (rand() & 15)
 				return;
@@ -2403,6 +2411,7 @@ void Arrow_Explode(edict_t* ent)
 
 	G_FreeEdict(ent);
 }
+
 void earrow_touch(edict_t* self, edict_t* other, cplane_t* plane, csurface_t* surf)
 {
 	/* MrG{DRGN}*/
@@ -3957,8 +3966,6 @@ void Weapon_PoisonGrenade(edict_t* ent)
 //----------------------------------------------------------------------------------------------
 // Proximity Mine
 //----------------------------------------------------------------------------------------------
-
-void Proxy_Die(edict_t* self, edict_t* inflictor, edict_t* attacker, int damage, vec3_t point);
 
 void Proxy_Explode(edict_t* ent)
 {

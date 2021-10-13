@@ -4,9 +4,11 @@
 
 /*
 
-pushmove objects do not obey gravity, and do not interact with each other or trigger fields, but block normal movement and push normal objects when they move.
+pushmove objects do not obey gravity, and do not interact with each other or
+trigger fields, but block normal movement and push normal objects when they move.
 
-onground is set for toss objects when they come to a complete rest.  it is set for steping or walking objects
+onground is set for toss objects when they come to a complete rest.
+it is set for stepping or walking objects
 
 doors, plats, etc are SOLID_BSP, and MOVETYPE_PUSH
 bonus items are SOLID_TRIGGER touch, and MOVETYPE_TOSS
@@ -171,9 +173,10 @@ Returns the clipflags if the velocity was modified (hit something solid)
 4 = dead stop
 ============
 */
-#define	MAX_CLIP_PLANES	5
 int SV_FlyMove(edict_t* ent, float time, int mask)
 {
+#define	MAX_CLIP_PLANES	5
+
 	edict_t* hit;
 	int			bumpcount, numbumps;
 	vec3_t		dir;
@@ -602,7 +605,7 @@ void SV_Physics_Pusher(edict_t* ent)
 		if (!obstacle->inuse && part->inuse)
 			goto retry;
 #endif
-}
+	}
 	else
 	{
 		// the move succeeded, so call all think functions

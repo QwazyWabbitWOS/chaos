@@ -432,6 +432,10 @@ extern	int	jacket_armor_index;
 extern	int	combat_armor_index;
 extern	int	body_armor_index;
 
+extern gitem_armor_t jacketarmor_info;
+extern gitem_armor_t combatarmor_info;
+extern gitem_armor_t bodyarmor_info;
+
 // means of death
 #define MOD_UNKNOWN			0
 #define MOD_BLASTER			1
@@ -801,6 +805,8 @@ void P_ProjectSource(gclient_t* client, vec3_t point, vec3_t distance, vec3_t fo
 void Weapon_Generic(edict_t* ent, int FRAME_ACTIVATE_LAST, int FRAME_FIRE_LAST, int FRAME_IDLE_LAST, int FRAME_DEACTIVATE_LAST, int* pause_frames, int* fire_frames, void (*fire)(edict_t* ent));
 qboolean	Pickup_Weapon(edict_t* ent, edict_t* other);
 qboolean	Pickup_NoAmmoWeapon(edict_t* ent, edict_t* other);
+qboolean	Pickup_Health(edict_t* ent, edict_t* other);
+qboolean	Pickup_Ammo(edict_t* ent, edict_t* other);
 void NoAmmoWeaponChange(edict_t* ent);
 void Blaster_Fire(edict_t* ent, vec3_t g_offset, int damage, qboolean hyper, int effect);
 void Weapon_Shotgun(edict_t* ent);

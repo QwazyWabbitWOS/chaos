@@ -285,13 +285,13 @@ char* vtos(vec3_t v)
 	return s;
 }
 
-vec3_t VEC_UP = { 0, -1, 0 };
-vec3_t MOVEDIR_UP = { 0, 0, 1 };
-vec3_t VEC_DOWN = { 0, -2, 0 };
-vec3_t MOVEDIR_DOWN = { 0, 0, -1 };
-
 void G_SetMovedir(vec3_t angles, vec3_t movedir)
 {
+	vec3_t VEC_UP = { 0, -1, 0 };
+	vec3_t MOVEDIR_UP = { 0, 0, 1 };
+	vec3_t VEC_DOWN = { 0, -2, 0 };
+	vec3_t MOVEDIR_DOWN = { 0, 0, -1 };
+
 	if (VectorCompare(angles, VEC_UP))
 	{
 		VectorCopy(MOVEDIR_UP, movedir);
@@ -459,14 +459,14 @@ G_TouchTriggers
 void	G_TouchTriggers(edict_t* ent)
 {
 	int			i, num;
-	edict_t* touch[MAX_EDICTS], * hit;
+	edict_t* touch[MAX_EDICTS];
+	edict_t* hit;
 
 	// dead things don't activate triggers!
 	if ((ent->client) && (ent->health <= 0))
 		return;
 
-	num = gi.BoxEdicts(ent->absmin, ent->absmax, touch
-		, MAX_EDICTS, AREA_TRIGGERS);
+	num = gi.BoxEdicts(ent->absmin, ent->absmax, touch, MAX_EDICTS, AREA_TRIGGERS);
 
 	// be careful, it is possible to have an entity in this
 	// list removed before we get to it (killtriggered)
@@ -521,8 +521,6 @@ Kill box
 
 /*
 =================
-KillBox
-
 Kills all entities that would touch the proposed new positioning
 of ent.  Ent should be unlinked before calling this!
 =================
