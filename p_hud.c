@@ -318,10 +318,7 @@ void DeathmatchScoreboardMessage(edict_t* ent, edict_t* killer /* MrG{DRGN} can 
 		for (i = 0; i < maxclients->value; i++) {
 			cl_ent = g_edicts + 1 + i;
 			cl = &game.clients[i];
-			if (!cl_ent->inuse ||
-				(cl_ent->health <= 0) ||
-				(cl_ent->bot_player) ||
-				(cl_ent->solid != SOLID_TRIGGER && cl_ent->solid != SOLID_NOT))
+			if (!cl_ent->inuse || (!cl_ent->client->camera))
 				continue;
 
 			if (!k) {
