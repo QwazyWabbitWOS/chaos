@@ -922,7 +922,7 @@ void bprint_botsafe(int printlevel, char* fmt, ...)
 
 	va_list		argptr;
 	edict_t* cl_ent;
-	char	BPrint2Buff[0x2000]; /*  MrG{DRGN} reduce the size*/
+	char	BPrint2Buff[0x2000];
 
 	va_start(argptr, fmt);
 	vsnprintf(BPrint2Buff, sizeof(BPrint2Buff), fmt, argptr);
@@ -935,7 +935,7 @@ void bprint_botsafe(int printlevel, char* fmt, ...)
 	{
 		cl_ent = g_edicts + 1 + i;
 
-		if (!cl_ent->inuse || cl_ent->bot_player) /* MrG{DRGN} */
+		if (!cl_ent->inuse || !cl_ent->client || cl_ent->bot_player)
 			continue;
 
 		gi.cprintf(cl_ent, printlevel, BPrint2Buff);
@@ -946,7 +946,7 @@ void bprint_botsafe(int printlevel, char* fmt, ...)
 void cprint_botsafe(edict_t* ent, int printlevel, char* fmt, ...)
 {
 	va_list		argptr;
-	char	CPrint2Buff[0x2000]; /*  MrG{DRGN} reduce the size*/
+	char	CPrint2Buff[0x2000];
 
 	if (!ent || !ent->client || ent->bot_player)/* MrG{DRGN} */
 		return;
@@ -1223,6 +1223,7 @@ void Use_Class5(edict_t* ent)
 			ent->client->newweapon = it_airfist;
 	}
 }
+
 void Use_Class6(edict_t* ent)
 {
 	if (ent->client->pers.weapon == it_grenadelauncher)
@@ -1289,6 +1290,7 @@ void Use_Class6(edict_t* ent)
 			ent->client->newweapon = it_proxyminelauncher;
 	}
 }
+
 void Use_Class7(edict_t* ent)
 {
 	if (ent->client->pers.weapon == it_rocketlauncher)
@@ -1313,6 +1315,7 @@ void Use_Class7(edict_t* ent)
 			ent->client->newweapon = it_hominglauncher;
 	}
 }
+
 void Use_Class8(edict_t* ent)
 {
 	if (ent->client->pers.weapon != it_hyperblaster)
@@ -1321,6 +1324,7 @@ void Use_Class8(edict_t* ent)
 			ent->client->newweapon = it_hyperblaster;
 	}
 }
+
 void Use_Class9(edict_t* ent)
 {
 	if (ent->client->pers.weapon == it_railgun)
@@ -1454,6 +1458,7 @@ void Use_Grenades(edict_t* ent)
 			ent->client->newweapon = it_poisongrenades;
 	}
 }
+
 void Cmd_Grapple_f(edict_t* ent)
 {
 	/* MrG{DRGN} if you haven't joined a team yet. you can't use the hook! */
@@ -1641,7 +1646,7 @@ void Cmd_PlaceNode_f(edict_t* ent)
 	else
 		cprint_botsafe(ent, PRINT_HIGH, "Dynamic Node Table Generation is off activate it with <set dntg 1>!\n");
 }
-/* END */
+/* END Node Table Tools */
 
 void Cmd_Join_Team_f(edict_t* ent)
 {
