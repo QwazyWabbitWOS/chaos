@@ -203,22 +203,21 @@ void DeathmatchScoreboardMessage(edict_t* ent, edict_t* killer /* MrG{DRGN} can 
 {
 	char	entry[1024];
 	char	string[1400] = { 0 };
-	size_t	stringlength;
+	size_t	stringlength = 0;
 	int		i;
 	int		j = 0;
 	int		k;
 	int		n = 0, maxsize = 1400;
 	size_t	len = 0;
 	int		last[2] = { 0 };
-	last[0] = last[1] = 0;
 	int		sorted[MAX_CLIENTS] = { 0 };
 	int		sortedscores[MAX_CLIENTS] = { 0 };
-	int		score, total;
+	int		score;
+	int		total = 0;
 	int		x, y;
 	gclient_t* cl;
 	edict_t* cl_ent;
 	char* tag;
-	last[0] = last[1] = 0;
 
 	if (!ent)
 		return;
@@ -239,9 +238,10 @@ void DeathmatchScoreboardMessage(edict_t* ent, edict_t* killer /* MrG{DRGN} can 
 		for (i = 0; i < game.maxclients; i++)
 		{
 			cl_ent = g_edicts + 1 + i;
-			if ((!cl_ent->inuse) ||
-				(cl_ent->client->camera))
+
+			if ((!cl_ent->inuse) || (cl_ent->client->camera))
 				continue;
+			
 			score = game.clients[i].resp.score;
 			for (j = 0; j < total; j++)
 			{
@@ -260,7 +260,6 @@ void DeathmatchScoreboardMessage(edict_t* ent, edict_t* killer /* MrG{DRGN} can 
 
 		// print level name and exit rules
 		string[0] = 0;
-
 		stringlength = strlen(string);
 
 		// add the clients in sorted order
@@ -272,70 +271,79 @@ void DeathmatchScoreboardMessage(edict_t* ent, edict_t* killer /* MrG{DRGN} can 
 			cl = &game.clients[sorted[i]];
 			cl_ent = g_edicts + 1 + sorted[i];
 
-			x = (i >= 6) ? 160 : 0;
-			y = 32 + 32 * (i % 6);
+			x = (i >= 6) ? 160 : 0; // column selection
+			y = 32 + 32 * (i % 6); // dogtag is 32 units high (4 lines * 8 high)
+			last[i] = y; // stack count per column
 
 			// add a dogtag
 			if (cl_ent == ent)
-				tag = "tag1";
+				tag = "tag1"; // victim
 			else if (cl_ent == killer)
-				tag = "tag2";
+				tag = "tag2"; // victor
 			else
-				tag = NULL;
-			if (tag)
+				tag = NULL; // transparent for others
+
+			if (tag) // they're tagged so show the plates
 			{
 				Com_sprintf(entry, sizeof entry,
 					"xv %i yv %i picn %s ", x + 32, y, tag);
 				j = (int)strlen(entry);
 				if (stringlength + j > sizeof entry)
 					break;
-				strcpy(string + stringlength, entry); //QW// Can't use Com_strcpy here.
+				strcpy(string + stringlength, entry); //QW// safe, do not change.
 				stringlength += j;
 			}
 
-			// send the layout
+			int time_in = level.framenum - cl->resp.enterframe;
+
+			// send the layout data per player
 			Com_sprintf(entry, sizeof entry,
 				"client %i %i %i %i %i %i ",
-				x, y, sorted[i], cl->resp.score, cl->ping, (level.framenum - cl->resp.enterframe) / 600);
+				x, y, sorted[i],
+				cl->resp.score,
+				cl->ping, time_in / 600);
 			j = (int)strlen(entry);
 			if (stringlength + j > sizeof entry)
 				break;
 			strcpy(string + stringlength, entry);  //QW// Can't use Com_strcpy here.
 			stringlength += j;
 		}
-	}
+	} // end of player plate display, two columns of 6.
 
-	// put in spectators if we have enough room
-	if (last[0] > last[1])
-		j = last[0];
-	else
-		j = last[1];
-	j = (j + 2) * 8 + 42;
+	// We actually only care about the first column.
+	// By the time we get here, last[0] will be 0 or 32 and
+	// last[1] will be 0 or 64, total is the number of active players
+	// listed in the scoreboard and absolute showable cap is 12.
+	j = (total % 12) * last[0] + 32; // where the next plate would be
+	if (total > 6)
+		j = 32 * 7; // this is as low as we go after 6 players
 
-	k = 0;
+	k = 0; // trapdoor for spectators line.
 	n += 16;
 	if (maxsize - len > 50) {
 		for (i = 0; i < maxclients->value; i++) {
 			cl_ent = g_edicts + 1 + i;
 			cl = &game.clients[i];
+			// excluding non-spectators and quitters
 			if (!cl_ent->inuse || (!cl_ent->client->camera))
 				continue;
 
-			if (!k) {
+			if (!k) { // print the spectator header line
 				k = 1;
-				j += 10;
+				//j += 10; // just below last plate in column 1
 				sprintf(entry, "xv 0 yv %d string2 \"Spectators\" ", j);
 				Com_strcat(string, sizeof(string), entry);
 				len = strlen(string);
-				j += 8;
+				j += 8; // next line
 			}
 
+			// formulate the CTF style info
 			sprintf(entry + strlen(entry),
 				"ctf %i %i %i %i %i ",
-				(n & 1) ? 160 : 0, // x
+				(n & 1) ? 160 : 0, // two columns
 
 				j, // y
-				i, // playernum
+				i, // client number
 				cl->resp.score,
 				cl->ping > 999 ? 999 : cl->ping);
 			if (maxsize - len > strlen(entry)) {
@@ -353,6 +361,10 @@ void DeathmatchScoreboardMessage(edict_t* ent, edict_t* killer /* MrG{DRGN} can 
 		ShowScanner(ent, string);
 	gi.WriteByte(svc_layout);
 	gi.WriteString(string);
+
+	//DbgPrintf(string);
+	//DbgPrintf("\n");
+	//DbgPrintf("J is: %d last[0] is %d last[1] is %d total is %d\n", j, last[0], last[1], total);
 }
 
 /*
