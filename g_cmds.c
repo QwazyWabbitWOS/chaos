@@ -418,7 +418,7 @@ void Cmd_Use_f(edict_t* ent)
 		return;
 
 	/* MrG{DRGN} Spectators shouldn't be using anything*/
-	if (ent->client->camera > 0 || ent->movetype == MOVETYPE_NOCLIP)
+	if (ent->client->camera || ent->movetype == MOVETYPE_NOCLIP)
 		return;
 
 	s = gi.args();
@@ -537,7 +537,7 @@ void Cmd_Inven_f(edict_t* ent)
 		return;
 	}
 	//ZOID
-	if (ent->client->camera > 0 || ent->movetype == MOVETYPE_NOCLIP)
+	if (ent->client->camera || ent->movetype == MOVETYPE_NOCLIP)
 		return;
 	if (cl->showinventory)
 	{
@@ -579,7 +579,7 @@ void Cmd_InvUse_f(edict_t* ent)
 		return;
 	}
 	//ZOID
-	if (ent->client->camera > 0 || ent->movetype == MOVETYPE_NOCLIP)
+	if (ent->client->camera || ent->movetype == MOVETYPE_NOCLIP)
 		return;
 	ValidateSelectedItem(ent);
 
