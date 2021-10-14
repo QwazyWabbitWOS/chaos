@@ -11,8 +11,9 @@ INTERMISSION
 
 void MoveClientToIntermission(edict_t* ent)
 {
-	if (Q_stricmp(ent->classname, "bot") != 0)
+	if (!ent->bot_player)
 		ent->client->showscores = true;
+
 	VectorCopy(level.intermission_origin, ent->s.origin);
 	/* MrG{DRGN}
 	ent->client->ps.pmove.origin[0] = level.intermission_origin[0] * 8;
@@ -102,7 +103,7 @@ void BeginIntermission(edict_t* targ)
 		}
 		if (client->health <= 0)
 		{
-			if (Q_stricmp(client->classname, "bot") == 0)
+			if (client->classindex == BOT)
 				Bot_Respawn(client);
 			else
 				respawn(client);
@@ -178,7 +179,6 @@ void BeginIntermission(edict_t* targ)
 		client = g_edicts + 1 + i;
 		if (!client->inuse)
 			continue;
-		//if (Q_stricmp (client->classname, "bot") != 0)
 		MoveClientToIntermission(client);
 	}
 
@@ -202,14 +202,13 @@ Tag killee and killer with appropriate plaques.
 void DeathmatchScoreboardMessage(edict_t* ent, edict_t* killer /* MrG{DRGN} can be NULL */)
 {
 	char	entry[1024];
-	char	string[1400] = { 0 };
+	char	string[LAYOUT_MAX_LENGTH] = { 0 };
 	size_t	stringlength = 0;
 	int		i;
 	int		j = 0;
 	int		k;
-	int		n = 0, maxsize = 1400;
+	int		n = 0, maxsize = LAYOUT_MAX_LENGTH;
 	size_t	len = 0;
-	int		last[2] = { 0 };
 	int		sorted[MAX_CLIENTS] = { 0 };
 	int		sortedscores[MAX_CLIENTS] = { 0 };
 	int		score;
@@ -234,7 +233,6 @@ void DeathmatchScoreboardMessage(edict_t* ent, edict_t* killer /* MrG{DRGN} can 
 		}
 
 		// sort the clients by score
-		total = 0;
 		for (i = 0; i < game.maxclients; i++)
 		{
 			cl_ent = g_edicts + 1 + i;
@@ -273,7 +271,6 @@ void DeathmatchScoreboardMessage(edict_t* ent, edict_t* killer /* MrG{DRGN} can 
 
 			x = (i >= 6) ? 160 : 0; // column selection
 			y = 32 + 32 * (i % 6); // dogtag is 32 units high (4 lines * 8 high)
-			last[i] = y; // stack count per column
 
 			// add a dogtag
 			if (cl_ent == ent)
@@ -308,15 +305,12 @@ void DeathmatchScoreboardMessage(edict_t* ent, edict_t* killer /* MrG{DRGN} can 
 			strcpy(string + stringlength, entry);  //QW// Can't use Com_strcpy here.
 			stringlength += j;
 		}
-	} // end of player plate display, two columns of 6.
+	} // End of regular scoreboard.
 
 	// We actually only care about the first column.
-	// By the time we get here, last[0] will be 0 or 32 and
-	// last[1] will be 0 or 64, total is the number of active players
-	// listed in the scoreboard and absolute showable cap is 12.
-	j = (total % 12) * last[0] + 32; // where the next plate would be
+	j = (total % 12) * 32 + 40; // 1 line lower than last plate
 	if (total > 6)
-		j = 32 * 7; // this is as low as we go after 6 players
+		j = 32 * 7 + 8; // this is as low as we go after 6 players
 
 	k = 0; // trapdoor for spectators line.
 	n += 16;
@@ -330,23 +324,22 @@ void DeathmatchScoreboardMessage(edict_t* ent, edict_t* killer /* MrG{DRGN} can 
 
 			if (!k) { // print the spectator header line
 				k = 1;
-				//j += 10; // just below last plate in column 1
-				sprintf(entry, "xv 0 yv %d string2 \"Spectators\" ", j);
+				sprintf(entry, "xv 0 yv %d string2 \"Spectators:\" ", j);
 				Com_strcat(string, sizeof(string), entry);
 				len = strlen(string);
 				j += 8; // next line
 			}
 
-			// formulate the CTF style info
+			// compose the CTF style info
 			sprintf(entry + strlen(entry),
 				"ctf %i %i %i %i %i ",
 				(n & 1) ? 160 : 0, // two columns
-
 				j, // y
 				i, // client number
 				cl->resp.score,
 				cl->ping > 999 ? 999 : cl->ping);
-			if (maxsize - len > strlen(entry)) {
+			if (maxsize - len > strlen(entry)) 
+			{
 				Com_strcat(string, sizeof(string), entry);
 				len = strlen(string);
 			}
@@ -362,9 +355,7 @@ void DeathmatchScoreboardMessage(edict_t* ent, edict_t* killer /* MrG{DRGN} can 
 	gi.WriteByte(svc_layout);
 	gi.WriteString(string);
 
-	//DbgPrintf(string);
-	//DbgPrintf("\n");
-	//DbgPrintf("J is: %d last[0] is %d last[1] is %d total is %d\n", j, last[0], last[1], total);
+	//DbgPrintf("%s\n", string);
 }
 
 /*
