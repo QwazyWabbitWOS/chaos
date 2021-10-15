@@ -1524,22 +1524,7 @@ void Cmd_Camera_f(edict_t* ent)
 	{
 		if (ent->client->camera)
 		{
-			char name[MAX_INFO_KEY], skin[MAX_INFO_KEY], hand[MAX_INFO_KEY], fov[MAX_INFO_KEY];
-
-			Com_sprintf(name, sizeof name, Info_ValueForKey(ent->client->pers.userinfo, "name"));
-			Com_sprintf(skin, sizeof skin, Info_ValueForKey(ent->client->pers.userinfo, "skin"));
-			Com_sprintf(hand, sizeof hand, Info_ValueForKey(ent->client->pers.userinfo, "hand"));
-			Com_sprintf(fov, sizeof fov, Info_ValueForKey(ent->client->pers.userinfo, "fov"));
-
-			ClientDisconnect(ent);
-			ClientConnect(ent, ent->client->pers.userinfo);
-			Info_SetValueForKey(ent->client->pers.userinfo, "name", name);
-			Info_SetValueForKey(ent->client->pers.userinfo, "skin", skin);
-			Info_SetValueForKey(ent->client->pers.userinfo, "hand", hand);
-			Info_SetValueForKey(ent->client->pers.userinfo, "fov", fov);
-
-			//ent->client->resp.fov_start = ent->client->ps.fov;
-
+			PutClientInServer(ent);
 			ClientBegin(ent);
 			gi.cprintf(ent, PRINT_HIGH, "Camera OFF!\n");
 		}
