@@ -1711,6 +1711,7 @@ void PutClientInServer(edict_t* ent)
 		G_FreeEdict(client->teleporter);
 
 	//ZOID
+	if (ctf->value)	  // MrG{DRGN} to prevent CTFJoinMenu from popping up in non- CTF mode
 	if (CTFStartClient(ent))
 		return;
 	//ZOID

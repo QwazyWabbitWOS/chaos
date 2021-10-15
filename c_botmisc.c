@@ -1230,6 +1230,61 @@ qboolean Bot_CanPickupItem(edict_t* ent, edict_t* eitem)
 	if (item == it_jetpack && ent->client->pers.inventory[ITEM_INDEX(it_jetpack)] > 0 && ent->client->jet_remaining == 600)
 		return 0;
 
+	// MrG{DRGN} if they already have a weapon don't go for duplicates!
+	// class 10
+	if (item == it_bfg && ent->client->pers.inventory[ITEM_INDEX(it_bfg)])
+		return 0;
+
+	// class 9
+	if (item == it_railgun && ent->client->pers.inventory[ITEM_INDEX(it_railgun)])
+		return 0;
+	if (item == it_buzzsaw && ent->client->pers.inventory[ITEM_INDEX(it_buzzsaw)])
+		return 0;
+
+	// class 8
+	if (item == it_hyperblaster && ent->client->pers.inventory[ITEM_INDEX(it_hyperblaster)])
+		return 0;
+
+	// class 7
+	if (item == it_rocketlauncher && ent->client->pers.inventory[ITEM_INDEX(it_rocketlauncher)])
+		return 0;
+	if (item == it_hominglauncher && ent->client->pers.inventory[ITEM_INDEX(it_hominglauncher)])
+		return 0;
+
+	// class 6
+	if (item == it_grenadelauncher && ent->client->pers.inventory[ITEM_INDEX(it_grenadelauncher)])
+		return 0;
+	if (item == it_proxyminelauncher && ent->client->pers.inventory[ITEM_INDEX(it_proxyminelauncher)])
+		return 0;
+	if (item == it_poisongrenadelauncher && ent->client->pers.inventory[ITEM_INDEX(it_poisongrenadelauncher)])
+		return 0;
+	if (item == it_flashgrenadelauncher && ent->client->pers.inventory[ITEM_INDEX(it_flashgrenadelauncher)])
+		return 0;
+	
+	// class 5
+	if (item == it_airfist && ent->client->pers.inventory[ITEM_INDEX(it_airfist)])
+		return 0;
+
+	// class 4
+	if (item == it_crossbow && ent->client->pers.inventory[ITEM_INDEX(it_crossbow)])
+		return 0;
+	if (item == it_explosivecrossbow && ent->client->pers.inventory[ITEM_INDEX(it_explosivecrossbow)])
+		return 0;
+	if (item == it_poisoncrossbow && ent->client->pers.inventory[ITEM_INDEX(it_poisoncrossbow)])
+		return 0;
+
+	// class 3
+	if (item == it_supershotgun && ent->client->pers.inventory[ITEM_INDEX(it_supershotgun)])
+		return 0;
+	if (item == it_esupershotgun && ent->client->pers.inventory[ITEM_INDEX(it_esupershotgun)])
+		return 0;
+	// class 2
+	if (item == it_sword && ent->client->pers.inventory[ITEM_INDEX(it_sword)])
+		return 0;
+	if (item == it_chainsaw && ent->client->pers.inventory[ITEM_INDEX(it_chainsaw)])
+
+
+
 	/* MrG{DRGN} Tweak Havoc bot health hunting routine
 	if (item == FindItem("Health") && ent->health >= ent->max_health)
 		return 0; */
