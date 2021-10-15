@@ -255,6 +255,16 @@ void CheckDMRules(void)
 	if (level.intermissiontime)
 		return;
 
+	//ZOID
+	if (ctf->value && CTFCheckRules()) {
+		EndDMLevel();
+		return;
+	}
+	if (CTFInMatch())
+		return; // no checking in match mode
+//ZOID
+
+
 	if (timelimit->value)
 	{
 		if (level.time >= timelimit->value * 60)
@@ -267,14 +277,6 @@ void CheckDMRules(void)
 
 	if (fraglimit->value)
 	{
-		//ZOID
-		if (ctf->value && CTFCheckRules()) {
-			EndDMLevel();
-			return;
-		}
-		if (CTFInMatch())
-			return; // no checking in match mode
-		//ZOID
 		for (i = 0; i < maxclients->value; i++)
 		{
 			cl = game.clients + i;

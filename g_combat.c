@@ -165,7 +165,7 @@ static int CheckPowerArmor(edict_t* ent, vec3_t point, vec3_t normal, int damage
 
 	if (power_armor_type == POWER_ARMOR_SCREEN)
 	{
-		vec3_t		vec = { 0 };
+		vec3_t		vec;
 		float		dot;
 		vec3_t		forward;
 
@@ -377,23 +377,23 @@ void T_Damage(edict_t* targ, edict_t* inflictor, edict_t* attacker, vec3_t dir, 
 		return;
 
 	//ZOID
-
 	CTFCheckHurtCarrier(targ, attacker);
 	//ZOID
 
 	// do the damage
 	if (take)
 	{
-		if (client)
+		if ((targ->svflags & SVF_MONSTER) || (client))
 			SpawnDamage(TE_BLOOD, point, normal, take);
 		else
 			SpawnDamage(te_sparks, point, normal, take);
 
-		targ->health = targ->health - take;
+		if (!CTFMatchSetup())
+			targ->health = targ->health - take;
 
 		if (targ->health <= 0)
 		{
-			if (client)
+			if ((targ->svflags & SVF_MONSTER) || (client))
 				targ->flags |= FL_NO_KNOCKBACK;
 			Killed(targ, inflictor, attacker, take, point);
 			return;
@@ -402,14 +402,15 @@ void T_Damage(edict_t* targ, edict_t* inflictor, edict_t* attacker, vec3_t dir, 
 
 	if (client)
 	{
-		if (!(targ->flags & FL_GODMODE) && (take))
-			targ->pain(targ, attacker, (float)knockback, take); /* MrG{DRGN} (float) */
+		if (!(targ->flags & FL_GODMODE) && (take) && !CTFMatchSetup())
+			targ->pain(targ, attacker, knockback, take);
 	}
 	else if (take)
 	{
 		if (targ->pain)
-			targ->pain(targ, attacker, (float)knockback, take); /* MrG{DRGN} (float) */
+			targ->pain(targ, attacker, knockback, take);
 	}
+
 
 	// add to the damage inflicted on a player this frame
 	// the total will be turned into screen blends and view angle kicks
