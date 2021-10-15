@@ -537,8 +537,7 @@ void Cmd_Inven_f(edict_t* ent)
 		return;
 	}
 	//ZOID
-	if (ent->client->camera || ent->movetype == MOVETYPE_NOCLIP)
-		return;
+
 	if (cl->showinventory)
 	{
 		cl->showinventory = false;

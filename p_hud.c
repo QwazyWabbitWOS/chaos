@@ -49,18 +49,13 @@ void MoveClientToIntermission(edict_t* ent)
 
 	// add the layout
 
-	if (deathmatch->value)
+	if (deathmatch->value && !ent->bot_player)
 	{
-		if (Q_stricmp(ent->classname, "bot") != 0)
-		{
-			DeathmatchScoreboardMessage(ent, NULL);
-			gi.unicast(ent, true);
-		}
+		ent->client->showscores = true;
+		DeathmatchScoreboardMessage(ent, NULL);
+		gi.unicast(ent, true);
 	}
 }
-
-void ClientDisconnect(edict_t* ent);
-void ClientBegin(edict_t* ent);
 
 void BeginIntermission(edict_t* targ)
 {
@@ -83,22 +78,10 @@ void BeginIntermission(edict_t* targ)
 		client = g_edicts + 1 + i;
 		if (!client->inuse)
 			continue;
+
 		if (client->client && client->client->camera)
 		{
-			char name[MAX_INFO_KEY], skin[MAX_INFO_KEY], hand[MAX_INFO_KEY], fov[MAX_INFO_KEY];
-
-			Com_sprintf(name, sizeof name, Info_ValueForKey(client->client->pers.userinfo, "name"));
-			Com_sprintf(skin, sizeof skin, Info_ValueForKey(client->client->pers.userinfo, "skin"));
-			Com_sprintf(hand, sizeof hand, Info_ValueForKey(client->client->pers.userinfo, "hand"));
-			Com_sprintf(hand, sizeof hand, Info_ValueForKey(client->client->pers.userinfo, "fov"));
-
-			ClientDisconnect(client);
-			ClientConnect(client, client->client->pers.userinfo);
-			Info_SetValueForKey(client->client->pers.userinfo, "name", name);
-			Info_SetValueForKey(client->client->pers.userinfo, "skin", skin);
-			Info_SetValueForKey(client->client->pers.userinfo, "hand", hand);
-			Info_SetValueForKey(client->client->pers.userinfo, "fov", fov);
-
+			PutClientInServer(client);
 			ClientBegin(client);
 		}
 		if (client->health <= 0)
@@ -222,8 +205,10 @@ void DeathmatchScoreboardMessage(edict_t* ent, edict_t* killer /* MrG{DRGN} can 
 		return;
 
 	if (ent->client->showscores || ent->client->showinventory)
-		if (ent->client->scanneractive > 0)
-			ent->client->scanneractive = 0;
+		ent->client->scanneractive = 0;
+
+	if (ent->client->menu || ent->client->camera)
+		PMenu_Close(ent);
 
 	if (ent->client->showscores)
 	{
@@ -460,10 +445,10 @@ void Cmd_Help_f(edict_t* ent)
 
 	/* this is for backwards compatibility */
 
-	if (strcmp(ent->classname, "bot") == 0) //MATTHIAS
+	if (ent->classindex == BOT) //MATTHIAS
 		return;
 
-	if (deathmatch->value)
+	if (deathmatch->value || ctf->value)
 	{
 		Cmd_Score_f(ent);
 		return;
