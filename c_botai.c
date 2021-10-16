@@ -434,6 +434,7 @@ void Bot_Think(edict_t* ent)
 
 				mark = G_Spawn();
 				mark->classname = "enemy_mark";
+				mark->classindex = ENEMY_MARK;
 				VectorSet(mark->mins, -8, -8, -8);
 				VectorSet(mark->maxs, 8, 8, 8);
 				mark->owner = ent;
