@@ -238,7 +238,7 @@ void Bot_Spawn(edict_t* ent)
 		resp = ent->client->resp;
 		memcpy(userinfo, ent->client->pers.userinfo, MAX_INFO_STRING);
 		InitClientPersistant(ent->client);
-		ClientUserinfoChanged(ent, userinfo);
+		ClientUserinfoChanged(ent, userinfo); //QW// Expect Redundant from r1q2 for this.
 	}
 	else
 		memset(&resp, 0, sizeof(client_respawn_t));
@@ -338,7 +338,7 @@ void Bot_Spawn(edict_t* ent)
 	VectorCopy(ent->s.angles, ent->client->ps.viewangles);
 	VectorCopy(ent->s.angles, ent->client->v_angle);
 
-	gi.unlinkentity(ent);
+	//gi.unlinkentity(ent);
 	KillBox(ent);
 	gi.linkentity(ent);
 
@@ -1698,34 +1698,34 @@ char* Get_RandomBotSkin(void)
 {
 	switch ((int)(random() * 28))
 	{
-	case 0:  	return "male\\cipher"; break;
-	case 1:	return "male\\claymore"; break;
-	case 2:	return "male\\flak"; break;
-	case 3:	return "male\\grunt"; break;
-	case 4:	return "male\\howitzer"; break;
-	case 5:	return "male\\major"; break;
-	case 6:	return "male\\nightops"; break;
-	case 7:	return "male\\pointman"; break;
-	case 8:	return "male\\psycho"; break;
-	case 9:	return "male\\rampage"; break;
-	case 10:	return "male\\razor"; break;
-	case 11:	return "male\\recon"; break;
-	case 12:	return "male\\scout"; break;
-	case 13:	return "male\\sniper"; break;
-	case 14:	return "male\\viper"; break;
-	case 15: 	return "female\\athena"; break;
-	case 16: 	return "female\\brianna"; break;
-	case 17:	return "female\\cobalt"; break;
-	case 18:	return "female\\ensign"; break;
-	case 19:	return "female\\jezebel"; break;
-	case 20:	return "female\\jungle"; break;
-	case 21:	return "female\\lotus"; break;
-	case 22:	return "female\\stiletto"; break;
-	case 23:	return "female\\venus"; break;
-	case 24:	return "female\\voodoo"; break;
-	case 25:	return "cyborg\\oni911"; break;
-	case 26:	return "cyborg\\ps9000"; break;
-	case 27:	return "cyborg\\tyr574"; break;
-	default:	return "male\\major"; break;
+	case  0: return "male/cipher"; break;
+	case  1: return "male/claymore"; break;
+	case  2: return "male/flak"; break;
+	case  3: return "male/grunt"; break;
+	case  4: return "male/howitzer"; break;
+	case  5: return "male/major"; break;
+	case  6: return "male/nightops"; break;
+	case  7: return "male/pointman"; break;
+	case  8: return "male/psycho"; break;
+	case  9: return "male/rampage"; break;
+	case 10: return "male/razor"; break;
+	case 11: return "male/recon"; break;
+	case 12: return "male/scout"; break;
+	case 13: return "male/sniper"; break;
+	case 14: return "male/viper"; break;
+	case 15: return "female/athena"; break;
+	case 16: return "female/brianna"; break;
+	case 17: return "female/cobalt"; break;
+	case 18: return "female/ensign"; break;
+	case 19: return "female/jezebel"; break;
+	case 20: return "female/jungle"; break;
+	case 21: return "female/lotus"; break;
+	case 22: return "female/stiletto"; break;
+	case 23: return "female/venus"; break;
+	case 24: return "female/voodoo"; break;
+	case 25: return "cyborg/oni911"; break;
+	case 26: return "cyborg/ps9000"; break;
+	case 27: return "cyborg/tyr574"; break;
+	default: return "male/major"; break;
 	}
 }

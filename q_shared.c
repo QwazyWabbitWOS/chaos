@@ -1064,15 +1064,6 @@ size_t Com_strcat(char* dest, size_t destSize, const char* src)
 	return (dLen + (s - src));	// returned count excludes NULL terminator
 }
 
-static char	bigbuffer[0x10000];  //QW// For Com_sprintf
-/**
- Safer, uses large buffer
- //QW// The big buffer allows us to safely dump
- its contents to the log if the resulting format string
- exceeds the size expected by the calling function.
- This way we can see if this was a bug or possibly
- malicious input.
-*/
 /**
  Safer, uses large buffer
  //QW// The big buffer allows us to safely dump
@@ -1085,6 +1076,7 @@ void Com_sprintf(char* dest, int size, char* fmt, ...)
 {
 	int		len;
 	va_list		argptr;
+	char	bigbuffer[0x1000];
 
 	va_start(argptr, fmt);
 	len = vsnprintf(bigbuffer, sizeof bigbuffer, fmt, argptr);
@@ -1097,8 +1089,6 @@ void Com_sprintf(char* dest, int size, char* fmt, ...)
 			"Input was: %s\n", __func__, len, size, bigbuffer);
 	}
 }
-
-/* END*/
 
 
 /*
