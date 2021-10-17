@@ -2,6 +2,9 @@
 #include "c_botai.h"
 #include "c_base.h"
 
+/* This command appears to be a dummy function for 
+ testing that your rcon_password is correct.
+ */
 static void	SVCmd_Test_f(void)
 {
 	gi.cprintf(NULL, PRINT_HIGH, "SVCmd_Test_f()\n");
@@ -101,7 +104,7 @@ static qboolean StringToFilter(char* s, ipfilter_t* f)
 SVCmd_FilterPacket
 =================
 */
-qboolean SVCmd_FilterPacket(char* from)
+static qboolean SVCmd_FilterPacket(char* from)
 {
 	int		i;
 	unsigned	in;
@@ -258,35 +261,33 @@ static void SVCmd_WriteIP_f(void)
 /* FWP Move to next map in the current rotation */
 
 // Force the next map in queue
-void SVCmd_nextmap_f(void)
+static void SVCmd_nextmap_f(void)
 {
 	bprint_botsafe(PRINT_HIGH, "Advancing to next level.\n");
 	EndDMLevel();
 }
 
 // Turn on sequential map rotation
-void SVCmd_sequential_f(void)
+static void SVCmd_sequential_f(void)
 {
 	if (maplist.nummaps > 0)  // does a maplist exist?
 	{
 		maplist.mlflag = ML_ROTATE_SEQ;
 		maplist.currentmap = -1;
 		gi.cprintf(NULL, PRINT_HIGH, "Sequential map rotation ON!\n\n");
-		EndDMLevel();
 	}
 	else
 		gi.cprintf(NULL, PRINT_HIGH, "You have to load a maplist first!\n\n");
 }
 
 // Turn on randomized map rotation
-void SVCmd_random_f(void)
+static void SVCmd_random_f(void)
 {
 	if (maplist.nummaps > 0)  // does a maplist exist?
 	{
 		maplist.mlflag = ML_ROTATE_RANDOM;
 		maplist.currentmap = -1;
 		gi.cprintf(NULL, PRINT_HIGH, "Random map rotation ON!\n\n");
-		EndDMLevel();
 	}
 	else
 	{
@@ -294,7 +295,7 @@ void SVCmd_random_f(void)
 	}
 }
 
-void SVCmd_goto_f(char* mapnum)
+static void SVCmd_goto_f(char* mapnum)
 {
 	char command[MAX_QPATH] = { 0 };
 
@@ -321,7 +322,7 @@ void SVCmd_goto_f(char* mapnum)
 		gi.cprintf(NULL, PRINT_HIGH, "You have to load a maplist first!\n\n");
 }
 
-void SVCmd_show_f(void)
+static void SVCmd_show_f(void)
 {
 	if (maplist.nummaps > 0)  // does a maplist exist?
 	{
@@ -345,14 +346,11 @@ void SVCmd_show_f(void)
 }
 /*
 =================
-ServerCommand
-
 ServerCommand will be called when an "sv" command is issued.
-The game can issue gi.argc() / gi.argv() commands to get the rest
-of the parameters
+The game can issue gi.argc() and gi.argv() commands to get the rest
+of the parameters.
 =================
 */
-
 void ServerCommand(void)
 {
 	char* cmd;
