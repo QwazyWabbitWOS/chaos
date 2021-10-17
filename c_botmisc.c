@@ -1260,7 +1260,7 @@ qboolean Bot_CanPickupItem(edict_t* ent, edict_t* eitem)
 		return 0;
 	if (item == it_flashgrenadelauncher && ent->client->pers.inventory[ITEM_INDEX(it_flashgrenadelauncher)])
 		return 0;
-	
+
 	// class 5
 	if (item == it_airfist && ent->client->pers.inventory[ITEM_INDEX(it_airfist)])
 		return 0;
@@ -1283,14 +1283,12 @@ qboolean Bot_CanPickupItem(edict_t* ent, edict_t* eitem)
 		return 0;
 	if (item == it_chainsaw && ent->client->pers.inventory[ITEM_INDEX(it_chainsaw)])
 
-
-
-	/* MrG{DRGN} Tweak Havoc bot health hunting routine
-	if (item == FindItem("Health") && ent->health >= ent->max_health)
-		return 0; */
-	if (item == it_health ||
-		item == it_health_large && ent->health >= ent->max_health)
-		return 0;
+		/* MrG{DRGN} Tweak Havoc bot health hunting routine
+		if (item == FindItem("Health") && ent->health >= ent->max_health)
+			return 0; */
+		if (item == it_health ||
+			item == it_health_large && ent->health >= ent->max_health)
+			return 0;
 
 	if (item == it_tech2
 		|| item == it_tech3

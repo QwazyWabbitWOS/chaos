@@ -909,7 +909,7 @@ void G_SetClientEffects(edict_t* ent)
 			/*			ent->s.effects |= EF_PENT; */
 			CTFSetPowerUpEffect(ent, EF_PENT);
 	}
-	
+
 	if (ent->client->invincible_framenum > level.framenum
 		//ZOID
 		&& (level.framenum & 8)

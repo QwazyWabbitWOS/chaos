@@ -189,7 +189,7 @@ typedef enum classindex
 	PU_BELT,
 	PU_FLASHLIGHT,
 	PU_SCANNER,
-	
+
 	// MrG{DRGM} we don't strickly need these to exist.
 	KEY_DATACD,
 	KEY_POWERCUBE,
@@ -245,7 +245,7 @@ typedef enum classindex
 	BLACKHOLE,
 	BLACKHOLESTUFF,
 	FLASHLIGHT,
-		
+
 	SELFTELEPORTER,
 	NODE_TABLE,
 	ENEMY_MARK

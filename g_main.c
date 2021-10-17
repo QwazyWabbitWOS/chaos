@@ -264,7 +264,6 @@ void CheckDMRules(void)
 		return; // no checking in match mode
 //ZOID
 
-
 	if (timelimit->value)
 	{
 		if (level.time >= timelimit->value * 60)

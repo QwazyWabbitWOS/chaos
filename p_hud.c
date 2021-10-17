@@ -224,7 +224,7 @@ void DeathmatchScoreboardMessage(edict_t* ent, edict_t* killer /* MrG{DRGN} can 
 
 			if ((!cl_ent->inuse) || (cl_ent->client->camera))
 				continue;
-			
+
 			score = game.clients[i].resp.score;
 			for (j = 0; j < total; j++)
 			{
@@ -323,7 +323,7 @@ void DeathmatchScoreboardMessage(edict_t* ent, edict_t* killer /* MrG{DRGN} can 
 				i, // client number
 				cl->resp.score,
 				cl->ping > 999 ? 999 : cl->ping);
-			if (maxsize - len > strlen(entry)) 
+			if (maxsize - len > strlen(entry))
 			{
 				Com_strcat(string, sizeof(string), entry);
 				len = strlen(string);

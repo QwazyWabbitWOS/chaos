@@ -1712,8 +1712,8 @@ void PutClientInServer(edict_t* ent)
 
 	//ZOID
 	if (ctf->value)	  // MrG{DRGN} to prevent CTFJoinMenu from popping up in non- CTF mode
-	if (CTFStartClient(ent))
-		return;
+		if (CTFStartClient(ent))
+			return;
 	//ZOID
 
 	if (!KillBox(ent))
