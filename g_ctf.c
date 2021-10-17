@@ -359,7 +359,7 @@ int CTFOtherTeam(int team)
 
 /*--------------------------------------------------------------------------*/
 
-void CTFAssignSkin(edict_t* ent, char* s)
+void CTFAssignSkin(edict_t* ent, char* s)	 // MrG{DRGN} R1Q2 redundant update in here 
 {
 	int playernum = ent - g_edicts - 1;
 	char* p;

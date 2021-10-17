@@ -1286,8 +1286,8 @@ qboolean Bot_CanPickupItem(edict_t* ent, edict_t* eitem)
 		/* MrG{DRGN} Tweak Havoc bot health hunting routine
 		if (item == FindItem("Health") && ent->health >= ent->max_health)
 			return 0; */
-		if (item == it_health ||
-			item == it_health_large && ent->health >= ent->max_health)
+		if ((item == it_health_generic ||
+			item == it_health_large) && ent->health >= ent->max_health)
 			return 0;
 
 	if (item == it_tech2
