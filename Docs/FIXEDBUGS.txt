@@ -2,7 +2,7 @@ These are bugs that have been fixed in Chaotic Dreams
 -----------------------------------------------------------------------------
 
 * Player can switch to being a camera, suicide, which causes them become
-  invisible and then they start running around killing people
+  invisible, and then they start running around killing people
   -Fixed Wed May 19 21:10:23 CDT 1999
 
 * Maplists file parser doesn't correctly detect file type and thusly linux
@@ -16,7 +16,7 @@ These are bugs that have been fixed in Chaotic Dreams
   super shotgun and the regular shotgun and then back again
   -Fixed Fri May 21 19:59:15 CDT 1999
 
-* Turrents start out w/ to much ammo
+* Turrets start out w/ too much ammo
   -Fixed Sat May 22 08:23:08 CDT 1999
 
 * When you die with the Flashlight on, the Flashlight will never turn off for
@@ -24,7 +24,7 @@ These are bugs that have been fixed in Chaotic Dreams
   -Fixed Thu May 27 23:28:54 CDT 1999
 
 * In CTF Mode, when a player was at the Join Menu, they could FakeDeath and
-  drop all association of beeing on any team, and run around as a rogue
+  drop all association of being on any team, and run around as a rogue
   capturing both flags and killing anyone.
   -Fixed Sat May 29 11:20:11 CDT 1999
 
@@ -32,7 +32,7 @@ These are bugs that have been fixed in Chaotic Dreams
   makes it to 250, it never decreases again and makes their max health == 250
   -Fixed Sat May 29 16:51:07 CDT 1999
 
-* FOV get's stuck and 90 degrees if you fakedeath and then un-fakedeath ..
+* FOV gets stuck and 90 degrees if you fakedeath and then un-fakedeath ..
   death or respawn fixes this. 
   -Fixed Fri Jun 18 12:13:03 CDT 1999
 
@@ -229,7 +229,7 @@ set turprox_fx "1"     // enable new turret & proxy effects
   2. An invulnerable player would die from the kamikaze.
 - Fixed Fri Dec 19, 2003
 
-* Fixed some of the issues with the frkq2bot detection/kicking are hopefully resolved... still problems with erlier versions I suspect more testing needed.
+* Fixed some of the issues with the frkq2bot detection/kicking are hopefully resolved... still problems with earlier versions I suspect more testing needed.
 - Fixed Sun Dec 21, 2003
 
 * Fixed bug where players could turn the jetpack on or off in camera mode... Inventory was not being cleared when switching to camera mode.
@@ -250,8 +250,8 @@ set turprox_fx "1"     // enable new turret & proxy effects
   , but this was not correct.
 - Fixed Sat Dec 27, 2003
 
-* Found a possible cause of an invisible player bug, and inplimented a precautionary, though possibly ineffective fix. This is a
-  rarebug so hard to say.
+* Found a possible cause of an invisible player bug, and implemented a precautionary, though possibly ineffective fix. This is a
+  rare bug so hard to say.
 - Fixed Sat Dec 27, 2003
 
 * Fixed a bug where a player could kamikaze, select a camera mode before dying , and be stuck with a flashing kami screen
@@ -270,18 +270,18 @@ but the way bot safe chat was handled.
 * Added new player animations for backwards movement while crouching, and running,
 - Fixed Sat Jan 03, 2003
 
-* Added checks to insure that the maps in random rotation are not played 2 times in a row.
+* Added checks to ensure that the maps in random rotation are not played 2 times in a row.
 - Fixed Sun Jan 04, 2003
 
-* Reduced optimized dll size by 4k simply by removing unnneeded checks for deathmatch/coop values!
-  Since Chaos is DM only these checks did nothing but eatup time/space.
+* Reduced optimized dll size by 4k simply by removing unneeded checks for deathmatch/coop values!
+  Since Chaos is DM only these checks did nothing but eat up time/space.
 - Fixed Sun Jan 04, 2003
 
 * Eliminated some redundant functions (P_ProjectSource2 was == P_ProjectSource which was already a global function!).
 - Fixed Mon Jan 05, 2003
 
 * Fixed Playerlist cmd, as it would sometimes give an incorrect client number. Also we should make note of the "players" command
-  Still needs testintg
+  Still needs testing
   - Fixed Mon Jan 05, 2003
 
 * Added a new cammode "camera 6" freeview to player view for testing, added checks against functions being used in camera mode.
@@ -324,17 +324,17 @@ but the way bot safe chat was handled.
 * Fixed a wide variety of bugs in the ctf spectator modes where you could grapple, kick, kamikaze, etc, and were targeted by proxys bots, homers, turrets, etc.
    - Fixed Wed Jan 28, 2004
 
-* Replaced Shotgun, Machingun, and Chaingun fire routines in the code with simple prototype place holders
+* Replaced Shotgun, Machingun, and Chaingun fire routines in the code with simple prototype placeholders
   for chaos item replacement.
    - Fixed Wed Jan 28, 2004
 
 * Added new shell effects for the SuperShotgun, and ExplosiveSuperShotgun
    - Fixed Wed Jan 28, 2004
 
-* Removed telekinetic proxie think function for the time being until furthur development warrants its return.
+* Removed telekinetic proxy think function for the time being until furthur development warrants its return.
    - Fixed Sat Feb 21, 2004
 
-* Fixed instagibing of turrets by railshots with telefrag_rail enabled, and tweaked the code a bit so hopefully the attacker will be teleported to the victims location everytime now...still to be tested.
+* Fixed instagibing of turrets by railshots with telefrag_rail enabled, and tweaked the code a bit so hopefully the attacker will be teleported to the victim's location everytime now...still to be tested.
    - Fixed Sat Feb 21, 2004
 
 * Changed the new effects for turrets,and proxies a bit, also added additional gibs for the telefrag_rail instagib effect
@@ -364,7 +364,7 @@ but the way bot safe chat was handled.
    If 0, then only addresses matching the list will be allowed.  This lets you easily set up a private game, or a game that only allows players from your local network.
    ==============================================================================
    */
-   -Fixed Fri March 5 2004
+   -Fixed Fri March 5, 2004
 
 * Fixed a bug in the new freeview cam where the hud still said you were camming an individual player.
  - Fixed Sat March 20, 2004
@@ -373,10 +373,10 @@ but the way bot safe chat was handled.
   this is obvious from the HUD, and from how it affects game play.
  - Fixed Wed April 14, 2004
 
-* Fixed a bug where a slower function was used initialy in the q2 code globaly replaced all occurances of Q_stricmp with Q_stricmp.
+* Fixed a bug where a slower function was used initially in the q2 code globally replaced all occurrences of Q_stricmp with Q_stricmp.
  - Fixed Sat April 17, 2004
 
-* Made some slight optimizations to the HavocBot, and lightsoff code. Not too noticable in gameplay yet I'd wager.
+* Made some slight optimizations to the HavocBot, and lightsoff code. Not too noticeable in gameplay yet I'd wager.
  - Fixed Tue May 4, 2004
 
 * Eliminated the need for some global functions by combining p_weapon.c, and c_weapon.c thereby eliminating the need for c_weapon.h .
@@ -391,7 +391,7 @@ Back to 1.14 Source base
 Fixed when?
 * If you fakedeath while having the jetpack active the model animation is
   screwed up and locked into a STANDING position.  The problem is that i am
-  not certain which is the bug, the model animation beeing screwed or the fact
+  not certain which is the bug, the model animation being screwed or the fact
   that they can fakedeath while using a jetpack. - FIXED
 
 Chaos DM Lives 3.0b
