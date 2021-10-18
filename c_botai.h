@@ -40,6 +40,8 @@
 char* chat_text[NUM_CHATSECTIONS][MAX_LINES_PER_SECTION];
 int		chat_linecount[NUM_CHATSECTIONS];
 
+#define HEALTH_IGNORE_MAX	1
+#define HEALTH_TIMED		2
 //Bot functions
 void SVCmd_addbots_f(void);
 void SVCmd_killbot_f(char* name);
@@ -87,6 +89,7 @@ void Bot_BestMidWeapon(edict_t* self);
 void Bot_BestFarWeapon(edict_t* self);
 int Bot_CanPickupArmor(edict_t* self, edict_t* ent);
 qboolean Bot_CanPickupAmmo(edict_t* ent, edict_t* eitem);
+qboolean  Bot_NeedsHealth(edict_t* ent, edict_t* eitem);
 qboolean SaveMoveDir(edict_t* self, short forwardmove, short sidemove, vec3_t angles);
 qboolean CheckFall(edict_t* self, short forwardmove, short sidemove, vec3_t angles);
 

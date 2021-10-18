@@ -1208,27 +1208,19 @@ qboolean Bot_CanPickupAmmo(edict_t* ent, edict_t* eitem)
 	return 1;
 }
 
-qboolean Bot_CanPickupHealth(edict_t* ent, edict_t* eitem)
+qboolean  Bot_NeedsHealth(edict_t* ent, edict_t* eitem)
 {
 	gitem_t* item;
 
 	item = eitem->item;
 
-	if (item == FindItemByClassname("item_health_mega"))
-		return 1;
-	if (item == FindItemByClassname("item_health_small"))
-		return 1;
-	if (item == FindItemByClassname("item_health_medium")
-		&& ent->health > ent->max_health)
+	if (item == FindItem("Health") &&
+		ent->health >= ent->max_health &&
+		!(ent->style & HEALTH_IGNORE_MAX))
 		return 0;
-	if (item == FindItemByClassname("item_health_large")
-		&& ent->health >= ent->max_health)
-		return 0;
-	if (item == FindItem("Health"))
-		return 0;
-
 
 	return 1;
+
 }
 
 qboolean Bot_CanPickupItem(edict_t* ent, edict_t* eitem)
@@ -1307,7 +1299,7 @@ qboolean Bot_CanPickupItem(edict_t* ent, edict_t* eitem)
 	if (item == it_chainsaw && ent->client->pers.inventory[ITEM_INDEX(it_chainsaw)])
 
 	//	MrG{DRGN} Tweak Havoc bot health hunting routine
-	if (!Bot_CanPickupAmmo(ent, eitem))
+	if (!Bot_NeedsHealth(ent, eitem))
 		return 0;
 
 	if (item == it_tech2 ||

@@ -12,9 +12,6 @@ int	body_armor_index;
 int	power_screen_index;
 int	power_shield_index;
 
-#define HEALTH_IGNORE_MAX	1
-#define HEALTH_TIMED		2
-
 void Use_Quad(edict_t* ent, gitem_t* item);
 static int	quad_drop_timeout_hack;
 

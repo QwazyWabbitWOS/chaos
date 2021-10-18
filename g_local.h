@@ -208,6 +208,7 @@ typedef struct
 #define IT_TECH			64
 //ZOID
 
+
 typedef struct gitem_s
 {
 	unsigned int	classindex; /* MrG{DRGN} added */
