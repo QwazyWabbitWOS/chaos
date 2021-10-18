@@ -1214,18 +1214,19 @@ qboolean Bot_CanPickupHealth(edict_t* ent, edict_t* eitem)
 
 	item = eitem->item;
 
-	if (item == FindItemByClassname("item_health_mega")
-		&& ent->health >= ent->max_health)
+	if (item == FindItemByClassname("item_health_mega"))
 		return 1;
-	if (item == FindItemByClassname("item_health_small")
-		&& ent->health >= ent->max_health)
+	if (item == FindItemByClassname("item_health_small"))
 		return 1;
 	if (item == FindItemByClassname("item_health_medium")
-		&& ent->health >= ent->max_health)
+		&& ent->health > ent->max_health)
 		return 0;
 	if (item == FindItemByClassname("item_health_large")
 		&& ent->health >= ent->max_health)
 		return 0;
+	if (item == FindItem("Health"))
+		return 0;
+
 
 	return 1;
 }
