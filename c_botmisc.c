@@ -1207,7 +1207,24 @@ qboolean Bot_CanPickupAmmo(edict_t* ent, edict_t* eitem)
 
 	return 1;
 }
+qboolean Bot_CanPickupHealth(edict_t* ent, edict_t* eitem)
+{
+	gitem_t* item;
 
+	item = eitem->item;
+
+	if (item->classindex == ITEM_HEALTH_MEDIUM  && (ent->health >= ent->max_health))
+	{
+		return 0;
+	}
+	if (item->classindex == ITEM_HEALTH_LARGE && (ent->health >= ent->max_health))
+	{
+		return 0;
+	}
+
+
+	return 1;
+}
 qboolean Bot_CanPickupItem(edict_t* ent, edict_t* eitem)
 {
 	gitem_t* item;
@@ -1283,12 +1300,13 @@ qboolean Bot_CanPickupItem(edict_t* ent, edict_t* eitem)
 		return 0;
 	if (item == it_chainsaw && ent->client->pers.inventory[ITEM_INDEX(it_chainsaw)])
 
-		/* MrG{DRGN} Tweak Havoc bot health hunting routine
+		/* MrG{DRGN} Tweak Havoc bot health hunting routine	 */
 		if (item == FindItem("Health") && ent->health >= ent->max_health)
-			return 0; */
-		if ((item == it_health_generic ||
-			item == it_health_large) && ent->health >= ent->max_health)
-			return 0;
+			return 0; 
+	
+	if (!Bot_CanPickupHealth(ent, eitem))
+		return 0;
+		
 
 	if (item == it_tech2
 		|| item == it_tech3

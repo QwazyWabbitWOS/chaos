@@ -5208,8 +5208,9 @@ void SP_item_health(edict_t* self)
 	}
 
 	self->model = "models/items/healing/medium/tris.md2";
-	self->count = 10;
+	self->count = 10; 	
 	SpawnItem(self, it_health_generic);
+	self->classindex = ITEM_HEALTH_MEDIUM;
 	gi.soundindex("items/n_health.wav");
 	AddItemToList(self);	//MATTHIAS
 }
@@ -5236,8 +5237,9 @@ void SP_item_health_small(edict_t* self)
 	}
 
 	self->model = "models/items/healing/stimpack/tris.md2";
-	self->count = 2;
+	self->count = 2; 	
 	SpawnItem(self, it_health_generic);
+	self->classindex = ITEM_HEALTH_SMALL;
 	self->style = HEALTH_IGNORE_MAX;
 	gi.soundindex("items/s_health.wav");
 }
@@ -5264,8 +5266,9 @@ void SP_item_health_large(edict_t* self)
 	}
 
 	self->model = "models/items/healing/large/tris.md2";
-	self->count = 25;
+	self->count = 25;						  	
 	SpawnItem(self, it_health_generic);
+	self->classindex = ITEM_HEALTH_LARGE;
 	gi.soundindex("items/l_health.wav");
 	AddItemToList(self);	//MATTHIAS
 }
@@ -5294,6 +5297,7 @@ void SP_item_health_mega(edict_t* self)
 	self->model = "models/items/mega_h/tris.md2";
 	self->count = 100;
 	SpawnItem(self, it_health_generic);
+	self->classindex = ITEM_HEALTH_MEGA;
 	gi.soundindex("items/m_health.wav");
 	self->style = HEALTH_IGNORE_MAX | HEALTH_TIMED;
 	AddItemToList(self);	//MATTHIAS
@@ -5424,7 +5428,7 @@ void SetItemNames(void)
 	/* MrG{DRGN} Health */
 	it_health_generic = FindItemByClassindex(ITEM_HEALTH_GENERIC);
 	it_health_small = FindItemByClassindex(ITEM_HEALTH_SMALL);/* MrG{DRGN} stimpack */
-	it_health = FindItemByClassindex(ITEM_HEALTH);
+	it_health = FindItemByClassindex(ITEM_HEALTH_MEDIUM);
 	it_health_large = FindItemByClassindex(ITEM_HEALTH_LARGE);
 	it_health_mega = FindItemByClassindex(ITEM_HEALTH_MEGA);
 	/* MrG{DRGN} CTF items */

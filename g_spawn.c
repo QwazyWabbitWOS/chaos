@@ -103,7 +103,7 @@ void SP_monster_commander_body(edict_t* self);
 unsigned int getClassindexFromClassname(char* classname);
 /* MrG{DRGN} added classindex field */
 spawn_t	spawns[] = {
-	{ITEM_HEALTH, "item_health", SP_item_health},
+	{ITEM_HEALTH_MEDIUM, "item_health", SP_item_health},
 	{ITEM_HEALTH_SMALL, "item_health_small", SP_item_health_small},
 	{ITEM_HEALTH_LARGE, "item_health_large", SP_item_health_large},
 	{ITEM_HEALTH_MEGA, "item_health_mega", SP_item_health_mega},
