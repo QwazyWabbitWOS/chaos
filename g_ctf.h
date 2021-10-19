@@ -49,10 +49,6 @@ extern cvar_t* ctf;
 #define CTF_TEAM1_SKIN "ctf_r"
 #define CTF_TEAM2_SKIN "ctf_b"
 
-#define DF_CTF_FORCEJOIN	131072
-#define DF_ARMOR_PROTECT	262144
-#define DF_CTF_NO_TECH      524288
-
 #define CTF_CAPTURE_BONUS		15	// what you get for capture
 #define CTF_TEAM_BONUS			10	// what your team gets for capture
 #define CTF_RECOVERY_BONUS		1	// what you get for recovery
