@@ -3181,7 +3181,13 @@ int CTFUpdateJoinMenu(edict_t* ent)
 void CTFOpenJoinMenu(edict_t* ent)
 {
 	int team;
-
+	if (ent->client->camera && level.intermissiontime)
+	{
+		ent->client->showscores = true;
+		ent->client->showinventory = false;
+		DeathmatchScoreboard(ent);
+		return;
+	}
 	team = CTFUpdateJoinMenu(ent);
 	if (ent->client->camera)
 		team = 8;
