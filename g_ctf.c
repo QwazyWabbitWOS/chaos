@@ -2000,7 +2000,7 @@ struct {
 	{	"weapon_hyperblaster",		4 },
 	{	"weapon_airfist",			4 },// no chaingun in Chaos
 	{	"weapon_grenadelauncher",	4 },
-	{	"weapon_crossbow",			4 }, // no machingun in Chaos
+	{	"weapon_crossbow",			4 }, // no machinegun in Chaos
 	{	"weapon_supershotgun",		4 },
 	{	"weapon_shotgun",			4 },
 	{	"item_power_screen",		5 },
