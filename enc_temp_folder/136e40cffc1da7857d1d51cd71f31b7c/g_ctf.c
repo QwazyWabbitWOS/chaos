@@ -1998,9 +1998,9 @@ struct {
 	{	"weapon_railgun",			4 },
 	{	"weapon_rocketlauncher",	4 },
 	{	"weapon_hyperblaster",		4 },
-	{	"weapon_airfist",			4 },// no chaingun in Chaos
+	{	"weapon_chaingun",			4 },
 	{	"weapon_grenadelauncher",	4 },
-	{	"weapon_crossbow",			4 }, // no machingun in Chaos
+	{	"weapon_machinegun",		4 },
 	{	"weapon_supershotgun",		4 },
 	{	"weapon_shotgun",			4 },
 	{	"item_power_screen",		5 },
