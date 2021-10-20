@@ -84,6 +84,7 @@ void BeginIntermission(edict_t* targ)
 			PutClientInServer(client);
 			ClientBegin(client);
 		}
+
 		if (client->health <= 0)
 		{
 			if (client->classindex == BOT)

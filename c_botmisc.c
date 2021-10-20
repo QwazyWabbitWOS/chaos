@@ -271,6 +271,7 @@ void Bot_Spawn(edict_t* ent)
 	ent->waterlevel = 0;
 	ent->watertype = 0;
 	ent->flags &= ~FL_NO_KNOCKBACK;
+	ent->svflags &= ~SVF_DEADMONSTER;
 	ent->enemy = NULL;
 	ent->movetarget = NULL;
 
