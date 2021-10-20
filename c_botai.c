@@ -443,7 +443,7 @@ void Bot_Think(edict_t* ent)
 				mark->nextthink = level.time + 15;
 				mark->think = G_FreeEdict;
 				ent->client->b_goalitem = mark;
-				nprintf(PRINT_HIGH, "%d's enemy is out of sight but he found a path to the last know position!\n", ent->client->pers.netname);
+				nprintf(PRINT_HIGH, "%s's enemy is out of sight but they found a path to the last known position!\n", ent->client->pers.netname);
 			}
 			ent->enemy = NULL;
 		}
