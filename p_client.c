@@ -687,7 +687,7 @@ void TossClientWeapon(edict_t* self)
 		}
 	}
 
-	if (!(dmflag& DF_QUAD_DROP))
+	if (!((int)(dmflags->value) & DF_QUAD_DROP))
 		quad = false;
 	else
 		quad = (self->client->quad_framenum > (level.framenum + 10));
@@ -1313,7 +1313,7 @@ edict_t* SelectFarthestDeathmatchSpawnPoint(void)
 
 edict_t* SelectDeathmatchSpawnPoint(void)
 {
-	if (dmflag& DF_SPAWN_FARTHEST)
+	if ((int)(dmflags->value) & DF_SPAWN_FARTHEST)
 		return SelectFarthestDeathmatchSpawnPoint();
 	else
 		return SelectRandomDeathmatchSpawnPoint();
@@ -1623,7 +1623,7 @@ void PutClientInServer(edict_t* ent)
 	client->ps.pmove.pm_flags &= ~PMF_NO_PREDICTION;
 	//ZOID
 
-	if ((deathmatch->value) && (dmflag & DF_FIXED_FOV))
+	if ((deathmatch->value) && ((int)dmflags->value & DF_FIXED_FOV))
 	{
 		client->ps.fov = 90;
 	}
@@ -1884,7 +1884,7 @@ void ClientUserinfoChanged(edict_t* ent, char* userinfo)
 		gi.configstring(CS_PLAYERSKINS + playernum, va("%s\\%s", ent->client->pers.netname, s));
 
 	// fov
-	if ((deathmatch->value) && (dmflag & DF_FIXED_FOV))
+	if ((deathmatch->value) && ((int)dmflags->value & DF_FIXED_FOV))
 	{
 		ent->client->ps.fov = 90;
 	}
@@ -2563,7 +2563,7 @@ void ClientBeginServerFrame(edict_t* ent)
 				buttonMask = -1;
 
 			if ((client->latched_buttons & buttonMask) ||
-				(deathmatch->value && (dmflag& DF_FORCE_RESPAWN)))
+				(deathmatch->value && ((int)(dmflags->value) & DF_FORCE_RESPAWN)))
 			{
 				respawn(ent);
 				client->latched_buttons = 0;

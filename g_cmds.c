@@ -16,13 +16,13 @@ char* ClientTeam(edict_t* ent)
 	if (!p)
 		return value;
 
-	if (dmflag& DF_MODELTEAMS)
+	if ((int)(dmflags->value) & DF_MODELTEAMS)
 	{
 		*p = 0;
 		return value;
 	}
 
-	// if (dmflag& DF_SKINTEAMS)
+	// if ((int)(dmflags->value) & DF_SKINTEAMS)
 	return ++p;
 }
 
@@ -31,7 +31,7 @@ qboolean OnSameTeam(edict_t* ent1, edict_t* ent2)
 	char	ent1Team[512];
 	char	ent2Team[512];
 
-	if (!(dmflag& (DF_MODELTEAMS | DF_SKINTEAMS)))
+	if (!((int)(dmflags->value) & (DF_MODELTEAMS | DF_SKINTEAMS)))
 		return false;
 
 	Com_strcpy(ent1Team, sizeof(ent1Team), ClientTeam(ent1));
@@ -962,7 +962,7 @@ void Cmd_Say_f(edict_t* ent, qboolean team, qboolean arg0)
 	if (gi.argc() < 2 && !arg0)
 		return;
 
-	if (!(dmflag& (DF_MODELTEAMS | DF_SKINTEAMS)))
+	if (!((int)(dmflags->value) & (DF_MODELTEAMS | DF_SKINTEAMS)))
 		team = false;
 
 	if (team)

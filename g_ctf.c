@@ -400,7 +400,7 @@ void CTFAssignTeam(gclient_t* who)
 
 	who->resp.ctf_state = CTF_STATE_START;
 
-	if (!(dmflag & DF_CTF_FORCEJOIN)) {
+	if (!((int)dmflags->value & DF_CTF_FORCEJOIN)) {
 		who->resp.ctf_team = CTF_NOTEAM;
 		return;
 	}
@@ -447,7 +447,7 @@ edict_t* SelectCTFSpawnPoint(edict_t* ent)
 
 	if (ent->client->resp.ctf_state != CTF_STATE_START)
 	{
-		if (dmflag& DF_SPAWN_FARTHEST)
+		if ((int)(dmflags->value) & DF_SPAWN_FARTHEST)
 			return SelectFarthestDeathmatchSpawnPoint();
 		else
 			return SelectRandomDeathmatchSpawnPoint();
@@ -1779,7 +1779,7 @@ void CTFSetupTechSpawn(void)
 {
 	edict_t* ent;
 
-	if ((dmflag & DF_CTF_NO_TECH))
+	if (((int)dmflags->value & DF_CTF_NO_TECH))
 		return;
 
 	ent = G_Spawn();
@@ -3181,7 +3181,13 @@ int CTFUpdateJoinMenu(edict_t* ent)
 void CTFOpenJoinMenu(edict_t* ent)
 {
 	int team;
-
+	if (ent->client->camera && level.intermissiontime)
+	{
+		ent->client->showscores = true;
+		ent->client->showinventory = false;
+		DeathmatchScoreboard(ent);
+		return;
+	}
 	team = CTFUpdateJoinMenu(ent);
 	if (ent->client->camera)
 		team = 8;
@@ -3203,7 +3209,7 @@ qboolean CTFStartClient(edict_t* ent)
 	if (ent->client->resp.ctf_team != CTF_NOTEAM)
 		return false;
 
-	if (!(dmflag & DF_CTF_FORCEJOIN) || ctfgame.match >= MATCH_SETUP) {
+	if (!((int)dmflags->value & DF_CTF_FORCEJOIN) || ctfgame.match >= MATCH_SETUP) {
 		// start as 'observer'
 		ent->movetype = MOVETYPE_NOCLIP;
 		ent->solid = SOLID_NOT;
@@ -3581,10 +3587,10 @@ void CTFAdmin_SettingsApply(edict_t* ent, pmenuhnd_t* p)
 		gi.cvar_set("matchstarttime", st);
 	}
 
-	if (settings->weaponsstay != !!(dmflag & DF_WEAPONS_STAY)) {
+	if (settings->weaponsstay != !!((int)dmflags->value & DF_WEAPONS_STAY)) {
 		bprint_botsafe(PRINT_HIGH, "%s turned %s weapons stay.\n",
 			ent->client->pers.netname, settings->weaponsstay ? "on" : "off");
-		i = dmflag;
+		i = (int)dmflags->value;
 		if (settings->weaponsstay)
 			i |= DF_WEAPONS_STAY;
 		else
@@ -3593,10 +3599,10 @@ void CTFAdmin_SettingsApply(edict_t* ent, pmenuhnd_t* p)
 		gi.cvar_set("dmflags", st);
 	}
 
-	if (settings->instantitems != !!(dmflag & DF_INSTANT_ITEMS)) {
+	if (settings->instantitems != !!((int)dmflags->value & DF_INSTANT_ITEMS)) {
 		bprint_botsafe(PRINT_HIGH, "%s turned %s instant items.\n",
 			ent->client->pers.netname, settings->instantitems ? "on" : "off");
-		i = dmflag;
+		i = (int)dmflags->value;
 		if (settings->instantitems)
 			i |= DF_INSTANT_ITEMS;
 		else
@@ -3605,10 +3611,10 @@ void CTFAdmin_SettingsApply(edict_t* ent, pmenuhnd_t* p)
 		gi.cvar_set("dmflags", st);
 	}
 
-	if (settings->quaddrop != !!(dmflag & DF_QUAD_DROP)) {
+	if (settings->quaddrop != !!((int)dmflags->value & DF_QUAD_DROP)) {
 		bprint_botsafe(PRINT_HIGH, "%s turned %s quad drop.\n",
 			ent->client->pers.netname, settings->quaddrop ? "on" : "off");
-		i = dmflag;
+		i = (int)dmflags->value;
 		if (settings->quaddrop)
 			i |= DF_QUAD_DROP;
 		else
@@ -3784,9 +3790,9 @@ void CTFAdmin_Settings(edict_t* ent, pmenuhnd_t* p)
 	settings->matchlen = matchtime->value;
 	settings->matchsetuplen = matchsetuptime->value;
 	settings->matchstartlen = matchstarttime->value;
-	settings->weaponsstay = !!(dmflag & DF_WEAPONS_STAY);
-	settings->instantitems = !!(dmflag & DF_INSTANT_ITEMS);
-	settings->quaddrop = !!(dmflag & DF_QUAD_DROP);
+	settings->weaponsstay = !!((int)dmflags->value & DF_WEAPONS_STAY);
+	settings->instantitems = !!((int)dmflags->value & DF_INSTANT_ITEMS);
+	settings->quaddrop = !!((int)dmflags->value & DF_QUAD_DROP);
 	settings->instantweap = instantweap->value != 0;
 	settings->matchlock = matchlock->value != 0;
 
