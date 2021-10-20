@@ -792,7 +792,7 @@ void FakeDeath(edict_t* self)
 		VectorClear(self->velocity);
 		VectorClear(self->avelocity);
 
-		if (((int)dmflags->value & DF_FIXED_FOV))
+		if ((dmflag & DF_FIXED_FOV))
 		{
 			self->client->ps.fov = 90;
 		}

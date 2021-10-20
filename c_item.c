@@ -40,7 +40,7 @@ void Use_Jet(edict_t* ent, gitem_t* item)
 	if (ent->client->jet_remaining == 0)
 		ent->client->jet_remaining = 600;
 
-	if (Jet_Active(ent) && ((int)dmflags->value & DF_INSTANT_JET))
+	if (Jet_Active(ent) && (dmflag & DF_INSTANT_JET))
 		return;
 	else if (Jet_Active(ent))
 		ent->client->jet_framenum = 0;

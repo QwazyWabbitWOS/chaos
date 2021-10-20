@@ -134,7 +134,7 @@ void DoRespawn(edict_t* ent)
 		//in ctf, when we are weapons stay, only the master of a team of weapons
 		//is spawned
 		if (ctf->value &&
-			((int)dmflags->value & DF_WEAPONS_STAY) &&
+			(dmflag & DF_WEAPONS_STAY) &&
 			master->item && (master->item->flags & IT_WEAPON))
 			ent = master;
 		else {
@@ -1111,7 +1111,7 @@ qboolean Pickup_Powerup(edict_t* ent, edict_t* other)
 		other->client->pers.inventory[ITEM_INDEX(ent->item)] = 1;
 		other->client->jet_remaining = 600;
 
-		if (Jet_Active(other) || ((int)dmflags->value & DF_INSTANT_JET))
+		if (Jet_Active(other) || (dmflag & DF_INSTANT_JET))
 			other->client->jet_framenum = level.framenum + other->client->jet_remaining;
 		else
 			other->client->jet_framenum = 0;
@@ -1127,7 +1127,7 @@ qboolean Pickup_Powerup(edict_t* ent, edict_t* other)
 	if (!(ent->spawnflags & DROPPED_ITEM))
 		SetRespawn(ent, ent->item->quantity);
 
-	if (((int)dmflags->value & DF_INSTANT_ITEMS) || ((ent->item->use == Use_Quad) && (ent->spawnflags & DROPPED_PLAYER_ITEM)))
+	if ((dmflag & DF_INSTANT_ITEMS) || ((ent->item->use == Use_Quad) && (ent->spawnflags & DROPPED_PLAYER_ITEM)))
 	{
 		if ((ent->item->use == Use_Quad) && (ent->spawnflags & DROPPED_PLAYER_ITEM))
 			quad_drop_timeout_hack = (ent->nextthink - level.time) / FRAMETIME;
@@ -1691,7 +1691,7 @@ qboolean Pickup_Ammo(edict_t* ent, edict_t* other)
 	}
 
 	weapon = (ent->item->flags & IT_WEAPON);
-	if ((weapon) && ((int)dmflags->value & DF_INFINITE_AMMO))
+	if ((weapon) && (dmflag & DF_INFINITE_AMMO))
 		count = 1000;
 	else if (ent->count)
 		count = ent->count;
@@ -2388,7 +2388,7 @@ void SpawnItem(edict_t* ent, gitem_t* item)
 
 	// some items will be prevented in deathmatch
 
-	if ((int)dmflags->value & DF_NO_ARMOR)
+	if (dmflag & DF_NO_ARMOR)
 	{
 		if (item->pickup == Pickup_Armor || item->pickup == Pickup_PowerArmor)
 		{
@@ -2396,7 +2396,7 @@ void SpawnItem(edict_t* ent, gitem_t* item)
 			return;
 		}
 	}
-	if ((int)dmflags->value & DF_NO_ITEMS)
+	if (dmflag & DF_NO_ITEMS)
 	{
 		if (item->pickup == Pickup_Powerup)
 		{
@@ -2404,7 +2404,7 @@ void SpawnItem(edict_t* ent, gitem_t* item)
 			return;
 		}
 	}
-	if ((int)dmflags->value & DF_NO_HEALTH)
+	if (dmflag & DF_NO_HEALTH)
 	{
 		if (item->pickup == Pickup_Health || item->pickup == Pickup_Adrenaline || item->pickup == Pickup_AncientHead)
 		{
@@ -2412,7 +2412,7 @@ void SpawnItem(edict_t* ent, gitem_t* item)
 			return;
 		}
 	}
-	if ((int)dmflags->value & DF_INFINITE_AMMO)
+	if (dmflag & DF_INFINITE_AMMO)
 	{
 		if ((item->flags == IT_AMMO) || (ent->classindex == W_BFG))
 		{
@@ -5192,7 +5192,7 @@ void SP_item_health(edict_t* self)
 		return;
 	}
 
-	if ((int)dmflags->value & DF_NO_HEALTH)
+	if (dmflag & DF_NO_HEALTH)
 	{
 		G_FreeEdict(self);
 		return;
@@ -5222,7 +5222,7 @@ void SP_item_health_small(edict_t* self)
 		return;
 	}
 
-	if ((int)dmflags->value & DF_NO_HEALTH)
+	if (dmflag & DF_NO_HEALTH)
 	{
 		G_FreeEdict(self);
 		return;
@@ -5252,7 +5252,7 @@ void SP_item_health_large(edict_t* self)
 		return;
 	}
 
-	if ((int)dmflags->value & DF_NO_HEALTH)
+	if (dmflag & DF_NO_HEALTH)
 	{
 		G_FreeEdict(self);
 		return;
@@ -5282,7 +5282,7 @@ void SP_item_health_mega(edict_t* self)
 		return;
 	}
 
-	if ((int)dmflags->value & DF_NO_HEALTH)
+	if (dmflag & DF_NO_HEALTH)
 	{
 		G_FreeEdict(self);
 		return;

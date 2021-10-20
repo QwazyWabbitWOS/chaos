@@ -495,6 +495,7 @@ extern gitem_armor_t bodyarmor_info;
 #define MOD_FRIENDLY_FIRE	0x8000000
 
 extern	int	meansOfDeath;
+extern int dmflag; // avoid constant casting 
 
 extern	edict_t* g_edicts;
 

@@ -204,6 +204,8 @@ void InitGame(void)
 	filterban = gi.cvar("filterban", "1", 0);
 	developer = gi.cvar("developer", "0", 0);
 
+	dmflag = (int)dmflags->value; // avoid constant casting
+
 	// items
 	InitItems();
 

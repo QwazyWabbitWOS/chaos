@@ -125,24 +125,6 @@ void PMenu_Do_Update(edict_t* ent)
 	gi.WriteString(string);
 }
 
-/*void PMenu_Update(edict_t *ent)
-{
-	if (!ent->client->menu) {
-		gi.dprintf("warning:  ent has no menu\n");
-		return;
-	}
-
-	if (level.time - ent->client->menutime >= 1.0) {
-		// been a second or more since last update, update now
-		PMenu_Do_Update(ent);
-		gi.unicast (ent, true);
-		ent->client->menutime = level.time;
-		ent->client->menudirty = false;
-	}
-	ent->client->menutime = level.time + 0.2;
-	ent->client->menudirty = true;
-}*/
-
 void PMenu_Update(edict_t* ent)
 {
 	char string[1400];

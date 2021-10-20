@@ -11,6 +11,7 @@ spawn_temp_t	st;
 int	sm_meat_index;
 int	snd_fry;
 int meansOfDeath;
+int dmflag = 0; // avoid constant casting 
 
 edict_t* g_edicts;
 
@@ -181,7 +182,7 @@ void EndDMLevel(void)
 	int			i;
 
 	// stay on same level flag
-	if ((int)dmflags->value & DF_SAME_LEVEL)
+	if (dmflag & DF_SAME_LEVEL)
 	{
 		ent = G_Spawn();
 		ent->classname = "target_changelevel";

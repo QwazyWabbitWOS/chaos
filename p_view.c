@@ -677,7 +677,7 @@ void P_FallingDamage(edict_t* ent)
 			damage = 1;
 		VectorSet(dir, 0, 0, 1);
 
-		if (/* MrG{DRGN} always DM !deathmatch->value ||*/ !((int)dmflags->value & DF_NO_FALLING))
+		if (/* MrG{DRGN} always DM !deathmatch->value ||*/ !(dmflag & DF_NO_FALLING))
 			T_Damage(ent, world, world, dir, ent->s.origin, vec3_origin, damage, 0, 0, MOD_FALLING);
 	}
 	else

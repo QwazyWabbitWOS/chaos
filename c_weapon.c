@@ -1074,7 +1074,7 @@ void weapon_lturret_fire(edict_t* ent)
 	gi.sound(ent, CHAN_WEAPON, gi.soundindex("weapons/turret/throw.wav"), 1, ATTN_IDLE, 0);
 	fire_lturret(ent, start, forward, 300);
 
-	if (!((int)dmflags->value & DF_INFINITE_AMMO))
+	if (!(dmflag & DF_INFINITE_AMMO))
 		ent->client->pers.inventory[ent->client->ammo_index]--;
 
 	NoAmmoWeaponChange(ent);
@@ -1115,7 +1115,7 @@ void weapon_rturret_fire(edict_t* ent)
 	gi.sound(ent, CHAN_WEAPON, gi.soundindex("weapons/turret/throw.wav"), 1, ATTN_IDLE, 0);
 	fire_rturret(ent, start, forward, 300);
 
-	if (!((int)dmflags->value & DF_INFINITE_AMMO))
+	if (!(dmflag & DF_INFINITE_AMMO))
 		ent->client->pers.inventory[ent->client->ammo_index]--;
 
 	NoAmmoWeaponChange(ent);
@@ -1718,7 +1718,7 @@ void Weapon_Airfist_Fire(edict_t* ent)
 
 	PlayerNoise(ent, start, PNOISE_WEAPON);
 
-	if (!((int)dmflags->value & DF_INFINITE_AMMO))
+	if (!(dmflag & DF_INFINITE_AMMO))
 		ent->client->pers.inventory[ent->client->ammo_index]--;
 }
 
@@ -1984,7 +1984,7 @@ void weapon_esupershotgun_fire(edict_t* ent)
 	ent->client->ps.gunframe++;
 	PlayerNoise(ent, start, PNOISE_WEAPON);
 
-	if (!((int)dmflags->value & DF_INFINITE_AMMO))
+	if (!(dmflag & DF_INFINITE_AMMO))
 		ent->client->pers.inventory[ent->client->ammo_index] -= 2;
 }
 
@@ -2154,7 +2154,7 @@ void Weapon_Crossbow_Fire(edict_t* ent)
 
 	PlayerNoise(ent, start, PNOISE_WEAPON);
 
-	if (!((int)dmflags->value & DF_INFINITE_AMMO))
+	if (!(dmflag & DF_INFINITE_AMMO))
 		ent->client->pers.inventory[ent->client->ammo_index]--;
 }
 
@@ -2329,7 +2329,7 @@ void Weapon_PoisonCrossbow_Fire(edict_t* ent)
 
 	PlayerNoise(ent, start, PNOISE_WEAPON);
 
-	if (!((int)dmflags->value & DF_INFINITE_AMMO))
+	if (!(dmflag & DF_INFINITE_AMMO))
 		ent->client->pers.inventory[ent->client->ammo_index]--;
 }
 
@@ -2506,7 +2506,7 @@ void Weapon_ExplosiveCrossbow_Fire(edict_t* ent)
 
 	PlayerNoise(ent, start, PNOISE_WEAPON);
 
-	if (!((int)dmflags->value & DF_INFINITE_AMMO))
+	if (!(dmflag & DF_INFINITE_AMMO))
 		ent->client->pers.inventory[ent->client->ammo_index]--;
 }
 
@@ -2681,7 +2681,7 @@ void Weapon_HomingLauncher_Fire(edict_t* ent)
 
 	PlayerNoise(ent, start, PNOISE_WEAPON);
 
-	if (!((int)dmflags->value & DF_INFINITE_AMMO))
+	if (!(dmflag & DF_INFINITE_AMMO))
 		ent->client->pers.inventory[ent->client->ammo_index]--;
 }
 
@@ -2852,7 +2852,7 @@ void Weapon_Buzzsaw_Fire(edict_t* ent)
 
 	PlayerNoise(ent, start, PNOISE_WEAPON);
 
-	if (!((int)dmflags->value & DF_INFINITE_AMMO))
+	if (!(dmflag & DF_INFINITE_AMMO))
 		ent->client->pers.inventory[ent->client->ammo_index]--;
 }
 
@@ -3116,7 +3116,7 @@ void weapon_flashgrenade_fire(edict_t* ent, qboolean held)
 		ent->client->anim_end = FRAME_wave01;
 	}
 
-	if (!((int)dmflags->value & DF_INFINITE_AMMO))
+	if (!(dmflag & DF_INFINITE_AMMO))
 		ent->client->pers.inventory[ent->client->ammo_index]--;
 
 	ent->client->grenade_time = level.time + 1.0;
@@ -3477,7 +3477,7 @@ void weapon_lasergrenade_fire(edict_t* ent, qboolean held)
 		ent->client->anim_end = FRAME_wave01;
 	}
 
-	if (!((int)dmflags->value & DF_INFINITE_AMMO))
+	if (!(dmflag & DF_INFINITE_AMMO))
 		ent->client->pers.inventory[ent->client->ammo_index]--;
 
 	ent->client->grenade_time = level.time + 1.0;
@@ -3846,7 +3846,7 @@ void weapon_poisongrenade_fire(edict_t* ent, qboolean held)
 		ent->client->anim_end = FRAME_wave01;
 	}
 
-	if (!((int)dmflags->value & DF_INFINITE_AMMO))
+	if (!(dmflag & DF_INFINITE_AMMO))
 		ent->client->pers.inventory[ent->client->ammo_index]--;
 
 	ent->client->grenade_time = level.time + 1.0;
@@ -4416,7 +4416,7 @@ void weapon_flashgrenadelauncher_fire(edict_t* ent)
 
 	PlayerNoise(ent, start, PNOISE_WEAPON);
 
-	if (!((int)dmflags->value & DF_INFINITE_AMMO))
+	if (!(dmflag & DF_INFINITE_AMMO))
 		ent->client->pers.inventory[ent->client->ammo_index]--;
 }
 
@@ -4472,7 +4472,7 @@ void weapon_poisongrenadelauncher_fire(edict_t* ent)
 
 	PlayerNoise(ent, start, PNOISE_WEAPON);
 
-	if (!((int)dmflags->value & DF_INFINITE_AMMO))
+	if (!(dmflag & DF_INFINITE_AMMO))
 		ent->client->pers.inventory[ent->client->ammo_index]--;
 }
 
@@ -4528,7 +4528,7 @@ void weapon_proxyminelauncher_fire(edict_t* ent)
 
 	PlayerNoise(ent, start, PNOISE_WEAPON);
 
-	if (!((int)dmflags->value & DF_INFINITE_AMMO))
+	if (!(dmflag & DF_INFINITE_AMMO))
 		ent->client->pers.inventory[ent->client->ammo_index]--;
 }
 
@@ -5097,7 +5097,7 @@ void weapon_vortex_fire(edict_t* ent)
 	gi.sound(ent, CHAN_WEAPON, gi.soundindex("weapons/vortex/throw.wav"), 1, ATTN_IDLE, 0);
 	fire_vortex(ent, start, forward, speed);
 
-	if (!((int)dmflags->value & DF_INFINITE_AMMO))
+	if (!(dmflag & DF_INFINITE_AMMO))
 		ent->client->pers.inventory[ent->client->ammo_index]--;
 
 	ent->client->grenade_time = level.time + 1.0;
