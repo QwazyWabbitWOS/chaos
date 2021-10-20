@@ -6,7 +6,7 @@ void CreateCamera(edict_t* ent)
 {
 	if (!ent)
 		return;
-	// MrG{DRGN} set some values so there's a visible model at the outcome
+	/* MrG{DRGN} set some values so there's a visible model at the outcome */
 	PMenu_Close(ent);
 	ent->svflags = 0;
 	ent->client->ps.pmove.pm_type = PM_NORMAL;
@@ -15,8 +15,7 @@ void CreateCamera(edict_t* ent)
 	ent->size[0] = 32.0;
 	ent->size[1] = 32.0;
 	ent->size[2] = 56.0;
-	
-	bprint_botsafe(PRINT_HIGH, "%s has moved to the sidelines\n", ent->client->pers.netname);
+
 	gi.unlinkentity(ent);
 	ent->groundentity = NULL;
 	ent->takedamage = DAMAGE_NO;
