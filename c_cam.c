@@ -16,8 +16,10 @@ void CreateCamera(edict_t* ent)
 	ent->size[2] = 56.0;
 	
 	bprint_botsafe(PRINT_HIGH, "%s has moved to the sidelines\n", ent->client->pers.netname);
+	
 	if (ent->movetype != MOVETYPE_NOCLIP)
-	gi.unlinkentity(ent);
+		gi.unlinkentity(ent);
+	
 	ent->groundentity = NULL;
 	ent->takedamage = DAMAGE_NO;
 	ent->movetype = MOVETYPE_FLY;
