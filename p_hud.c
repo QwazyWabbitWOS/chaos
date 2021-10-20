@@ -207,8 +207,11 @@ void DeathmatchScoreboardMessage(edict_t* ent, edict_t* killer /* MrG{DRGN} can 
 	if (ent->client->showscores || ent->client->showinventory)
 		ent->client->scanneractive = 0;
 
-	if (ent->client->menu || ent->client->camera)
+	if (ent->client->menu && ent->client->showscores)
+	{
 		PMenu_Close(ent);
+		ent->client->showscores = true; // turn showscores back on
+	}
 
 	if (ent->client->showscores)
 	{
