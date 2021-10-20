@@ -79,7 +79,7 @@ void BeginIntermission(edict_t* targ)
 		if (!client->inuse)
 			continue;
 
-		if (client->client && !client->client->camera)
+		if (client->client && client->client->camera)
 		{
 			PutClientInServer(client);
 			ClientBegin(client);
@@ -89,7 +89,7 @@ void BeginIntermission(edict_t* targ)
 		{
 			if (client->classindex == BOT)
 				Bot_Respawn(client);
-			else
+			else if  (!client->client->camera)
 				respawn(client);
 		}
 	}
