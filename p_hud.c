@@ -89,7 +89,7 @@ void BeginIntermission(edict_t* targ)
 		{
 			if (client->classindex == BOT)
 				Bot_Respawn(client);
-			else if  (!client->client->camera)
+			else if (client->client && !client->client->camera)
 				respawn(client);
 		}
 	}
