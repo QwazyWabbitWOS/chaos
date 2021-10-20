@@ -1588,8 +1588,8 @@ void PutClientInServer(edict_t* ent)
 	ent->viewheight = 22;
 	ent->inuse = true;
 	ent->bot_player = false;  /* MrG{DRGN} this is a lot easier than checking the classname to track if we're dealing wiith a bot or not! */
-	ent->classindex = PLAYER;
 	ent->classname = "player";
+	ent->classindex = PLAYER;
 	ent->mass = 200;
 	ent->solid = SOLID_BBOX;
 	ent->deadflag = DEAD_NO;
