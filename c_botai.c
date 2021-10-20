@@ -1738,7 +1738,7 @@ edict_t* Bot_FindCloseItem(edict_t* ent)
 	}
 
 	if (best)
-		nprintf(PRINT_HIGH, "%s is going for the %s close to his/her way.\n", ent->client->pers.netname, best->classname);
+		nprintf(PRINT_HIGH, "%s is going for the %s close to their way.\n", ent->client->pers.netname, best->classname);
 
 	return best;
 }
