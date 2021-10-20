@@ -79,7 +79,7 @@ void BeginIntermission(edict_t* targ)
 		if (!client->inuse)
 			continue;
 
-		if (client->client && !client->client->camera)
+		if (client->client && client->client->camera)
 		{
 			PutClientInServer(client);
 			ClientBegin(client);
