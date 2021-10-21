@@ -750,7 +750,7 @@ void Grenade_Explode(edict_t* ent);
 void respawn(edict_t* self);
 void SelectSpawnPoint(edict_t* ent, vec3_t origin, vec3_t angles);
 void PutClientInServer(edict_t* ent);
-void InitClientPersistant(gclient_t* client);
+void InitClientPersistent(gclient_t* client);
 void InitClientResp(gclient_t* client);
 void InitBodyQue(void);
 void ClientBeginServerFrame(edict_t* ent);
@@ -858,7 +858,7 @@ void G_RunFrame(void);
 #define ANIM_REVERSE	-1	//vwep
 
 // client data that stays across multiple level loads
-typedef struct
+typedef struct client_persistent_s
 {
 	char		userinfo[MAX_INFO_STRING];
 	char		netname[16];
@@ -901,15 +901,15 @@ typedef struct
 
 	int			power_cubes;	// used for tracking the cubes in coop games
 	int			score;			// for calculating total unit score in coop games
-} client_persistant_t;
+} client_persistent_t;
 
 // client data that stays across deathmatch respawns
-typedef struct
+typedef struct client_respawn_s
 {
-	client_persistant_t	coop_respawn;	// what to set client->pers to on a respawn
+	client_persistent_t	coop_respawn;	// what to set client->pers to on a respawn
 	int			enterframe;			// level.framenum the client entered the game
 	int			score;				// frags, etc
-//ZOID
+	//ZOID
 	int			ctf_team;			// CTF team
 	int			team; // MATHIAS Deathmatch Team
 	int			ctf_state;
@@ -923,10 +923,12 @@ typedef struct
 	qboolean	ready;
 	qboolean	admin;
 	struct ghost_s* ghost; // for ghost codes
-//ZOID
+	//ZOID
 	vec3_t		cmd_angles;			// angles sent over in the last command
 	int			game_helpchanged;
 	int			helpchanged;
+	qboolean	spectator;		// client is a spectator
+
 } client_respawn_t;
 
 // this structure is cleared on each PutClientInServer(),
@@ -938,7 +940,7 @@ struct gclient_s
 	int				ping;
 
 	// private to game
-	client_persistant_t	pers;
+	client_persistent_t	pers;
 	client_respawn_t	resp;
 	pmove_state_t		old_pmove;	// for detecting out-of-pmove changes
 

@@ -218,7 +218,7 @@ void Bot_Spawn(edict_t* ent)
 	vec3_t               mins = { -16, -16, -24 };
 	vec3_t               maxs = { 16, 16, 32 };
 	int                 i, index;
-	client_persistant_t  pers;
+	client_persistent_t  pers;
 	client_respawn_t     resp = { 0 };
 
 	if (!deathmatch->value)
@@ -237,7 +237,7 @@ void Bot_Spawn(edict_t* ent)
 
 		resp = ent->client->resp;
 		memcpy(userinfo, ent->client->pers.userinfo, MAX_INFO_STRING);
-		InitClientPersistant(ent->client);
+		InitClientPersistent(ent->client);
 		ClientUserinfoChanged(ent, userinfo); //QW// Expect Redundant from r1q2 for this.
 	}
 	else

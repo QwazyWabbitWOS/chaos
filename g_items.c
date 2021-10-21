@@ -5324,7 +5324,9 @@ void SetItemNames(void)
 	for (i = 0; i < game.num_items; i++)
 	{
 		it = &itemlist[i];
-		gi.configstring(CS_ITEMS + i, it->pickup_name);
+		if (it->pickup_name)
+			gi.configstring(CS_ITEMS + i, it->pickup_name);
+		//DbgPrintf("%s Item: %d %s\n", __func__, i, it->pickup_name);
 	}
 
 	jacket_armor_index = ITEM_INDEX(FindItemByClassindex(AR_JACKET));

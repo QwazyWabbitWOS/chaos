@@ -894,13 +894,13 @@ void player_die(edict_t* self, edict_t* inflictor, edict_t* attacker, int damage
 
 /*
 ==============
-InitClientPersistant
+InitClientPersistent
 
 This is only called when the game first initializes in single player,
 but is called after each death and level change in deathmatch
 ==============
 */
-void InitClientPersistant(gclient_t* client)
+void InitClientPersistent(gclient_t* client)
 {
 	gitem_t* item;
 
@@ -1134,7 +1134,7 @@ void InitClientResp(gclient_t* client)
 ==================
 SaveClientData
 
-Some information that should be persistant, like health,
+Some information that should be persistent, like health,
 is still stored in the edict structure, so it needs to
 be mirrored out to the client structure before all the
 edicts are wiped.
@@ -1524,7 +1524,7 @@ void PutClientInServer(edict_t* ent)
 	vec3_t	spawn_origin, spawn_angles;
 	gclient_t* client;
 	int		i, k;
-	client_persistant_t	saved;
+	client_persistent_t	saved;
 	client_respawn_t	resp;
 
 	// find a spawn point
@@ -1543,7 +1543,7 @@ void PutClientInServer(edict_t* ent)
 
 		resp = client->resp;
 		memcpy(userinfo, client->pers.userinfo, sizeof(userinfo));
-		InitClientPersistant(client);
+		InitClientPersistent(client);
 		ClientUserinfoChanged(ent, userinfo);
 	}/* MrG{DRGN}  Always DM	*/
 	else if (coop->value)
@@ -1569,12 +1569,12 @@ void PutClientInServer(edict_t* ent)
 		memset(&resp, 0, sizeof(resp));
 	}
 
-	// clear everything but the persistant data
+	// clear everything but the persistent data
 	saved = client->pers;
 	memset(client, 0, sizeof(*client));
 	client->pers = saved;
 	if (client->pers.health <= 0)
-		InitClientPersistant(client);
+		InitClientPersistent(client);
 	client->resp = resp;
 
 	// copy some data from the client to the entity
@@ -1811,7 +1811,7 @@ void ClientBegin(edict_t* ent)
 	else
 	{
 		// a spawn point will completely reinitialize the entity
-		// except for the persistant data that was initialized at
+		// except for the persistent data that was initialized at
 		// ClientConnect() time
 		G_InitEdict(ent);
 		ent->classindex = PLAYER;
@@ -1945,7 +1945,7 @@ qboolean ClientConnect(edict_t* ent, char* userinfo)
 		//ZOID
 		InitClientResp(ent->client);
 		if (!game.autosaved || !ent->client->pers.weapon)
-			InitClientPersistant(ent->client);
+			InitClientPersistent(ent->client);
 	}
 
 	ClientUserinfoChanged(ent, userinfo);

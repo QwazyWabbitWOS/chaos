@@ -3230,8 +3230,8 @@ void CTFObserver(edict_t* ent)
 
 	// start as 'observer'
 	if (ent->movetype == MOVETYPE_NOCLIP)
-
 		Grapple_Reset(ent);
+
 	CTFDeadDropFlag(ent);
 	CTFDeadDropTech(ent);
 
@@ -3243,7 +3243,7 @@ void CTFObserver(edict_t* ent)
 	ent->client->ps.gunindex = 0;
 	ent->client->resp.score = 0;
 	memcpy(userinfo, ent->client->pers.userinfo, sizeof(userinfo));
-	InitClientPersistant(ent->client);
+	InitClientPersistent(ent->client);
 	ClientUserinfoChanged(ent, userinfo);
 	gi.linkentity(ent);
 	CTFOpenJoinMenu(ent);
