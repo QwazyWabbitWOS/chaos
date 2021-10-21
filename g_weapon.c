@@ -444,6 +444,7 @@ void Grenade_Explode(edict_t* ent)
 	gi.WritePosition(origin);
 	gi.multicast(ent->s.origin, MULTICAST_PHS);
 
+	if (!ent->spawnflags & 2)// MrG{DRGN} nothing to free if we hold it til it explodes.
 	G_FreeEdict(ent);
 }
 

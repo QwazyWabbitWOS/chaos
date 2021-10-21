@@ -145,8 +145,9 @@ void Bot_Think(edict_t* ent)
 	usercmd_t   cmd;
 	vec3_t      angles = { 0,0,0 }, mins = { -16,-16,0 }, maxs = { 16,16,10 };
 
-	if (!ent || !ent->client)
+	if (!ent || !ent->client|| level.intermissiontime) // MrG{DRGN} stop searching at the end of the map
 		return;
+
 
 	// init usercmd variable
 	VectorCopy(ent->client->v_angle, angles);
