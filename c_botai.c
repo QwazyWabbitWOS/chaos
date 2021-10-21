@@ -444,6 +444,7 @@ void Bot_Think(edict_t* ent)
 				mark->think = G_FreeEdict;
 				ent->client->b_goalitem = mark;
 				nprintf(PRINT_HIGH, "%s's enemy is out of sight but they found a path to the last known position!\n", ent->client->pers.netname);
+				gi.linkentity(mark);
 			}
 			ent->enemy = NULL;
 		}
@@ -597,7 +598,7 @@ void Bot_Think(edict_t* ent)
 						}
 						else
 						{
-							nprintf(PRINT_HIGH, "%d tries to jump out of the water!\n", ent->client->pers.netname);
+							nprintf(PRINT_HIGH, "%s tries to jump out of the water!\n", ent->client->pers.netname);
 							cmd.upmove = RUN_SPEED;
 						}
 					}
@@ -648,7 +649,7 @@ void Bot_Think(edict_t* ent)
 						}
 						else
 						{
-							nprintf(PRINT_HIGH, "%d tries to jump out of the water!\n", ent->client->pers.netname);
+							nprintf(PRINT_HIGH, "%s tries to jump out of the water!\n", ent->client->pers.netname);
 							cmd.upmove = RUN_SPEED;
 						}
 					}
@@ -783,7 +784,7 @@ void Bot_Think(edict_t* ent)
 							}
 							else
 							{
-								nprintf(PRINT_HIGH, "%d tries to jump out of the water!\n", ent->client->pers.netname);
+								nprintf(PRINT_HIGH, "%s tries to jump out of the water!\n", ent->client->pers.netname);
 								cmd.upmove = RUN_SPEED;
 							}
 						}
