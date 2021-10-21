@@ -24,7 +24,7 @@ _CrtMemState startup1;	// memory diagnostics
 // because we define the full size ones in this file
 #define	GAME_INCLUDE
 #include "game.h"
-/* MrG{DRGN} */
+// MrG{DRGN} 
 #include "classindex.h"
 
 //ZOID
@@ -541,7 +541,7 @@ extern cvar_t* bob_roll;
 extern cvar_t* sv_cheats;
 extern cvar_t* maxclients;
 
-/* MrG{DRGN} */
+// MrG{DRGN} 
 extern cvar_t* flood_msgs;
 extern cvar_t* flood_persecond;
 extern cvar_t* flood_waitdelay;
@@ -644,7 +644,7 @@ void InitItems(void);
 void SetItemNames(void);
 gitem_t* FindItem(char* pickup_name);
 gitem_t* FindItemByClassname(char* classname);
-gitem_t* FindItemByClassindex(unsigned int classindex);/* MrG{DRGN} */
+gitem_t* FindItemByClassindex(unsigned int classindex);// MrG{DRGN} 
 #define	ITEM_INDEX(x) (int)((x)-itemlist)
 edict_t* Drop_Item(edict_t* ent, gitem_t* item);
 void SetRespawn(edict_t* ent, float delay);
@@ -1065,7 +1065,7 @@ struct gclient_s
 
 	float		respawn_time;		// can respawn when time > this
 
-	/* MrG{DRGN} */
+	// MrG{DRGN} 
 	float		flood_locktill;		// locked from talking
 	float		flood_when[10];		// when messages were said
 	int			flood_whenhead;		// head pointer for when said

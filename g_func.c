@@ -543,7 +543,7 @@ void SP_func_plat(edict_t* ent)
 	VectorClear(ent->s.angles);
 	ent->solid = SOLID_BSP;
 	ent->movetype = MOVETYPE_PUSH;
-	ent->classindex = FUNC_PLAT; /* MrG{DRGN} */
+	ent->classindex = FUNC_PLAT; // MrG{DRGN} 
 	gi.setmodel(ent, ent->model);
 
 	ent->blocked = plat_blocked;
@@ -627,7 +627,7 @@ void rotating_blocked(edict_t* self, edict_t* other)
 
 void rotating_touch(edict_t* self, edict_t* other, cplane_t* plane, csurface_t* surf)
 {
-	/* MrG{DRGN}*/
+	// MrG{DRGN} 
 	if (!self || !other) /* plane & surf are unused */
 	{
 		G_FreeEdict(self);
@@ -640,7 +640,7 @@ void rotating_touch(edict_t* self, edict_t* other, cplane_t* plane, csurface_t* 
 
 void rotating_use(edict_t* self, edict_t* other, edict_t* activator)
 {
-	/* MrG{DRGN}*/
+	// MrG{DRGN} 
 	if (!self) /* other, plane & surf are unused */
 	{
 		return;
@@ -700,7 +700,7 @@ void SP_func_rotating(edict_t* ent)
 		ent->s.effects |= EF_ANIM_ALL;
 	if (ent->spawnflags & 128)
 		ent->s.effects |= EF_ANIM_ALLFAST;
-	ent->classindex = FUNC_ROTATING; /* MrG{DRGN} */
+	ent->classindex = FUNC_ROTATING; // MrG{DRGN} 
 	gi.setmodel(ent, ent->model);
 	gi.linkentity(ent);
 }
@@ -783,7 +783,7 @@ void button_use(edict_t* self, edict_t* other, edict_t* activator)
 
 void button_touch(edict_t* self, edict_t* other, cplane_t* plane, csurface_t* surf)
 {
-	/* MrG{DRGN}*/
+	// MrG{DRGN} 
 	if (!self || !other) /* plane & surf are unused */
 	{
 		G_FreeEdict(self);
@@ -816,7 +816,7 @@ void SP_func_button(edict_t* ent)
 	G_SetMovedir(ent->s.angles, ent->movedir);
 	ent->movetype = MOVETYPE_STOP;
 	ent->solid = SOLID_BSP;
-	ent->classindex = FUNC_BUTTON; /* MrG{DRGN} */
+	ent->classindex = FUNC_BUTTON; // MrG{DRGN} 
 	gi.setmodel(ent, ent->model);
 
 	if (ent->sounds != 1)
@@ -1172,7 +1172,7 @@ void door_killed(edict_t* self, edict_t* inflictor, edict_t* attacker, int damag
 
 void door_touch(edict_t* self, edict_t* other, cplane_t* plane, csurface_t* surf)
 {
-	/* MrG{DRGN}*/
+	// MrG{DRGN} 
 	if (!self || !other) /* plane & surf are unused */
 	{
 		G_FreeEdict(self);
@@ -1205,7 +1205,7 @@ void SP_func_door(edict_t* ent)
 	G_SetMovedir(ent->s.angles, ent->movedir);
 	ent->movetype = MOVETYPE_PUSH;
 	ent->solid = SOLID_BSP;
-	ent->classindex = FUNC_DOOR; /* MrG{DRGN} */
+	ent->classindex = FUNC_DOOR; // MrG{DRGN} 
 	gi.setmodel(ent, ent->model);
 
 	ent->blocked = door_blocked;
@@ -1343,7 +1343,7 @@ void SP_func_door_rotating(edict_t* ent)
 
 	ent->movetype = MOVETYPE_PUSH;
 	ent->solid = SOLID_BSP;
-	ent->classindex = FUNC_DOOR_ROTATING; /* MrG{DRGN} */
+	ent->classindex = FUNC_DOOR_ROTATING; // MrG{DRGN} 
 	ent->classname = "func_door_rotating"; /* MrG{DRGN} this wasn't here */
 	gi.setmodel(ent, ent->model);
 
@@ -1722,7 +1722,7 @@ void SP_func_train(edict_t* self)
 			self->dmg = 100;
 	}
 	self->solid = SOLID_BSP;
-	self->classindex = FUNC_TRAIN; /* MrG{DRGN} */
+	self->classindex = FUNC_TRAIN; // MrG{DRGN} 
 	gi.setmodel(self, self->model);
 
 	if (st.noise)
@@ -1805,7 +1805,7 @@ void trigger_elevator_init(edict_t* self)
 
 void SP_trigger_elevator(edict_t* self)
 {
-	self->classindex = TRIGGER_ELEVATOR; /* MrG{DRGN} */
+	self->classindex = TRIGGER_ELEVATOR; // MrG{DRGN} 
 	self->think = trigger_elevator_init;
 	self->nextthink = level.time + FRAMETIME;
 }
@@ -1855,7 +1855,7 @@ void SP_func_timer(edict_t* self)
 
 	self->use = func_timer_use;
 	self->think = func_timer_think;
-	self->classindex = FUNC_TIMER; /* MrG{DRGN} */
+	self->classindex = FUNC_TIMER; // MrG{DRGN} 
 	if (self->random >= self->wait)
 	{
 		self->random = self->wait - FRAMETIME;
@@ -1906,7 +1906,7 @@ void SP_func_conveyor(edict_t* self)
 	}
 
 	self->use = func_conveyor_use;
-	self->classindex = FUNC_CONVEYOR; /* MrG{DRGN} */
+	self->classindex = FUNC_CONVEYOR; // MrG{DRGN} 
 	gi.setmodel(self, self->model);
 	self->solid = SOLID_BSP;
 	gi.linkentity(self);
@@ -2083,7 +2083,7 @@ void SP_func_door_secret(edict_t* ent)
 	}
 
 	ent->classname = "func_door";
-	ent->classindex = FUNC_DOOR_SECRET; /* MrG{DRGN} */
+	ent->classindex = FUNC_DOOR_SECRET; // MrG{DRGN} 
 	gi.linkentity(ent);
 }
 

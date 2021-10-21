@@ -317,7 +317,7 @@ void Bot_Spawn(edict_t* ent)
 
 	ent->s.effects = 0;
 	ent->s.skinnum = index;
-	ent->s.modelindex = (PLAYER_MODEL); /* MrG{DRGN} */
+	ent->s.modelindex = (PLAYER_MODEL); // MrG{DRGN} 
 
 	ShowGun(ent); //vwep
 	//ent->s.modelindex2    = 255;
@@ -1317,7 +1317,7 @@ qboolean Bot_CanPickupItem(edict_t* ent, edict_t* eitem)
 
 	if (!Bot_CanPickupAmmo(ent, eitem))
 		return 0;
-	/* MrG{DRGN} */
+	// MrG{DRGN} 
 	if (eitem->classindex == AR_BODY
 		|| eitem->classindex == AR_JACKET
 		|| eitem->classindex == AR_COMBAT)

@@ -310,7 +310,7 @@ void Turret_Explode(edict_t* ent)
 		chunk->think = G_FreeEdict;
 		chunk->nextthink = level.time + 1 + random() * 2;
 		chunk->classname = "debris";
-		chunk->classindex = DEBRIS; /* MrG{DRGN} */
+		chunk->classindex = DEBRIS; // MrG{DRGN} 
 		chunk->takedamage = DAMAGE_NO;
 
 		chunk->s.effects |= EF_GRENADE;
@@ -927,7 +927,7 @@ void RocketTurret_Think(edict_t* ent)
 
 void Turret_Touch(edict_t* ent, edict_t* other, cplane_t* plane, csurface_t* surf)
 {
-	/* MrG{DRGN}*/
+	// MrG{DRGN} 
 	if (!ent || !other) /* plane is unused, surf can be NULL */
 	{
 		G_FreeEdict(ent);
@@ -2007,7 +2007,7 @@ void Weapon_ExplosiveSuperShotgun(edict_t* ent)
 
 void arrow_touch(edict_t* self, edict_t* other, cplane_t* plane, csurface_t* surf)
 {
-	/* MrG{DRGN}*/
+	// MrG{DRGN} 
 	if (!self || !other) /* plane is unused, surf can be NULL */
 	{
 		G_FreeEdict(self);
@@ -2414,7 +2414,7 @@ void Arrow_Explode(edict_t* ent)
 
 void earrow_touch(edict_t* self, edict_t* other, cplane_t* plane, csurface_t* surf)
 {
-	/* MrG{DRGN}*/
+	// MrG{DRGN} 
 	if (!self || !other) /* plane is unused, surf can be NULL */
 	{
 		G_FreeEdict(self);
@@ -2704,7 +2704,7 @@ void Weapon_HomingLauncher(edict_t* ent)
 
 void buzz_touch(edict_t* self, edict_t* other, cplane_t* plane, csurface_t* surf)
 {
-	/* MrG{DRGN}*/
+	// MrG{DRGN} 
 	if (!self || !other) /* plane is unused, surf can be NULL */
 	{
 		G_FreeEdict(self);
@@ -2951,7 +2951,7 @@ void FlashGrenade_Explode(edict_t* ent)
 
 void FlashGrenade_Touch(edict_t* ent, edict_t* other, cplane_t* plane, csurface_t* surf)
 {
-	/* MrG{DRGN}*/
+	// MrG{DRGN} 
 	if (!ent || !other) /* plane is unused, surf can be NULL */
 	{
 		G_FreeEdict(ent);
@@ -3286,7 +3286,7 @@ void LaserMine_Touch(edict_t* ent, edict_t* other, cplane_t* plane, csurface_t* 
 						  0xe0e1e2e3              // bitty yellow strobe
 	};
 
-	/* MrG{DRGN}*/
+	// MrG{DRGN} 
 	if (!ent || !other) /* surf can be NULL */
 	{
 		G_FreeEdict(ent);
@@ -3680,7 +3680,7 @@ void PoisonGrenade_Explode(edict_t* ent)
 
 void PoisonGrenade_Touch(edict_t* ent, edict_t* other, cplane_t* plane, csurface_t* surf)
 {
-	/* MrG{DRGN}*/
+	// MrG{DRGN} 
 	if (!ent || !other) /* plane is unused, surf can be NULL */
 	{
 		G_FreeEdict(ent);
@@ -4286,7 +4286,7 @@ void EvilProxy_Think(edict_t* ent)
 
 void Proxy_Touch(edict_t* ent, edict_t* other, cplane_t* plane, csurface_t* surf)
 {
-	/* MrG{DRGN}*/
+	// MrG{DRGN} 
 	if (!ent || !other) /* plane is unused, surf can be NULL */
 	{
 		G_FreeEdict(ent);
@@ -5016,7 +5016,7 @@ void Vortex_Think(edict_t* ent)
 
 void Vortex_Touch(edict_t* ent, edict_t* other, cplane_t* plane, csurface_t* surf)
 {
-	/* MrG{DRGN}*/
+	// MrG{DRGN} 
 	if (!ent || !other) /* plane is unused, surf can be NULL */
 	{
 		G_FreeEdict(ent);

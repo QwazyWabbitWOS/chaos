@@ -4,7 +4,7 @@
 #include "g_ent.h"
 typedef struct
 {
-	unsigned int classindex; /* MrG{DRGN} */
+	unsigned int classindex; // MrG{DRGN} 
 	char* name;
 	void	(*spawn)(edict_t* ent);
 } spawn_t;
@@ -60,7 +60,7 @@ void SP_target_blaster(edict_t* ent);
 void SP_target_crosslevel_trigger(edict_t* ent);
 void SP_target_crosslevel_target(edict_t* ent);
 void SP_target_laser(edict_t* self);
-#if 0 /*MrG{DRGN} non-deathmatch stuff!*/
+#if 0 // MrG{DRGN} non-deathmatch stuff!
 void SP_target_help(edict_t* ent);
 
 void SP_target_lightramp(edict_t* self);
@@ -849,7 +849,7 @@ void SP_worldspawn(edict_t * ent)
 	ent->solid = SOLID_BSP;
 	ent->inuse = true;			// since the world doesn't use G_Spawn()
 	ent->s.modelindex = WORLD_MODEL;		// world model is always index 1
-	ent->classindex = WORLDSPAWN; /* MrG{DRGN} */
+	ent->classindex = WORLDSPAWN; // MrG{DRGN} 
 	ent->classname = "worldspawn";
 	/* MrG{DRGN}
 	* this will create a different series of random numbers on every map load
@@ -1049,7 +1049,7 @@ void SP_worldspawn(edict_t * ent)
 
 	LoadMOTD();
 
-	if (botchat->value)/* MrG{DRGN} */
+	if (botchat->value)// MrG{DRGN} 
 		Load_BotChat();
 
 	Bot_InitNodes();		//init route table

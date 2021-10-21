@@ -253,7 +253,7 @@ void Cmd_Give_f(edict_t* ent)
 				continue;
 			if (it->flags & (IT_ARMOR | IT_WEAPON | IT_AMMO))
 				continue;
-			if (it == it_flag_red  //MATTHIAS /* MrG{DRGN} */
+			if (it == it_flag_red  //MATTHIAS // MrG{DRGN} 
 				|| it == it_flag_blue
 				|| it == it_tech1
 				|| it == it_tech2
@@ -272,7 +272,7 @@ void Cmd_Give_f(edict_t* ent)
 
 	it = FindItem(name);
 
-	if (it == it_flag_red  //MATTHIAS /* MrG{DRGN} */
+	if (it == it_flag_red  //MATTHIAS // MrG{DRGN} 
 		|| it == it_flag_blue
 		|| it == it_machinegun
 		|| it == it_shotgun
@@ -909,7 +909,7 @@ void Cmd_Wave_f(edict_t* ent)
 	}
 }
 
-/* MrG{DRGN} */
+// MrG{DRGN} 
 // Mute spammy players.
 qboolean CheckFlood(edict_t* ent)
 {
@@ -994,7 +994,7 @@ void Cmd_Say_f(edict_t* ent, qboolean team, qboolean arg0)
 
 	Com_strcat(text, sizeof(text), "\n");
 
-	if (CheckFlood(ent))/* MrG{DRGN} */
+	if (CheckFlood(ent))// MrG{DRGN} 
 		return;
 
 	if (dedicated->value)

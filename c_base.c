@@ -57,13 +57,13 @@ void ShowGun(edict_t* ent)	//QW from WOD:LOX for vwep
 	if (!ent->client->pers.weapon)
 	{
 		ent->client->ps.gunindex = 0;		// WI: seems to be missing?
-		ent->s.modelindex2 = REMOVED_MODEL;	 /* MrG{DRGN} */
+		ent->s.modelindex2 = REMOVED_MODEL;	 // MrG{DRGN} 
 		if (ent->solid != SOLID_TRIGGER) /* MrG{DRGN} Don't complain about camera using players not having a gun */
 			gi.dprintf("ShowGun: Oops! Weapon Index missing! %s\n", ent->client->pers.netname);
 		return;
 	}
 
-	ent->s.modelindex2 = VWEP_MODEL;   /* MrG{DRGN} */
+	ent->s.modelindex2 = VWEP_MODEL;   // MrG{DRGN} 
 	strcpy(heldmodel, "#");	//safe, don't change
 	strcat(heldmodel, ent->client->pers.weapon->icon);
 	strcat(heldmodel, ".md2");
@@ -948,7 +948,7 @@ void cprint_botsafe(edict_t* ent, int printlevel, char* fmt, ...)
 	va_list		argptr;
 	char	CPrint2Buff[0x2000];
 
-	if (!ent || !ent->client || ent->bot_player)/* MrG{DRGN} */
+	if (!ent || !ent->client || ent->bot_player)// MrG{DRGN} 
 		return;
 
 	va_start(argptr, fmt);
@@ -956,7 +956,7 @@ void cprint_botsafe(edict_t* ent, int printlevel, char* fmt, ...)
 	vsnprintf(CPrint2Buff, sizeof(CPrint2Buff), fmt, argptr);
 	va_end(argptr);
 
-	if (ent->inuse) /* MrG{DRGN} */
+	if (ent->inuse) // MrG{DRGN} 
 	{
 		gi.cprintf(ent, printlevel, CPrint2Buff);
 	}
@@ -1058,7 +1058,7 @@ void Teleport(edict_t* ent)
 
 	if (ent->client->teleporter)	//teleport
 	{
-		int i; /* MrG{DRGN} */
+		int i; // MrG{DRGN} 
 		if (ctf->value)
 			CTFDeadDropFlag(ent);
 
@@ -1473,7 +1473,7 @@ void Cmd_Grapple_f(edict_t* ent)
 		Cmd_Hook_f(ent);
 	else
 	{
-		if (!ent->bot_player)/* MrG{DRGN} */
+		if (!ent->bot_player)// MrG{DRGN} 
 			gi.centerprintf(ent, "\nYou don't have a grappling hook!\n");//MATTHIAS
 
 		return;

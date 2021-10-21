@@ -58,7 +58,7 @@ void PlayerNoise(edict_t* who, vec3_t where, int type)
 	if ((type == PNOISE_SELF || type == PNOISE_WEAPON) && !who->mynoise)
 	{
 		noise = G_Spawn();
-		noise->classindex = PLAYER_NOISE; /* MrG{DRGN} */
+		noise->classindex = PLAYER_NOISE; // MrG{DRGN} 
 		noise->classname = "player_noise";
 		VectorSet(noise->mins, -8, -8, -8);
 		VectorSet(noise->maxs, 8, 8, 8);
@@ -76,7 +76,7 @@ void PlayerNoise(edict_t* who, vec3_t where, int type)
 	else if (!who->mynoise2) // type == PNOISE_IMPACT
 	{
 		noise = G_Spawn();
-		noise->classindex = PLAYER_NOISE; /* MrG{DRGN} */
+		noise->classindex = PLAYER_NOISE; // MrG{DRGN} 
 		noise->classname = "player_noise";
 		VectorSet(noise->mins, -8, -8, -8);
 		VectorSet(noise->maxs, 8, 8, 8);

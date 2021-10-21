@@ -1398,7 +1398,7 @@ void	SelectSpawnPoint(edict_t* ent, vec3_t origin, vec3_t angles)
 			if (!spot)
 			{
 				gi.error("Couldn't find spawn point %s\n", game.spawnpoint);
-				return; /* MrG{DRGN} */
+				return; // MrG{DRGN} 
 			}
 		}
 	}
@@ -1420,7 +1420,7 @@ void InitBodyQue(void)
 	{
 		ent = G_Spawn();
 		ent->classname = "bodyque";
-		ent->classindex = BODYQUE; /* MrG{DRGN} */
+		ent->classindex = BODYQUE; // MrG{DRGN} 
 	}
 }
 
@@ -1744,9 +1744,7 @@ void ClientBeginDeathmatch(edict_t* ent)
 	// locate ent at a spawn point
 	PutClientInServer(ent);
 	ent->client->camera = 0;
-	// locate ent at a spawn point
-	PutClientInServer(ent);
-
+	
 	// send effect
 	gi.WriteByte(svc_muzzleflash);
 	gi.WriteShort(ent - g_edicts);

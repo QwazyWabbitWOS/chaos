@@ -156,11 +156,11 @@ These are bugs that have been fixed in Chaotic Dreams
 set weapon_kick "0"    // kickable weapons toggle
 set do_respawn "60"    // base item respawn time default
 set do_respawn_rnd "80"// random item respawn time default
-set drop_tech "1"      //*MrG{DRGN} enable/disable tech drops
-set bot_log_only "1"   //bot detection is only logged when set to 1
-set chaos_plus "0"     //enable some new chaos features.
-set telefrag_rail "0"  //enable special railgun mode.
-set tele_fire "1"      //enable some items/weapon fire to travel thru teleporters
+set drop_tech "1"      // MrG{DRGN} enable/disable tech drops
+set bot_log_only "1"   // bot detection is only logged when set to 1
+set chaos_plus "0"     // enable some new chaos features.
+set telefrag_rail "0"  // enable special railgun mode.
+set tele_fire "1"      // enable some items/weapon fire to travel thru teleporters
 set turprox_fx "1"     // enable new turret & proxy effects
 //========================================================
 
@@ -435,11 +435,11 @@ Starting over 09/23/2020
 set weapon_kick "0"    // kickable weapons toggle                                       - redone
 set do_respawn "60"    // base item respawn time default 60                              - redone
 set do_respawn_rnd "80"// random item respawn time default 80                             - redone
-set drop_tech "1"      //*MrG{DRGN} enable/disable tech drops                           - redone
-set bot_log_only "1"   //bot detection is only logged when set to 1                     - no
-set chaos_plus "0"     //enable some new chaos features.                                - todo - master cvar for the following
-set telefrag_rail "0"  //enable special railgun mode.                                   - may do
-set tele_fire "1"      //enable some items/weapon fire to pass through teleporters      - redone but needs to be controlled by chaos_plus cvar
+set drop_tech "1"      // MrG{DRGN} enable/disable tech drops                           - redone
+set bot_log_only "1"   // bot detection is only logged when set to 1                     - no
+set chaos_plus "0"     // enable some new chaos features.                                - todo - master cvar for the following
+set telefrag_rail "0"  // enable special railgun mode.                                   - may do
+set tele_fire "1"      // enable some items/weapon fire to pass through teleporters      - redone but needs to be controlled by chaos_plus cvar
 set turprox_fx "1"     // enable new turret & proxy effects                             - may do
 //========================================================
 

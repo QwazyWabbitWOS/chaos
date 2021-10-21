@@ -17,7 +17,6 @@ CC = gcc -std=c17
 # debug and the release build, add it here
 BASE_CFLAGS= -fcommon -Wpedantic -Wall
 
-
 # Release Flags
 # Flags added here are ONLY used for building the release
 # binaries

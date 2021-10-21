@@ -1987,7 +1987,7 @@ void Use_PowerArmor(edict_t* ent, gitem_t* item)
 	}
 	else
 	{
-		index = ITEM_INDEX(it_cells);/* MrG{DRGN}*/
+		index = ITEM_INDEX(it_cells);// MrG{DRGN} 
 		if (!ent->client->pers.inventory[index])
 		{
 			cprint_botsafe(ent, PRINT_HIGH, "No cells for power armor.\n");
@@ -2096,7 +2096,7 @@ void Touch_Item(edict_t* ent, edict_t* other, cplane_t* plane, csurface_t* surf)
 
 static void drop_temp_touch(edict_t* ent, edict_t* other, cplane_t* plane, csurface_t* surf)
 {
-	/* MrG{DRGN}*/
+	// MrG{DRGN} 
 	if (!ent || !other) /* plane & surf are unused */
 	{
 		G_FreeEdict(ent);
@@ -2276,7 +2276,7 @@ void droptofloor(edict_t* ent)
 
 	//MATTHIAS Autorespawn
 
-	ent->nextthink = level.time + (do_respawn->value) + (random() * do_respawn_rnd->value);	 /* MrG{DRGN} */
+	ent->nextthink = level.time + (do_respawn->value) + (random() * do_respawn_rnd->value);	 // MrG{DRGN} 
 	ent->think = DoRespawn;
 
 	gi.linkentity(ent);
@@ -2334,7 +2334,7 @@ void PrecacheItem(gitem_t* it)
 			gi.error("PrecacheItem: %s has bad precache string", it->classname);
 		memcpy(data, start, len);
 
-		data[len - 1] = 0; /* MrG{DRGN}*/
+		data[len - 1] = 0; // MrG{DRGN} 
 
 		if (*s)
 			s++;

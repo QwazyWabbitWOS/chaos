@@ -48,7 +48,7 @@ cvar_t* bob_up;
 cvar_t* bob_pitch;
 cvar_t* bob_roll;
 
-/* MrG{DRGN} */
+// MrG{DRGN} 
 cvar_t* flood_msgs;
 cvar_t* flood_persecond;
 cvar_t* flood_waitdelay;
@@ -125,9 +125,7 @@ void Sys_Error(const char* error, ...) /* MrG{DRGN} changed to const */
 	va_start(argptr, error);
 	vsnprintf(text, sizeof(text), error, argptr);
 	va_end(argptr);
-	/*MrG{DRGN} printf format error
-	gi.error (ERR_FATAL, "%s", text);
-	*/
+
 	gi.error("%s", text);
 }
 

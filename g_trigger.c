@@ -121,7 +121,7 @@ void SP_trigger_multiple(edict_t* ent)
 
 	if (!VectorCompare(ent->s.angles, vec3_origin))
 		G_SetMovedir(ent->s.angles, ent->movedir);
-	ent->classindex = TRIGGER_MULTIPLE; /* MrG{DRGN} */
+	ent->classindex = TRIGGER_MULTIPLE; // MrG{DRGN} 
 	gi.setmodel(ent, ent->model);
 	gi.linkentity(ent);
 }
@@ -143,7 +143,7 @@ sounds
 
 void SP_trigger_once(edict_t* ent)
 {
-	ent->classindex = TRIGGER_ONCE; /* MrG{DRGN} */
+	ent->classindex = TRIGGER_ONCE; // MrG{DRGN} 
 	// make old maps work because I messed up on flag assignments here
 	// triggered was on bit 1 when it should have been on bit 4
 	if (ent->spawnflags & 1)
@@ -170,7 +170,7 @@ void trigger_relay_use(edict_t* self, edict_t* other, edict_t* activator)
 
 void SP_trigger_relay(edict_t* self)
 {
-	self->classindex = TRIGGER_RELAY; /* MrG{DRGN} */
+	self->classindex = TRIGGER_RELAY; // MrG{DRGN} 
 	self->use = trigger_relay_use;
 }
 
@@ -283,7 +283,7 @@ void SP_trigger_key(edict_t* self)
 
 	gi.soundindex("misc/keytry.wav");
 	gi.soundindex("misc/keyuse.wav");
-	self->classindex = TRIGGER_KEY; /* MrG{DRGN} */
+	self->classindex = TRIGGER_KEY; // MrG{DRGN} 
 	self->use = trigger_key_use;
 }
 
@@ -338,7 +338,7 @@ void SP_trigger_counter(edict_t* self)
 	self->wait = -1;
 	if (!self->count)
 		self->count = 2;
-	self->classindex = TRIGGER_COUNTER; /* MrG{DRGN} */
+	self->classindex = TRIGGER_COUNTER; // MrG{DRGN} 
 	self->use = trigger_counter_use;
 }
 
@@ -355,7 +355,7 @@ This trigger will always fire.  It is activated by the world.
 */
 void SP_trigger_always(edict_t* ent)
 {
-	ent->classindex = TRIGGER_ALWAYS; /* MrG{DRGN} */
+	ent->classindex = TRIGGER_ALWAYS; // MrG{DRGN} 
 	// we must have some delay to make sure our use targets are present
 	if (ent->delay < 0.2)
 		ent->delay = 0.2F; /* MrG{DRGN} added  F, as this was causing truncation from double to float.*/
@@ -376,7 +376,7 @@ static int windsound;
 
 void trigger_push_touch(edict_t* self, edict_t* other, cplane_t* plane, csurface_t* surf)
 {
-	/* MrG{DRGN}*/
+	// MrG{DRGN} 
 	if (!self || !other) /* plane, & surf are unused */
 	{
 		return;
@@ -413,7 +413,7 @@ void SP_trigger_push(edict_t* self)
 {
 	InitTrigger(self);
 	windsound = gi.soundindex("misc/windfly.wav");
-	self->classindex = TRIGGER_PUSH; /* MrG{DRGN} */
+	self->classindex = TRIGGER_PUSH; // MrG{DRGN} 
 	self->touch = trigger_push_touch;
 	if (!self->speed)
 		self->speed = 1000;
@@ -456,7 +456,7 @@ void hurt_touch(edict_t* self, edict_t* other, cplane_t* plane, csurface_t* surf
 {
 	int		dflags;
 
-	/* MrG{DRGN}*/
+	// MrG{DRGN} 
 	if (!self || !other) /* plane, & surf are unused */
 	{
 		G_FreeEdict(self);
@@ -504,7 +504,7 @@ void SP_trigger_hurt(edict_t* self)
 
 	if (self->spawnflags & 2)
 		self->use = hurt_use;
-	self->classindex = TRIGGER_HURT; /* MrG{DRGN} */
+	self->classindex = TRIGGER_HURT; // MrG{DRGN} 
 	gi.linkentity(self);
 }
 
@@ -524,7 +524,7 @@ gravity for the level.
 
 void trigger_gravity_touch(edict_t* self, edict_t* other, cplane_t* plane, csurface_t* surf)
 {
-	/* MrG{DRGN}*/
+	// MrG{DRGN} 
 	if (!self || !other) /* plane, & surf are unused */
 	{
 		return;
@@ -541,7 +541,7 @@ void SP_trigger_gravity(edict_t* self)
 		G_FreeEdict(self);
 		return;
 	}
-	self->classindex = TRIGGER_GRAVITY; /* MrG{DRGN} */
+	self->classindex = TRIGGER_GRAVITY; // MrG{DRGN} 
 	InitTrigger(self);
 	self->gravity = atoi(st.gravity);
 	self->touch = trigger_gravity_touch;
@@ -590,7 +590,7 @@ void SP_trigger_monsterjump(edict_t* self)
 	if (self->s.angles[YAW] == 0)
 		self->s.angles[YAW] = 360;
 	InitTrigger(self);
-	self->classindex = TRIGGER_MONSTERJUMP; /* MrG{DRGN} */
+	self->classindex = TRIGGER_MONSTERJUMP; // MrG{DRGN} 
 	self->touch = trigger_monsterjump_touch;
 	self->movedir[2] = st.height;
 }

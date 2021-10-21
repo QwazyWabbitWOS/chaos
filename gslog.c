@@ -245,7 +245,7 @@ void sl_WriteStdLogDeath(game_import_t* gi,
 					case MOD_ARROW:
 					case MOD_PARROW:
 					case MOD_ESSHOTGUN:
-						/* MrG{DRGN}*/
+						// MrG{DRGN} 
 					case MOD_EXARROW:
 					case MOD_PROXYMINE:
 					case MOD_AIRFIST:

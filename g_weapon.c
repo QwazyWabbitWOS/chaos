@@ -270,7 +270,7 @@ void blaster_touch(edict_t* self, edict_t* other, cplane_t* plane, csurface_t* s
 {
 	int		mod;
 
-	/* MrG{DRGN} */
+	// MrG{DRGN} 
 	if (!self || !other) /* plane and surf can be NULL */
 	{
 		G_FreeEdict(self);
@@ -449,7 +449,7 @@ void Grenade_Explode(edict_t* ent)
 
 void Grenade_Touch(edict_t* ent, edict_t* other, cplane_t* plane, csurface_t* surf)
 {
-	/* MrG{DRGN}*/
+	// MrG{DRGN} 
 	if (!ent || !other) /* plane is unused, surf can be NULL */
 	{
 		G_FreeEdict(ent);
@@ -583,7 +583,7 @@ void rocket_touch(edict_t* ent, edict_t* other, cplane_t* plane, csurface_t* sur
 {
 	vec3_t		origin;
 
-	/* MrG{DRGN}*/
+	// MrG{DRGN} 
 	if (!ent || !other) /* plane ad surf can be NULL */
 	{
 		G_FreeEdict(ent);
@@ -786,7 +786,7 @@ void bfg_explode(edict_t* self)
 
 void bfg_touch(edict_t* self, edict_t* other, cplane_t* plane, csurface_t* surf)
 {
-	/* MrG{DRGN}*/
+	// MrG{DRGN} 
 	if (!self || !other) /* plane and surf can be NULL */
 	{
 		G_FreeEdict(self);
@@ -831,7 +831,7 @@ void bfg_touch(edict_t* self, edict_t* other, cplane_t* plane, csurface_t* surf)
 
 void bfgball_touch(edict_t* self, edict_t* other, cplane_t* plane, csurface_t* surf)
 {
-	/* MrG{DRGN}*/
+	// MrG{DRGN} 
 	if (!self || !other) /* plane & surf are unused */
 	{
 		G_FreeEdict(other);

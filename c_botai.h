@@ -74,12 +74,7 @@ qboolean Bot_CanReachSpotDirectly(edict_t* ent, vec3_t target);
 
 edict_t* Bot_FindCloseItem(edict_t* ent);
 edict_t* Bot_FindItem(edict_t* ent);
-/*MrG{DRGN} ghost prototypes
-edict_t* Bot_FindWeapon(edict_t* ent);
-edict_t* Bot_FindHealth(edict_t* ent);
-edict_t* Bot_FindAmmo(edict_t* ent);
-edict_t* Bot_FindPowerup(edict_t* ent);
-*/
+
 void Bot_FindActivator(edict_t* ent);
 float Bot_Fire_Freq(edict_t* ent);
 qboolean Bot_CanPickupItem(edict_t* ent, edict_t* eitem);

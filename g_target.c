@@ -14,7 +14,7 @@ void Use_Target_Tent(edict_t* ent, edict_t* other, edict_t* activator)
 
 void SP_target_temp_entity(edict_t* ent)
 {
-	ent->classindex = TARGET_TEMP_ENTITY; /* MrG{DRGN} */
+	ent->classindex = TARGET_TEMP_ENTITY; // MrG{DRGN} 
 	ent->use = Use_Target_Tent;
 }
 
@@ -85,7 +85,7 @@ void SP_target_speaker(edict_t* ent)
 	// check for prestarted looping sound
 	if (ent->spawnflags & 1)
 		ent->s.sound = ent->noise_index;
-	ent->classindex = TARGET_SPEAKER; /* MrG{DRGN} */
+	ent->classindex = TARGET_SPEAKER; // MrG{DRGN} 
 	ent->use = Use_Target_Speaker;
 
 	// must link the entity so we get areas and clusters so
@@ -122,14 +122,14 @@ void SP_target_help(edict_t* ent)
 		G_FreeEdict(ent);
 		return;
 	}
-	ent->classindex = TARGET_HELP; /* MrG{DRGN} */
+	ent->classindex = TARGET_HELP; // MrG{DRGN} 
 	ent->use = Use_Target_Help;
 }
 
 void SP_target_secret(edict_t* ent)
 {
 	// auto-remove for deathmatch
-	ent->classindex = TARGET_SECRET; /* MrG{DRGN} */
+	ent->classindex = TARGET_SECRET; // MrG{DRGN} 
 	G_FreeEdict(ent);
 	return;
 }
@@ -137,7 +137,7 @@ void SP_target_secret(edict_t* ent)
 void SP_target_goal(edict_t* ent)
 {
 	// auto-remove for deathmatch
-	ent->classindex = TARGET_GOAL; /* MrG{DRGN} */
+	ent->classindex = TARGET_GOAL; // MrG{DRGN} 
 	G_FreeEdict(ent);
 	return;
 }
@@ -183,7 +183,7 @@ void use_target_explosion(edict_t* self, edict_t* other, edict_t* activator)
 
 void SP_target_explosion(edict_t* ent)
 {
-	ent->classindex = TARGET_EXPLOSION; /* MrG{DRGN} */
+	ent->classindex = TARGET_EXPLOSION; // MrG{DRGN} 
 	ent->use = use_target_explosion;
 	ent->svflags = SVF_NOCLIENT;
 }
@@ -234,7 +234,7 @@ void SP_target_changelevel(edict_t* ent)
 	// ugly hack because *SOMEBODY* screwed up their map
 	if ((Q_stricmp(level.mapname, "fact1") == 0) && (Q_stricmp(ent->map, "fact3") == 0))
 		ent->map = "fact3$secret1";
-	ent->classindex = TARGET_CHANGELEVEL; /* MrG{DRGN} */
+	ent->classindex = TARGET_CHANGELEVEL; // MrG{DRGN} 
 	ent->use = use_target_changelevel;
 	ent->svflags = SVF_NOCLIENT;
 }
@@ -273,7 +273,7 @@ void use_target_splash(edict_t* self, edict_t* other, edict_t* activator)
 
 void SP_target_splash(edict_t* self)
 {
-	self->classindex = TARGET_SPLASH; /* MrG{DRGN} */
+	self->classindex = TARGET_SPLASH; // MrG{DRGN} 
 	self->use = use_target_splash;
 	G_SetMovedir(self->s.angles, self->movedir);
 
@@ -317,7 +317,7 @@ void use_target_spawner(edict_t* self, edict_t* other, edict_t* activator)
 
 void SP_target_spawner(edict_t* self)
 {
-	self->classindex = TARGET_SPAWNER; /* MrG{DRGN} */
+	self->classindex = TARGET_SPAWNER; // MrG{DRGN} 
 	self->use = use_target_spawner;
 	self->svflags = SVF_NOCLIENT;
 	if (self->speed)
@@ -354,7 +354,7 @@ void use_target_blaster(edict_t* self, edict_t* other, edict_t* activator)
 void SP_target_blaster(edict_t* self)
 {
 	self->use = use_target_blaster;
-	self->classindex = TARGET_BLASTER; /* MrG{DRGN} */
+	self->classindex = TARGET_BLASTER; // MrG{DRGN} 
 	G_SetMovedir(self->s.angles, self->movedir);
 	self->noise_index = gi.soundindex("weapons/laser2.wav");
 
@@ -379,7 +379,7 @@ void trigger_crosslevel_trigger_use(edict_t* self, edict_t* other, edict_t* acti
 
 void SP_target_crosslevel_trigger(edict_t* self)
 {
-	self->classindex = TARGET_CROSSLEVEL_TRIGGER; /* MrG{DRGN} */
+	self->classindex = TARGET_CROSSLEVEL_TRIGGER; // MrG{DRGN} 
 	self->svflags = SVF_NOCLIENT;
 	self->use = trigger_crosslevel_trigger_use;
 }
@@ -404,7 +404,7 @@ void SP_target_crosslevel_target(edict_t* self)
 	if (!self->delay)
 		self->delay = 1;
 	self->svflags = SVF_NOCLIENT;
-	self->classindex = TARGET_CROSSLEVEL_TARGET; /* MrG{DRGN} */
+	self->classindex = TARGET_CROSSLEVEL_TARGET; // MrG{DRGN} 
 	self->think = target_crosslevel_target_think;
 	self->nextthink = level.time + self->delay;
 }
@@ -604,7 +604,7 @@ void target_laser_start(edict_t* self)
 void SP_target_laser(edict_t* self)
 {
 	// let everything else get spawned before we start firing
-	self->classindex = TARGET_LASER; /* MrG{DRGN} */
+	self->classindex = TARGET_LASER; // MrG{DRGN} 
 	self->think = target_laser_start;
 	self->nextthink = level.time + 1;
 }
@@ -698,7 +698,7 @@ void SP_target_lightramp(edict_t* self)
 	}
 
 	self->svflags |= SVF_NOCLIENT;
-	self->classindex = TARGET_LIGHTRAMP; /* MrG{DRGN} */
+	self->classindex = TARGET_LIGHTRAMP; // MrG{DRGN} 
 	self->use = target_lightramp_use;
 	self->think = target_lightramp_think;
 
@@ -766,7 +766,7 @@ void SP_target_earthquake(edict_t* self)
 		self->speed = 200;
 
 	self->svflags |= SVF_NOCLIENT;
-	self->classindex = TARGET_EARTHQUAKE; /* MrG{DRGN} */
+	self->classindex = TARGET_EARTHQUAKE; // MrG{DRGN} 
 	self->think = target_earthquake_think;
 	self->use = target_earthquake_use;
 

@@ -105,7 +105,7 @@ gitem_t
 * it_ancient_head, * it_quaddamage, * it_silencer, * it_adrenaline,
 * it_invulnerability, * it_breather, * it_enviro, * it_bandolier,
 * it_pack, * it_grapple, * it_jetpack, * it_invisibility,
-/*MrG{DRGN} never in game, but always posessed! */
+// MrG{DRGN} never in game, but always posessed!
 * it_belt, * it_flashlight, * it_scanner;
 /* MrG{DRGN} TODO: Missing? */
 

@@ -1478,7 +1478,7 @@ void Bot_Attack(edict_t* ent, usercmd_t* cmd, vec3_t angles, vec3_t target)
 {
 	vec3_t	dir = { 0 }, t_angles;
 	gitem_t* weapon;
-	int temp_level = (6 - ent->client->b_botlevel); /*MrG{DRGN} Arithmetic overflow: shut up code analysis */
+	int temp_level = (6 - ent->client->b_botlevel); // MrG{DRGN} Arithmetic overflow: shut up code analysis 
 
 	if (ent->enemy->deadflag == DEAD_DEAD)
 		ent->enemy = NULL;

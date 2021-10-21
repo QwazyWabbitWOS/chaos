@@ -457,7 +457,7 @@ void G_SetStats(edict_t* ent)
 	power_armor_type = PowerArmorType(ent);
 	if (power_armor_type)
 	{
-		cells = ent->client->pers.inventory[ITEM_INDEX(it_cells)];/* MrG{DRGN}*/
+		cells = ent->client->pers.inventory[ITEM_INDEX(it_cells)];// MrG{DRGN} 
 		if (cells == 0)
 		{	// ran out of cells for power armor
 			ent->flags &= ~FL_POWER_ARMOR;

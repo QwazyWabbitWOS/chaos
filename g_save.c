@@ -2,7 +2,7 @@
 #include "gslog.h"
 
 field_t fields[] = {
-	{"classindex", FOFS(classindex), F_INT}, /* MrG{DRGN} */
+	{"classindex", FOFS(classindex), F_INT}, // MrG{DRGN} 
 	{"classname", FOFS(classname), F_LSTRING},
 	{"origin", FOFS(s.origin), F_VECTOR},
 	{"model", FOFS(model), F_LSTRING},
@@ -197,7 +197,7 @@ void InitGame(void)
 	bob_pitch = gi.cvar("bob_pitch", "0.002", 0);
 	bob_roll = gi.cvar("bob_roll", "0.002", 0);
 
-	/* MrG{DRGN} */
+	// MrG{DRGN} 
 	flood_msgs = gi.cvar("flood_msgs", "4", 0);
 	flood_persecond = gi.cvar("flood_persecond", "4", 0);
 	flood_waitdelay = gi.cvar("flood_waitdelay", "10", 0);
