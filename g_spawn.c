@@ -140,11 +140,15 @@ spawn_t	spawns[] = {
 	{TRIGGER_RELAY, "trigger_relay", SP_trigger_relay},
 	{TRIGGER_PUSH, "trigger_push", SP_trigger_push},
 	{TRIGGER_HURT, "trigger_hurt", SP_trigger_hurt},
+#if 0 /* MrG{DRGN} unused in deathmatch */
 	{TRIGGER_KEY, "trigger_key", SP_trigger_key},
+#endif
 	{TRIGGER_COUNTER, "trigger_counter", SP_trigger_counter},
 	{TRIGGER_ELEVATOR, "trigger_elevator", SP_trigger_elevator},
 	{TRIGGER_GRAVITY, "trigger_gravity", SP_trigger_gravity},
+#if 0 /* MrG{DRGN} unused in deathmatch */
 	{TRIGGER_MONSTERJUMP, "trigger_monsterjump", SP_trigger_monsterjump},
+#endif
 	{TARGET_TEMP_ENTITY, "target_temp_entity", SP_target_temp_entity},
 	{TARGET_SPEAKER, "target_speaker", SP_target_speaker},
 	{TARGET_EXPLOSION, "target_explosion", SP_target_explosion},
