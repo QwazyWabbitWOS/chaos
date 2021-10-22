@@ -3301,11 +3301,7 @@ void LaserMine_Touch(edict_t* ent, edict_t* other, cplane_t* plane, csurface_t* 
 		G_FreeEdict(ent);
 		return;
 	}
-	/* MrG{DRGN} faster than a string comparison
-	if (Q_stricmp(other->classname, "info_player_deathmatch") == 0
-		|| Q_stricmp(other->classname, "info_player_start") == 0
-		|| Q_stricmp(other->classname, "func_door") == 0
-		|| Q_stricmp(other->classname, "func_plat") == 0) */
+	
 	if ((other->classindex == INFO_PLAYER_DEATHMATCH)
 		|| (other->classindex == INFO_PLAYER_START)
 		|| (other->classindex == FUNC_DOOR)

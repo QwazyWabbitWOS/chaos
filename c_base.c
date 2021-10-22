@@ -58,7 +58,7 @@ void ShowGun(edict_t* ent)	//QW from WOD:LOX for vwep
 	{
 		ent->client->ps.gunindex = 0;		// WI: seems to be missing?
 		ent->s.modelindex2 = REMOVED_MODEL;	 // MrG{DRGN} 
-		if (ent->solid != SOLID_TRIGGER) /* MrG{DRGN} Don't complain about camera using players not having a gun */
+		if (ent->solid != SOLID_TRIGGER) // MrG{DRGN} Don't complain about camera using players not having a gun 
 			gi.dprintf("ShowGun: Oops! Weapon Index missing! %s\n", ent->client->pers.netname);
 		return;
 	}
@@ -845,7 +845,7 @@ void FlashLightThink(edict_t* ent)
 
 	AngleVectors(ent->owner->client->v_angle, forward, right, up);
 
-	VectorSet(offset, 24, 6, ent->owner->viewheight - 7.0F); /* MrG{DRGN} Explicitly now a float */
+	VectorSet(offset, 24, 6, ent->owner->viewheight - 7.0F); 
 	G_ProjectSource(ent->owner->s.origin, offset, forward, right, start);
 	VectorMA(start, 8192, forward, end);
 
@@ -877,7 +877,7 @@ void T_RadiusDamage2(edict_t* attacker, vec3_t position, float damage, float rad
 			continue;
 
 		VectorSubtract(ent->s.origin, position, v);
-		points = damage - 0.5F * VectorLength(v); /* MrG{DRGN} Explicitly now a float */
+		points = damage - 0.5F * VectorLength(v); 
 		//		if (ent == attacker)
 			//	points = points * 0.5;
 		if (points > 0)
@@ -907,7 +907,7 @@ edict_t* findradius2(edict_t* from, vec3_t org, float rad)	//find all entities
 		//if (from->solid != SOLID_NOT)
 		//	continue;
 		for (j = 0; j < 3; j++)
-			eorg[j] = org[j] - (from->s.origin[j] + (from->mins[j] + from->maxs[j]) * 0.5F); /* MrG{DRGN} Explicitly now a float */
+			eorg[j] = org[j] - (from->s.origin[j] + (from->mins[j] + from->maxs[j]) * 0.5F); 
 		if (VectorLength(eorg) > rad)
 			continue;
 		return from;
@@ -1029,9 +1029,9 @@ void ThrowUpNow(edict_t* self)
 	rn = random();
 	if (rn < 0.25)
 		gi.sound(self, CHAN_VOICE, gi.soundindex("misc/vomit1.wav"), 1, ATTN_NORM, 0);
-	else if (0.25 <= rn && rn < 0.5) /* MrG{DRGN} made this work properly by adding && rn 09/23/2020*/
+	else if (0.25 <= rn && rn < 0.5) /* MrG{DRGN} made this work properly by adding && rn 09/23/2020 */
 		gi.sound(self, CHAN_VOICE, gi.soundindex("misc/vomit2.wav"), 1, ATTN_NORM, 0);
-	else if (0.5 <= rn && rn < 0.75) /* MrG{DRGN} made this work properly by adding && rn 09/23/2020*/
+	else if (0.5 <= rn && rn < 0.75) /* MrG{DRGN} made this work properly by adding && rn 09/23/2020 */
 		gi.sound(self, CHAN_VOICE, gi.soundindex("misc/vomit3.wav"), 1, ATTN_NORM, 0);
 	else
 		gi.sound(self, CHAN_VOICE, gi.soundindex("misc/vomit4.wav"), 1, ATTN_NORM, 0);

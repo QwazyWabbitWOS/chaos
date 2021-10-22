@@ -3919,7 +3919,7 @@ void CTFStats(edict_t* ent)
 {
 	int i, e;
 	ghost_t* g;
-	char st[80];
+	char string[80];
 	char text[1024];
 	edict_t* e2;
 
@@ -3933,10 +3933,10 @@ void CTFStats(edict_t* ent)
 				continue;
 			if (!e2->client->resp.ready && e2->client->resp.ctf_team != CTF_NOTEAM)
 			{
-				Com_sprintf(st, sizeof(st), "%s is not ready.\n", e2->client->pers.netname);
-				if (strlen(text) + strlen(st) < sizeof(text) - 50)
-					//	strncat(text, st);
-					Q_strncatz(text, sizeof(text), st);
+				Com_sprintf(string, sizeof(string), "%s is not ready.\n", e2->client->pers.netname);
+				if (strlen(text) + strlen(string) < sizeof(text) - 50)
+					//	strncat(text, string);
+					Q_strncatz(text, sizeof(text), string);
 			}
 		}
 	}
@@ -3965,7 +3965,7 @@ void CTFStats(edict_t* ent)
 			e = 50;
 		else
 			e = g->kills * 100 / (g->kills + g->deaths);
-		Com_sprintf(st, sizeof(st), "%3d|%-16.16s|%5d|%5d|%5d|%5d|%5d|%4d%%|\n",
+		Com_sprintf(string, sizeof(string), "%3d|%-16.16s|%5d|%5d|%5d|%5d|%5d|%4d%%|\n",
 			g->number,
 			g->netname,
 			g->score,
@@ -3974,14 +3974,14 @@ void CTFStats(edict_t* ent)
 			g->basedef,
 			g->carrierdef,
 			e);
-		if (strlen(text) + strlen(st) > sizeof(text) - 50)
+		if (strlen(text) + strlen(string) > sizeof(text) - 50)
 		{
 			sprintf(text + strlen(text), "And more...\n");
 			cprint_botsafe(ent, PRINT_HIGH, "%s", text);
 			return;
 		}
-		//	strncat(text, st);
-		Q_strncatz(text, sizeof(text), st);
+		//	strncat(text, string);
+		Q_strncatz(text, sizeof(text), string);
 	}
 	cprint_botsafe(ent, PRINT_HIGH, "%s", text);
 }
@@ -3989,7 +3989,7 @@ void CTFStats(edict_t* ent)
 void CTFPlayerList(edict_t* ent)
 {
 	int i;
-	char st[80];
+	char string[80];
 	char text[1400];
 	edict_t* e2;
 
@@ -4003,10 +4003,10 @@ void CTFPlayerList(edict_t* ent)
 			if (!e2->inuse)
 				continue;
 			if (!e2->client->resp.ready && e2->client->resp.ctf_team != CTF_NOTEAM) {
-				Com_sprintf(st, sizeof(st), "%s is not ready.\n", e2->client->pers.netname);
-				if (strlen(text) + strlen(st) < sizeof(text) - 50)
-					//	strncat(text, st);
-					Q_strncatz(text, sizeof(text), st);
+				Com_sprintf(string, sizeof(string), "%s is not ready.\n", e2->client->pers.netname);
+				if (strlen(text) + strlen(string) < sizeof(text) - 50)
+					//	strncat(text, string);
+					Q_strncatz(text, sizeof(text), string);
 			}
 		}
 	}
@@ -4020,7 +4020,7 @@ void CTFPlayerList(edict_t* ent)
 		if (!e2->inuse)
 			continue;
 
-		Com_sprintf(st, sizeof(st), "%3d %-16.16s %02d:%02d %4d %3d%s%s\n",
+		Com_sprintf(string, sizeof(string), "%3d %-16.16s %02d:%02d %4d %3d%s%s\n",
 			i,
 			e2->client->pers.netname,
 			(level.framenum - e2->client->resp.enterframe) / 600,
@@ -4031,13 +4031,13 @@ void CTFPlayerList(edict_t* ent)
 			(e2->client->resp.ready ? " (ready)" : " (notready)") : "",
 			e2->client->resp.admin ? " (admin)" : "");
 
-		if (strlen(text) + strlen(st) > sizeof(text) - 50) {
+		if (strlen(text) + strlen(string) > sizeof(text) - 50) {
 			sprintf(text + strlen(text), "And more...\n");
 			cprint_botsafe(ent, PRINT_HIGH, "%s", text);
 			return;
 		}
-		//	strncat(text, st);
-		Q_strncatz(text, sizeof(text), st);
+		//	strncat(text, string);
+		Q_strncatz(text, sizeof(text), string);
 	}
 	cprint_botsafe(ent, PRINT_HIGH, "%s", text);
 }

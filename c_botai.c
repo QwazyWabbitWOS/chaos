@@ -189,7 +189,7 @@ void Bot_Think(edict_t* ent)
 			ent->client->b_strafedir = 0;
 		else
 			ent->client->b_strafedir = 1;
-		ent->client->b_strafechange = level.time + 0.3F + random(); /* MrG{DRGN} Explicitly now a float */
+		ent->client->b_strafechange = level.time + 0.3F + random(); 
 	}
 
 	// randomly change the rundir for no-path-roaming
@@ -490,7 +490,7 @@ void Bot_Think(edict_t* ent)
 			}
 		}
 
-		ent->client->b_nodetime = level.time + 3.0F; /* MrG{DRGN} Explicitly now a float */
+		ent->client->b_nodetime = level.time + 3.0F; 
 	}
 	// FOLLOW PATH
 	else if (ent->client->b_goalitem)
@@ -550,7 +550,7 @@ void Bot_Think(edict_t* ent)
 			}
 			else
 			{
-				ent->client->b_nextshot = level.time + 0.3F; /* MrG{DRGN} Explicitly now a float */
+				ent->client->b_nextshot = level.time + 0.3F; 
 				cmd.buttons = BUTTON_ATTACK;
 			}
 		}
@@ -827,7 +827,7 @@ void Bot_Think(edict_t* ent)
 			else
 			{
 				//bprint_botsafe(PRINT_HIGH,"currentnode %d!\n",ent->client->b_currentnode);
-				ent->client->b_nodetime = level.time + 3.0F; /* MrG{DRGN} Explicitly now a float */
+				ent->client->b_nodetime = level.time + 3.0F; 
 
 				if (ent->client->b_currentnode > 0)
 				{
@@ -835,7 +835,7 @@ void Bot_Think(edict_t* ent)
 				}
 				else	// reached last node
 				{
-					ent->client->b_nodetime = level.time + 3.0F; /* MrG{DRGN} Explicitly now a float */
+					ent->client->b_nodetime = level.time + 3.0F; 
 					ent->client->b_currentnode = -1;
 				}
 			}
@@ -899,7 +899,7 @@ void Bot_Think(edict_t* ent)
 			}
 			else
 			{
-				ent->client->b_nextshot = level.time + 0.3F; /* MrG{DRGN} Explicitly now a float */
+				ent->client->b_nextshot = level.time + 0.3F; 
 				cmd.buttons = BUTTON_ATTACK;
 			}
 		}
@@ -1839,7 +1839,7 @@ void Bot_ProjectileAvoidance(edict_t* self, usercmd_t* cmd, vec3_t angles)
 				continue;
 
 			Bot_Strafe(self, cmd, self->client->b_strafedir, STRAFE_SPEED, angles);
-			self->client->b_strafechange = level.time + 0.5F; /* MrG{DRGN} Explicitly now a float */
+			self->client->b_strafechange = level.time + 0.5F; 
 			break;
 		}	/* MrG{DRGN} classindex instead of classname */
 		if (blip->classindex == ROCKET
@@ -1855,7 +1855,7 @@ void Bot_ProjectileAvoidance(edict_t* self, usercmd_t* cmd, vec3_t angles)
 				continue;
 
 			Bot_Strafe(self, cmd, self->client->b_strafedir, STRAFE_SPEED, angles);
-			self->client->b_strafechange = level.time + 0.5F; /* MrG{DRGN} Explicitly now a float */
+			self->client->b_strafechange = level.time + 0.5F; 
 			Bot_Jump(self, cmd);
 			break;
 		}
