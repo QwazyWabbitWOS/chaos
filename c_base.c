@@ -1426,7 +1426,7 @@ void Use_Grenades(edict_t* ent)
 		else if (ent->client->pers.inventory[ITEM_INDEX(it_poisongrenades)] > 0)
 			ent->client->newweapon = it_poisongrenades;
 		else if (ent->client->pers.inventory[ITEM_INDEX(it_grenades)] > 0)
-			ent->client->newweapon = it_flashgrenades;
+			ent->client->newweapon = it_grenades;
 	}
 	else if (ent->client->pers.weapon == it_lasermines)
 	{

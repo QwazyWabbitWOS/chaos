@@ -2883,7 +2883,7 @@ void FlashGrenade_Explode(edict_t* ent)
 	{
 		return;
 	}
-	gi.linkentity();
+	gi.linkentity(ent);
 	VectorSet(offset, 0, 0, 10);
 	VectorAdd(ent->s.origin, offset, ent->s.origin);
 
