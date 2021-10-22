@@ -1234,9 +1234,20 @@ qboolean Bot_CanPickupItem(edict_t* ent, edict_t* eitem)
 
 	item = eitem->item;
 
-	if (item == FindItemByClassindex(ITEM_FLAG_TEAM1)
-		|| item == FindItemByClassindex(ITEM_FLAG_TEAM2))
-		return 0;
+	if (item == FindItemByClassindex(ITEM_FLAG_TEAM1))
+	{
+		if (ent->client->resp.ctf_team == CTF_TEAM2 && !ent->client->pers.inventory[ITEM_INDEX(it_flag_red)])
+			return 1;
+		else
+			return 0;
+	}
+	else if (item == FindItemByClassindex(ITEM_FLAG_TEAM2))
+	{
+		if (ent->client->resp.ctf_team == CTF_TEAM1 && !ent->client->pers.inventory[ITEM_INDEX(it_flag_red)])
+			return 1;
+		else
+			return 0;
+	}
 
 	/* MrG{DRGN} don't go for keys (which should probably be removed eventually), or multiple grappling hooks or Jetpacks */
 	if (item->flags & IT_KEY)
