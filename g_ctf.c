@@ -3551,7 +3551,7 @@ typedef struct admin_settings_s {
 void CTFAdmin_SettingsApply(edict_t* ent, pmenuhnd_t* p)
 {
 	admin_settings_t* settings = p->arg;
-	char st[80];
+	char string[80];
 	int i;
 
 	if (settings->matchlen != matchtime->value) {
@@ -3561,8 +3561,8 @@ void CTFAdmin_SettingsApply(edict_t* ent, pmenuhnd_t* p)
 			// in the middle of a match, change it on the fly
 			ctfgame.matchtime = (ctfgame.matchtime - matchtime->value * 60) + settings->matchlen * 60;
 		}
-		Com_sprintf(st, sizeof(st), "%d", settings->matchlen);
-		gi.cvar_set("matchtime", st);
+		Com_sprintf(string, sizeof(string), "%d", settings->matchlen);
+		gi.cvar_set("matchtime", string);
 	}
 
 	if (settings->matchsetuplen != matchsetuptime->value) {
@@ -3572,8 +3572,8 @@ void CTFAdmin_SettingsApply(edict_t* ent, pmenuhnd_t* p)
 			// in the middle of a match, change it on the fly
 			ctfgame.matchtime = (ctfgame.matchtime - matchsetuptime->value * 60) + settings->matchsetuplen * 60;
 		}
-		Com_sprintf(st, sizeof(st), "%d", settings->matchsetuplen);
-		gi.cvar_set("matchsetuptime", st);
+		Com_sprintf(string, sizeof(string), "%d", settings->matchsetuplen);
+		gi.cvar_set("matchsetuptime", string);
 	}
 
 	if (settings->matchstartlen != matchstarttime->value) {
@@ -3583,8 +3583,8 @@ void CTFAdmin_SettingsApply(edict_t* ent, pmenuhnd_t* p)
 			// in the middle of a match, change it on the fly
 			ctfgame.matchtime = (ctfgame.matchtime - matchstarttime->value) + settings->matchstartlen;
 		}
-		Com_sprintf(st, sizeof(st), "%d", settings->matchstartlen);
-		gi.cvar_set("matchstarttime", st);
+		Com_sprintf(string, sizeof(string), "%d", settings->matchstartlen);
+		gi.cvar_set("matchstarttime", string);
 	}
 
 	if (settings->weaponsstay != !!((int)dmflags->value & DF_WEAPONS_STAY)) {
@@ -3595,8 +3595,8 @@ void CTFAdmin_SettingsApply(edict_t* ent, pmenuhnd_t* p)
 			i |= DF_WEAPONS_STAY;
 		else
 			i &= ~DF_WEAPONS_STAY;
-		Com_sprintf(st, sizeof(st), "%d", i);
-		gi.cvar_set("dmflags", st);
+		Com_sprintf(string, sizeof(string), "%d", i);
+		gi.cvar_set("dmflags", string);
 	}
 
 	if (settings->instantitems != !!((int)dmflags->value & DF_INSTANT_ITEMS)) {
@@ -3607,8 +3607,8 @@ void CTFAdmin_SettingsApply(edict_t* ent, pmenuhnd_t* p)
 			i |= DF_INSTANT_ITEMS;
 		else
 			i &= ~DF_INSTANT_ITEMS;
-		Com_sprintf(st, sizeof(st), "%d", i);
-		gi.cvar_set("dmflags", st);
+		Com_sprintf(string, sizeof(string), "%d", i);
+		gi.cvar_set("dmflags", string);
 	}
 
 	if (settings->quaddrop != !!((int)dmflags->value & DF_QUAD_DROP)) {
@@ -3619,22 +3619,22 @@ void CTFAdmin_SettingsApply(edict_t* ent, pmenuhnd_t* p)
 			i |= DF_QUAD_DROP;
 		else
 			i &= ~DF_QUAD_DROP;
-		Com_sprintf(st, sizeof(st), "%d", i);
-		gi.cvar_set("dmflags", st);
+		Com_sprintf(string, sizeof(string), "%d", i);
+		gi.cvar_set("dmflags", string);
 	}
 
 	if (settings->instantweap != !!((int)instantweap->value)) {
 		bprint_botsafe(PRINT_HIGH, "%s turned %s instant weapons.\n",
 			ent->client->pers.netname, settings->instantweap ? "on" : "off");
-		Com_sprintf(st, sizeof(st), "%d", (int)settings->instantweap);
-		gi.cvar_set("instantweap", st);
+		Com_sprintf(string, sizeof(string), "%d", (int)settings->instantweap);
+		gi.cvar_set("instantweap", string);
 	}
 
 	if (settings->matchlock != !!((int)matchlock->value)) {
 		bprint_botsafe(PRINT_HIGH, "%s turned %s match lock.\n",
 			ent->client->pers.netname, settings->matchlock ? "on" : "off");
-		Com_sprintf(st, sizeof(st), "%d", (int)settings->matchlock);
-		gi.cvar_set("matchlock", st);
+		Com_sprintf(string, sizeof(string), "%d", (int)settings->matchlock);
+		gi.cvar_set("matchlock", string);
 	}
 
 	PMenu_Close(ent);
