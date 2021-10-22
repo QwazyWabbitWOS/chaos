@@ -2318,7 +2318,7 @@ void ClientThink(edict_t* ent, usercmd_t* ucmd)
 			gi.WriteByte(5);
 			gi.WritePosition(tv(ent->s.origin[0], ent->s.origin[1], ent->s.origin[2] + 20));
 			gi.WriteDir(ent->velocity);
-			gi.WriteByte(0xffffffff);
+			gi.WriteByte(0xffffffff & 255); 
 			gi.multicast(ent->s.origin, MULTICAST_PVS);
 
 			if (random() < 0.3)

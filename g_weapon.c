@@ -394,7 +394,7 @@ void Grenade_Explode(edict_t* ent)
 	{
 		return;
 	}
-
+	gi.linkentity(ent);
 	if (ent->owner && ent->owner->client)
 		PlayerNoise(ent->owner, ent->s.origin, PNOISE_IMPACT);
 

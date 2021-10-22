@@ -2883,7 +2883,7 @@ void FlashGrenade_Explode(edict_t* ent)
 	{
 		return;
 	}
-
+	gi.linkentity();
 	VectorSet(offset, 0, 0, 10);
 	VectorAdd(ent->s.origin, offset, ent->s.origin);
 
@@ -3608,7 +3608,7 @@ void PoisonGrenade_Explode(edict_t* ent)
 	{
 		return;
 	}
-
+	gi.linkentity(ent);
 	VectorSet(offset, 0, 0, 10);
 	VectorAdd(ent->s.origin, offset, ent->s.origin);
 
@@ -4176,7 +4176,7 @@ void EvilProxy_Think(edict_t* ent)
 
 	if (level.time > ent->delay)
 	{
-		Grenade_Explode(ent);
+		Proxy_Explode(ent);
 	}
 
 	if (ent->owner && ent->owner->client && ent->owner->client->grenadesactive == 0)
