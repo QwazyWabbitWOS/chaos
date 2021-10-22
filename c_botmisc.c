@@ -384,7 +384,7 @@ void bot_die(edict_t* self, edict_t* inflictor, edict_t* attacker, int damage, v
 
 	if (!self->deadflag)
 	{
-		self->client->respawn_time = level.time + 1.0F; /* MrG{DRGN} Explicit float */
+		self->client->respawn_time = level.time + 1.0F; 
 		self->client->ps.pmove.pm_type = PM_DEAD;
 		ClientObituary(self, inflictor, attacker);
 
@@ -420,7 +420,7 @@ void bot_die(edict_t* self, edict_t* inflictor, edict_t* attacker, int damage, v
 	// clear inventory
 	memset(self->client->pers.inventory, 0, sizeof(self->client->pers.inventory));
 
-	self->client->b_respawntime = level.time + 1.5F; /* MrG{DRGN} Explicit float */
+	self->client->b_respawntime = level.time + 1.5F; 
 
 	// check for gib
 	if (self->health < -40)
@@ -1458,8 +1458,8 @@ qboolean Bot_CheckObstacle(edict_t* self)
 
 	VectorCopy(self->s.origin, start);
 	start[2] += 10;
-	/* MrG{DRGN} operator has equivalent nested operands
-	tr = gi.trace(start, mins, maxs, dir, self, MASK_SOLID | MASK_PLAYERSOLID);	*/
+	// MrG{DRGN} operator has equivalent nested operands
+	// tr = gi.trace(start, mins, maxs, dir, self, MASK_SOLID | MASK_PLAYERSOLID);
 	tr = gi.trace(start, mins, maxs, dir, self, MASK_PLAYERSOLID);
 	if ((tr.fraction != 1) || tr.startsolid)
 		return true;

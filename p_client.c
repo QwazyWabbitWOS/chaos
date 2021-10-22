@@ -2330,7 +2330,7 @@ void ClientThink(edict_t* ent, usercmd_t* ucmd)
 	{
 		gi.sound(ent, CHAN_VOICE, gi.soundindex("misc/heartbeat.wav"), 1, ATTN_IDLE, 0);
 
-		client->nextheartbeat = level.time + (ent->health / 15.0F);/* MrG{DRGN} explicit float */
+		client->nextheartbeat = level.time + (ent->health / 15.0F);
 
 		if (client->nextheartbeat < level.time + 0.6)
 			client->nextheartbeat = level.time + 0.6;

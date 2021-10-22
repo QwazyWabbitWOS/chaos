@@ -1615,7 +1615,7 @@ void fire_air(edict_t* self, vec3_t start, vec3_t dir)
 			VectorCopy(blipdir, addvect);
 			VectorNormalize(addvect);
 
-			VectorScale(addvect, 1.8F * (600 - dist), addvect); /* MrG{DRGN} Explicit float */
+			VectorScale(addvect, 1.8F * (600 - dist), addvect); 
 			addvect[2] = 700 - dist;
 
 			if (dist < 400 && blip->takedamage)
@@ -2911,7 +2911,7 @@ void FlashGrenade_Explode(edict_t* ent)
 		if (Distance < FLASH_RADIUS / 10)
 			BlindTimeAdd = blindtime->value;
 		else
-			BlindTimeAdd = 1.5F * blindtime->value * (1 / ((Distance - FLASH_RADIUS * 2) / (FLASH_RADIUS * 2) - 2) + 1.0F); // Blind partially /* MrG{DRGN} Explicit float */
+			BlindTimeAdd = 1.5F * blindtime->value * (1 / ((Distance - FLASH_RADIUS * 2) / (FLASH_RADIUS * 2) - 2) + 1.0F); // Blind partially 
 
 		if (BlindTimeAdd < 0)
 			BlindTimeAdd = 0;
@@ -3004,8 +3004,8 @@ void fire_flashgrenade(edict_t* self, vec3_t start, vec3_t aimdir, int damage, i
 	grenade = G_Spawn();
 	VectorCopy(start, grenade->s.origin);
 	VectorScale(aimdir, speed, grenade->velocity);
-	VectorMA(grenade->velocity, 200 + crandom() * 10.0F, up, grenade->velocity);/* MrG{DRGN} explicit float */
-	VectorMA(grenade->velocity, crandom() * 10.0F, right, grenade->velocity);/* MrG{DRGN} explicit float */
+	VectorMA(grenade->velocity, 200 + crandom() * 10.0F, up, grenade->velocity);
+	VectorMA(grenade->velocity, crandom() * 10.0F, right, grenade->velocity);
 	VectorSet(grenade->avelocity, 300, 300, 300);
 	grenade->movetype = MOVETYPE_BOUNCE;
 	grenade->clipmask = MASK_SHOT;
@@ -3042,8 +3042,8 @@ void fire_flashgrenade2(edict_t* self, vec3_t start, vec3_t aimdir, int damage, 
 	grenade = G_Spawn();
 	VectorCopy(start, grenade->s.origin);
 	VectorScale(aimdir, speed, grenade->velocity);
-	VectorMA(grenade->velocity, 200 + crandom() * 10.0F, up, grenade->velocity); /* MrG{DRGN} Explicit float */
-	VectorMA(grenade->velocity, crandom() * 10.0F, right, grenade->velocity); /* MrG{DRGN} Explicit float */
+	VectorMA(grenade->velocity, 200 + crandom() * 10.0F, up, grenade->velocity); 
+	VectorMA(grenade->velocity, crandom() * 10.0F, right, grenade->velocity); 
 	VectorSet(grenade->avelocity, 300, 300, 300);
 	grenade->movetype = MOVETYPE_BOUNCE;
 	grenade->clipmask = MASK_SHOT;
@@ -3407,8 +3407,8 @@ void fire_lasermine2(edict_t* self, vec3_t start, vec3_t aimdir, int damage, int
 	grenade = G_Spawn();
 	VectorCopy(start, grenade->s.origin);
 	VectorScale(aimdir, speed, grenade->velocity);
-	VectorMA(grenade->velocity, 200 + crandom() * 10.0F, up, grenade->velocity);/* MrG{DRGN} explicit float */
-	VectorMA(grenade->velocity, crandom() * 10.0F, right, grenade->velocity);/* MrG{DRGN} explicit float */
+	VectorMA(grenade->velocity, 200 + crandom() * 10.0F, up, grenade->velocity);
+	VectorMA(grenade->velocity, crandom() * 10.0F, right, grenade->velocity);
 	VectorSet(grenade->avelocity, 300, 300, 300);
 	grenade->movetype = MOVETYPE_BOUNCE;
 	grenade->clipmask = MASK_SHOT;
@@ -3632,7 +3632,7 @@ void PoisonGrenade_Explode(edict_t* ent)
 		if (Distance < POISON_RADIUS / 10)
 			PoisonTimeAdd = poisontime->value;
 		else
-			PoisonTimeAdd = 1.5F * poisontime->value * (1 / ((Distance - POISON_RADIUS * 2) / (POISON_RADIUS * 2) - 2) + 1.0F); // Blind partially /* MrG{DRGN} Explicit float */
+			PoisonTimeAdd = 1.5F * poisontime->value * (1 / ((Distance - POISON_RADIUS * 2) / (POISON_RADIUS * 2) - 2) + 1.0F); // Blind partially 
 
 		if (PoisonTimeAdd < 0)
 			PoisonTimeAdd = 0;
@@ -3729,8 +3729,8 @@ void fire_poisongrenade(edict_t* self, vec3_t start, vec3_t aimdir, int damage, 
 	grenade = G_Spawn();
 	VectorCopy(start, grenade->s.origin);
 	VectorScale(aimdir, speed, grenade->velocity);
-	VectorMA(grenade->velocity, 200 + crandom() * 10.0F, up, grenade->velocity);/* MrG{DRGN} explicit float */
-	VectorMA(grenade->velocity, crandom() * 10.0F, right, grenade->velocity);/* MrG{DRGN} explicit float */
+	VectorMA(grenade->velocity, 200 + crandom() * 10.0F, up, grenade->velocity);
+	VectorMA(grenade->velocity, crandom() * 10.0F, right, grenade->velocity);
 	VectorSet(grenade->avelocity, 300, 300, 300);
 	grenade->movetype = MOVETYPE_BOUNCE;
 	grenade->clipmask = MASK_SHOT;
@@ -3768,8 +3768,8 @@ void fire_poisongrenade2(edict_t* self, vec3_t start, vec3_t aimdir, int damage,
 	grenade = G_Spawn();
 	VectorCopy(start, grenade->s.origin);
 	VectorScale(aimdir, speed, grenade->velocity);
-	VectorMA(grenade->velocity, 200 + crandom() * 10.0F, up, grenade->velocity);/* MrG{DRGN} explicit float */
-	VectorMA(grenade->velocity, crandom() * 10.0F, right, grenade->velocity);/* MrG{DRGN} explicit float */
+	VectorMA(grenade->velocity, 200 + crandom() * 10.0F, up, grenade->velocity);
+	VectorMA(grenade->velocity, crandom() * 10.0F, right, grenade->velocity);
 	VectorSet(grenade->avelocity, 300, 300, 300);
 	grenade->movetype = MOVETYPE_BOUNCE;
 	grenade->clipmask = MASK_SHOT;
@@ -4339,8 +4339,8 @@ void fire_proxymine(edict_t* self, vec3_t start, vec3_t aimdir, int damage, int 
 	grenade = G_Spawn();
 	VectorCopy(start, grenade->s.origin);
 	VectorScale(aimdir, speed, grenade->velocity);
-	VectorMA(grenade->velocity, 200 + crandom() * 10.0F, up, grenade->velocity); /* MrG{DRGN} Explicit float */
-	VectorMA(grenade->velocity, crandom() * 10.0F, right, grenade->velocity); /* MrG{DRGN} Explicit float */
+	VectorMA(grenade->velocity, 200 + crandom() * 10.0F, up, grenade->velocity); 
+	VectorMA(grenade->velocity, crandom() * 10.0F, right, grenade->velocity); 
 	VectorSet(grenade->avelocity, 300, 300, 300);
 	grenade->movetype = MOVETYPE_STEP;
 	grenade->clipmask = MASK_SHOT;
@@ -4987,7 +4987,7 @@ void Vortex_Think(edict_t* ent)
 					}
 				}
 			}
-			VectorMA(blip->velocity, -1.4F * (600 - dist), blipdir, blip->velocity); /* MrG{DRGN} Explicit float */
+			VectorMA(blip->velocity, -1.4F * (600 - dist), blipdir, blip->velocity); 
 			blip->velocity[0] += crandom() * 60;
 			blip->velocity[1] += crandom() * 60;
 			blip->velocity[2] += random() * 60;

@@ -25,7 +25,7 @@ float SV_CalcRoll(vec3_t angles, vec3_t velocity)
 	float	value;
 
 	side = DotProduct(velocity, right);
-	sign = side < 0 ? -1 : 1.0F;/* MrG{DRGN} explicit float */
+	sign = side < 0 ? -1 : 1.0F;
 	side = fabsf(side);/* MrG{DRGN} float version of fabs */
 
 	value = sv_rollangle->value;
@@ -115,7 +115,7 @@ void P_DamageFeedback(edict_t* player)
 	if ((level.time > player->pain_debounce_time) && !(player->flags & FL_GODMODE) && (client->invincible_framenum <= level.framenum))
 	{
 		r = 1 + (rand() & 1);
-		player->pain_debounce_time = level.time + 0.7F;/* MrG{DRGN} explicit float */
+		player->pain_debounce_time = level.time + 0.7F;
 		if (player->health < 25)
 			l = 25;
 		else if (player->health < 50)
@@ -130,11 +130,11 @@ void P_DamageFeedback(edict_t* player)
 	// the total alpha of the blend is allways proportional to count
 	if (client->damage_alpha < 0)
 		client->damage_alpha = 0;
-	client->damage_alpha += count * 0.01F;/* MrG{DRGN} explicit float */
+	client->damage_alpha += count * 0.01F;
 	if (client->damage_alpha < 0.2)
-		client->damage_alpha = 0.2F; /* MrG{DRGN} explicit float */
+		client->damage_alpha = 0.2F; 
 	if (client->damage_alpha > 0.6)
-		client->damage_alpha = 0.6F;/* MrG{DRGN} explicit float */
+		client->damage_alpha = 0.6F;
 
 	// the color of the blend will vary based on how much was absorbed
 	// by different armors
@@ -156,7 +156,7 @@ void P_DamageFeedback(edict_t* player)
 		kick = kick * 100 / player->health;
 
 		if (kick < count * 0.5)
-			kick = count * 0.5F;/* MrG{DRGN} explicit float */
+			kick = count * 0.5F;
 		if (kick > 50)
 			kick = 50;
 
@@ -164,10 +164,10 @@ void P_DamageFeedback(edict_t* player)
 		VectorNormalize(v);
 
 		side = DotProduct(v, right);
-		client->v_dmg_roll = kick * side * 0.3F;/* MrG{DRGN} explicit float */
+		client->v_dmg_roll = kick * side * 0.3F;
 
 		side = -DotProduct(v, forward);
-		client->v_dmg_pitch = kick * side * 0.3F;/* MrG{DRGN} explicit float */
+		client->v_dmg_pitch = kick * side * 0.3F;
 
 		client->v_dmg_time = level.time + DAMAGE_TIME;
 	}
@@ -286,7 +286,7 @@ void SV_CalcViewOffset(edict_t* ent)
 	ratio = (ent->client->fall_time - level.time) / FALL_TIME;
 	if (ratio < 0)
 		ratio = 0;
-	v[2] -= ratio * ent->client->fall_value * 0.4F; /* MrG{DRGN} explicit float */
+	v[2] -= ratio * ent->client->fall_value * 0.4F; 
 
 	// add bob height
 
@@ -335,15 +335,15 @@ void SV_CalcGunOffset(edict_t* ent)
 	}
 
 	// gun angles from bobbing
-	ent->client->ps.gunangles[ROLL] = xyspeed * bobfracsin * 0.005F;/* MrG{DRGN} explicit float */
-	ent->client->ps.gunangles[YAW] = xyspeed * bobfracsin * 0.01F;/* MrG{DRGN} explicit float */
+	ent->client->ps.gunangles[ROLL] = xyspeed * bobfracsin * 0.005F;
+	ent->client->ps.gunangles[YAW] = xyspeed * bobfracsin * 0.01F;
 	if (bobcycle & 1)
 	{
 		ent->client->ps.gunangles[ROLL] = -ent->client->ps.gunangles[ROLL];
 		ent->client->ps.gunangles[YAW] = -ent->client->ps.gunangles[YAW];
 	}
 
-	ent->client->ps.gunangles[PITCH] = xyspeed * bobfracsin * 0.005F;/* MrG{DRGN} explicit float */
+	ent->client->ps.gunangles[PITCH] = xyspeed * bobfracsin * 0.005F;
 
 	// gun angles from delta movement
 	for (i = 0; i < 3; i++)
@@ -358,8 +358,8 @@ void SV_CalcGunOffset(edict_t* ent)
 		if (delta < -45)
 			delta = -45;
 		if (i == YAW)
-			ent->client->ps.gunangles[ROLL] += 0.1F * delta;/* MrG{DRGN} explicit float */
-		ent->client->ps.gunangles[i] += 0.2F * delta;/* MrG{DRGN} explicit float */
+			ent->client->ps.gunangles[ROLL] += 0.1F * delta;
+		ent->client->ps.gunangles[i] += 0.2F * delta;
 	}
 
 	// gun height
@@ -467,11 +467,11 @@ void SV_CalcBlend(edict_t* ent)
 		{
 			if (updown == 1)
 			{
-				blend += random() * 0.1F;/* MrG{DRGN} explicit float */
+				blend += random() * 0.1F;
 			}
 			else
 			{
-				blend -= random() * 0.1F;/* MrG{DRGN} explicit float */
+				blend -= random() * 0.1F;
 			}
 
 			if (blend > 0.8)
@@ -486,8 +486,8 @@ void SV_CalcBlend(edict_t* ent)
 			}
 
 			SV_AddBlend(0, 0.8F, 0, blend, ent->client->ps.blend); /* MrG{DRGN} added  F, as this was causing truncation from double to float.*/
-			ent->client->v_dmg_roll = crandom() * 20 + (blend - 0.6F) * 150;/* MrG{DRGN} explicit float */
-			ent->client->v_dmg_pitch = crandom() * 20 + (blend - 0.6F) * 150;/* MrG{DRGN} explicit float */
+			ent->client->v_dmg_roll = crandom() * 20 + (blend - 0.6F) * 150;
+			ent->client->v_dmg_pitch = crandom() * 20 + (blend - 0.6F) * 150;
 			ent->client->v_dmg_time = level.time + DAMAGE_TIME;
 		}
 
@@ -514,9 +514,9 @@ void SV_CalcBlend(edict_t* ent)
 		static int		updown = 1;
 
 		if (updown == 1)
-			r += random() * 0.5F;/* MrG{DRGN} explicit float */
+			r += random() * 0.5F;
 		else
-			r -= random() * 0.5F;/* MrG{DRGN} explicit float */
+			r -= random() * 0.5F;
 
 		if (r >= 1)
 		{
@@ -636,7 +636,7 @@ void P_FallingDamage(edict_t* ent)
 			return;
 		delta = ent->velocity[2] - ent->client->oldvelocity[2];
 	}
-	delta = delta * delta * 0.0001F;/* MrG{DRGN} explicit float */
+	delta = delta * delta * 0.0001F;
 
 	// never take falling damage if completely underwater
 	if (ent->waterlevel == 3)
@@ -657,7 +657,7 @@ void P_FallingDamage(edict_t* ent)
 		return;
 	}
 
-	ent->client->fall_value = delta * 0.5F;/* MrG{DRGN} explicit float */
+	ent->client->fall_value = delta * 0.5F;
 	if (ent->client->fall_value > 40)
 		ent->client->fall_value = 40;
 	ent->client->fall_time = level.time + FALL_TIME;
@@ -672,7 +672,7 @@ void P_FallingDamage(edict_t* ent)
 				ent->s.event = EV_FALL;
 		}
 		ent->pain_debounce_time = level.time;	// no normal pain sound
-		damage = (delta - 30.0F) / 2;/* MrG{DRGN} explicit float */
+		damage = (delta - 30.0F) / 2;
 		if (damage < 1)
 			damage = 1;
 		VectorSet(dir, 0, 0, 1);

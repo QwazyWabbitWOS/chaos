@@ -38,9 +38,9 @@ Misc functions
 */
 void VelocityForDamage(int damage, vec3_t v)
 {
-	v[0] = 100.0F * crandom(); /* MrG{DRGN} Explicit float */
-	v[1] = 100.0F * crandom(); /* MrG{DRGN} Explicit float */
-	v[2] = 200.0F + 100.0F * random(); /* MrG{DRGN} Explicit float */
+	v[0] = 100.0F * crandom(); 
+	v[1] = 100.0F * crandom(); 
+	v[2] = 200.0F + 100.0F * random(); 
 
 	if (damage < 50)
 		VectorScale(v, 0.7F, v);  /* MrG{DRGN} added  F, as this was causing truncation from double to float.*/

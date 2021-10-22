@@ -881,7 +881,7 @@ void weapon_grenade_fire(edict_t* ent, qboolean held)
 		return;
 	}
 
-	radius = damage + 40.0F; /* MrG{DRGN} explicit float */
+	radius = damage + 40.0F; 
 	if (is_quad)
 		damage *= 4;
 
@@ -910,7 +910,7 @@ void weapon_grenade_fire(edict_t* ent, qboolean held)
 	if (!((int)dmflags->value & DF_INFINITE_AMMO))
 		ent->client->pers.inventory[ent->client->ammo_index]--;
 
-	ent->client->grenade_time = level.time + 1.0F; /* MrG{DRGN} explicit float */
+	ent->client->grenade_time = level.time + 1.0F; 
 }
 
 void Weapon_Grenade(edict_t* ent)
@@ -976,7 +976,7 @@ void Weapon_Grenade(edict_t* ent)
 		{
 			if (!ent->client->grenade_time)
 			{
-				ent->client->grenade_time = level.time + GRENADE_TIMER + 0.2F; /* MrG{DRGN} explicit float */
+				ent->client->grenade_time = level.time + GRENADE_TIMER + 0.2F; 
 				ent->client->weapon_sound = gi.soundindex("weapons/hgrenc1b.wav");
 			}
 
@@ -1045,7 +1045,7 @@ void weapon_grenadelauncher_fire(edict_t* ent)
 		return;
 	}
 
-	radius = damage + 40.0F; /* MrG{DRGN} explicit float */
+	radius = damage + 40.0F; 
 	if (is_quad)
 		damage *= 4;
 
@@ -1807,7 +1807,7 @@ void weapon_bfg_fire(edict_t* ent)
 
 	// make a big pitch kick with an inverse fall
 	ent->client->v_dmg_pitch = -40;
-	ent->client->v_dmg_roll = crandom() * 8.0F; /* MrG{DRGN} explicit float */
+	ent->client->v_dmg_roll = crandom() * 8.0F; 
 	ent->client->v_dmg_time = level.time + DAMAGE_TIME;
 
 	VectorSet(offset, 8, 8, ent->viewheight - 8.0F); /* MrG{DRGN} fix conversion from int to vec_t */

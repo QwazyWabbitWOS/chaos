@@ -195,7 +195,7 @@ static int CheckPowerArmor(edict_t* ent, vec3_t point, vec3_t normal, int damage
 		save = damage;
 
 	SpawnDamage(pa_te_type, point, normal, save);
-	ent->powerarmor_time = level.time + 0.2F; /* MrG{DRGN} explicit float */
+	ent->powerarmor_time = level.time + 0.2F; 
 
 	power_used = save / damagePerCell;
 
@@ -317,9 +317,9 @@ void T_Damage(edict_t* targ, edict_t* inflictor, edict_t* attacker, vec3_t dir, 
 				mass = targ->mass;
 
 			if (targ->client && attacker == targ)
-				VectorScale(dir, 1600.0F * (float)knockback / mass, kvel);	// the rocket jump hack... /* MrG{DRGN} explicit float */
+				VectorScale(dir, 1600.0F * (float)knockback / mass, kvel);	// the rocket jump hack... 
 			else
-				VectorScale(dir, 500.0F * (float)knockback / mass, kvel); /* MrG{DRGN} explicit float */
+				VectorScale(dir, 500.0F * (float)knockback / mass, kvel); 
 
 			VectorAdd(targ->velocity, kvel, targ->velocity);
 		}
@@ -446,9 +446,9 @@ void T_RadiusDamage(edict_t* inflictor, edict_t* attacker, float damage, edict_t
 		VectorAdd(ent->mins, ent->maxs, v);
 		VectorMA(ent->s.origin, 0.5, v, v);
 		VectorSubtract(inflictor->s.origin, v, v);
-		points = damage - 0.5F * VectorLength(v); /* MrG{DRGN} explicit float */
+		points = damage - 0.5F * VectorLength(v); 
 		if (ent == attacker)
-			points = points * 0.5F; /* MrG{DRGN} explicit float */
+			points = points * 0.5F; 
 		if (points > 0)
 		{
 			if (CanDamage(ent, inflictor))

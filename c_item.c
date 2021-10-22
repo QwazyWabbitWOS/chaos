@@ -18,7 +18,7 @@ void Use_Invisibility(edict_t* ent, gitem_t* item)
 	if (ent->client->invisible_framenum > level.framenum)
 		ent->client->invisible_framenum += 300;
 	else
-		ent->client->invisible_framenum = level.framenum + 300.0F; /* MrG{DRGN} explicit float */
+		ent->client->invisible_framenum = level.framenum + 300.0F; 
 
 	ent->s.event = EV_PLAYER_TELEPORT;
 }
@@ -62,7 +62,7 @@ qboolean Jet_AvoidGround(edict_t* ent)
 	/*Check if there is enough room above us before we change origin[2]*/
 	new_origin[0] = ent->s.origin[0];
 	new_origin[1] = ent->s.origin[1];
-	new_origin[2] = ent->s.origin[2] + 0.5F; /* MrG{DRGN} explicit float */
+	new_origin[2] = ent->s.origin[2] + 0.5F; 
 	trace = gi.trace(ent->s.origin, ent->mins, ent->maxs, new_origin, ent, MASK_MONSTERSOLID);
 
 	if ((success = ((trace.plane.normal[2]) == 0)) != 0)

@@ -178,7 +178,7 @@ void AngleMove_Begin(edict_t* ent)
 	frames = floorf(traveltime / FRAMETIME);/* MrG{DRGN} use the float version of floor */
 
 	// scale the destdelta vector by the time spent traveling to get velocity
-	VectorScale(destdelta, 1.0f / traveltime, ent->avelocity); /* MrG{DRGN} explicit float */
+	VectorScale(destdelta, 1.0f / traveltime, ent->avelocity); 
 
 	// set nextthink to trigger a think when dest is reached
 	ent->nextthink = level.time + frames * FRAMETIME;
@@ -297,7 +297,7 @@ void plat_Accelerate(moveinfo_t* moveinfo)
 		// and cross over the decel_distance; figure the average speed for the
 		// entire move
 		p1_distance = moveinfo->remaining_distance - moveinfo->decel_distance;
-		p1_speed = (old_speed + moveinfo->move_speed) / 2.0F; /* MrG{DRGN} explicit float */
+		p1_speed = (old_speed + moveinfo->move_speed) / 2.0F; 
 		p2_distance = moveinfo->move_speed * (1.0 - (p1_distance / p1_speed));
 		distance = p1_distance + p2_distance;
 		moveinfo->current_speed = (p1_speed * (p1_distance / distance)) + (moveinfo->move_speed * (p2_distance / distance));
@@ -1864,7 +1864,7 @@ void SP_func_timer(edict_t* self)
 
 	if (self->spawnflags & 1)
 	{
-		self->nextthink = level.time + 1.0F + st.pausetime + self->delay + self->wait + crandom() * self->random;/* MrG{DRGN} explicit float */
+		self->nextthink = level.time + 1.0F + st.pausetime + self->delay + self->wait + crandom() * self->random;
 		self->activator = self;
 	}
 

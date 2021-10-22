@@ -1941,7 +1941,7 @@ void CTFApplyRegeneration(edict_t* ent)
 		return;
 
 	if (ent->client->silencer_shots)
-		volume = 0.2F; /* MrG{DRGN} Explicit float */
+		volume = 0.2F; 
 
 	if (!tech)
 		tech = it_tech4;
@@ -1952,7 +1952,7 @@ void CTFApplyRegeneration(edict_t* ent)
 				ent->health += 5;
 				if (ent->health > 150)
 					ent->health = 150;
-				client->ctf_regentime += 0.5F;/* MrG{DRGN} explicit float */
+				client->ctf_regentime += 0.5F;
 				noise = true;
 			}
 		}

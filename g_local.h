@@ -505,7 +505,7 @@ extern	edict_t* g_edicts;
 #define	CLOFS(x)	q_offsetof(gclient_t, x)
 
 #define random()	((rand () & 0x7fff) / ((float)0x7fff))
-#define crandom()	(2.0F * (random() - 0.5F))/* MrG{DRGN} explicit float */
+#define crandom()	(2.0F * (random() - 0.5F))
 
 extern cvar_t* maxentities;
 extern cvar_t* deathmatch;

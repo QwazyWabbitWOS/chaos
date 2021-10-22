@@ -303,9 +303,8 @@ void Bot_Think(edict_t* ent)
 					VectorCopy(ent->s.origin, oorigin);
 					oorigin[2] += 24;
 
-					/* MrG{DRGN} operator has equivalent nested operands
-					tr = gi.trace(oorigin, mins, maxs, dir, ent, MASK_SOLID | MASK_PLAYERSOLID);
-					*/
+					// MrG{DRGN} operator has equivalent nested operands
+					// tr = gi.trace(oorigin, mins, maxs, dir, ent, MASK_SOLID | MASK_PLAYERSOLID);
 					tr = gi.trace(oorigin, mins, maxs, dir, ent, MASK_PLAYERSOLID);
 
 					if ((tr.fraction != 1) || tr.startsolid)
@@ -387,8 +386,8 @@ void Bot_Think(edict_t* ent)
 							AngleVectors(ent->client->v_angle, forward, NULL, NULL);
 							VectorMA(ent->s.origin, -30, forward, forward);
 
-							/* MrG{DRGN} operator has equivalent nested operands
-							tr = gi.trace(oorigin, mins, maxs, dir, ent, MASK_SOLID | MASK_PLAYERSOLID);*/
+							// MrG{DRGN} operator has equivalent nested operands
+							// tr = gi.trace(oorigin, mins, maxs, dir, ent, MASK_SOLID | MASK_PLAYERSOLID);
 							tr = gi.trace(oorigin, mins, maxs, dir, ent, MASK_PLAYERSOLID);
 
 							if ((tr.fraction != 1) || tr.startsolid)
@@ -959,9 +958,9 @@ void Bot_Think(edict_t* ent)
 			VectorCopy(ent->s.origin, oorigin);
 			oorigin[2] += 24;
 
-			//MrG{DRGN} operator has equivalent nested operands
-			tr = gi.trace(oorigin, mins, maxs, dir, ent, MASK_SOLID | MASK_PLAYERSOLID);
-			//tr = gi.trace(oorigin, mins, maxs, dir, ent, MASK_PLAYERSOLID);
+			// MrG{DRGN} operator has equivalent nested operands
+			// tr = gi.trace(oorigin, mins, maxs, dir, ent, MASK_SOLID | MASK_PLAYERSOLID);
+			tr = gi.trace(oorigin, mins, maxs, dir, ent, MASK_PLAYERSOLID);
 
 			if ((tr.fraction != 1) || tr.startsolid)
 			{
@@ -1517,13 +1516,13 @@ void Bot_Attack(edict_t* ent, usercmd_t* cmd, vec3_t angles, vec3_t target)
 			else if (weapon->classindex == W_ROCKETLAUNCHER
 				|| weapon->classindex == W_HOMINGLAUNCHER)
 			{
-				angles[YAW] += crandom() * (temp_level) * 0.2F;/* MrG{DRGN} explicit float */
-				angles[PITCH] += crandom() * (temp_level) * 0.2F;/* MrG{DRGN} explicit float */
+				angles[YAW] += crandom() * (temp_level) * 0.2F;
+				angles[PITCH] += crandom() * (temp_level) * 0.2F;
 			}
 			else
 			{
-				angles[YAW] += crandom() * (temp_level) * 0.2F;/* MrG{DRGN} explicit float */
-				angles[PITCH] += crandom() * (temp_level) * 0.2F;/* MrG{DRGN} explicit float */
+				angles[YAW] += crandom() * (temp_level) * 0.2F;
+				angles[PITCH] += crandom() * (temp_level) * 0.2F;
 			}
 
 			cmd->buttons = BUTTON_ATTACK;
@@ -1826,6 +1825,7 @@ void Bot_ProjectileAvoidance(edict_t* self, usercmd_t* cmd, vec3_t angles)
 	while ((blip = findradius(blip, self->s.origin, 150)) != NULL)
 	{		/* MrG{DRGN} classindex instead of classname */
 		if (blip->classindex == ARROW
+			|| blip->classindex == PARROW
 			|| blip->classindex == EXARROW
 			|| blip->classindex == FLASHGRENADE
 			|| blip->classindex == LASERMINE

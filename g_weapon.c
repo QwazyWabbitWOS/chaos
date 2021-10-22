@@ -502,8 +502,8 @@ void fire_grenade(edict_t* self, vec3_t start, vec3_t aimdir, int damage, int sp
 	grenade = G_Spawn();
 	VectorCopy(start, grenade->s.origin);
 	VectorScale(aimdir, speed, grenade->velocity);
-	VectorMA(grenade->velocity, 200 + crandom() * 10.0F, up, grenade->velocity); /* MrG{DRGN} Explicit float */
-	VectorMA(grenade->velocity, crandom() * 10.0F, right, grenade->velocity); /* MrG{DRGN} Explicit float */
+	VectorMA(grenade->velocity, 200 + crandom() * 10.0F, up, grenade->velocity); 
+	VectorMA(grenade->velocity, crandom() * 10.0F, right, grenade->velocity); 
 	VectorSet(grenade->avelocity, 300, 300, 300);
 	grenade->movetype = MOVETYPE_BOUNCE;
 	grenade->clipmask = MASK_SHOT;
@@ -646,7 +646,7 @@ void fire_rocket(edict_t* self, vec3_t start, vec3_t dir, int damage, int speed,
 	rocket->s.modelindex = gi.modelindex("models/objects/rocket/tris.md2");
 	rocket->owner = self;
 	rocket->touch = rocket_touch;
-	rocket->nextthink = level.time + 8000.0F / speed; /* MrG{DRGN} explicit float */
+	rocket->nextthink = level.time + 8000.0F / speed; 
 	rocket->think = G_FreeEdict;
 	rocket->dmg = damage;
 	rocket->radius_dmg = radius_damage;
@@ -961,7 +961,7 @@ void fire_bfg(edict_t* self, vec3_t start, vec3_t dir, int damage, int speed, fl
 	bfg->s.modelindex = gi.modelindex("sprites/s_bfg1.sp2");
 	bfg->owner = self;
 	bfg->touch = bfg_touch;
-	bfg->nextthink = level.time + 8000.0F / speed; /* MrG{DRGN} explicit float */
+	bfg->nextthink = level.time + 8000.0F / speed; 
 	bfg->think = G_FreeEdict;
 	bfg->radius_dmg = damage;
 	bfg->dmg_radius = damage_radius;
