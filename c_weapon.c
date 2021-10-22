@@ -3674,7 +3674,7 @@ void PoisonGrenade_Explode(edict_t* ent)
 	gi.multicast(ent->s.origin, MULTICAST_PVS);
 
 	gi.sound(ent, CHAN_AUTO, gi.soundindex("weapons/rocklx1a.wav"), 1, ATTN_NORM, 0);
-	if (!ent->spawnflags & 2)
+
 	G_FreeEdict(ent);
 }
 

@@ -269,7 +269,7 @@ void BecomeExplosion1(edict_t* self)
 		DoRespawn(self); // this frees self!
 		return;
 	}
-	if (!self->spawnflags & 2)
+	
 	G_FreeEdict(self);
 }
 
