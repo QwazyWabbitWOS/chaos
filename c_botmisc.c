@@ -494,6 +494,20 @@ void bot_die(edict_t* self, edict_t* inflictor, edict_t* attacker, int damage, v
 	//DbgPrintf("%s %s index: %d\n", __func__, self->classname, self->classindex);
 }
 
+void BotClearGlobals(void)
+{
+	//MATTHIAS
+	numbots = 0;
+	numplayers = 0;
+	numturrets = 0;
+	numblue = 0;
+	numred = 0;
+	vortex_pointer = NULL;
+	vortexstate = 0;
+	blue_base = -1;
+	red_base = -1;
+}
+
 ///------------------------------------------------------------------------------------------
 /// bot misc functions
 ///------------------------------------------------------------------------------------------

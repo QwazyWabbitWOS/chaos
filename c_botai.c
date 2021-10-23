@@ -145,7 +145,7 @@ void Bot_Think(edict_t* ent)
 	usercmd_t   cmd;
 	vec3_t      angles = { 0,0,0 }, mins = { -16,-16,0 }, maxs = { 16,16,10 };
 
-	if (!ent || !ent->client|| level.intermissiontime) // MrG{DRGN} stop searching at the end of the map
+	if (!ent || !ent->client || level.intermissiontime) // MrG{DRGN} stop searching at the end of the map
 		return;
 
 
@@ -189,7 +189,7 @@ void Bot_Think(edict_t* ent)
 			ent->client->b_strafedir = 0;
 		else
 			ent->client->b_strafedir = 1;
-		ent->client->b_strafechange = level.time + 0.3F + random(); 
+		ent->client->b_strafechange = level.time + 0.3F + random();
 	}
 
 	// randomly change the rundir for no-path-roaming
@@ -489,7 +489,7 @@ void Bot_Think(edict_t* ent)
 			}
 		}
 
-		ent->client->b_nodetime = level.time + 3.0F; 
+		ent->client->b_nodetime = level.time + 3.0F;
 	}
 	// FOLLOW PATH
 	else if (ent->client->b_goalitem)
@@ -549,7 +549,7 @@ void Bot_Think(edict_t* ent)
 			}
 			else
 			{
-				ent->client->b_nextshot = level.time + 0.3F; 
+				ent->client->b_nextshot = level.time + 0.3F;
 				cmd.buttons = BUTTON_ATTACK;
 			}
 		}
@@ -826,7 +826,7 @@ void Bot_Think(edict_t* ent)
 			else
 			{
 				//bprint_botsafe(PRINT_HIGH,"currentnode %d!\n",ent->client->b_currentnode);
-				ent->client->b_nodetime = level.time + 3.0F; 
+				ent->client->b_nodetime = level.time + 3.0F;
 
 				if (ent->client->b_currentnode > 0)
 				{
@@ -834,7 +834,7 @@ void Bot_Think(edict_t* ent)
 				}
 				else	// reached last node
 				{
-					ent->client->b_nodetime = level.time + 3.0F; 
+					ent->client->b_nodetime = level.time + 3.0F;
 					ent->client->b_currentnode = -1;
 				}
 			}
@@ -898,7 +898,7 @@ void Bot_Think(edict_t* ent)
 			}
 			else
 			{
-				ent->client->b_nextshot = level.time + 0.3F; 
+				ent->client->b_nextshot = level.time + 0.3F;
 				cmd.buttons = BUTTON_ATTACK;
 			}
 		}
@@ -1723,7 +1723,7 @@ edict_t* Bot_FindCloseItem(edict_t* ent)
 			continue;
 		if (newitem->avoidtime > level.time)
 			continue;
-		if (!Bot_NeedsHealth (ent, newitem)) // MrG{DRGN} if we don't need it don't go for health
+		if (!Bot_NeedsHealth(ent, newitem)) // MrG{DRGN} if we don't need it don't go for health
 			continue;
 		//if (!Bot_CanReachSpotDirectly(ent, newitem->s.origin))
 		//	continue;
@@ -1839,7 +1839,7 @@ void Bot_ProjectileAvoidance(edict_t* self, usercmd_t* cmd, vec3_t angles)
 				continue;
 
 			Bot_Strafe(self, cmd, self->client->b_strafedir, STRAFE_SPEED, angles);
-			self->client->b_strafechange = level.time + 0.5F; 
+			self->client->b_strafechange = level.time + 0.5F;
 			break;
 		}	/* MrG{DRGN} classindex instead of classname */
 		if (blip->classindex == ROCKET
@@ -1855,7 +1855,7 @@ void Bot_ProjectileAvoidance(edict_t* self, usercmd_t* cmd, vec3_t angles)
 				continue;
 
 			Bot_Strafe(self, cmd, self->client->b_strafedir, STRAFE_SPEED, angles);
-			self->client->b_strafechange = level.time + 0.5F; 
+			self->client->b_strafechange = level.time + 0.5F;
 			Bot_Jump(self, cmd);
 			break;
 		}

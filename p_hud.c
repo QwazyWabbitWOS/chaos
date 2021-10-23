@@ -120,15 +120,7 @@ void BeginIntermission(edict_t* targ)
 		if (!deathmatch->value)
 		{
 			level.exitintermission = 1;		// go immediately to the next level
-			numbots = 0;
-			numplayers = 0;
-			numturrets = 0;
-			numblue = 0;
-			numred = 0;
-			vortex_pointer = NULL;
-			vortexstate = 0;
-			blue_base = -1;
-			red_base = -1;
+			BotClearGlobals();
 			return;
 		}
 	}
@@ -166,27 +158,8 @@ void BeginIntermission(edict_t* targ)
 		MoveClientToIntermission(client);
 	}
 
-	numbots = 0;
-	numplayers = 0;
-	numturrets = 0;
-	numblue = 0;
-	numred = 0;
-	vortexstate = 0;
-	vortex_pointer = NULL;
-	blue_base = -1;
-	red_base = -1;
-
-	if (maplist.ctf[maplist.currentmap] == '1')
-		gi.cvar_set("ctf", "1");
-	else
-		gi.cvar_set("ctf", "0");
-
-	if (maplist.lightsoff[maplist.currentmap] == '1')
-		gi.cvar_set("lightsoff", "1");
-	else if (maplist.lightsoff[maplist.currentmap] == '2')
-		gi.cvar_set("lightsoff", "2");
-	else
-		gi.cvar_set("lightsoff", "0");
+	BotClearGlobals();
+	MaplistMapModeSetup();
 }
 
 /*

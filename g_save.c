@@ -151,17 +151,7 @@ void InitGame(void)
 	g_maplistfile = gi.cvar("g_maplistfile", "chaosdm.txt", 0);
 	g_maplistmode = gi.cvar("g_maplistmode", "1", 0);
 
-	//MATTHIAS
-	numbots = 0;
-	numplayers = 0;
-	numturrets = 0;
-	numblue = 0;
-	numred = 0;
-	vortex_pointer = NULL;
-	vortexstate = 0;
-	blue_base = -1;
-	red_base = -1;
-
+	BotClearGlobals();
 	GetSettings();
 
 	//clear path buffer

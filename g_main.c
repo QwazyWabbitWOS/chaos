@@ -169,38 +169,38 @@ void ClientEndServerFrames(void)
 /*
 Choose next map in rotation based on current mode.
 */
-void MaplistNext(void)
+int MaplistNext(void)
 {
-	int i;
-
 	switch (maplist.mlflag)
 	{
 	case ML_ROTATE_SEQ:
-		i = (maplist.currentmap + 1) % maplist.nummaps;
+		maplist.currentmap = (maplist.currentmap + 1) % maplist.nummaps;
 		break;
 	case ML_ROTATE_RANDOM:
-		i = (int)(random() * maplist.nummaps);
+		maplist.currentmap = (int)(random() * maplist.nummaps);
 		break;
 	default:
 		maplist.mlflag = ML_OFF;
-		i = maplist.currentmap;
+		maplist.currentmap = maplist.currentmap;
 		break;
 	}
 
-	maplist.currentmap = i;
+	return maplist.currentmap;
+}
 
-	//QW// Moved this to BeginIntermission for now. (still testing)
-	//if (maplist.ctf[i] == '1')
-	//	gi.cvar_set("ctf", "1");
-	//else
-	//	gi.cvar_set("ctf", "0");
+void MaplistMapModeSetup(void) 
+{
+	if (maplist.ctf[maplist.currentmap] == '1')
+		gi.cvar_set("ctf", "1");
+	else
+		gi.cvar_set("ctf", "0");
 
-	//if (maplist.lightsoff[i] == '1')
-	//	gi.cvar_set("lightsoff", "1");
-	//else if (maplist.lightsoff[i] == '2')
-	//	gi.cvar_set("lightsoff", "2");
-	//else
-	//	gi.cvar_set("lightsoff", "0");
+	if (maplist.lightsoff[maplist.currentmap] == '1')
+		gi.cvar_set("lightsoff", "1");
+	else if (maplist.lightsoff[maplist.currentmap] == '2')
+		gi.cvar_set("lightsoff", "2");
+	else
+		gi.cvar_set("lightsoff", "0");
 }
 
 /*
@@ -234,12 +234,12 @@ void EndDMLevel(void)
 	// maplist rotation select
 	else if (maplist.mlflag > 0)
 	{
-		MaplistNext();
-		ent = CreateTargetChangeLevel(level.mapname);
+		int i = MaplistNext();
+		ent = CreateTargetChangeLevel(maplist.mapnames[i]);
 	}
 	else if (level.nextmap[0]) // operator has commanded a map
 	{	// go to a specific map
-		ent = CreateTargetChangeLevel(level.mapname);
+		ent = CreateTargetChangeLevel(level.nextmap);
 	}
 	else
 	{	// search for a changelevel
