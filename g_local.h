@@ -278,7 +278,7 @@ typedef struct
 	float		time;
 
 	char		level_name[MAX_QPATH];	// the descriptive name (Outer Base, etc)
-	char		mapname[MAX_QPATH];		// the server name (base1, etc)
+	char		mapname[MAX_QPATH];		// the server map name (base1, etc)
 	char		nextmap[MAX_QPATH];		// go here when fraglimit is hit
 	char		forcemap[MAX_QPATH];	// go here
 
@@ -1260,7 +1260,7 @@ int		vortexstate;
 #define ML_ROTATE_SEQ		1
 #define ML_ROTATE_RANDOM	2
 
-typedef struct
+typedef struct maplist_s
 {
 	int		nummaps;
 	char	mapnames[MAX_MAPS][MAX_MAPNAME_LEN];

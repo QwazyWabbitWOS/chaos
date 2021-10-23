@@ -175,6 +175,18 @@ void BeginIntermission(edict_t* targ)
 	vortex_pointer = NULL;
 	blue_base = -1;
 	red_base = -1;
+
+	if (maplist.ctf[maplist.currentmap] == '1')
+		gi.cvar_set("ctf", "1");
+	else
+		gi.cvar_set("ctf", "0");
+
+	if (maplist.lightsoff[maplist.currentmap] == '1')
+		gi.cvar_set("lightsoff", "1");
+	else if (maplist.lightsoff[maplist.currentmap] == '2')
+		gi.cvar_set("lightsoff", "2");
+	else
+		gi.cvar_set("lightsoff", "0");
 }
 
 /*
