@@ -2042,6 +2042,9 @@ void ClientDisconnect(edict_t* ent)
 	ent->s.modelindex2 = REMOVED_MODEL;
 	ent->s.modelindex3 = REMOVED_MODEL;
 	ent->s.modelindex4 = REMOVED_MODEL;
+	ent->s.event = 0;
+	ent->s.sound = 0;
+	ent->s.effects = 0;
 
 	ent->solid = SOLID_NOT;
 	ent->inuse = false;
@@ -2330,7 +2333,7 @@ void ClientThink(edict_t* ent, usercmd_t* ucmd)
 	{
 		gi.sound(ent, CHAN_VOICE, gi.soundindex("misc/heartbeat.wav"), 1, ATTN_IDLE, 0);
 
-		client->nextheartbeat = level.time + (ent->health / 15.0F);
+		client->nextheartbeat = level.time + (ent->health / 15.0F);/* MrG{DRGN} explicit float */
 
 		if (client->nextheartbeat < level.time + 0.6)
 			client->nextheartbeat = level.time + 0.6;
