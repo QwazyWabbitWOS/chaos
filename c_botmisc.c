@@ -360,9 +360,7 @@ void PutBotInServer(edict_t* ent)
 void Bot_Respawn(edict_t* ent)
 {
 	CopyToBodyQue(ent);
-	if (ent->client)
-		//PutClientInServer(ent);
-		PutBotInServer(ent);
+	PutBotInServer(ent);
 	// add a teleportation effect
 	ent->s.event = EV_PLAYER_TELEPORT;
 	// hold in place briefly
