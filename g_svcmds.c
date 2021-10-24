@@ -104,7 +104,7 @@ static qboolean StringToFilter(char* s, ipfilter_t* f)
 SVCmd_FilterPacket
 =================
 */
-static qboolean SVCmd_FilterPacket(char* from)
+qboolean SVCmd_FilterPacket(char* from)
 {
 	int		i;
 	unsigned	in;

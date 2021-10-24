@@ -842,6 +842,11 @@ void SaveClientData(void);
 void FetchClientEntData(edict_t* ent);
 void G_RunFrame(void);
 
+//
+// g_svcmds.c
+//
+qboolean SVCmd_FilterPacket(char* from);
+
 /* MrG{DRGN} include once here, rather than in multiple files */
 #include "c_base.h"
 #include "c_item.h"
