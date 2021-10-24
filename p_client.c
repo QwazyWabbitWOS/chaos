@@ -1722,14 +1722,6 @@ void PutClientInServer(edict_t* ent)
 		client->b_path[k] = -1;
 	}
 
-	client->flashlightactive = 0;
-	if (client->flashlight)
-	{
-		client->flashlight->think = G_FreeEdict;
-		G_FreeEdict(client->flashlight);
-	}
-	if (client->teleporter)
-		G_FreeEdict(client->teleporter);
 
 	//ZOID
 	if (ctf->value)	  // MrG{DRGN} to prevent CTFJoinMenu from popping up in non- CTF mode
