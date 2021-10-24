@@ -1929,6 +1929,10 @@ qboolean ClientConnect(edict_t* ent, char* userinfo)
 
 	// check to see if they are on the banned IP list
 	value = Info_ValueForKey(userinfo, "ip");
+	if (SVCmd_FilterPacket(value)) {
+		Info_SetValueForKey(userinfo, "rejmsg", "Banned.");
+		return false;
+	}
 
 	// check for a password
 	value = Info_ValueForKey(userinfo, "password");
