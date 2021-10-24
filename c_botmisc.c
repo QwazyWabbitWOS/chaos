@@ -217,7 +217,7 @@ void Bot_Spawn(edict_t* ent)
 	vec3_t               origin, angles;
 	vec3_t               mins = { -16, -16, -24 };
 	vec3_t               maxs = { 16, 16, 32 };
-	int                 i, index;
+	int                 i, k, index;
 	client_persistent_t  pers;
 	client_respawn_t     resp = { 0 };
 
@@ -284,11 +284,22 @@ void Bot_Spawn(edict_t* ent)
 	ent->client->b_nextrandjump = 0;
 	ent->client->b_waittime = 0;
 	ent->client->b_pausetime = 0;
-	ent->client->grenadesactive = 1;
 	ent->client->b_nodetime = 0;
 	ent->client->b_nextroam = 0;
 	ent->client->b_closeitem = NULL;
 	ent->client->b_nopathitem = NULL;
+
+	ShutOff(ent); // MrG{DRGN}
+
+	if (start_invulnerable_time->value > 0)
+		ent->client->invincible_framenum = level.framenum + 10 * start_invulnerable_time->value;
+	else
+		ent->client->invincible_framenum = 0;
+
+	for (k = 0; k < 100; k++)
+	{
+		ent->client->b_path[k] = -1;
+	}
 
 	if (random() >= 0.5)
 		ent->client->b_strafedir = 0;

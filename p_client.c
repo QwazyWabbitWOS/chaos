@@ -5,6 +5,52 @@
 #include "stdlog.h"
 #include "gslog.h"
 
+
+/* 
+MrG{DRGN} reset to default state 
+*/
+void ShutOff(edict_t* ent)
+{
+	
+	if (ent->client->grapple)
+	{
+		ent->client->grapple_state = false;
+		ent->client->grapple = NULL;
+	}
+	if (ent->client->flashlight)
+	{
+		G_FreeEdict(ent->client->flashlight);
+		ent->client->flashlight = NULL;
+	}
+	if (ent->client->teleporter)
+	{
+		G_FreeEdict(ent->client->teleporter);
+		ent->client->teleporter = NULL;
+	}
+
+	ent->client->BlindBase = 0;
+	ent->client->BlindTime = 0;
+	ent->client->PoisonBase = 0;
+	ent->client->PoisonTime = 0;
+	ent->client->swordstate = 0;
+	ent->client->nextbeltcell = 0;
+	ent->client->nextvomit = 0;
+	ent->client->nextheartbeat = 0;
+	ent->client->grenadesactive = 1;
+	ent->client->nextrandomsound = level.time + 60 + random() * 60;
+	ent->client->b_currentnode = -1;
+	ent->client->b_waittime = 0;
+	ent->client->fakedeath = 0;
+	ent->client->kamikazetime = 0;
+	ent->client->nextscannercell = 0;
+	ent->client->scanneractive = 0;
+	ent->client->beltactive = 0;
+	ent->client->jet_framenum = 0;
+	ent->client->jet_remaining = 0;
+	ent->client->invisible = 0;
+	ent->client->invisible_framenum = 0;
+}
+
 //
 // Gross, ugly, disgustuing hack section
 //
@@ -1664,33 +1710,8 @@ void PutClientInServer(edict_t* ent)
 	gi.cvar_set("cl_blend", "1");
 	gi.cvar_set("gl_polyblend", "1");
 
-	//MATTHIAS
-	client->BlindBase = 0;
-	client->BlindTime = 0;
-	client->PoisonBase = 0;
-	client->PoisonTime = 0;
+	ShutOff(ent); // MrG{DRGN}
 
-	client->swordstate = 0;
-
-	client->nextbeltcell = 0;
-	client->nextvomit = 0;
-	client->nextheartbeat = 0;
-	client->grenadesactive = 1;
-	client->nextrandomsound = level.time + 60 + random() * 60;
-	client->b_currentnode = -1;
-	client->b_waittime = 0;
-
-	client->fakedeath = 0;
-	client->kamikazetime = 0;
-	client->nextscannercell = 0; /* MrG{DRGN} moved here */
-	client->scanneractive = 0;
-	client->beltactive = 0;
-	client->jet_framenum = 0;
-	client->jet_remaining = 0;
-	client->invisible = 0;
-	client->invisible_framenum = 0;
-	client->grapple = NULL;
-	client->grapple_state = 0;
 	if (start_invulnerable_time->value > 0)
 		client->invincible_framenum = level.framenum + 10 * start_invulnerable_time->value;
 	else

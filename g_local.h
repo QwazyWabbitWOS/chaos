@@ -747,6 +747,8 @@ void Grenade_Explode(edict_t* ent);
 //
 // p_client.c
 //
+
+void ShutOff(edict_t* ent);
 void respawn(edict_t* self);
 void SelectSpawnPoint(edict_t* ent, vec3_t origin, vec3_t angles);
 void PutClientInServer(edict_t* ent);
