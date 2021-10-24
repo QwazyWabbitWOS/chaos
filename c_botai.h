@@ -57,7 +57,7 @@ int Bot_CalcPath(edict_t* ent, vec3_t target, vec3_t source);
 int Bot_FindPath(edict_t* ent, vec3_t target, vec3_t source);
 void CTFBotJoinTeam(edict_t* ent, int desired_team);
 void Bot_Create(int accuracy_level, int team, char* name, char* skin);
-void Bot_Spawn(edict_t* ent);
+void PutBotInServer(edict_t* ent);
 void Bot_Respawn(edict_t* ent);
 void Bot_Wave(edict_t* ent, int i, float time);
 void Bot_Say(edict_t* ent, qboolean team, char* fmt, ...);
