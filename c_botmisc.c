@@ -150,6 +150,8 @@ void Bot_Create(int accuracy_level, int team, char* name, char* skin)
 		return;
 	}
 
+	G_InitEdict(bot); // we have a bot edict
+
 	memset(userinfo, 0, MAX_INFO_STRING);
 
 	Info_SetValueForKey(userinfo, "name", name);
@@ -157,10 +159,8 @@ void Bot_Create(int accuracy_level, int team, char* name, char* skin)
 	Info_SetValueForKey(userinfo, "hand", "2");
 
 	ClientConnect(bot, userinfo);
-	G_InitEdict(bot);
 	InitClientResp(bot->client);
-
-	Bot_Spawn(bot);
+	PutBotInServer(bot);
 
 	if (accuracy_level > 5)
 		accuracy_level = 5;
@@ -174,7 +174,7 @@ void Bot_Create(int accuracy_level, int team, char* name, char* skin)
 	gi.WriteByte(MZ_LOGIN);
 	gi.multicast(bot->s.origin, MULTICAST_PVS);
 
-	bprint_botsafe(PRINT_HIGH, "%s entered the game\n", bot->client->pers.netname);
+	bprint_botsafe(PRINT_HIGH, "%s entered the game.\n", bot->client->pers.netname);
 	ClientEndServerFrame(bot);
 	players[numplayers] = bot;
 	numplayers++;
@@ -212,7 +212,7 @@ void Bot_Create(int accuracy_level, int team, char* name, char* skin)
 	}
 }
 
-void Bot_Spawn(edict_t* ent)
+void PutBotInServer(edict_t* ent)
 {
 	vec3_t               origin, angles;
 	vec3_t               mins = { -16, -16, -24 };
@@ -330,8 +330,6 @@ void Bot_Spawn(edict_t* ent)
 	ent->s.skinnum = index;
 	ent->s.modelindex = (PLAYER_MODEL); // MrG{DRGN} 
 
-	ShowGun(ent); //vwep
-	//ent->s.modelindex2    = 255;
 	ent->s.frame = 0;
 	ent->enemy = NULL;
 	ent->client->b_currentnode = -1;
@@ -354,21 +352,19 @@ void Bot_Spawn(edict_t* ent)
 	KillBox(ent);
 	gi.linkentity(ent);
 
+	ent->nextthink = level.time + FRAMETIME;
 	ent->client->newweapon = ent->client->pers.weapon;
 	ChangeWeapon(ent);
-
-	ent->nextthink = level.time + FRAMETIME;
 }
 
 void Bot_Respawn(edict_t* ent)
 {
 	CopyToBodyQue(ent);
-
-	Bot_Spawn(ent);
-
+	if (ent->client)
+		//PutClientInServer(ent);
+		PutBotInServer(ent);
 	// add a teleportation effect
 	ent->s.event = EV_PLAYER_TELEPORT;
-
 	// hold in place briefly
 	ent->client->ps.pmove.pm_flags = PMF_TIME_TELEPORT;
 	ent->client->ps.pmove.pm_time = 14;

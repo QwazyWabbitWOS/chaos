@@ -1555,13 +1555,10 @@ void respawn(edict_t* self)
 
 /*
 ===========
-PutClientInServer
-
-Called when a player connects to a server or respawns in
-a deathmatch.
+Called when a player connects to a server 
+or respawns in a deathmatch.
 ============
 */
-
 void PutClientInServer(edict_t* ent)
 {
 	vec3_t	mins = { -16, -16, -24 };
@@ -1688,8 +1685,6 @@ void PutClientInServer(edict_t* ent)
 	ent->s.effects = 0;
 	ent->s.skinnum = ent - g_edicts - 1;
 	ent->s.modelindex = PLAYER_MODEL;		// will use the skin specified model
-
-	ShowGun(ent);	//vwep
 
 	ent->s.frame = 0;
 	VectorCopy(spawn_origin, ent->s.origin);
@@ -1857,15 +1852,12 @@ void ClientBegin(edict_t* ent)
 
 /*
 ===========
-ClientUserInfoChanged
-
-called whenever the player updates a userinfo variable.
+Called whenever the player updates a userinfo variable.
 
 The game can override any of the settings in place
 (forcing skins or names, etc) before copying it off.
 ============
 */
-
 void ClientUserinfoChanged(edict_t* ent, char* userinfo)
 {
 	char* s;
@@ -1917,8 +1909,6 @@ void ClientUserinfoChanged(edict_t* ent, char* userinfo)
 
 	// save off the userinfo in case we want to check something later
 	strncpy(ent->client->pers.userinfo, userinfo, sizeof(ent->client->pers.userinfo) - 1);
-
-	ShowGun(ent);	//vwep
 }
 
 /*
@@ -1953,7 +1943,7 @@ qboolean ClientConnect(edict_t* ent, char* userinfo)
 	if (ent->inuse == false)
 	{
 		// clear the respawning variables
-//ZOID -- force team join
+		//ZOID -- force team join
 		ent->client->resp.ctf_team = -1;
 		//ZOID
 		InitClientResp(ent->client);
@@ -1964,7 +1954,7 @@ qboolean ClientConnect(edict_t* ent, char* userinfo)
 	ClientUserinfoChanged(ent, userinfo);
 
 	if (game.maxclients > 1)
-		gi.dprintf("%s connected\n", ent->client->pers.netname);
+		gi.dprintf("%s connected.\n", ent->client->pers.netname);
 
 	ent->client->pers.connected = true;
 	return true;
