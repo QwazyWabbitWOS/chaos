@@ -1263,7 +1263,7 @@ int		numblue;	//size of the blue team
 int		numturrets;
 int		vortexstate;
 
-#define MAX_MAPS           256
+#define MAX_MAPS           512
 #define MAX_MAPNAME_LEN    32
 
 #define ML_OFF				0
@@ -1278,6 +1278,7 @@ typedef struct maplist_s
 	char	lightsoff[MAX_MAPS];
 	int		mlflag;
 	int		currentmap;
+	int		lastmap; //MrG{DRGN} keep track of the last map played so it's not repeated right away
 } maplist_t;
 
 maplist_t maplist;
