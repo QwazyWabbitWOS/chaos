@@ -17,7 +17,7 @@ void CreateCamera(edict_t* ent)
 	
 	bprint_botsafe(PRINT_HIGH, "%s has moved to the sidelines\n", ent->client->pers.netname);
 	
-	if (ent->movetype != MOVETYPE_NOCLIP)
+	if (ent->movetype != MOVETYPE_NOCLIP && ent->deadflag != DEAD_DEAD)	// MrG{DRGN} not coming from CTF Join or dead
 		gi.unlinkentity(ent);
 	
 	ent->groundentity = NULL;
