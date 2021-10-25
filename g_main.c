@@ -179,9 +179,12 @@ int MaplistNext(void)
 	case ML_ROTATE_RANDOM:
 		maplist.lastmap = maplist.currentmap; // MrG{DRGN} store this here
 		maplist.currentmap = (int)(random() * maplist.nummaps);	// assign a new map
-		while (maplist.currentmap == maplist.lastmap) // check we're not going to repeat the lastmap right away.
+		if (maplist.nummaps != 1) // avoid infinite loop
 		{
-			maplist.currentmap = (int)(random() * maplist.nummaps);	// if we are, spin again
+			while (maplist.currentmap == maplist.lastmap) // check we're not going to repeat the lastmap right away.
+			{
+				maplist.currentmap = (int)(random() * maplist.nummaps);	// if we are, spin again
+			}
 		}
 		break;
 	default:
