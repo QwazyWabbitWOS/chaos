@@ -31,7 +31,7 @@ cvar_t* g_select_empty;
 cvar_t* dedicated;
 cvar_t* game_dir;
 cvar_t* g_maplistfile;
-cvar_t* g_maplistmode;
+cvar_t* g_maplistmode;// 1 for sequential, 2 for random map selection
 
 cvar_t* sv_maxvelocity;
 cvar_t* sv_gravity;
@@ -179,9 +179,10 @@ int MaplistNext(void)
 	case ML_ROTATE_RANDOM:
 		maplist.lastmap = maplist.currentmap; // MrG{DRGN} store this here
 		maplist.currentmap = (int)(random() * maplist.nummaps);	// assign a new map
-		if (maplist.currentmap == maplist.lastmap) // check we're not going to repeat the lastmap right away.
+		while (maplist.currentmap == maplist.lastmap) // check we're not going to repeat the lastmap right away.
+		{
 			maplist.currentmap = (int)(random() * maplist.nummaps);	// if we are, spin again
-
+		}
 		break;
 	default:
 		maplist.mlflag = ML_OFF;

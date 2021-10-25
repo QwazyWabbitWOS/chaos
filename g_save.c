@@ -149,7 +149,7 @@ void InitGame(void)
 	maxentities = gi.cvar("maxentities", "1024", CVAR_LATCH); */
 	maxentities = gi.cvar("maxentities", va("%i", MAX_EDICTS), CVAR_LATCH);
 	g_maplistfile = gi.cvar("g_maplistfile", "chaosdm.txt", 0);
-	g_maplistmode = gi.cvar("g_maplistmode", "1", 0);
+	g_maplistmode = gi.cvar("g_maplistmode", "1", 0); // 1 for sequential, 2 for random map selection
 
 	BotClearGlobals();
 	GetSettings();
