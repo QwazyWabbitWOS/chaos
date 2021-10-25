@@ -1279,6 +1279,7 @@ typedef struct maplist_s
 	int		mlflag;
 	int		currentmap;
 	int		lastmap; //MrG{DRGN} keep track of the last map played so it's not repeated right away
+	int		map_played[MAX_MAPS];
 } maplist_t;
 
 maplist_t maplist;
