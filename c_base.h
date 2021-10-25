@@ -22,8 +22,8 @@ void CreateCamera(edict_t* ent);
 void CamNext(edict_t* ent);
 void CamPrev(edict_t* ent);
 void CameraThink(edict_t* ent, usercmd_t* ucmd);
-void ClearMaplist(void);
-void LoadMaplist(char* filename);
+void MaplistClear(void);
+void MaplistLoad(char* filename);
 void LoadMOTD(void);
 void PreCacheAll(void);	//MATTHIAS
 void GetSettings(void);

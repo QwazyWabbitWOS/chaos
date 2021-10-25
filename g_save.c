@@ -215,7 +215,7 @@ void InitGame(void)
 	game.clients = gi.TagMalloc(game.maxclients * sizeof(game.clients[0]), TAG_GAME);
 	globals.num_edicts = game.maxclients + 1;
 
-	LoadMaplist(g_maplistfile->string);
+	MaplistLoad(g_maplistfile->string);
 	CTFInit();
 }
 

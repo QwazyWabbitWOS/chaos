@@ -376,7 +376,7 @@ void ServerCommand(void)
 	{
 		if (Q_stricmp(gi.argv(2), "0") == 0)	//map rotation off
 		{
-			ClearMaplist();
+			MaplistClear();
 		}
 		else if (Q_stricmp(gi.argv(2), "1") == 0)	//start sequential rotation
 		{
@@ -396,7 +396,7 @@ void ServerCommand(void)
 		}
 		else	//load maplist
 		{
-			LoadMaplist(gi.argv(2));
+			MaplistLoad(gi.argv(2));
 		}
 	}
 	else

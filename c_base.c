@@ -114,13 +114,13 @@ qboolean TouchingLadder(edict_t* self)
 	return false;
 }
 
-void ClearMaplist(void)
+void MaplistClear(void)
 {
 	int i;
 
 	maplist.currentmap = -1;
 	maplist.nummaps = 0;
-	maplist.mlflag = 0; //off
+	maplist.mlflag = ML_OFF;
 
 	for (i = 0; i < MAX_MAPS; i++)
 	{
@@ -136,7 +136,7 @@ void ClearMaplist(void)
 	}
 }
 
-void LoadMaplist(char* filename)
+void MaplistLoad(char* filename)
 {
 	FILE* fp = NULL;
 	int		i = 0;
@@ -157,7 +157,7 @@ void LoadMaplist(char* filename)
 		return;
 	}
 
-	ClearMaplist();
+	MaplistClear();
 
 	while ((!feof(fp)) && (i < MAX_MAPS))
 	{
@@ -191,8 +191,13 @@ void LoadMaplist(char* filename)
 
 	maplist.nummaps = i;
 
-	if (maplist.nummaps > 0)
+	if (maplist.nummaps > 0) {
 		maplist.mlflag = g_maplistmode->value; //set per configured mode.
+	}
+	if (maplist.nummaps == 1) {
+		maplist.mlflag = ML_OFF; // no rotation if only 1 map
+	}
+
 	fclose(fp);
 
 	if (maplist.nummaps == 0)
@@ -845,7 +850,7 @@ void FlashLightThink(edict_t* ent)
 
 	AngleVectors(ent->owner->client->v_angle, forward, right, up);
 
-	VectorSet(offset, 24, 6, ent->owner->viewheight - 7.0F); 
+	VectorSet(offset, 24, 6, ent->owner->viewheight - 7.0F);
 	G_ProjectSource(ent->owner->s.origin, offset, forward, right, start);
 	VectorMA(start, 8192, forward, end);
 
@@ -877,7 +882,7 @@ void T_RadiusDamage2(edict_t* attacker, vec3_t position, float damage, float rad
 			continue;
 
 		VectorSubtract(ent->s.origin, position, v);
-		points = damage - 0.5F * VectorLength(v); 
+		points = damage - 0.5F * VectorLength(v);
 		//		if (ent == attacker)
 			//	points = points * 0.5;
 		if (points > 0)
@@ -907,7 +912,7 @@ edict_t* findradius2(edict_t* from, vec3_t org, float rad)	//find all entities
 		//if (from->solid != SOLID_NOT)
 		//	continue;
 		for (j = 0; j < 3; j++)
-			eorg[j] = org[j] - (from->s.origin[j] + (from->mins[j] + from->maxs[j]) * 0.5F); 
+			eorg[j] = org[j] - (from->s.origin[j] + (from->mins[j] + from->maxs[j]) * 0.5F);
 		if (VectorLength(eorg) > rad)
 			continue;
 		return from;
