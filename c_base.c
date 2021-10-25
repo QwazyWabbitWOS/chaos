@@ -188,8 +188,8 @@ void MaplistLoad(char* filename)
 		gi.cprintf(NULL, PRINT_HIGH, "...%s,ctf=%c,lightsoff=%c\n", maplist.mapnames[i], maplist.ctf[i], maplist.lightsoff[i]);
 		i++;
 	}
-
 	maplist.nummaps = i;
+	fclose(fp);
 
 	if (maplist.nummaps > 0) {
 		maplist.mlflag = g_maplistmode->value; //set per configured mode.
@@ -197,9 +197,6 @@ void MaplistLoad(char* filename)
 	if (maplist.nummaps == 1) {
 		maplist.mlflag = ML_OFF; // no rotation if only 1 map
 	}
-
-	fclose(fp);
-
 	if (maplist.nummaps == 0)
 	{
 		gi.cprintf(NULL, PRINT_HIGH, "No maps listed in %s\n", file);
