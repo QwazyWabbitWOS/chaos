@@ -116,24 +116,8 @@ qboolean TouchingLadder(edict_t* self)
 
 void MaplistClear(void)
 {
-	int i;
-
+	memset(&maplist, 0, sizeof maplist);
 	maplist.currentmap = -1;
-	maplist.nummaps = 0;
-	maplist.mlflag = ML_OFF;
-
-	for (i = 0; i < MAX_MAPS; i++)
-	{
-		int p;
-
-		maplist.ctf[i] = '0';
-		maplist.lightsoff[i] = '0';
-
-		for (p = 0; p < MAX_MAPNAME_LEN; p++)
-		{
-			maplist.mapnames[i][p] = 0;
-		}
-	}
 }
 
 void MaplistLoad(char* filename)
