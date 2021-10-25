@@ -129,38 +129,30 @@ void SVCmd_killbot_f(char* name)
 
 void Bot_Create(int accuracy_level, int team, char* name, char* skin)
 {
-	int       i;
-	char      userinfo[MAX_INFO_STRING];
+	int	i;
 	edict_t* bot = NULL; /* MrG{DRGN} initialized */
-	int mcv = (int)maxclients->value;/* MrG{DRGN} check once */
 
-	for (i = (mcv); i > 0; i--) /* MrG{DRGN} use here */
+	for (i = (int)maxclients->value; i > 0; i--)
 	{
 		bot = g_edicts + i + 1;
 		if (!bot->inuse)
 			break;
 	}
 
-	if (bot && bot->inuse)
-		bot = NULL;
-
-	if (!bot)
+	if (!bot) // bot is NULL if no slots available
 	{
 		bprint_botsafe(PRINT_HIGH, "%s cant connect, server is full!\n", name);
 		return;
 	}
 
-	G_InitEdict(bot); // we have a bot edict
+	G_InitEdict(bot); // create a bot edict 
 
-	memset(userinfo, 0, MAX_INFO_STRING);
-
-	Info_SetValueForKey(userinfo, "name", name);
-	Info_SetValueForKey(userinfo, "skin", skin);
-	Info_SetValueForKey(userinfo, "hand", "2");
-
-	ClientConnect(bot, userinfo);
-	InitClientResp(bot->client);
-	PutBotInServer(bot);
+	//InitClientResp(bot->client); // Initialize and assign to team if ctf.
+	InitClientPersistent(bot->client); // Initial inventory & select wep.
+	Info_SetValueForKey(bot->client->pers.userinfo, "name", name);
+	Info_SetValueForKey(bot->client->pers.userinfo, "skin", skin);
+	Info_SetValueForKey(bot->client->pers.userinfo, "hand", "2");
+	PutBotInServer(bot); // Spawn it in.
 
 	if (accuracy_level > 5)
 		accuracy_level = 5;
@@ -168,6 +160,9 @@ void Bot_Create(int accuracy_level, int team, char* name, char* skin)
 		accuracy_level = 1;
 
 	bot->client->b_botlevel = accuracy_level;
+
+	bot->client->pers.connected = true;
+	gi.dprintf("%s connected.\n", bot->client->pers.netname);
 
 	gi.WriteByte(svc_muzzleflash);
 	gi.WriteShort(bot - g_edicts);
@@ -214,12 +209,12 @@ void Bot_Create(int accuracy_level, int team, char* name, char* skin)
 
 void PutBotInServer(edict_t* ent)
 {
-	vec3_t               origin, angles;
-	vec3_t               mins = { -16, -16, -24 };
-	vec3_t               maxs = { 16, 16, 32 };
-	int                 i, k, index;
-	client_persistent_t  pers;
-	client_respawn_t     resp = { 0 };
+	vec3_t	origin, angles;
+	vec3_t	mins = { -16, -16, -24 };
+	vec3_t	maxs = { 16, 16, 32 };
+	int		i, k, index;
+	client_persistent_t	pers;
+	client_respawn_t	resp = { 0 };
 
 	if (!deathmatch->value)
 	{
@@ -231,14 +226,15 @@ void PutBotInServer(edict_t* ent)
 
 	index = ent - g_edicts - 1;
 
+	// deathmatch wipes most client data every spawn
 	if (deathmatch->value)
 	{
 		char userinfo[MAX_INFO_STRING];
 
 		resp = ent->client->resp;
-		memcpy(userinfo, ent->client->pers.userinfo, MAX_INFO_STRING);
+		memcpy(userinfo, ent->client->pers.userinfo, sizeof(userinfo));
 		InitClientPersistent(ent->client);
-		ClientUserinfoChanged(ent, userinfo); //QW// Expect Redundant from r1q2 for this.
+		ClientUserinfoChanged(ent, userinfo);
 	}
 	else
 		memset(&resp, 0, sizeof(client_respawn_t));
@@ -354,7 +350,7 @@ void PutBotInServer(edict_t* ent)
 
 	ent->nextthink = level.time + FRAMETIME;
 	ent->client->newweapon = ent->client->pers.weapon;
-	ChangeWeapon(ent);
+	ChangeWeapon(ent); // calls ShowGun
 }
 
 void Bot_Respawn(edict_t* ent)
