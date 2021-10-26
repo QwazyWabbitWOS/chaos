@@ -3230,6 +3230,10 @@ void CTFObserver(edict_t* ent)
 {
 	char		userinfo[MAX_INFO_STRING];
 
+
+	if (ent->client->resp.spectator == true)
+		return;
+
 	// start as 'observer'
 	if (ent->movetype == MOVETYPE_NOCLIP)
 		Grapple_Reset(ent);
