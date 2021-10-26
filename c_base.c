@@ -58,7 +58,7 @@ void ShowGun(edict_t* ent)	//QW from WOD:LOX for vwep
 	{
 		ent->client->ps.gunindex = 0;		// WI: seems to be missing?
 		ent->s.modelindex2 = REMOVED_MODEL;	 // MrG{DRGN} 
-		if (ent->solid != SOLID_TRIGGER) // MrG{DRGN} Don't complain about camera using players not having a gun 
+		if (!ent->client->resp.spectator) // MrG{DRGN} Don't complain about camera using players not having a gun 
 			gi.dprintf("ShowGun: Oops! Weapon Index missing! %s\n", ent->client->pers.netname);
 		return;
 	}
@@ -1510,6 +1510,7 @@ void Cmd_Camera_f(edict_t* ent)
 	{
 		if (ent->client->camera)
 		{
+			ent->client->resp.spectator = false; // Not Spectator
 			PutClientInServer(ent);
 			ClientBegin(ent);
 			gi.cprintf(ent, PRINT_HIGH, "Camera OFF!\n");

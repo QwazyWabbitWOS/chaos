@@ -764,7 +764,7 @@ void Cmd_Kill_f(edict_t* ent)
 	 * Fix for invincible bug
 	 * Major
 	 */
-	if (ent->solid == SOLID_NOT || ent->client->camera)
+	if (ent->client->resp.spectator)
 		return;
 
 	if ((level.time - ent->client->respawn_time) < 5)

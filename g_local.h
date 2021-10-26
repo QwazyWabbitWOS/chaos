@@ -916,6 +916,8 @@ typedef struct client_respawn_s
 	client_persistent_t	coop_respawn;	// what to set client->pers to on a respawn
 	int			enterframe;			// level.framenum the client entered the game
 	int			score;				// frags, etc
+
+	qboolean	spectator;			// MrG{DRGM} client is a spectator
 	//ZOID
 	int			ctf_team;			// CTF team
 	int			team; // MATHIAS Deathmatch Team

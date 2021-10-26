@@ -1124,7 +1124,7 @@ static void CTFSetIDView(edict_t* ent)
 		who = g_edicts + i;
 		if (!who->inuse)
 			continue;
-		if (who->solid == SOLID_NOT || who->solid == SOLID_TRIGGER)
+		if (who->client->resp.spectator)
 			continue;
 		VectorSubtract(who->s.origin, ent->s.origin, dir);
 		VectorNormalize(dir);
@@ -1517,7 +1517,7 @@ void CTFScoreboardMessage(edict_t* ent, edict_t* killer)
 			cl_ent = g_edicts + 1 + i;
 			cl = &game.clients[i];
 			if (!cl_ent->inuse ||
-				(cl_ent->solid != SOLID_TRIGGER && cl_ent->solid != SOLID_NOT) ||
+				(!cl_ent->client->resp.spectator) ||
 				cl_ent->client->resp.ctf_team != CTF_NOTEAM)
 				continue;
 
@@ -2858,6 +2858,7 @@ void CTFJoinTeam(edict_t* ent, int desired_team)
 	ent->svflags &= ~SVF_NOCLIENT;
 	ent->client->resp.ctf_team = desired_team;
 	ent->client->resp.ctf_state = CTF_STATE_START;
+	ent->client->resp.spectator = false; // Not Spectator
 	s = Info_ValueForKey(ent->client->pers.userinfo, "skin");
 	CTFAssignSkin(ent, s);
 
@@ -3211,6 +3212,7 @@ qboolean CTFStartClient(edict_t* ent)
 
 	if (!((int)dmflags->value & DF_CTF_FORCEJOIN) || ctfgame.match >= MATCH_SETUP) {
 		// start as 'observer'
+		ent->client->resp.spectator = true;	// Spectator
 		ent->movetype = MOVETYPE_NOCLIP;
 		ent->solid = SOLID_NOT;
 		ent->svflags |= SVF_NOCLIENT;

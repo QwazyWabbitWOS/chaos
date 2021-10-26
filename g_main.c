@@ -171,6 +171,8 @@ Choose next map in rotation based on current mode.
 */
 int MaplistNext(void)
 {
+	int i;
+
 	switch (maplist.mlflag)
 	{
 	case ML_ROTATE_SEQ:
@@ -187,6 +189,20 @@ int MaplistNext(void)
 			}
 		}
 		break;
+
+	/*case ML_ROTATE_RANDOM:
+		maplist.lastmap = maplist.currentmap; // MrG{DRGN} store this here
+		maplist.currentmap = (int)(random() * maplist.nummaps);	// assign a new map
+
+		if (maplist.nummaps != 1) // avoid infinite loop
+		{
+			for (i = 0; i < maplist.nummaps; i++)
+				while (maplist.currentmap == maplist.map_played[i]) // check we're not going to repeat the lastmap right away.
+				{
+					maplist.currentmap = (int)(random() * maplist.nummaps);	// if we are, spin again
+				}
+		}
+		break;	*/
 	default:
 		maplist.mlflag = ML_OFF;
 		maplist.currentmap = maplist.currentmap;

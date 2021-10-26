@@ -30,6 +30,7 @@ void CreateCamera(edict_t* ent)
 	ent->bot_player = 0; /* MrG{DRGN} paranoia */
 	ent->mass = 0;
 	ent->model = "models/objects/camera/tris.md2";
+	ent->client->resp.spectator = true; // Spectator
 	ent->solid = SOLID_TRIGGER;
 	ent->deadflag = DEAD_NO;
 	ent->clipmask = MASK_ALL;
