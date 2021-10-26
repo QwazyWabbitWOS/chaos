@@ -4031,7 +4031,7 @@ void CTFPlayerList(edict_t* ent)
 			e2->client->resp.score,
 			(ctfgame.match == MATCH_SETUP || ctfgame.match == MATCH_PREGAME) ?
 			(e2->client->resp.ready ? " (ready)" : " (notready)") : "",
-			e2->client->resp.admin ? " (admin)" : ""),
+			e2->client->resp.admin ? " (admin)" : "",
 			e2->client->resp.spectator ? " (spectator)" : "");
 
 		if (strlen(text) + strlen(string) > sizeof(text) - 50) {
