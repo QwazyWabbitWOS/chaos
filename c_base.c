@@ -675,7 +675,7 @@ void FakeDeath(edict_t* self)
 	if (!self)
 		return;
 
-	if (self->client->camera || self->movetype == MOVETYPE_NOCLIP)/* MrG{DRGN} if you haven't joined a team yet. you can't fakedeath! */
+	if (self->client->resp.spectator)/* MrG{DRGN} if you haven't joined a team yet. you can't fakedeath! */
 		return;
 
 	if (self->client->fakedeath == 0)	//fake

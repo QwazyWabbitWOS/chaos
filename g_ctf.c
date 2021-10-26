@@ -2241,7 +2241,7 @@ void CTFSay_Team(edict_t* who, char* msg)
 		return;
 
 	/* MrG{DRGN} Spectators don't have teams and shouldn't be spamming macros */
-	if (who->client->camera || who->movetype == MOVETYPE_NOCLIP)
+	if (who->client->resp.spectator)
 		return;
 
 	outmsg[0] = 0;
