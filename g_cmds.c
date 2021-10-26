@@ -418,7 +418,7 @@ void Cmd_Use_f(edict_t* ent)
 		return;
 
 	/* MrG{DRGN} Spectators shouldn't be using anything*/
-	if (ent->client->camera || ent->movetype == MOVETYPE_NOCLIP)
+	if (ent->client->resp.spectator)
 		return;
 
 	s = gi.args();
@@ -457,7 +457,7 @@ void Cmd_Drop_f(edict_t* ent)
 	char* s;
 
 	/* MrG{DRGN} Spectators shouldn't be dropping anything*/
-	if (ent->client->camera || ent->movetype == MOVETYPE_NOCLIP)
+	if (ent->client->resp.spectator)
 		return;
 	//ZOID--special case for tech powerups
 	if (Q_stricmp(gi.args(), "tech") == 0 && (it = CTFWhat_Tech(ent)) != NULL)
@@ -578,7 +578,7 @@ void Cmd_InvUse_f(edict_t* ent)
 		return;
 	}
 	//ZOID
-	if (ent->client->camera || ent->movetype == MOVETYPE_NOCLIP)
+	if (ent->client->resp.spectator)
 		return;
 	ValidateSelectedItem(ent);
 

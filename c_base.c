@@ -1448,7 +1448,7 @@ void Use_Grenades(edict_t* ent)
 void Cmd_Grapple_f(edict_t* ent)
 {
 	/* MrG{DRGN} if you haven't joined a team yet. you can't use the hook! */
-	if (ent->client->camera || ent->movetype == MOVETYPE_NOCLIP)
+	if (ent->client->resp.spectator)
 		return;
 	if (ent->health <= 0)
 		return;
@@ -1750,7 +1750,7 @@ void Cmd_Poweruplist_f(edict_t* ent)
 
 void Cmd_Throwup_f(edict_t* ent)
 {
-	if (ent->client->camera || ent->movetype == MOVETYPE_NOCLIP)/* MrG{DRGN} if you haven't joined a team yet. you can't puke! */
+	if (ent->client->resp.spectator)/* MrG{DRGN} if you haven't joined a team yet. you can't puke! */
 		return;
 	if (ent->health <= 0)
 		return;
@@ -1765,7 +1765,7 @@ void Cmd_Throwup_f(edict_t* ent)
 
 void Cmd_Belt_f(edict_t* ent)
 {
-	if (ent->client->camera || ent->movetype == MOVETYPE_NOCLIP)/* MrG{DRGN} if you haven't joined a team yet. you can't AG belt! */
+	if (ent->client->resp.spectator)/* MrG{DRGN} if you haven't joined a team yet. you can't AG belt! */
 		return;
 
 	if (ent->client->fakedeath > 0)
@@ -1797,7 +1797,7 @@ void Cmd_Belt_f(edict_t* ent)
 
 void Cmd_Flashlight_f(edict_t* ent)
 {
-	if (ent->client->camera || ent->movetype == MOVETYPE_NOCLIP)/* MrG{DRGN} if you haven't joined a team yet. you can't use the flashlight! */
+	if (ent->client->resp.spectator)/* MrG{DRGN} if you haven't joined a team yet. you can't use the flashlight! */
 		return;
 
 	if (ent->client->fakedeath > 0)
@@ -1843,7 +1843,7 @@ void Cmd_Flashlight_f(edict_t* ent)
 
 void Cmd_Teleport_f(edict_t* ent)
 {
-	if (ent->client->camera || ent->movetype == MOVETYPE_NOCLIP)/* MrG{DRGN} if you haven't joined a team yet. you can't teleport! */
+	if (ent->client->resp.spectator)/* MrG{DRGN} if you haven't joined a team yet. you can't teleport! */
 		return;
 	if (ent->health <= 0)
 		return;
@@ -1870,7 +1870,7 @@ void Cmd_Teleport_f(edict_t* ent)
 
 void Cmd_Kamikaze_f(edict_t* ent)
 {
-	if (ent->client->camera || ent->movetype == MOVETYPE_NOCLIP)/* MrG{DRGN} if you haven't joined a team yet. you can't Kamikaze! */
+	if (ent->client->resp.spectator)/* MrG{DRGN} if you haven't joined a team yet. you can't Kamikaze! */
 		return;
 	if (ent->health <= 0)
 		return;
@@ -1894,7 +1894,7 @@ void Cmd_Kamikaze_f(edict_t* ent)
 
 void Cmd_ToggleGrenades_f(edict_t* ent)
 {
-	if (ent->client->camera || ent->movetype == MOVETYPE_NOCLIP)/* MrG{DRGN} if you haven't joined a team yet. you can't toggle nades */
+	if (ent->client->resp.spectator)/* MrG{DRGN} if you haven't joined a team yet. you can't toggle nades */
 		return;
 	if (ent->client->grenadesactive == 1)
 	{
@@ -1913,7 +1913,7 @@ void Cmd_Kick_f(edict_t* ent)
 	edict_t* blip = NULL;
 	vec3_t	forward;
 
-	if (ent->client->camera || ent->movetype == MOVETYPE_NOCLIP)/* MrG{DRGN} if you haven't joined a team yet. you can't kick */
+	if (ent->client->resp.spectator)/* MrG{DRGN} if you haven't joined a team yet. you can't kick */
 		return;
 	if (ent->client->fakedeath > 0)
 		return;

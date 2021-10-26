@@ -1656,10 +1656,8 @@ void Bot_FindEnemy(edict_t* self)
 			continue;
 		if (players[i]->health <= 0)
 			continue;
-		if (players[i]->client->camera)
+		if (players[i]->client->resp.spectator)
 			continue;
-		if (players[i]->movetype == MOVETYPE_NOCLIP)/* MrG{DRGN} don't target unjoined players */
-			return;
 		if ((players[i]->client->invisible_framenum > level.framenum) && random() > 0.01)	//invisible
 			continue;
 

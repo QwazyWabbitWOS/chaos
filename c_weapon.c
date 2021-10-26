@@ -2572,7 +2572,7 @@ void homing_think(edict_t* ent)
 				continue;
 			if (players[i]->health <= 0)
 				continue;
-			if (players[i]->client->camera)
+			if (players[i]->client->resp.spectator)
 				continue;
 			if (TeamMembers(ent->owner, players[i]))
 				continue;
@@ -4186,7 +4186,7 @@ void EvilProxy_Think(edict_t* ent)
 			continue;
 		if (players[i]->health <= 0)
 			continue;
-		if (players[i]->client->camera)
+		if (players[i]->client->resp.spectator)
 			continue;
 		if (players[i]->client->invisible_framenum > level.framenum)	//invisible
 			continue;

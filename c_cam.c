@@ -119,11 +119,7 @@ int NumVisiblePlayers(edict_t* ent)
 			continue;
 		if (players[i] == ent)
 			continue;
-		if (players[i]->client->camera)
-			continue;
-		if (players[i]->movetype == MOVETYPE_FLY)
-			continue;
-		if (players[i]->movetype == MOVETYPE_NOCLIP)
+		if (players[i]->client->resp.spectator)
 			continue;
 
 		if (visible2(players[i]->s.origin, ent->s.origin))
@@ -154,11 +150,7 @@ edict_t* ClosestVisible(edict_t* ent)
 			continue;
 		if (players[i] == ent)
 			continue;
-		if (players[i]->client->camera)
-			continue;
-		if (players[i]->movetype == MOVETYPE_FLY)
-			continue;
-		if (players[i]->movetype == MOVETYPE_NOCLIP)
+		if (players[i]->client->resp.spectator)
 			continue;
 
 		if (visible2(players[i]->s.origin, ent->s.origin))
@@ -188,11 +180,7 @@ edict_t* BestViewPlayer(void)
 			continue;
 		if (players[i]->health < 0)
 			continue;
-		if (players[i]->client->camera)
-			continue;
-		if (players[i]->movetype == MOVETYPE_FLY)
-			continue;
-		if (players[i]->movetype == MOVETYPE_NOCLIP)
+		if (players[i]->client->resp.spectator)
 			continue;
 
 		views = NumVisiblePlayers(players[i]);
@@ -214,11 +202,7 @@ edict_t* GetFirstValidPlayer(void)
 	{
 		if (!players[i]->client)
 			continue;
-		if (players[i]->client->camera)
-			continue;
-		if (players[i]->movetype == MOVETYPE_FLY)
-			continue;
-		if (players[i]->movetype == MOVETYPE_NOCLIP)
+		if (players[i]->client->resp.spectator)
 			continue;
 
 		return players[i];
@@ -234,11 +218,7 @@ edict_t* GetRandomValidPlayer(void)
 	{
 		if (!players[i]->client)
 			continue;
-		if (players[i]->client->camera)
-			continue;
-		if (players[i]->movetype == MOVETYPE_FLY)
-			continue;
-		if (players[i]->movetype == MOVETYPE_NOCLIP)
+		if (players[i]->client->resp.spectator)
 			continue;
 		if (random() < 0.5)
 			continue;
@@ -256,11 +236,7 @@ int  FirstValidPlayer(void)
 	{
 		if (!players[i]->client)
 			continue;
-		if (players[i]->client->camera)
-			continue;
-		if (players[i]->movetype == MOVETYPE_FLY)
-			continue;
-		if (players[i]->movetype == MOVETYPE_NOCLIP)
+		if (players[i]->client->resp.spectator)
 			continue;
 
 		return i;
@@ -276,11 +252,7 @@ int LastValidPlayer(void)
 	{
 		if (!players[i]->client)
 			continue;
-		if (players[i]->client->camera)
-			continue;
-		if (players[i]->movetype == MOVETYPE_FLY)
-			continue;
-		if (players[i]->movetype == MOVETYPE_NOCLIP)
+		if (players[i]->client->resp.spectator)
 			continue;
 
 		return i;
@@ -311,13 +283,9 @@ edict_t* GetNextValidPlayer(edict_t* current)
 	{
 		if (!players[i]->client)
 			continue;
-		if (players[i]->client->camera)
+		if (players[i]->client->resp.spectator)
 			continue;
 		if (!players[i]->inuse)
-			continue;
-		if (players[i]->movetype == MOVETYPE_FLY)
-			continue;
-		if (players[i]->movetype == MOVETYPE_NOCLIP)
 			continue;
 
 		return players[i];
@@ -350,13 +318,9 @@ edict_t* GetPrevValidPlayer(edict_t* current)
 	{
 		if (!players[i]->client)
 			continue;
-		if (players[i]->client->camera)
+		if (players[i]->client->resp.spectator)
 			continue;
 		if (!players[i]->inuse)
-			continue;
-		if (players[i]->movetype == MOVETYPE_FLY)
-			continue;
-		if (players[i]->movetype == MOVETYPE_NOCLIP)
 			continue;
 
 		return players[i];
