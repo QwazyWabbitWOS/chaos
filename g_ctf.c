@@ -4022,7 +4022,7 @@ void CTFPlayerList(edict_t* ent)
 		if (!e2->inuse)
 			continue;
 
-		Com_sprintf(string, sizeof(string), "%3d %-16.16s %02d:%02d %4d %3d%s%s\n",
+		Com_sprintf(string, sizeof(string), "%3d %-16.16s %02d:%02d %4d %3d%s%s%s\n",
 			i,
 			e2->client->pers.netname,
 			(level.framenum - e2->client->resp.enterframe) / 600,
@@ -4031,7 +4031,8 @@ void CTFPlayerList(edict_t* ent)
 			e2->client->resp.score,
 			(ctfgame.match == MATCH_SETUP || ctfgame.match == MATCH_PREGAME) ?
 			(e2->client->resp.ready ? " (ready)" : " (notready)") : "",
-			e2->client->resp.admin ? " (admin)" : "");
+			e2->client->resp.admin ? " (admin)" : ""),
+			e2->client->resp.spectator ? " (spectator)" : "");
 
 		if (strlen(text) + strlen(string) > sizeof(text) - 50) {
 			sprintf(text + strlen(text), "And more...\n");

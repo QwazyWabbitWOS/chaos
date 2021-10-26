@@ -1648,16 +1648,37 @@ void Cmd_Nums_f(edict_t* ent)
 	cprint_botsafe(ent, PRINT_HIGH, "numturrets=%d\n", numturrets);
 }
 
-void Cmd_Playerlist_f(edict_t* ent)
+static void Cmd_PlayerList_f(edict_t* ent)
 {
-	int		i;
+	int i;
+	char string[80];
+	char text[1400];
+	edict_t* e2 = NULL;
+	char* textandsize;
+	/* connect time, ping, score, name */
+	*text = 0;
+	for (i = 0, e2 = g_edicts + 1; i < maxclients->value; i++, e2++) {
+		if (!e2->inuse)
+			continue;
 
-	for (i = 0; i < MAX_CLIENTS; i++)
-	{
-		if (players[i])
-			if (players[i]->client)
-				cprint_botsafe(ent, PRINT_HIGH, "%d: %s\n", i, players[i]->client->pers.netname);
+		Com_sprintf(string, sizeof(st), "%02d:%02d %4d %3d %s%s\n",
+			(level.framenum - e2->client->resp.enterframe) / 600,
+			((level.framenum - e2->client->resp.enterframe) % 600) / 10,
+			e2->client->ping,
+			e2->client->resp.score,
+			e2->client->pers.netname,
+			e2->client->resp.spectator ? " (spectator)" : "");
+		if (strlen(text) + strlen(string) > sizeof(text) - 50)
+		{
+			textandsize = text + strlen(text);
+			//sprintf(text + strlen(text), "And more...\n");
+			Com_sprintf(text + strlen(text), sizeof(textandsize), "And more...\n");
+			cprint_botsafe(ent, PRINT_HIGH, "%s", text);
+			return;
+		}
+		strcat(text, string);
 	}
+	cprint_botsafe(ent, PRINT_HIGH, "%s", text);
 }
 
 void Cmd_Turretlist_f(edict_t* ent)
@@ -2084,6 +2105,9 @@ void ClientCommand2(edict_t* ent)
 	}
 	else if (Q_stricmp(cmd, "playerlist") == 0)
 	{
+	if (ctf->value)
+		CTFPlayerList(ent);
+	else
 		Cmd_Playerlist_f(ent);
 	}
 	else if (Q_stricmp(cmd, "turretlist") == 0)
