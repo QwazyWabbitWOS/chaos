@@ -1137,7 +1137,29 @@ void ClientCommand(edict_t* ent)
 	else if (Q_stricmp(cmd, "boot") == 0)
 		CTFBoot(ent);
 	else if ((Q_stricmp(cmd, "observer") == 0) || (Q_stricmp(cmd, "spectator") == 0))
-		CTFObserver(ent);
+	{
+		if (ctf->value)
+		{
+			CTFObserver(ent);
+			return;
+		}
+		
+		if (Q_stricmp(gi.argv(1), "1") == 0)
+		{
+			if (!ent->client->camera)
+				CreateCamera(ent);
+
+			ent->client->camera = 1;
+			gi.cprintf(ent, PRINT_HIGH, "IntelliCam Mode!\n");
+		}
+		else if (Q_stricmp(gi.argv(1), "0") == 0)
+		{
+			ent->client->resp.spectator = false; // Not Spectator
+			PutClientInServer(ent);
+			ClientBegin(ent);
+			gi.cprintf(ent, PRINT_HIGH, "Camera OFF!\n");
+		}
+	}
 	else
 		ClientCommand2(ent);
 }

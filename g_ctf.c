@@ -3233,7 +3233,8 @@ void CTFObserver(edict_t* ent)
 	// start as 'observer'
 	if (ent->movetype == MOVETYPE_NOCLIP)
 		Grapple_Reset(ent);
-
+	
+	bprint_botsafe(PRINT_HIGH, "%s has moved to the sidelines\n", ent->client->pers.netname);
 	CTFDeadDropFlag(ent);
 	CTFDeadDropTech(ent);
 
