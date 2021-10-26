@@ -1648,7 +1648,7 @@ void Cmd_Nums_f(edict_t* ent)
 	cprint_botsafe(ent, PRINT_HIGH, "numturrets=%d\n", numturrets);
 }
 
-static void Cmd_PlayerList_f(edict_t* ent)
+void Cmd_PlayerList_f(edict_t* ent)
 {
 	int i;
 	char string[80];
@@ -2108,7 +2108,7 @@ void ClientCommand2(edict_t* ent)
 	if (ctf->value)
 		CTFPlayerList(ent);
 	else
-		Cmd_Playerlist_f(ent);
+		Cmd_PlayerList_f(ent);
 	}
 	else if (Q_stricmp(cmd, "turretlist") == 0)
 	{

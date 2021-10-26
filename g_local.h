@@ -936,8 +936,7 @@ typedef struct client_respawn_s
 	vec3_t		cmd_angles;			// angles sent over in the last command
 	int			game_helpchanged;
 	int			helpchanged;
-	qboolean	spectator;		// client is a spectator
-
+	
 } client_respawn_t;
 
 // this structure is cleared on each PutClientInServer(),
