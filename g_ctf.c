@@ -3239,6 +3239,7 @@ void CTFObserver(edict_t* ent)
 
 	ent->deadflag = DEAD_NO;
 	ent->movetype = MOVETYPE_NOCLIP;
+	ent->client->resp.spectator = true;	// Spectator
 	ent->solid = SOLID_NOT;
 	ent->svflags |= SVF_NOCLIENT;
 	ent->client->resp.ctf_team = CTF_NOTEAM;
