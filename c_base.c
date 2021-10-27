@@ -1652,33 +1652,43 @@ void Cmd_PlayerList_f(edict_t* ent)
 {
 	int i;
 	char string[80];
-	char text[1400];
-	edict_t* e2 = NULL;
-	char* textandsize;
+	char text[LAYOUT_MAX_LENGTH] = { 0 };
+	edict_t* ed = NULL;
 	/* connect time, ping, score, name */
-	*text = 0;
-	for (i = 0, e2 = g_edicts + 1; i < maxclients->value; i++, e2++) {
-		if (!e2->inuse)
+
+	// Start with a nice header.
+	Com_sprintf(string, sizeof string, "%s\n", "entry ping score      name");
+	Q_strncatz(text, sizeof text, string);
+	Com_sprintf(string, sizeof string, "%s\n", "----- ---- -----  -------------");
+	Q_strncatz(text, sizeof text, string);
+
+	for (i = 0, ed = g_edicts + 1; i < maxclients->value; i++, ed++) {
+		if (!ed->inuse)
 			continue;
 
-		Com_sprintf(string, sizeof(st), "%02d:%02d %4d %3d %s%s\n",
-			(level.framenum - e2->client->resp.enterframe) / 600,
-			((level.framenum - e2->client->resp.enterframe) % 600) / 10,
-			e2->client->ping,
-			e2->client->resp.score,
-			e2->client->pers.netname,
-			e2->client->resp.spectator ? " (spectator)" : "");
-		if (strlen(text) + strlen(string) > sizeof(text) - 50)
+		Com_sprintf(string, sizeof string, "%02d:%02d %3d %4d    %-s %-12s\n",
+			(level.framenum - ed->client->resp.enterframe) / 600,
+			((level.framenum - ed->client->resp.enterframe) % 600) / 10,
+			ed->client->ping,
+			ed->client->resp.score,
+			ed->client->pers.netname,
+			ed->client->resp.spectator ? "(spectator)" : "");
+
+		// While we might think we have the full frame to use
+		// we can't take all of it for a console message or it
+		// gets dropped. 1000 seems a hard limit here.
+		// The number of lines listed will depend on
+		// lengths of names and spectator status. //QW//
+		//DbgPrintf("length: %u\n", strlen(text));
+		if (strlen(text) + strlen(string) > 1000)
 		{
-			textandsize = text + strlen(text);
-			//sprintf(text + strlen(text), "And more...\n");
-			Com_sprintf(text + strlen(text), sizeof(textandsize), "And more...\n");
-			cprint_botsafe(ent, PRINT_HIGH, "%s", text);
+			Q_strncatz(text, sizeof text, "And more...\n");
+			cprint_botsafe(ent, PRINT_HIGH, "%s\n", text);
 			return;
 		}
-		strcat(text, string);
+		Q_strncatz(text, sizeof text, string);
 	}
-	cprint_botsafe(ent, PRINT_HIGH, "%s", text);
+	cprint_botsafe(ent, PRINT_HIGH, "%s\n", text);
 }
 
 void Cmd_Turretlist_f(edict_t* ent)
