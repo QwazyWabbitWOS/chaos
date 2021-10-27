@@ -179,7 +179,7 @@ int MaplistNext(void)
 		break;
 	case ML_ROTATE_RANDOM:
 		maplist.currentmap = (maplist.map_random[maplist.index]) % maplist.nummaps;
-		maplist.index = maplist.index++ % maplist.nummaps;
+		maplist.index = (maplist.index + 1) % maplist.nummaps;
 		break;
 	default:
 		maplist.mlflag = ML_OFF;
