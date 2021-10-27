@@ -120,22 +120,6 @@ void MaplistClear(void)
 	maplist.currentmap = -1;
 }
 
-void MaplistShuffle(void)
-{
-	int i;
-
-	for (i = 0; i < maplist.nummaps; i++)
-		maplist.map_random[i] = i;
-
-	for (i = 0; i < maplist.nummaps; i++)
-	{
-		int temp = maplist.map_random[i];
-		int random = random() * maplist.nummaps;
-		maplist.map_random[i] = maplist.map_random[random];
-		maplist.map_random[random] = temp;
-	}
-}
-
 void MaplistLoad(char* filename)
 {
 	FILE* fp = NULL;
@@ -208,6 +192,61 @@ void MaplistLoad(char* filename)
 		gi.cprintf(NULL, PRINT_HIGH, "%i map(s) loaded.\n\n", maplist.nummaps);
 	}
 	gi.cprintf(NULL, PRINT_HIGH, "Map rotation is %s mode %i\n\n", maplist.mlflag ? "ON" : "OFF", maplist.mlflag);
+}
+
+void MaplistMapModeSetup(void)
+{
+	if (maplist.ctf[maplist.currentmap] == '1')
+		gi.cvar_set("ctf", "1");
+	else
+		gi.cvar_set("ctf", "0");
+
+	if (maplist.lightsoff[maplist.currentmap] == '1')
+		gi.cvar_set("lightsoff", "1");
+	else if (maplist.lightsoff[maplist.currentmap] == '2')
+		gi.cvar_set("lightsoff", "2");
+	else
+		gi.cvar_set("lightsoff", "0");
+}
+
+/*
+Choose next map in rotation based on current mode.
+*/
+int MaplistNext(void)
+{
+
+	switch (maplist.mlflag)
+	{
+	case ML_ROTATE_SEQ:
+		maplist.currentmap = (maplist.currentmap + 1) % maplist.nummaps;
+		break;
+	case ML_ROTATE_RANDOM:
+		maplist.currentmap = (maplist.map_random[maplist.index]) % maplist.nummaps;
+		maplist.index = (maplist.index + 1) % maplist.nummaps;
+		break;
+	default:
+		maplist.mlflag = ML_OFF;
+		maplist.currentmap = maplist.currentmap;
+		break;
+	}
+
+	return maplist.currentmap;
+}
+
+void MaplistShuffle(void)
+{
+	int i;
+
+	for (i = 0; i < maplist.nummaps; i++)
+		maplist.map_random[i] = i;
+
+	for (i = 0; i < maplist.nummaps; i++)
+	{
+		int temp = maplist.map_random[i];
+		int random = random() * maplist.nummaps;
+		maplist.map_random[i] = maplist.map_random[random];
+		maplist.map_random[random] = temp;
+	}
 }
 
 void GetSettings(void)

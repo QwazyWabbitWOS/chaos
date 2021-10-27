@@ -167,45 +167,6 @@ void ClientEndServerFrames(void)
 }
 
 /*
-Choose next map in rotation based on current mode.
-*/
-int MaplistNext(void)
-{
-
-	switch (maplist.mlflag)
-	{
-	case ML_ROTATE_SEQ:
-		maplist.currentmap = (maplist.currentmap + 1) % maplist.nummaps;
-		break;
-	case ML_ROTATE_RANDOM:
-		maplist.currentmap = (maplist.map_random[maplist.index]) % maplist.nummaps;
-		maplist.index = (maplist.index + 1) % maplist.nummaps;
-		break;
-	default:
-		maplist.mlflag = ML_OFF;
-		maplist.currentmap = maplist.currentmap;
-		break;
-	}
-
-	return maplist.currentmap;
-}
-
-void MaplistMapModeSetup(void)
-{
-	if (maplist.ctf[maplist.currentmap] == '1')
-		gi.cvar_set("ctf", "1");
-	else
-		gi.cvar_set("ctf", "0");
-
-	if (maplist.lightsoff[maplist.currentmap] == '1')
-		gi.cvar_set("lightsoff", "1");
-	else if (maplist.lightsoff[maplist.currentmap] == '2')
-		gi.cvar_set("lightsoff", "2");
-	else
-		gi.cvar_set("lightsoff", "0");
-}
-
-/*
 =================
 Returns the created target changelevel.
 =================

@@ -1253,8 +1253,6 @@ void	cprint_botsafe(edict_t* ent, int printlevel, char* fmt, ...);
 void	nprintf(int printlevel, char* fmt, ...);
 void	stuffcmd(edict_t* ent, char* s);
 qboolean visible2(vec3_t spot1, vec3_t spot2);
-int MaplistNext(void);
-void	MaplistMapModeSetup(void);
 edict_t* CreateTargetChangeLevel(char* map);
 void	EndDMLevel(void);
 int		numbots;
