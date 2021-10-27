@@ -75,7 +75,7 @@ void PMenu_UpdateEntry(pmenu_t* entry, const char* text, int align, SelectFunc_t
 
 void PMenu_Do_Update(edict_t* ent)
 {
-	char string[1400];
+	char string[LAYOUT_MAX_LENGTH];
 	int i;
 	pmenu_t* p;
 	int x;
@@ -145,10 +145,10 @@ void PMenu_Do_Update(edict_t* ent)
 
 void PMenu_Update(edict_t* ent)
 {
-	char string[1400];
+	char string[LAYOUT_MAX_LENGTH];
 	int i;
 	pmenu_t* p;
-	int	x; //QW// Must be int here. Can't go over 1400 bytes anyway.
+	int	x; //QW// Must be int here. Can't go over 1000 bytes or so anyway.
 	pmenuhnd_t* hnd;
 	char* t;
 	qboolean alt = false;

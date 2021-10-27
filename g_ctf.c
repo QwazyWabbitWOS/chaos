@@ -1355,7 +1355,7 @@ CTFScoreboardMessage
 void CTFScoreboardMessage(edict_t* ent, edict_t* killer)
 {
 	char	entry[1024] = { 0 };
-	char	string[1400] = { 0 };
+	char	string[LAYOUT_MAX_LENGTH] = { 0 };
 	size_t	len;/* MrG{DRGN} changed to fix conversion from 'size_t' to 'unsigned int', possible loss of data */
 	int		i, j, k, n;
 	int		sorted[2][MAX_CLIENTS] = { 0 };
@@ -1365,7 +1365,7 @@ void CTFScoreboardMessage(edict_t* ent, edict_t* killer)
 	gclient_t* cl;
 	edict_t* cl_ent;
 	int team;
-	int maxsize = 1400;
+	int maxsize = LAYOUT_MAX_LENGTH;
 
 	// sort the clients by team and score
 	total[0] = total[1] = 0;
@@ -3998,7 +3998,7 @@ void CTFPlayerList(edict_t* ent)
 {
 	int i;
 	char string[80];
-	char text[1400];
+	char text[LAYOUT_MAX_LENGTH];
 	edict_t* e2;
 
 #if 0
