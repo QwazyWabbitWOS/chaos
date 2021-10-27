@@ -390,6 +390,11 @@ void ServerCommand(void)
 		{
 			SVCmd_goto_f(gi.argv(3));
 		}
+		else if (Q_stricmp(gi.argv(2), "shuffle") == 0)	//jump to map X in list
+		{
+			gi.cprintf(NULL, PRINT_HIGH, "Shuffling the rotation of the random maplist!\n");
+			MaplistShuffle();
+		}
 		else if (Q_stricmp(gi.argv(2), "") == 0)	//print maplist
 		{
 			SVCmd_show_f();
