@@ -171,7 +171,6 @@ Choose next map in rotation based on current mode.
 */
 int MaplistNext(void)
 {
-	int i;
 
 	switch (maplist.mlflag)
 	{
@@ -179,30 +178,9 @@ int MaplistNext(void)
 		maplist.currentmap = (maplist.currentmap + 1) % maplist.nummaps;
 		break;
 	case ML_ROTATE_RANDOM:
-		maplist.lastmap = maplist.currentmap; // MrG{DRGN} store this here
-		maplist.currentmap = (int)(random() * maplist.nummaps);	// assign a new map
-		if (maplist.nummaps != 1) // avoid infinite loop
-		{
-			while (maplist.currentmap == maplist.lastmap) // check we're not going to repeat the lastmap right away.
-			{
-				maplist.currentmap = (int)(random() * maplist.nummaps);	// if we are, spin again
-			}
-		}
+		maplist.currentmap = (maplist.map_random[maplist.index]) % maplist.nummaps;
+		maplist.index = maplist.index++ % maplist.nummaps;
 		break;
-
-	/*case ML_ROTATE_RANDOM:
-		maplist.lastmap = maplist.currentmap; // MrG{DRGN} store this here
-		maplist.currentmap = (int)(random() * maplist.nummaps);	// assign a new map
-
-		if (maplist.nummaps != 1) // avoid infinite loop
-		{
-			for (i = 0; i < maplist.nummaps; i++)
-				while (maplist.currentmap == maplist.map_played[i]) // check we're not going to repeat the lastmap right away.
-				{
-					maplist.currentmap = (int)(random() * maplist.nummaps);	// if we are, spin again
-				}
-		}
-		break;	*/
 	default:
 		maplist.mlflag = ML_OFF;
 		maplist.currentmap = maplist.currentmap;
@@ -212,7 +190,7 @@ int MaplistNext(void)
 	return maplist.currentmap;
 }
 
-void MaplistMapModeSetup(void) 
+void MaplistMapModeSetup(void)
 {
 	if (maplist.ctf[maplist.currentmap] == '1')
 		gi.cvar_set("ctf", "1");
@@ -254,7 +232,7 @@ void EndDMLevel(void)
 	// stay on same level flag
 	if ((int)dmflags->value & DF_SAME_LEVEL)
 		ent = CreateTargetChangeLevel(level.mapname);
-	
+
 	// maplist rotation select
 	else if (maplist.mlflag > 0)
 	{

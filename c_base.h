@@ -23,6 +23,7 @@ void CamNext(edict_t* ent);
 void CamPrev(edict_t* ent);
 void CameraThink(edict_t* ent, usercmd_t* ucmd);
 void MaplistClear(void);
+void MaplistShuffle(void);
 void MaplistLoad(char* filename);
 void LoadMOTD(void);
 void PreCacheAll(void);	//MATTHIAS

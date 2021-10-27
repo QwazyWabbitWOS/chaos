@@ -120,6 +120,22 @@ void MaplistClear(void)
 	maplist.currentmap = -1;
 }
 
+void MaplistShuffle(void)
+{
+	int i;
+
+	for (i = 0; i < maplist.nummaps; i++)
+		maplist.map_random[i] = i;
+
+	for (i = 0; i < maplist.nummaps; i++)
+	{
+		int temp = maplist.map_random[i];
+		int random = random() * maplist.nummaps;
+		maplist.map_random[i] = maplist.map_random[random];
+		maplist.map_random[random] = temp;
+	}
+}
+
 void MaplistLoad(char* filename)
 {
 	FILE* fp = NULL;
@@ -175,6 +191,8 @@ void MaplistLoad(char* filename)
 	maplist.nummaps = i;
 	fclose(fp);
 
+	MaplistShuffle();
+
 	if (maplist.nummaps > 0) {
 		maplist.mlflag = g_maplistmode->value; //set per configured mode.
 	}
@@ -187,7 +205,7 @@ void MaplistLoad(char* filename)
 	}
 	else
 	{
-		gi.cprintf(NULL, PRINT_HIGH, "%i map(s) loaded.\n\n", i);
+		gi.cprintf(NULL, PRINT_HIGH, "%i map(s) loaded.\n\n", maplist.nummaps);
 	}
 	gi.cprintf(NULL, PRINT_HIGH, "Map rotation is %s mode %i\n\n", maplist.mlflag ? "ON" : "OFF", maplist.mlflag);
 }
@@ -2115,10 +2133,10 @@ void ClientCommand2(edict_t* ent)
 	}
 	else if (Q_stricmp(cmd, "playerlist") == 0)
 	{
-	if (ctf->value)
-		CTFPlayerList(ent);
-	else
-		Cmd_PlayerList_f(ent);
+		if (ctf->value)
+			CTFPlayerList(ent);
+		else
+			Cmd_PlayerList_f(ent);
 	}
 	else if (Q_stricmp(cmd, "turretlist") == 0)
 	{

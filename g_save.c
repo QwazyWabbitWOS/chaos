@@ -123,6 +123,8 @@ void InitGame(void)
 	gun_y = gi.cvar("gun_y", "0", 0);
 	gun_z = gi.cvar("gun_z", "0", 0);
 
+	srand(time(NULL)); //seed the rng
+
 	//FIXME: sv_ prefix is wrong for these
 	sv_rollspeed = gi.cvar("sv_rollspeed", "200", 0);
 	sv_rollangle = gi.cvar("sv_rollangle", "2", 0);

@@ -1279,8 +1279,8 @@ typedef struct maplist_s
 	char	lightsoff[MAX_MAPS];
 	int		mlflag;
 	int		currentmap;
-	int		lastmap; //MrG{DRGN} keep track of the last map played so it's not repeated right away
-	int		map_played[MAX_MAPS];
+	int		index; //QW// for random map indexing
+	int		map_random[MAX_MAPS];
 } maplist_t;
 
 maplist_t maplist;
