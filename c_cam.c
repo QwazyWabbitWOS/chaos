@@ -384,7 +384,7 @@ void PointCamAtPlayer(edict_t* ent)
 	float	diff;
 	int		na;
 
-	if (!ent || ent->client->resp.spectator)
+	if (!ent || ent->client->resp.spectator == false)
 	{
 		return;
 	}
@@ -462,7 +462,7 @@ void RepositionAtPlayer(edict_t* ent)
 	vec3_t        pos = { 0 }, forward;
 	trace_t       tr;
 
-	if (!ent || ent->client->resp.spectator)
+	if (!ent || ent->client->resp.spectator == false)
 	{
 		return;
 	}
