@@ -1144,7 +1144,7 @@ void ClientCommand(edict_t* ent)
 			return;
 		}
 		
-		if (Q_stricmp(gi.argv(1), "1") == 0)
+		if (ent->client->resp.spectator == false)
 		{
 			if (!ent->client->camera)
 				CreateCamera(ent);
@@ -1152,7 +1152,7 @@ void ClientCommand(edict_t* ent)
 			ent->client->camera = 1;
 			gi.cprintf(ent, PRINT_HIGH, "IntelliCam Mode!\n");
 		}
-		else if (Q_stricmp(gi.argv(1), "0") == 0)
+		else if (ent->client->resp.spectator == true)
 		{
 			ent->client->resp.spectator = false; // Not Spectator
 			PutClientInServer(ent);
