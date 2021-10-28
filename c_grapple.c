@@ -10,7 +10,11 @@ void GrappleInitVars(void)
 #endif
 	start_grapple = gi.cvar("start_grapple", "0", CVAR_LATCH);
 }
-
+void Shutoff_Grapple(edict_t* ent)
+{
+	ent->client->grapple_state = GRAPPLE_OFF;
+	ent->client->grapple = NULL;
+}
 void Grapple_Reset(edict_t* ent)
 {
 	if (!ent || !ent->owner)
@@ -126,7 +130,7 @@ void Grapple_Think(edict_t* ent)
 		return;
 	}
 
-	if (ent->owner->client->grapple_state > 1)	// Grapple is attached
+	if (ent->owner->client->grapple_state > GRAPPLE_INAIR)	// Grapple is attached
 	{
 		if ((!ent->enemy) || (ent->enemy->solid == SOLID_NOT) || (ent->owner->deadflag) || (ent->owner->s.event == EV_PLAYER_TELEPORT))
 		{
@@ -191,7 +195,7 @@ void Grapple_Think(edict_t* ent)
 		VectorSubtract(ent->s.origin, ent->owner->s.origin, dir);
 		len = VectorLength(dir);
 
-		if ((ent->owner->client->grapple_state == 0) || (len > 2000))
+		if ((ent->owner->client->grapple_state == GRAPPLE_OFF) || (len > 2000))
 		{
 			Grapple_Reset(ent);
 			return;
@@ -255,7 +259,7 @@ void Cmd_Hook_f(edict_t* ent)
 {
 	if (Q_stricmp(gi.argv(1), "grow") == 0)
 	{
-		if (ent->client->grapple_state > 1 && ent->client->grapple)
+		if (ent->client->grapple_state > GRAPPLE_INAIR && ent->client->grapple)
 		{
 			ent->client->grapple->angle += 40;
 			if (ent->client->grapple->angle > 2000)
@@ -266,7 +270,7 @@ void Cmd_Hook_f(edict_t* ent)
 	}
 	else if (Q_stricmp(gi.argv(1), "shrink") == 0)
 	{
-		if (ent->client->grapple_state > 1 && ent->client->grapple)
+		if (ent->client->grapple_state > GRAPPLE_INAIR && ent->client->grapple)
 		{
 			ent->client->grapple->angle -= 40;
 			if (ent->client->grapple->angle < 40)
@@ -282,7 +286,7 @@ void Cmd_Hook_f(edict_t* ent)
 			Grapple_Fire(ent);
 			return;
 		}
-		else if (ent->client->grapple_state > 2)	//grow or shrink
+		else if (ent->client->grapple_state > GRAPPLE_ATTACHED)	//grow or shrink
 		{
 			ent->client->grapple_state = GRAPPLE_ATTACHED;
 		}

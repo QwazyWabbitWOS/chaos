@@ -482,12 +482,8 @@ void bot_die(edict_t* self, edict_t* inflictor, edict_t* attacker, int damage, v
 	self->client->PoisonTime = 0;
 	self->client->invisible = 0;
 
-	self->client->flashlightactive = 0;
-	if (self->client->flashlight)
-	{
-		self->client->flashlight->think = G_FreeEdict;
-		G_FreeEdict(self->client->flashlight);
-	}
+	Shutoff_Flashlight(self);
+
 	if (self->client->teleporter)
 		G_FreeEdict(self->client->teleporter);
 

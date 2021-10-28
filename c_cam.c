@@ -38,29 +38,25 @@ void CreateCamera(edict_t* ent)
 	ent->watertype = 0;
 	ent->flags = FL_FLY;
 	ent->client->ps.fov = 90;
-	ent->client->kamikazetime = 0;/* MrG{DRGN} no kami stuck screen! */
-	ent->client->grapple = NULL;
-	ent->client->grapple_state = GRAPPLE_OFF;
+	ent->client->kamikazetime = 0;/* MrG{DRGN} no kami stuck screen! */		
 	ent->client->grenade_blew_up = false;
 	ent->client->grenade_time = 0;
 	ent->client->ps.blend[3] = 0;
 	ent->client->BlindTime = 0;
 	ent->client->PoisonTime = 0;
 	ent->client->invisible = 0;
-	ent->client->nextscannercell = 0;
 	ent->client->scanneractive = 0;
+	ent->client->nextscannercell = 0;
 	ent->client->quad_framenum = 0;
 	ent->client->invincible_framenum = 0;
 	ent->client->invisible_framenum = 0;
 	ent->client->breather_framenum = 0;
 	ent->client->enviro_framenum = 0;
 	ent->client->jet_framenum = 0;
-	ent->client->flashlightactive = 0;
-	if (ent->client->flashlight)
-	{
-		ent->client->flashlight->think = G_FreeEdict;
-		G_FreeEdict(ent->client->flashlight);
-	}
+
+	Shutoff_Flashlight(ent);
+	Shutoff_Grapple(ent);
+
 	if (ent->client->teleporter)
 		G_FreeEdict(ent->client->teleporter);
 

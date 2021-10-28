@@ -11,16 +11,16 @@ MrG{DRGN} reset to default state
 void ShutOff(edict_t* ent)
 {
 	
-	if (ent->client->grapple)
-	{
-		ent->client->grapple_state = false;
-		ent->client->grapple = NULL;
-	}
 	if (ent->client->flashlight)
 	{
-		G_FreeEdict(ent->client->flashlight);
-		ent->client->flashlight = NULL;
+		Shutoff_Flashlight(ent);
 	}
+
+	if (ent->client->grapple)
+	{
+		Shutoff_Grapple(ent);
+	}
+
 	if (ent->client->teleporter)
 	{
 		G_FreeEdict(ent->client->teleporter);
@@ -32,6 +32,7 @@ void ShutOff(edict_t* ent)
 	ent->client->PoisonBase = 0;
 	ent->client->PoisonTime = 0;
 	ent->client->swordstate = 0;
+	ent->client->beltactive = 0;
 	ent->client->nextbeltcell = 0;
 	ent->client->nextvomit = 0;
 	ent->client->nextheartbeat = 0;
@@ -41,9 +42,8 @@ void ShutOff(edict_t* ent)
 	ent->client->b_waittime = 0;
 	ent->client->fakedeath = 0;
 	ent->client->kamikazetime = 0;
-	ent->client->nextscannercell = 0;
 	ent->client->scanneractive = 0;
-	ent->client->beltactive = 0;
+	ent->client->nextscannercell = 0;
 	ent->client->jet_framenum = 0;
 	ent->client->jet_remaining = 0;
 	ent->client->invisible = 0;
@@ -924,11 +924,7 @@ void player_die(edict_t* self, edict_t* inflictor, edict_t* attacker, int damage
 		self->client->b_target = NULL;
 	}
 
-	self->client->flashlightactive = 0;
-	if (self->client->flashlight)
-	{
-		G_FreeEdict(self->client->flashlight);
-	}
+	Shutoff_Flashlight(self);
 	if (self->client->teleporter)
 		G_FreeEdict(self->client->teleporter);
 
@@ -1995,22 +1991,13 @@ void ClientDisconnect(edict_t* ent)
 
 	numplayers--;
 
-	// LETHAL : start
-	if (ent->client->flashlightactive)
-	{
-		ent->client->flashlightactive = false;
-
-		if (ent->client->flashlight)
-			ent->client->flashlight->think = G_FreeEdict;
-	}
-	// LETHAL : end
 
 	/* MrG{DRGN} shut things off when we leave */
 
 	ent->client->kamikazetime = 0;
 
-	ent->client->grapple = NULL;
-	ent->client->grapple_state = GRAPPLE_OFF;
+	Shutoff_Flashlight(ent);
+	Shutoff_Grapple(ent);
 	ent->client->grenade_blew_up = false;
 	ent->client->grenade_time = 0;
 	ent->client->ps.blend[3] = 0;
@@ -2383,7 +2370,7 @@ void ClientThink(edict_t* ent, usercmd_t* ucmd)
 
 	if (ent->client->beltactive > 0)	//MATTHIAS
 		client->ps.pmove.gravity = sv_gravity->value * 0.2;
-	else if ((ent->client->grapple_state == 2) && (!ent->groundentity))	//grapple hack
+	else if ((ent->client->grapple_state == GRAPPLE_ATTACHED) && (!ent->groundentity))	//grapple hack
 		client->ps.pmove.gravity = sv_gravity->value * 0.2;
 	else
 		client->ps.pmove.gravity = sv_gravity->value;

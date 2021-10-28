@@ -1,7 +1,6 @@
 // Basic functions
 
 void T_RadiusDamage2(edict_t* attacker, vec3_t position, float damage, float radius, int mod);
-void FlashLightThink(edict_t* ent);
 edict_t* findradius2(edict_t* from, vec3_t org, float rad);
 qboolean TeamMembers(edict_t* p1, edict_t* p2);
 qboolean infront2(edict_t* self, edict_t* other);
@@ -102,9 +101,8 @@ gitem_t
 /* MrG{DRGN} Powerups */
 * it_ancient_head, * it_quaddamage, * it_silencer, * it_adrenaline,
 * it_invulnerability, * it_breather, * it_enviro, * it_bandolier,
-* it_pack, * it_jetpack, * it_invisibility,
-// MrG{DRGN} never in game, but always posessed!
- * it_flashlight, * it_scanner;
+* it_pack, * it_jetpack, * it_invisibility;
+
 /* MrG{DRGN} TODO: Missing? */
 
 cvar_t* node_debug;

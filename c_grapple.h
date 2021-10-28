@@ -9,8 +9,10 @@
 cvar_t* ban_grapple, * start_grapple;
 void GrappleInitVars(void);
 
+// MrG{DRGN} never in game, but always posessed!
 gitem_t* it_grapple;
 
+void Shutoff_Grapple(edict_t* ent);
 void Grapple_Reset(edict_t* ent);
 void Grapple_DrawCable(edict_t* ent);
 void Grapple_Touch(edict_t* ent, edict_t* other, cplane_t* plane, csurface_t* surf);

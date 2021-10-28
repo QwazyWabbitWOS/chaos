@@ -216,7 +216,8 @@ void Bot_Think(edict_t* ent)
 	// FLASHLIGHT
 	if (lightsoff->value > 0 && ent->client->flashlightactive == 0 && ent->health > 30)
 	{
-		vec3_t  start, forward, right, end = { 0 };
+		Cmd_Flashlight_f(ent); 		
+		/*vec3_t  start, forward, right, end = {0};
 
 		ent->client->flashlightactive = 1;
 		AngleVectors(ent->client->v_angle, forward, right, NULL);
@@ -237,15 +238,11 @@ void Bot_Think(edict_t* ent)
 		VectorCopy(end, ent->client->flashlight->s.origin);
 
 		gi.linkentity(ent->client->flashlight);
+		*/
 	}
-	else if ((lightsoff->value == 0 && ent->client->flashlightactive > 0) || (ent->health <= 30 && ent->client->flashlightactive > 0))
+	else if ((lightsoff->value == 0 && ent->client->flashlightactive == true) || (ent->health <= 30 && ent->client->flashlightactive == true))
 	{
-		ent->client->flashlightactive = 0;
-		if (ent->client->flashlight)
-		{
-			ent->client->flashlight->think = G_FreeEdict;
-			G_FreeEdict(ent->client->flashlight);
-		}
+		Shutoff_Flashlight(ent);
 	}
 	// PAUSE (WAIT FOR SOMETHING LIKE WAVE ANIMATIONS)
 	else if (ent->client->b_pausetime > level.time)
