@@ -1263,27 +1263,6 @@ int		numblue;	//size of the blue team
 int		numturrets;
 int		vortexstate;
 
-#define MAX_MAPS           512
-#define MAX_MAPNAME_LEN    32
-
-#define ML_OFF				0
-#define ML_ROTATE_SEQ		1
-#define ML_ROTATE_RANDOM	2
-
-typedef struct maplist_s
-{
-	int		nummaps;
-	char	mapnames[MAX_MAPS][MAX_MAPNAME_LEN];
-	char	ctf[MAX_MAPS];
-	char	lightsoff[MAX_MAPS];
-	int		mlflag;
-	int		currentmap;
-	int		index; //QW// for random map indexing
-	int		map_random[MAX_MAPS];
-} maplist_t;
-
-maplist_t maplist;
-
 char	motd[570];
 int		numplayers;
 int		path_buffer[100];				// used to exchange path infos between functions
