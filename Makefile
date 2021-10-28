@@ -10,7 +10,7 @@
 BUILD_DEBUG_DIR=debug
 BUILD_RELEASE_DIR=release
 
-CC = clang -std=c17
+CC = gcc -std=c17
 
 # Base Flags
 # If you want to add a CFLAG to be included in both the
