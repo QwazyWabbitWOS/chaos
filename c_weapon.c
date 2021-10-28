@@ -4048,8 +4048,8 @@ void Proxy_Think(edict_t* ent)
 		if (!Valid_Target(ent, blip))
 			continue;
 
-		/* MrG{DRGN} Don't target spectators or Camera users */
-		if (blip->client->resp.spectator)
+		/* MrG{DRGN} Don't target spectators */
+		if (blip->client && blip->client->resp.spectator)
 			continue;
 
 		VectorSubtract(blip->s.origin, ent->s.origin, blipdir);
