@@ -159,7 +159,7 @@ $(BUILDDIR)/c_weapon.o : c_weapon.c
 $(BUILDDIR)/c_scanner.o : c_scanner.c
 	$(DO_SHLIB_CC)
 
-$(BUILDDIR)/c_teleport.o : c_teleporter.c
+$(BUILDDIR)/c_teleporter.o : c_teleporter.c
 	$(DO_SHLIB_CC)
 
 $(BUILDDIR)/g_cmds.o : g_cmds.c
