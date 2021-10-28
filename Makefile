@@ -10,7 +10,7 @@
 BUILD_DEBUG_DIR=debug
 BUILD_RELEASE_DIR=release
 
-CC = gcc -std=c17
+CC = clang -std=c17
 
 # Base Flags
 # If you want to add a CFLAG to be included in both the
@@ -88,7 +88,7 @@ GAME_OBJS = \
 	$(BUILDDIR)/c_jetpack.o \
 	$(BUILDDIR)/c_maplist.o \
 	$(BUILDDIR)/c_scanner.o \
-	$(BUILDDIR)/c_teleport.o \
+	$(BUILDDIR)/c_teleporter.o \
 	$(BUILDDIR)/c_weapon.o \
 	$(BUILDDIR)/g_cmds.o \
 	$(BUILDDIR)/g_combat.o \
@@ -159,7 +159,7 @@ $(BUILDDIR)/c_weapon.o : c_weapon.c
 $(BUILDDIR)/c_scanner.o : c_scanner.c
 	$(DO_SHLIB_CC)
 
-$(BUILDDIR)/c_teleport.o : c_teleport.c
+$(BUILDDIR)/c_teleporter.o : c_teleporter.c
 	$(DO_SHLIB_CC)
 
 $(BUILDDIR)/g_cmds.o : g_cmds.c
