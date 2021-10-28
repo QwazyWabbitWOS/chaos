@@ -40,7 +40,7 @@ cvar_t* ban_sword, * ban_chainsaw, * ban_supershotgun,
 
 // Item banning console variables
 
-cvar_t* ban_grapple, * ban_bodyarmor, * ban_combatarmor, * ban_jacketarmor,
+cvar_t * ban_bodyarmor, * ban_combatarmor, * ban_jacketarmor,
 * ban_armorshard, * ban_powerscreen, * ban_powershield,
 * ban_ammo_grenades, * ban_ammo_flashgrenades,
 * ban_ammo_lasergrenades, * ban_ammo_poisongrenades,
@@ -63,7 +63,7 @@ cvar_t* start_sword, * start_chainsaw, * start_supershotgun, * start_crossbow,
 
 // Startup item console variables
 
-cvar_t* start_grapple, * start_defenseturret, * start_rocketturret,
+cvar_t* start_defenseturret, * start_rocketturret,
 * start_autosentry, * start_gravityvortex, * start_bodyarmor,
 * start_combatarmor, * start_jacketarmor, * start_armorshard,
 * start_powerscreen, * start_powershield, * start_ammo_grenades,
@@ -102,7 +102,7 @@ gitem_t
 /* MrG{DRGN} Powerups */
 * it_ancient_head, * it_quaddamage, * it_silencer, * it_adrenaline,
 * it_invulnerability, * it_breather, * it_enviro, * it_bandolier,
-* it_pack, * it_grapple, * it_jetpack, * it_invisibility,
+* it_pack, * it_jetpack, * it_invisibility,
 // MrG{DRGN} never in game, but always posessed!
  * it_flashlight, * it_scanner;
 /* MrG{DRGN} TODO: Missing? */

@@ -185,10 +185,8 @@ void GetSettings(void)
 
 	/* Powerups */
 #ifdef	CHAOS_RETAIL
-	ban_grapple = gi.cvar("ban_grapple", "1", CVAR_LATCH);
 	ban_jetpack = gi.cvar("ban_jetpack", "1", CVAR_LATCH);
 #else
-	ban_grapple = gi.cvar("ban_grapple", "0", CVAR_LATCH);
 	ban_jetpack = gi.cvar("ban_jetpack", "0", CVAR_LATCH);
 #endif
 	ban_quaddamage = gi.cvar("ban_quaddamage", "0", CVAR_LATCH);
@@ -238,7 +236,9 @@ void GetSettings(void)
 	start_ammo_homingmissiles = gi.cvar("start_ammo_homingmissiles", "0", CVAR_LATCH);
 	start_ammo_buzzes = gi.cvar("start_ammo_buzzes", "0", CVAR_LATCH);
 	start_ammo_slugs = gi.cvar("start_ammo_slugs", "0", CVAR_LATCH);
-
+	
+	GrappleInitVars();
+	
 	/* Armor - 0|1|2 Initiate 0%, 100% or 200% of max allowed in each class */
 	start_bodyarmor = gi.cvar("start_bodyarmor", "0", CVAR_LATCH);
 	start_combatarmor = gi.cvar("start_combatarmor", "0", CVAR_LATCH);
@@ -267,7 +267,7 @@ void GetSettings(void)
 	start_powershield = gi.cvar("start_powershield", "0", CVAR_LATCH);
 
 	/* Powerups */
-	start_grapple = gi.cvar("start_grapple", "0", CVAR_LATCH);
+	
 	start_jetpack = gi.cvar("start_jetpack", "0", CVAR_LATCH);
 	start_quaddamage = gi.cvar("start_quaddamage", "0", CVAR_LATCH);
 	start_invulnerability = gi.cvar("start_invulnerability", "0", CVAR_LATCH);
@@ -1364,27 +1364,6 @@ void Use_Grenades(edict_t* ent)
 			ent->client->newweapon = it_lasermines;
 		else if (ent->client->pers.inventory[ITEM_INDEX(it_poisongrenades)] > 0)
 			ent->client->newweapon = it_poisongrenades;
-	}
-}
-
-void Cmd_Grapple_f(edict_t* ent)
-{
-	/* MrG{DRGN} if you haven't joined a team yet. you can't use the hook! */
-	if (ent->client->resp.spectator)
-		return;
-	if (ent->health <= 0)
-		return;
-	if (ent->client->fakedeath > 0)
-		return;
-
-	if (ent->client->pers.inventory[ITEM_INDEX(it_grapple)] >= 1)
-		Cmd_Hook_f(ent);
-	else
-	{
-		if (!ent->bot_player)// MrG{DRGN} 
-			gi.centerprintf(ent, "\nYou don't have a grappling hook!\n");//MATTHIAS
-
-		return;
 	}
 }
 

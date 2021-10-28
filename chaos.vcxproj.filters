@@ -75,6 +75,9 @@
     <ClInclude Include="c_scanner.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="c_grapple.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="game.def">
@@ -195,6 +198,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="c_scanner.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="c_grapple.c">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

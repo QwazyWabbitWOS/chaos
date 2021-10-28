@@ -850,6 +850,7 @@ qboolean SVCmd_FilterPacket(char* from);
 /* MrG{DRGN} include once here, rather than in multiple files */
 #include "c_base.h"
 #include "c_belt.h"
+#include "c_grapple.h"
 #include "c_item.h"
 #include "c_maplist.h"
 #include "c_scanner.h"

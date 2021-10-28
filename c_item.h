@@ -1,16 +1,6 @@
 #ifndef C_ITEM_H
 #define C_ITEM_H
 
-#define	GRAPPLE_OFF			0
-#define	GRAPPLE_INAIR		1
-#define	GRAPPLE_ATTACHED	2		//attached without grow/shrink
-#define	GRAPPLE_STARTSHRINK	3	//start with shrink
-void Grapple_Reset(edict_t* ent);
-
-#define SCANNER_UNIT                   32
-#define SCANNER_RANGE                  64
-#define SCANNER_UPDATE_FREQ            3
-#define SAFE_STRCAT(org,add,maxlen)    if ((strlen(org) + strlen(add)) < maxlen)    strcat(org, add);
 #define LAYOUT_MAX_LENGTH              1400
 
 qboolean	Jet_Active(edict_t* ent);
