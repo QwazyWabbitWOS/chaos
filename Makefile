@@ -77,6 +77,7 @@ targets: $(TARGETS)
 
 GAME_OBJS = \
 	$(BUILDDIR)/c_base.o \
+	$(BUILDDIR)/c_belt.o\
 	$(BUILDDIR)/c_botai.o \
 	$(BUILDDIR)/c_botmisc.o \
 	$(BUILDDIR)/c_botnav.o \
@@ -115,6 +116,9 @@ $(BUILDDIR)/game$(ARCH).$(SHLIBEXT) : $(GAME_OBJS)
 	$(CC) $(SHLIBLDFLAGS) $(CFLAGS) -o $@ $(GAME_OBJS) $(LDFLAGS)
 
 $(BUILDDIR)/c_base.o : c_base.c
+	$(DO_SHLIB_CC)
+
+$(BUILDDIR)/c_belt.o : c_belt.c
 	$(DO_SHLIB_CC)
 
 $(BUILDDIR)/c_botai.o : c_botai.c

@@ -104,7 +104,7 @@ gitem_t
 * it_invulnerability, * it_breather, * it_enviro, * it_bandolier,
 * it_pack, * it_grapple, * it_jetpack, * it_invisibility,
 // MrG{DRGN} never in game, but always posessed!
-* it_belt, * it_flashlight, * it_scanner;
+ * it_flashlight, * it_scanner;
 /* MrG{DRGN} TODO: Missing? */
 
 cvar_t* node_debug;

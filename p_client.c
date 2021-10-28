@@ -5,7 +5,6 @@
 #include "stdlog.h"
 #include "gslog.h"
 
-
 /* 
 MrG{DRGN} reset to default state 
 */
@@ -2299,21 +2298,8 @@ void ClientThink(edict_t* ent, usercmd_t* ucmd)
 
 	Scanner_Think(ent);
 
-	//ANTI GRAVITY BELT
-	if ((level.time > client->nextbeltcell) && (client->beltactive > 0))
-	{
-		if (ent->client->pers.inventory[ITEM_INDEX(it_cells)] <= 0)
-		{
-			cprint_botsafe(ent, PRINT_HIGH, "You don't have enough cells to run your anti gravity belt!\n");
-			client->beltactive = 0;
-			client->nextbeltcell = level.time;
-		}
-		else
-		{
-			ent->client->pers.inventory[ITEM_INDEX(it_cells)]--;
-			client->nextbeltcell = level.time + 2;
-		}
-	}
+	Belt_Think(ent);
+
 	// INVISIBLE
 	if (ent->client->invisible_framenum > level.framenum)
 	{

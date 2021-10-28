@@ -1695,38 +1695,6 @@ void Cmd_Throwup_f(edict_t* ent)
 	}
 }
 
-void Cmd_Belt_f(edict_t* ent)
-{
-	if (ent->client->resp.spectator)/* MrG{DRGN} if you haven't joined a team yet. you can't AG belt! */
-		return;
-
-	if (ent->client->fakedeath > 0)
-		return;
-	if (ent->health <= 0)
-		return;
-	if (ent->client->beltactive > 0)
-	{
-		cprint_botsafe(ent, PRINT_HIGH, "Anti gravity belt OFF\n");
-		ent->client->beltactive = 0;
-		ent->client->nextbeltcell = level.time;
-	}
-	else
-	{
-		if (ent->client->pers.inventory[ITEM_INDEX(it_cells)] <= 0)
-		{
-			cprint_botsafe(ent, PRINT_HIGH, "You don't have enough cells to run your anti gravity belt!\n");
-			ent->client->beltactive = 0;
-			ent->client->nextbeltcell = level.time;
-		}
-		else
-		{
-			cprint_botsafe(ent, PRINT_HIGH, "Anti gravity belt ON\n");
-			ent->client->beltactive = 1;
-			ent->client->nextbeltcell = level.time + 2;
-		}
-	}
-}
-
 void Cmd_Flashlight_f(edict_t* ent)
 {
 	if (ent->client->resp.spectator)/* MrG{DRGN} if you haven't joined a team yet. you can't use the flashlight! */

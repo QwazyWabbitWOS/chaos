@@ -850,6 +850,7 @@ qboolean SVCmd_FilterPacket(char* from);
 /* MrG{DRGN} include once here, rather than in multiple files */
 #include "c_base.h"
 #include "c_maplist.h"
+#include "c_belt.h"
 #include "c_item.h"
 #include "c_weapon.h"
 #include "c_botai.h"
@@ -1014,14 +1015,15 @@ struct gclient_s
 
 	edict_t* flashlight;
 	edict_t* teleporter;
+
+	int			scanneractive;
 	float		nextscannercell;
+	int			beltactive;
 	float		nextbeltcell;
 	float		nextrandomsound;
 	float		nextheartbeat;
 	float		nextvomit;
-	int			grenadesactive;
-	int			scanneractive;
-	int			beltactive;
+	int			grenadesactive;		
 	int			flashlightactive;
 	int			fakedeath;
 	int			swordstate;
