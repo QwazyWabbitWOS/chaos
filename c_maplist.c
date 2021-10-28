@@ -1,4 +1,5 @@
 #include "g_local.h"
+#include "c_maplist.h"
 
 void MaplistInitVars(void)
 {

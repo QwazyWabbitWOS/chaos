@@ -82,6 +82,7 @@ GAME_OBJS = \
 	$(BUILDDIR)/c_botnav.o \
 	$(BUILDDIR)/c_cam.o \
 	$(BUILDDIR)/c_item.o \
+	$(BUILDDIR)/c_maplist.o \
 	$(BUILDDIR)/c_weapon.o \
 	$(BUILDDIR)/g_cmds.o \
 	$(BUILDDIR)/g_combat.o \
@@ -129,6 +130,9 @@ $(BUILDDIR)/c_cam.o : c_cam.c
 	$(DO_SHLIB_CC)
 
 $(BUILDDIR)/c_item.o : c_item.c
+	$(DO_SHLIB_CC)
+
+$(BUILDDIR)/c_maplist.o : c_maplist.c
 	$(DO_SHLIB_CC)
 
 $(BUILDDIR)/c_weapon.o : c_weapon.c
