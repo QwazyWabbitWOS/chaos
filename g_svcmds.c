@@ -1,6 +1,5 @@
 #include "g_local.h"
 #include "c_botai.h"
-#include "c_base.h"
 
 /* This command appears to be a dummy function for 
  testing that your rcon_password is correct.

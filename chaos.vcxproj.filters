@@ -66,6 +66,9 @@
     <ClInclude Include="g_ent.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="c_maplist.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="game.def">
@@ -177,6 +180,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="g_ent.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="c_maplist.c">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
