@@ -547,7 +547,7 @@ void Drop_Weapon(edict_t* ent, gitem_t* item)
 	else if (item == it_esupershotgun)
 	{
 		if (it_supershotgun == ent->client->pers.weapon) {
-			cprint_botsafe(ent, PRINT_HIGH, "Can't drop aternate weapon\n");
+			cprint_botsafe(ent, PRINT_HIGH, "Can't drop alternate weapon\n");
 			return;
 		}
 		else
@@ -561,7 +561,7 @@ void Drop_Weapon(edict_t* ent, gitem_t* item)
 	else if (item == it_rocketlauncher)
 	{
 		if (it_hominglauncher == ent->client->pers.weapon) {
-			cprint_botsafe(ent, PRINT_HIGH, "Can't drop aternate weapon\n");
+			cprint_botsafe(ent, PRINT_HIGH, "Can't drop alternate weapon\n");
 			return;
 		}
 		else
@@ -574,7 +574,7 @@ void Drop_Weapon(edict_t* ent, gitem_t* item)
 	else if (item == it_hominglauncher)
 	{
 		if (it_rocketlauncher == ent->client->pers.weapon) {
-			cprint_botsafe(ent, PRINT_HIGH, "Can't drop aternate weapon\n");
+			cprint_botsafe(ent, PRINT_HIGH, "Can't drop alternate weapon\n");
 			return;
 		}
 		else
@@ -588,7 +588,7 @@ void Drop_Weapon(edict_t* ent, gitem_t* item)
 	else if (item == it_grenadelauncher)
 	{
 		if (it_flashgrenadelauncher == ent->client->pers.weapon || it_poisongrenadelauncher == ent->client->pers.weapon) {
-			cprint_botsafe(ent, PRINT_HIGH, "Can't drop aternate weapon\n");
+			cprint_botsafe(ent, PRINT_HIGH, "Can't drop alternate weapon\n");
 			return;
 		}
 		else
@@ -602,7 +602,7 @@ void Drop_Weapon(edict_t* ent, gitem_t* item)
 	else if (item == it_flashgrenadelauncher)
 	{
 		if (it_grenadelauncher == ent->client->pers.weapon || it_poisongrenadelauncher == ent->client->pers.weapon) {
-			cprint_botsafe(ent, PRINT_HIGH, "Can't drop aternate weapon\n");
+			cprint_botsafe(ent, PRINT_HIGH, "Can't drop alternate weapon\n");
 			return;
 		}
 		else
@@ -616,7 +616,7 @@ void Drop_Weapon(edict_t* ent, gitem_t* item)
 	else if (item == it_poisongrenadelauncher)
 	{
 		if (it_flashgrenadelauncher == ent->client->pers.weapon || it_grenadelauncher == ent->client->pers.weapon) {
-			cprint_botsafe(ent, PRINT_HIGH, "Can't drop aternate weapon\n");
+			cprint_botsafe(ent, PRINT_HIGH, "Can't drop alternate weapon\n");
 			return;
 		}
 		else
@@ -631,7 +631,7 @@ void Drop_Weapon(edict_t* ent, gitem_t* item)
 	else if (item == it_crossbow)
 	{
 		if (it_poisoncrossbow == ent->client->pers.weapon || it_explosivecrossbow == ent->client->pers.weapon) {
-			cprint_botsafe(ent, PRINT_HIGH, "Can't drop aternate weapon\n");
+			cprint_botsafe(ent, PRINT_HIGH, "Can't drop alternate weapon\n");
 			return;
 		}
 		else
@@ -645,7 +645,7 @@ void Drop_Weapon(edict_t* ent, gitem_t* item)
 	else if (item == it_poisoncrossbow)
 	{
 		if (it_crossbow == ent->client->pers.weapon || it_explosivecrossbow == ent->client->pers.weapon) {
-			cprint_botsafe(ent, PRINT_HIGH, "Can't drop aternate weapon\n");
+			cprint_botsafe(ent, PRINT_HIGH, "Can't drop alternate weapon\n");
 			return;
 		}
 		else
@@ -659,7 +659,7 @@ void Drop_Weapon(edict_t* ent, gitem_t* item)
 	else if (item == it_explosivecrossbow)
 	{
 		if (it_poisoncrossbow == ent->client->pers.weapon || it_crossbow == ent->client->pers.weapon) {
-			cprint_botsafe(ent, PRINT_HIGH, "Can't drop aternate weapon\n");
+			cprint_botsafe(ent, PRINT_HIGH, "Can't drop alternate weapon\n");
 			return;
 		}
 		else
