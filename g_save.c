@@ -150,10 +150,9 @@ void InitGame(void)
 	/* MrG{DRGN} lets not use a Magic Number here
 	maxentities = gi.cvar("maxentities", "1024", CVAR_LATCH); */
 	maxentities = gi.cvar("maxentities", va("%i", MAX_EDICTS), CVAR_LATCH);
-	g_maplistfile = gi.cvar("g_maplistfile", "chaosdm.txt", 0);
-	g_maplistmode = gi.cvar("g_maplistmode", "1", 0); // 1 for sequential, 2 for random map selection
 
-	BotClearGlobals();
+	MaplistInitVars(); 	
+	BotClearGlobals(); 	
 	GetSettings();
 
 	//clear path buffer
@@ -177,7 +176,7 @@ void InitGame(void)
 	timelimit = gi.cvar("timelimit", "0", CVAR_SERVERINFO);
 	//ZOID
 	capturelimit = gi.cvar("capturelimit", "0", CVAR_SERVERINFO);
-	instantweap = gi.cvar("instantweap", "0", CVAR_SERVERINFO);
+	instantweap = gi.cvar("instantweap", "0", 0);
 	//ZOID
 	password = gi.cvar("password", "", CVAR_USERINFO);
 

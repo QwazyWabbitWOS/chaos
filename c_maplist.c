@@ -1,5 +1,11 @@
 #include "g_local.h"
 
+void MaplistInitVars(void)
+{
+	g_maplistfile = gi.cvar("g_maplistfile", "chaosdm.txt", 0);
+	g_maplistmode = gi.cvar("g_maplistmode", "1", 0); // 1 for sequential, 2 for random map selection
+}
+
 void MaplistClear(void)
 {
 	memset(&maplist, 0, sizeof maplist);
