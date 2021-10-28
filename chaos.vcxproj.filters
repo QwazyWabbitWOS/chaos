@@ -87,6 +87,9 @@
     <ClInclude Include="c_teleporter.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="c_motd.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="game.def">
@@ -219,6 +222,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="c_teleporter.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="c_motd.c">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
