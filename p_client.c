@@ -22,10 +22,7 @@ void ShutOff(edict_t* ent)
 	}
 
 	if (ent->client->teleporter)
-	{
-		G_FreeEdict(ent->client->teleporter);
-		ent->client->teleporter = NULL;
-	}
+		Shutoff_teleporter(ent);
 
 	ent->client->BlindBase = 0;
 	ent->client->BlindTime = 0;
@@ -924,9 +921,10 @@ void player_die(edict_t* self, edict_t* inflictor, edict_t* attacker, int damage
 		self->client->b_target = NULL;
 	}
 
-	Shutoff_Flashlight(self);
+	Shutoff_Flashlight(self); 
+
 	if (self->client->teleporter)
-		G_FreeEdict(self->client->teleporter);
+		Shutoff_teleporter(self);
 
 	gi.linkentity(self);
 }
@@ -2013,7 +2011,7 @@ void ClientDisconnect(edict_t* ent)
 	ent->client->jet_framenum = 0;
 
 	if (ent->client->teleporter)
-		G_FreeEdict(ent->client->teleporter);
+		Shutoff_teleporter(ent);
 
 	if (ent->client->resp.ctf_team == 1)
 		numred--;

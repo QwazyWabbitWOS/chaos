@@ -1,7 +1,6 @@
 #include "g_local.h"
 #include "c_flashlight.h"
 
-
 void Shutoff_Flashlight(edict_t* ent)
 {
 	ent->client->flashlightactive = false;

@@ -4640,7 +4640,7 @@ gitem_t	itemlist[] =
 		0,
 		/* precache */ ""
 	},
-	/*QUAKED item_belt (.3 .3 1) (-16 -16 -16) (16 16 16)
+	 /*QUAKED item_belt (.3 .3 1) (-16 -16 -16) (16 16 16)
 	*/
 	{
 		PU_BELT,
@@ -4653,9 +4653,31 @@ gitem_t	itemlist[] =
 		NULL, 0,
 		NULL,
 		/* icon */		NULL,
-		/* pickup */	"Anti Gravity Belt",
+		/* pickup */	"Anti-Gravity Belt",
 		/* width */		0,
 		1,
+		"cells",
+		IT_POWERUP,
+		NULL,
+		0,
+		/* precache */ ""
+	},
+	 /*QUAKED item_teleporter (.3 .3 1) (-16 -16 -16) (16 16 16)
+	*/
+	{
+		PU_TELEPORTER,
+		"item_teleporter",
+		NULL,
+		NULL,
+		NULL,
+		NULL,
+		"items/pkup.wav",
+		NULL, 0,
+		NULL,
+		/* icon */		NULL,
+		/* pickup */	"Personal Teleporter",
+		/* width */		0,
+		100,
 		"cells",
 		IT_POWERUP,
 		NULL,
@@ -5458,5 +5480,6 @@ void SetItemNames(void)
 	it_belt = FindItemByClassindex(PU_BELT);
 	it_flashlight = FindItemByClassindex(PU_FLASHLIGHT);
 	it_scanner = FindItemByClassindex(PU_SCANNER);
+	it_teleporter = FindItemByClassindex(PU_TELEPORTER);
 	/* MrG{DRGN} TODO: Missing? */
 }

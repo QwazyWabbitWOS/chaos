@@ -58,7 +58,7 @@ void CreateCamera(edict_t* ent)
 	Shutoff_Grapple(ent);
 
 	if (ent->client->teleporter)
-		G_FreeEdict(ent->client->teleporter);
+		Shutoff_teleporter(ent);
 
 	if (ent->client->b_target)
 		G_FreeEdict(ent->client->b_target);

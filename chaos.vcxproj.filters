@@ -84,6 +84,9 @@
     <ClInclude Include="c_jetpack.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="c_teleporter.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="game.def">
@@ -213,6 +216,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="c_jetpack.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="c_teleporter.c">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

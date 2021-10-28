@@ -485,7 +485,7 @@ void bot_die(edict_t* self, edict_t* inflictor, edict_t* attacker, int damage, v
 	Shutoff_Flashlight(self);
 
 	if (self->client->teleporter)
-		G_FreeEdict(self->client->teleporter);
+		Shutoff_teleporter(self);
 
 	gi.linkentity(self);
 	//DbgPrintf("%s %s index: %d\n", __func__, self->classname, self->classindex);

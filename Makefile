@@ -88,6 +88,7 @@ GAME_OBJS = \
 	$(BUILDDIR)/c_jetpack.o \
 	$(BUILDDIR)/c_maplist.o \
 	$(BUILDDIR)/c_scanner.o \
+	$(BUILDDIR)/c_teleport.o \
 	$(BUILDDIR)/c_weapon.o \
 	$(BUILDDIR)/g_cmds.o \
 	$(BUILDDIR)/g_combat.o \
@@ -156,6 +157,9 @@ $(BUILDDIR)/c_weapon.o : c_weapon.c
 	$(DO_SHLIB_CC)
 
 $(BUILDDIR)/c_scanner.o : c_scanner.c
+	$(DO_SHLIB_CC)
+
+$(BUILDDIR)/c_teleport.o : c_teleport.c
 	$(DO_SHLIB_CC)
 
 $(BUILDDIR)/g_cmds.o : g_cmds.c

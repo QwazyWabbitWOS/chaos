@@ -103,7 +103,6 @@ typedef enum classindex
 	MISC_BIGVIPER,
 	MISC_SATELLITE_DISH,
 	MISC_STROGG_SHIP,
-	MISC_OFFWORLD_TELEPORTER,
 	MISC_TELEPORTER,
 	MISC_TELEPORTER_DEST,
 	MISC_BLACKHOLE,
@@ -189,6 +188,7 @@ typedef enum classindex
 	PU_BELT,
 	PU_FLASHLIGHT,
 	PU_SCANNER,
+	PU_TELEPORTER,
 
 	// MrG{DRGM} we don't strickly need these to exist.
 	KEY_DATACD,

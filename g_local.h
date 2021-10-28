@@ -856,6 +856,7 @@ qboolean SVCmd_FilterPacket(char* from);
 #include "c_jetpack.h"
 #include "c_maplist.h"
 #include "c_scanner.h"
+#include "c_teleporter.h"
 #include "c_weapon.h"
 #include "c_botai.h"
 /* END*/
