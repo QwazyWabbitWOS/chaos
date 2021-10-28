@@ -85,6 +85,7 @@ GAME_OBJS = \
 	$(BUILDDIR)/c_flashlight.o \
 	$(BUILDDIR)/c_grapple.o \
 	$(BUILDDIR)/c_item.o \
+	$(BUILDDIR)/c_jetpack.o \
 	$(BUILDDIR)/c_maplist.o \
 	$(BUILDDIR)/c_scanner.o \
 	$(BUILDDIR)/c_weapon.o \
@@ -143,6 +144,9 @@ $(BUILDDIR)/c_grapple.o : c_grapple.c
 	$(DO_SHLIB_CC)
 
 $(BUILDDIR)/c_item.o : c_item.c
+	$(DO_SHLIB_CC)
+
+$(BUILDDIR)/c_jetpack.o : c_jetpack.c
 	$(DO_SHLIB_CC)
 
 $(BUILDDIR)/c_maplist.o : c_maplist.c

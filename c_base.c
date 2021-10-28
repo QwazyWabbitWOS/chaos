@@ -184,11 +184,7 @@ void GetSettings(void)
 	ban_powershield = gi.cvar("ban_powershield", "0", CVAR_LATCH);
 
 	/* Powerups */
-#ifdef	CHAOS_RETAIL
-	ban_jetpack = gi.cvar("ban_jetpack", "1", CVAR_LATCH);
-#else
-	ban_jetpack = gi.cvar("ban_jetpack", "0", CVAR_LATCH);
-#endif
+
 	ban_quaddamage = gi.cvar("ban_quaddamage", "0", CVAR_LATCH);
 	ban_invulnerability = gi.cvar("ban_invulnerability", "0", CVAR_LATCH);
 	ban_invisibility = gi.cvar("ban_invisibility", "0", CVAR_LATCH);
@@ -238,7 +234,7 @@ void GetSettings(void)
 	start_ammo_slugs = gi.cvar("start_ammo_slugs", "0", CVAR_LATCH);
 	
 	GrappleInitVars();
-	
+	JetpackInitVars();
 	/* Armor - 0|1|2 Initiate 0%, 100% or 200% of max allowed in each class */
 	start_bodyarmor = gi.cvar("start_bodyarmor", "0", CVAR_LATCH);
 	start_combatarmor = gi.cvar("start_combatarmor", "0", CVAR_LATCH);
@@ -268,7 +264,7 @@ void GetSettings(void)
 
 	/* Powerups */
 	
-	start_jetpack = gi.cvar("start_jetpack", "0", CVAR_LATCH);
+	
 	start_quaddamage = gi.cvar("start_quaddamage", "0", CVAR_LATCH);
 	start_invulnerability = gi.cvar("start_invulnerability", "0", CVAR_LATCH);
 	start_silencer = gi.cvar("start_silencer", "0", CVAR_LATCH);

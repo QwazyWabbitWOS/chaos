@@ -101,7 +101,7 @@ gitem_t
 /* MrG{DRGN} Powerups */
 * it_ancient_head, * it_quaddamage, * it_silencer, * it_adrenaline,
 * it_invulnerability, * it_breather, * it_enviro, * it_bandolier,
-* it_pack, * it_jetpack, * it_invisibility;
+* it_pack, * it_invisibility;
 
 /* MrG{DRGN} TODO: Missing? */
 

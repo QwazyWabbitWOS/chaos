@@ -853,6 +853,7 @@ qboolean SVCmd_FilterPacket(char* from);
 #include "c_flashlight.h"
 #include "c_grapple.h"
 #include "c_item.h"
+#include "c_jetpack.h"
 #include "c_maplist.h"
 #include "c_scanner.h"
 #include "c_weapon.h"
@@ -988,7 +989,7 @@ struct gclient_s
 
 	weaponstate_t	weaponstate;
 
-	int         grapple_state;  //MATTHIAS
+	
 	float		b_respawntime;
 	float		b_nextshot;
 	float		b_nextwchange;
@@ -1004,6 +1005,7 @@ struct gclient_s
 	float		b_nextroam;
 	edict_t* b_activator;
 	edict_t* grapple;
+	int         grapple_state;
 
 	float		b_waittime;
 	float		b_pausetime;
