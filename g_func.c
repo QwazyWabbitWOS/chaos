@@ -144,7 +144,7 @@ void AngleMove_Final(edict_t* ent)
 		return;
 	}
 
-	VectorScale(move, 1.0F / FRAMETIME, ent->avelocity); /* MrG{DRGN} added  F, as this was causing truncation from double to float.*/
+	VectorScale(move, 1.0F / FRAMETIME, ent->avelocity); 
 
 	ent->think = AngleMove_Done;
 	ent->nextthink = level.time + FRAMETIME;

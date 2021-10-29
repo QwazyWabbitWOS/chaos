@@ -2383,7 +2383,7 @@ void Arrow_Explode(edict_t* ent)
 		mod = MOD_EXARROW_SPLASH;
 	T_RadiusDamage(ent, ent->owner, ent->dmg, ent->enemy, ent->dmg_radius, mod);
 
-	VectorMA(ent->s.origin, -0.02F, ent->velocity, origin); /* MrG{DRGN} added  F, as this was causing truncation from double to float.*/
+	VectorMA(ent->s.origin, -0.02F, ent->velocity, origin); 
 	gi.WriteByte(svc_temp_entity);
 	if (ent->waterlevel)
 	{

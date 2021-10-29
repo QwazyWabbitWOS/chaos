@@ -429,11 +429,11 @@ void SV_CalcBlend(edict_t* ent)
 		ent->client->ps.rdflags &= ~RDF_UNDERWATER;
 
 	if (contents & (CONTENTS_SOLID | CONTENTS_LAVA))
-		SV_AddBlend(1.0, 0.3F, 0.0, 0.6F, ent->client->ps.blend); /* MrG{DRGN} added  F, as this was causing truncation from double to float.*/
+		SV_AddBlend(1.0, 0.3F, 0.0, 0.6F, ent->client->ps.blend); 
 	else if (contents & CONTENTS_SLIME)
-		SV_AddBlend(0.0, 0.1F, 0.05F, 0.6F, ent->client->ps.blend); /* MrG{DRGN} added  F, as this was causing truncation from double to float.*/
+		SV_AddBlend(0.0, 0.1F, 0.05F, 0.6F, ent->client->ps.blend); 
 	else if (contents & CONTENTS_WATER)
-		SV_AddBlend(0.5F, 0.3F, 0.2F, 0.4F, ent->client->ps.blend); /* MrG{DRGN} added  F, as this was causing truncation from double to float.*/
+		SV_AddBlend(0.5F, 0.3F, 0.2F, 0.4F, ent->client->ps.blend); 
 
 	//FLASHGRENADE
 	if (ent->client->BlindTime > 0)
@@ -449,7 +449,7 @@ void SV_CalcBlend(edict_t* ent)
 			SV_AddBlend(1, 1, 1, alpha, ent->client->ps.blend);
 		}
 
-		ent->client->BlindTime -= 0.1F; /* MrG{DRGN} added  F, as this was causing truncation from double to float.*/
+		ent->client->BlindTime -= 0.1F; 
 		gi.cvar_set("cl_blend", "1"); /* MrG{DRGN} added */
 		gi.cvar_set("gl_polyblend", "1");
 		if (ent->client->BlindTime < 0)
@@ -459,7 +459,7 @@ void SV_CalcBlend(edict_t* ent)
 	//POISONGRENADE
 	if (ent->client->PoisonTime && ent->client->PoisonTime >= 1)
 	{
-		static float blend = 0.4F; /* MrG{DRGN} added  F, as this was causing truncation from double to float.*/
+		static float blend = 0.4F; 
 		static int updown = 1;
 
 		/* MrG{DRGN} integer comparison vs string comparison.*/
@@ -477,15 +477,15 @@ void SV_CalcBlend(edict_t* ent)
 			if (blend > 0.8)
 			{
 				updown = 0;
-				blend = 0.8F; /* MrG{DRGN} added  F, as this was causing truncation from double to float.*/
+				blend = 0.8F; 
 			}
 			else if (blend < 0.4)
 			{
 				updown = 1;
-				blend = 0.4F; /* MrG{DRGN} added  F, as this was causing truncation from double to float.*/
+				blend = 0.4F; 
 			}
 
-			SV_AddBlend(0, 0.8F, 0, blend, ent->client->ps.blend); /* MrG{DRGN} added  F, as this was causing truncation from double to float.*/
+			SV_AddBlend(0, 0.8F, 0, blend, ent->client->ps.blend); 
 			ent->client->v_dmg_roll = crandom() * 20 + (blend - 0.6F) * 150;
 			ent->client->v_dmg_pitch = crandom() * 20 + (blend - 0.6F) * 150;
 			ent->client->v_dmg_time = level.time + DAMAGE_TIME;
@@ -495,7 +495,7 @@ void SV_CalcBlend(edict_t* ent)
 			ThrowUpNow(ent);
 		gi.cvar_set("cl_blend", "1"); /* MrG{DRGN} added */
 		gi.cvar_set("gl_polyblend", "1");
-		ent->client->PoisonTime -= 0.1F; /* MrG{DRGN} added  F, as this was causing truncation from double to float.*/
+		ent->client->PoisonTime -= 0.1F; 
 	}
 	else if ((ent->client->PoisonTime && ent->client->PoisonTime > 0) || ent->client->pers.health <= 0)	   /* MrG{DRGN} or dead */
 	{
@@ -530,7 +530,7 @@ void SV_CalcBlend(edict_t* ent)
 		}
 		gi.cvar_set("cl_blend", "1"); /* MrG{DRGN} added */
 		gi.cvar_set("gl_polyblend", "1");
-		SV_AddBlend(r, 0, 0, 0.6F, ent->client->ps.blend); /* MrG{DRGN} added  F, as this was causing truncation from double to float.*/
+		SV_AddBlend(r, 0, 0, 0.6F, ent->client->ps.blend); 
 	}
 
 	//JETPACK
@@ -542,7 +542,7 @@ void SV_CalcBlend(edict_t* ent)
 			ent->client->pers.inventory[ITEM_INDEX(it_jetpack)] = 0; // MrG{DRGN}
 
 		if (((int)ent->client->jet_remaining % 6) == 0)
-			gi.sound(ent, CHAN_AUTO, gi.soundindex("misc/jetpack.wav"), 0.9F, ATTN_NORM, 0); /* MrG{DRGN} added  F, as this was causing truncation from double to float.*/
+			gi.sound(ent, CHAN_AUTO, gi.soundindex("misc/jetpack.wav"), 0.9F, ATTN_NORM, 0); 
 	}
 
 	// add for powerups
@@ -550,7 +550,7 @@ void SV_CalcBlend(edict_t* ent)
 	{
 		remaining = ent->client->invisible_framenum - level.framenum;
 		if (remaining > 30 || (remaining & 4))
-			SV_AddBlend(1, 1, 1, 0.08F, ent->client->ps.blend); /* MrG{DRGN} added  F, as this was causing truncation from double to float.*/
+			SV_AddBlend(1, 1, 1, 0.08F, ent->client->ps.blend); 
 	}
 	else if (ent->client->quad_framenum > level.framenum)
 	{
@@ -558,7 +558,7 @@ void SV_CalcBlend(edict_t* ent)
 		if (remaining == 30)	// beginning to fade
 			gi.sound(ent, CHAN_ITEM, gi.soundindex("items/damage2.wav"), 1, ATTN_NORM, 0);
 		if (remaining > 30 || (remaining & 4))
-			SV_AddBlend(0, 0, 1, 0.08F, ent->client->ps.blend); /* MrG{DRGN} added  F, as this was causing truncation from double to float.*/
+			SV_AddBlend(0, 0, 1, 0.08F, ent->client->ps.blend); 
 	}
 	else if (ent->client->invincible_framenum > level.framenum)
 	{
@@ -566,7 +566,7 @@ void SV_CalcBlend(edict_t* ent)
 		if (remaining == 30)	// beginning to fade
 			gi.sound(ent, CHAN_ITEM, gi.soundindex("items/protect2.wav"), 1, ATTN_NORM, 0);
 		if (remaining > 30 || (remaining & 4))
-			SV_AddBlend(1, 1, 0, 0.08F, ent->client->ps.blend); /* MrG{DRGN} added  F, as this was causing truncation from double to float.*/
+			SV_AddBlend(1, 1, 0, 0.08F, ent->client->ps.blend); 
 	}
 	else if (ent->client->enviro_framenum > level.framenum)
 	{
@@ -574,7 +574,7 @@ void SV_CalcBlend(edict_t* ent)
 		if (remaining == 30)	// beginning to fade
 			gi.sound(ent, CHAN_ITEM, gi.soundindex("items/airout.wav"), 1, ATTN_NORM, 0);
 		if (remaining > 30 || (remaining & 4))
-			SV_AddBlend(0, 1, 0, 0.08F, ent->client->ps.blend); /* MrG{DRGN} added  F, as this was causing truncation from double to float.*/
+			SV_AddBlend(0, 1, 0, 0.08F, ent->client->ps.blend); 
 	}
 	else if (ent->client->breather_framenum > level.framenum)
 	{
@@ -582,7 +582,7 @@ void SV_CalcBlend(edict_t* ent)
 		if (remaining == 30)	// beginning to fade
 			gi.sound(ent, CHAN_ITEM, gi.soundindex("items/airout.wav"), 1, ATTN_NORM, 0);
 		if (remaining > 30 || (remaining & 4))
-			SV_AddBlend(0.4F, 1, 0.4F, 0.04F, ent->client->ps.blend); /* MrG{DRGN} added  F, as this was causing truncation from double to float.*/
+			SV_AddBlend(0.4F, 1, 0.4F, 0.04F, ent->client->ps.blend); 
 	}
 
 	// add for damage
@@ -591,15 +591,15 @@ void SV_CalcBlend(edict_t* ent)
 			, ent->client->damage_blend[2], ent->client->damage_alpha, ent->client->ps.blend);
 
 	if (ent->client->bonus_alpha > 0)
-		SV_AddBlend(0.85F, 0.7F, 0.3F, ent->client->bonus_alpha, ent->client->ps.blend); /* MrG{DRGN} added  F, as this was causing truncation from double to float.*/
+		SV_AddBlend(0.85F, 0.7F, 0.3F, ent->client->bonus_alpha, ent->client->ps.blend); 
 
 	// drop the damage value
-	ent->client->damage_alpha -= 0.06F; /* MrG{DRGN} added  F, as this was causing truncation from double to float.*/
+	ent->client->damage_alpha -= 0.06F; 
 	if (ent->client->damage_alpha < 0)
 		ent->client->damage_alpha = 0;
 
 	// drop the bonus value
-	ent->client->bonus_alpha -= 0.1F; /* MrG{DRGN} added  F, as this was causing truncation from double to float.*/
+	ent->client->bonus_alpha -= 0.1F; 
 	if (ent->client->bonus_alpha < 0)
 		ent->client->bonus_alpha = 0;
 }

@@ -77,7 +77,7 @@ _CrtMemState startup1;	// memory diagnostics
 #define FL_POWER_ARMOR			0x00001000	// power armor (if any) is active
 #define FL_RESPAWN				0x80000000	// used for item respawning
 
-#define	FRAMETIME		0.1F /* MrG{DRGN} added  F, as this was causing truncation from double to float.*/
+#define	FRAMETIME		0.1F 
 
 // memory tags to allow dynamic memory to be cleaned up
 #define	TAG_GAME	765		// clear when unloading the dll

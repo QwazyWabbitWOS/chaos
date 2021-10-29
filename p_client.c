@@ -536,11 +536,11 @@ void ClientObituary(edict_t* self, edict_t* inflictor, edict_t* attacker)
 						if ((attacker->health > 20) && infront(self, attacker))
 						{
 							if (rn < 0.4)
-								Bot_Wave(attacker, 0, 1.1F); /* MrG{DRGN} added  F, as this was causing truncation from double to float.*/
+								Bot_Wave(attacker, 0, 1.1F); 
 							else if ((rn >= 0.4) && (rn < 0.8))
-								Bot_Wave(attacker, 1, 1.1F); /* MrG{DRGN} added  F, as this was causing truncation from double to float.*/
+								Bot_Wave(attacker, 1, 1.1F); 
 							else
-								Bot_Wave(attacker, 2, 1.7F); /* MrG{DRGN} added  F, as this was causing truncation from double to float.*/
+								Bot_Wave(attacker, 2, 1.7F); 
 						}
 
 						i = (int)(random() * (float)chat_linecount[BOTCHAT_KILL]);

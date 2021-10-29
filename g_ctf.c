@@ -1851,7 +1851,7 @@ int CTFApplyResistance(edict_t* ent, int dmg)
 	float volume = 1.0F; /* MrG{DRGN} Explicit float. */
 
 	if (ent->client && ent->client->silencer_shots)
-		volume = 0.2F; /* MrG{DRGN} added  F, as this was causing truncation from double to float. */
+		volume = 0.2F; 
 
 	if (!tech)
 		tech = (it_tech1);
@@ -1881,7 +1881,7 @@ qboolean CTFApplyStrengthSound(edict_t* ent)
 	float volume = 1.0F; /* MrG{DRGN} Explicit float. */
 
 	if (ent->client && ent->client->silencer_shots)
-		volume = 0.2F; /* MrG{DRGN} added  F, as this was causing truncation from double to float. */
+		volume = 0.2F; 
 
 	if (!tech)
 		tech = it_tech2;

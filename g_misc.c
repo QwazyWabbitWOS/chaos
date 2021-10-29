@@ -43,9 +43,9 @@ void VelocityForDamage(int damage, vec3_t v)
 	v[2] = 200.0F + 100.0F * random();
 
 	if (damage < 50)
-		VectorScale(v, 0.7F, v);  /* MrG{DRGN} added  F, as this was causing truncation from double to float.*/
+		VectorScale(v, 0.7F, v);  
 	else
-		VectorScale(v, 1.2F, v);  /* MrG{DRGN} added  F, as this was causing truncation from double to float.*/
+		VectorScale(v, 1.2F, v);  
 }
 
 void ClipGibVelocity(edict_t* ent)
