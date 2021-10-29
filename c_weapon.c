@@ -310,7 +310,7 @@ void Turret_Explode(edict_t* ent)
 		chunk->think = G_FreeEdict;
 		chunk->nextthink = level.time + 1 + random() * 2;
 		chunk->classname = "debris";
-		chunk->classindex = DEBRIS; // MrG{DRGN} 
+		chunk->classindex = DEBRIS; // MrG{DRGN}
 		chunk->takedamage = DAMAGE_NO;
 
 		chunk->s.effects |= EF_GRENADE;
@@ -927,7 +927,7 @@ void RocketTurret_Think(edict_t* ent)
 
 void Turret_Touch(edict_t* ent, edict_t* other, cplane_t* plane, csurface_t* surf)
 {
-	// MrG{DRGN} 
+	// MrG{DRGN}
 	if (!ent || !other) /* plane is unused, surf can be NULL */
 	{
 		G_FreeEdict(ent);
@@ -1128,10 +1128,6 @@ void Weapon_LaserTurret(edict_t* ent)
 		return;
 	}
 
-	/* MrG{DRGN} no longer needed
-	it_lturret = FindItem("automatic defence turret");	//bugfix
-	*/
-
 	if ((ent->client->newweapon) && (ent->client->weaponstate == WEAPON_READY))
 	{
 		ChangeWeapon(ent);
@@ -1222,9 +1218,6 @@ void Weapon_LaserTurret(edict_t* ent)
 			ent->client->weaponstate = WEAPON_READY;
 		}
 	}
-	/* MrG{DRGN} no longer needed
-	it_lturret = FindItem("automatic defence turret");	//bugfix
-	*/
 }
 
 void Weapon_RocketTurret(edict_t* ent)
@@ -1615,7 +1608,7 @@ void fire_air(edict_t* self, vec3_t start, vec3_t dir)
 			VectorCopy(blipdir, addvect);
 			VectorNormalize(addvect);
 
-			VectorScale(addvect, 1.8F * (600 - dist), addvect); 
+			VectorScale(addvect, 1.8F * (600 - dist), addvect);
 			addvect[2] = 700 - dist;
 
 			if (dist < 400 && blip->takedamage)
@@ -2007,7 +2000,7 @@ void Weapon_ExplosiveSuperShotgun(edict_t* ent)
 
 void arrow_touch(edict_t* self, edict_t* other, cplane_t* plane, csurface_t* surf)
 {
-	// MrG{DRGN} 
+	// MrG{DRGN}
 	if (!self || !other) /* plane is unused, surf can be NULL */
 	{
 		G_FreeEdict(self);
@@ -2414,7 +2407,7 @@ void Arrow_Explode(edict_t* ent)
 
 void earrow_touch(edict_t* self, edict_t* other, cplane_t* plane, csurface_t* surf)
 {
-	// MrG{DRGN} 
+	// MrG{DRGN}
 	if (!self || !other) /* plane is unused, surf can be NULL */
 	{
 		G_FreeEdict(self);
@@ -2704,7 +2697,7 @@ void Weapon_HomingLauncher(edict_t* ent)
 
 void buzz_touch(edict_t* self, edict_t* other, cplane_t* plane, csurface_t* surf)
 {
-	// MrG{DRGN} 
+	// MrG{DRGN}
 	if (!self || !other) /* plane is unused, surf can be NULL */
 	{
 		G_FreeEdict(self);
@@ -2911,7 +2904,7 @@ void FlashGrenade_Explode(edict_t* ent)
 		if (Distance < FLASH_RADIUS / 10)
 			BlindTimeAdd = blindtime->value;
 		else
-			BlindTimeAdd = 1.5F * blindtime->value * (1 / ((Distance - FLASH_RADIUS * 2) / (FLASH_RADIUS * 2) - 2) + 1.0F); // Blind partially 
+			BlindTimeAdd = 1.5F * blindtime->value * (1 / ((Distance - FLASH_RADIUS * 2) / (FLASH_RADIUS * 2) - 2) + 1.0F); // Blind partially
 
 		if (BlindTimeAdd < 0)
 			BlindTimeAdd = 0;
@@ -2951,7 +2944,7 @@ void FlashGrenade_Explode(edict_t* ent)
 
 void FlashGrenade_Touch(edict_t* ent, edict_t* other, cplane_t* plane, csurface_t* surf)
 {
-	// MrG{DRGN} 
+	// MrG{DRGN}
 	if (!ent || !other) /* plane is unused, surf can be NULL */
 	{
 		G_FreeEdict(ent);
@@ -3042,8 +3035,8 @@ void fire_flashgrenade2(edict_t* self, vec3_t start, vec3_t aimdir, int damage, 
 	grenade = G_Spawn();
 	VectorCopy(start, grenade->s.origin);
 	VectorScale(aimdir, speed, grenade->velocity);
-	VectorMA(grenade->velocity, 200 + crandom() * 10.0F, up, grenade->velocity); 
-	VectorMA(grenade->velocity, crandom() * 10.0F, right, grenade->velocity); 
+	VectorMA(grenade->velocity, 200 + crandom() * 10.0F, up, grenade->velocity);
+	VectorMA(grenade->velocity, crandom() * 10.0F, right, grenade->velocity);
 	VectorSet(grenade->avelocity, 300, 300, 300);
 	grenade->movetype = MOVETYPE_BOUNCE;
 	grenade->clipmask = MASK_SHOT;
@@ -3286,7 +3279,7 @@ void LaserMine_Touch(edict_t* ent, edict_t* other, cplane_t* plane, csurface_t* 
 						  0xe0e1e2e3              // bitty yellow strobe
 	};
 
-	// MrG{DRGN} 
+	// MrG{DRGN}
 	if (!ent || !other) /* surf can be NULL */
 	{
 		G_FreeEdict(ent);
@@ -3301,7 +3294,7 @@ void LaserMine_Touch(edict_t* ent, edict_t* other, cplane_t* plane, csurface_t* 
 		G_FreeEdict(ent);
 		return;
 	}
-	
+
 	if ((other->classindex == INFO_PLAYER_DEATHMATCH)
 		|| (other->classindex == INFO_PLAYER_START)
 		|| (other->classindex == FUNC_DOOR)
@@ -3632,7 +3625,7 @@ void PoisonGrenade_Explode(edict_t* ent)
 		if (Distance < POISON_RADIUS / 10)
 			PoisonTimeAdd = poisontime->value;
 		else
-			PoisonTimeAdd = 1.5F * poisontime->value * (1 / ((Distance - POISON_RADIUS * 2) / (POISON_RADIUS * 2) - 2) + 1.0F); // Blind partially 
+			PoisonTimeAdd = 1.5F * poisontime->value * (1 / ((Distance - POISON_RADIUS * 2) / (POISON_RADIUS * 2) - 2) + 1.0F); // Blind partially
 
 		if (PoisonTimeAdd < 0)
 			PoisonTimeAdd = 0;
@@ -3676,7 +3669,7 @@ void PoisonGrenade_Explode(edict_t* ent)
 
 void PoisonGrenade_Touch(edict_t* ent, edict_t* other, cplane_t* plane, csurface_t* surf)
 {
-	// MrG{DRGN} 
+	// MrG{DRGN}
 	if (!ent || !other) /* plane is unused, surf can be NULL */
 	{
 		G_FreeEdict(ent);
@@ -4282,7 +4275,7 @@ void EvilProxy_Think(edict_t* ent)
 
 void Proxy_Touch(edict_t* ent, edict_t* other, cplane_t* plane, csurface_t* surf)
 {
-	// MrG{DRGN} 
+	// MrG{DRGN}
 	if (!ent || !other) /* plane is unused, surf can be NULL */
 	{
 		G_FreeEdict(ent);
@@ -4339,8 +4332,8 @@ void fire_proxymine(edict_t* self, vec3_t start, vec3_t aimdir, int damage, int 
 	grenade = G_Spawn();
 	VectorCopy(start, grenade->s.origin);
 	VectorScale(aimdir, speed, grenade->velocity);
-	VectorMA(grenade->velocity, 200 + crandom() * 10.0F, up, grenade->velocity); 
-	VectorMA(grenade->velocity, crandom() * 10.0F, right, grenade->velocity); 
+	VectorMA(grenade->velocity, 200 + crandom() * 10.0F, up, grenade->velocity);
+	VectorMA(grenade->velocity, crandom() * 10.0F, right, grenade->velocity);
 	VectorSet(grenade->avelocity, 300, 300, 300);
 	grenade->movetype = MOVETYPE_STEP;
 	grenade->clipmask = MASK_SHOT;
@@ -4987,7 +4980,7 @@ void Vortex_Think(edict_t* ent)
 					}
 				}
 			}
-			VectorMA(blip->velocity, -1.4F * (600 - dist), blipdir, blip->velocity); 
+			VectorMA(blip->velocity, -1.4F * (600 - dist), blipdir, blip->velocity);
 			blip->velocity[0] += crandom() * 60;
 			blip->velocity[1] += crandom() * 60;
 			blip->velocity[2] += random() * 60;
@@ -5012,7 +5005,7 @@ void Vortex_Think(edict_t* ent)
 
 void Vortex_Touch(edict_t* ent, edict_t* other, cplane_t* plane, csurface_t* surf)
 {
-	// MrG{DRGN} 
+	// MrG{DRGN}
 	if (!ent || !other) /* plane is unused, surf can be NULL */
 	{
 		G_FreeEdict(ent);

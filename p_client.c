@@ -5,25 +5,24 @@
 #include "stdlog.h"
 #include "gslog.h"
 
-/* 
-MrG{DRGN} reset to default state 
+/*
+MrG{DRGN} reset to default state
 */
 void ShutOff(edict_t* ent)
 {
-	
 	if (ent->client->flashlight)
 	{
-		Shutoff_Flashlight(ent);
+		ShutOff_Flashlight(ent);
 	}
 
 	if (ent->client->grapple)
 	{
-		Shutoff_Grapple(ent);
+		ShutOff_Grapple(ent);
 	}
-	Shutoff_Scanner(ent);
+	ShutOff_Scanner(ent);
 
 	if (ent->client->teleporter)
-		Shutoff_teleporter(ent);
+		ShutOff_teleporter(ent);
 
 	ent->client->BlindBase = 0;
 	ent->client->BlindTime = 0;
@@ -39,7 +38,7 @@ void ShutOff(edict_t* ent)
 	ent->client->b_currentnode = -1;
 	ent->client->b_waittime = 0;
 	ent->client->fakedeath = 0;
-	ent->client->kamikazetime = 0;	
+	ent->client->kamikazetime = 0;
 	ent->client->jet_framenum = 0;
 	ent->client->jet_remaining = 0;
 	ent->client->invisible = 0;
@@ -849,7 +848,7 @@ void player_die(edict_t* self, edict_t* inflictor, edict_t* attacker, int damage
 		Jet_BecomeExplosion(self, damage);
 		self->client->jet_framenum = 0;
 	}
-	Shutoff_Scanner(self);
+	ShutOff_Scanner(self);
 	self->client->beltactive = 0; /* MrG{DRGN} fix for being warned about not having enough cells to run belt, if you die with the belt active */
 	// clear inventory
 	memset(self->client->pers.inventory, 0, sizeof(self->client->pers.inventory));
@@ -920,10 +919,10 @@ void player_die(edict_t* self, edict_t* inflictor, edict_t* attacker, int damage
 		self->client->b_target = NULL;
 	}
 
-	Shutoff_Flashlight(self); 
+	ShutOff_Flashlight(self);
 
 	if (self->client->teleporter)
-		Shutoff_teleporter(self);
+		ShutOff_teleporter(self);
 
 	gi.linkentity(self);
 }
@@ -942,10 +941,6 @@ void InitClientPersistent(gclient_t* client)
 {
 	gitem_t* item;
 
-	/* MrG{DRGN} no longer needed
-	it_lturret = FindItem("automatic defence turret");	//bugfix
-	*/
-
 	memset(&client->pers, 0, sizeof(client->pers));
 
 	item = FindItemByClassindex(W_AK42);
@@ -957,10 +952,7 @@ void InitClientPersistent(gclient_t* client)
 	client->pers.lastweapon = item;
 	//ZOID
 
-		//MATTHIAS  -  Startup Weapons/Items
-	/* MrG{DRGN} no!
-	if (it_sword && it_chainsaw)
-	{*/
+	//MATTHIAS  -  Startup Weapons/Items
 	if (start_sword->value > 0)
 		client->pers.inventory[ITEM_INDEX(it_sword)] = 1;
 
@@ -1436,7 +1428,7 @@ void	SelectSpawnPoint(edict_t* ent, vec3_t origin, vec3_t angles)
 			if (!spot)
 			{
 				gi.error("Couldn't find spawn point %s\n", game.spawnpoint);
-				return; // MrG{DRGN} 
+				return; // MrG{DRGN}
 			}
 		}
 	}
@@ -1458,7 +1450,7 @@ void InitBodyQue(void)
 	{
 		ent = G_Spawn();
 		ent->classname = "bodyque";
-		ent->classindex = BODYQUE; // MrG{DRGN} 
+		ent->classindex = BODYQUE; // MrG{DRGN}
 	}
 }
 
@@ -1547,7 +1539,7 @@ void respawn(edict_t* self)
 
 /*
 ===========
-Called when a player connects to a server 
+Called when a player connects to a server
 or respawns in a deathmatch.
 ============
 */
@@ -1709,7 +1701,6 @@ void PutClientInServer(edict_t* ent)
 		client->b_path[k] = -1;
 	}
 
-
 	//ZOID
 	if (ctf->value)	  // MrG{DRGN} to prevent CTFJoinMenu from popping up in non- CTF mode
 		if (CTFStartClient(ent))
@@ -1744,7 +1735,7 @@ void ClientBeginDeathmatch(edict_t* ent)
 	// locate ent at a spawn point
 	PutClientInServer(ent);
 	ent->client->camera = 0;
-	
+
 	// send effect
 	gi.WriteByte(svc_muzzleflash);
 	gi.WriteShort(ent - g_edicts);
@@ -1921,7 +1912,7 @@ qboolean ClientConnect(edict_t* ent, char* userinfo)
 
 	// check to see if they are on the banned IP list
 	value = Info_ValueForKey(userinfo, "ip");
-	if (SVCmd_FilterPacket(value)) 
+	if (SVCmd_FilterPacket(value))
 	{
 		Info_SetValueForKey(userinfo, "rejmsg", "Banned.");
 		return false;
@@ -1988,13 +1979,12 @@ void ClientDisconnect(edict_t* ent)
 
 	numplayers--;
 
-
 	/* MrG{DRGN} shut things off when we leave */
 
 	ent->client->kamikazetime = 0;
 
-	Shutoff_Flashlight(ent);
-	Shutoff_Grapple(ent);
+	ShutOff_Flashlight(ent);
+	ShutOff_Grapple(ent);
 	ent->client->grenade_blew_up = false;
 	ent->client->grenade_time = 0;
 	ent->client->ps.blend[3] = 0;
@@ -2010,7 +2000,7 @@ void ClientDisconnect(edict_t* ent)
 	ent->client->jet_framenum = 0;
 
 	if (ent->client->teleporter)
-		Shutoff_teleporter(ent);
+		ShutOff_teleporter(ent);
 
 	if (ent->client->resp.ctf_team == 1)
 		numred--;
@@ -2299,7 +2289,7 @@ void ClientThink(edict_t* ent, usercmd_t* ucmd)
 			gi.WriteByte(5);
 			gi.WritePosition(tv(ent->s.origin[0], ent->s.origin[1], ent->s.origin[2] + 20));
 			gi.WriteDir(ent->velocity);
-			gi.WriteByte(0xffffffff & 255); 
+			gi.WriteByte(0xffffffff & 255);
 			gi.multicast(ent->s.origin, MULTICAST_PVS);
 
 			if (random() < 0.3)

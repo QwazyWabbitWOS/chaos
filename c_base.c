@@ -57,13 +57,13 @@ void ShowGun(edict_t* ent)	//QW from WOD:LOX for vwep
 	if (!ent->client->pers.weapon)
 	{
 		ent->client->ps.gunindex = 0;		// WI: seems to be missing?
-		ent->s.modelindex2 = REMOVED_MODEL;	 // MrG{DRGN} 
-		if (!ent->client->resp.spectator) // MrG{DRGN} Don't complain about camera using players not having a gun 
+		ent->s.modelindex2 = REMOVED_MODEL;	 // MrG{DRGN}
+		if (!ent->client->resp.spectator) // MrG{DRGN} Don't complain about camera using players not having a gun
 			gi.dprintf("ShowGun: Oops! Weapon Index missing! %s\n", ent->client->pers.netname);
 		return;
 	}
 
-	ent->s.modelindex2 = VWEP_MODEL;   // MrG{DRGN} 
+	ent->s.modelindex2 = VWEP_MODEL;   // MrG{DRGN}
 	strcpy(heldmodel, "#");	//safe, don't change
 	strcat(heldmodel, ent->client->pers.weapon->icon);
 	strcat(heldmodel, ".md2");
@@ -232,7 +232,7 @@ void GetSettings(void)
 	start_ammo_homingmissiles = gi.cvar("start_ammo_homingmissiles", "0", CVAR_LATCH);
 	start_ammo_buzzes = gi.cvar("start_ammo_buzzes", "0", CVAR_LATCH);
 	start_ammo_slugs = gi.cvar("start_ammo_slugs", "0", CVAR_LATCH);
-	
+
 	GrappleInitVars();
 	JetpackInitVars();
 	/* Armor - 0|1|2 Initiate 0%, 100% or 200% of max allowed in each class */
@@ -263,8 +263,7 @@ void GetSettings(void)
 	start_powershield = gi.cvar("start_powershield", "0", CVAR_LATCH);
 
 	/* Powerups */
-	
-	
+
 	start_quaddamage = gi.cvar("start_quaddamage", "0", CVAR_LATCH);
 	start_invulnerability = gi.cvar("start_invulnerability", "0", CVAR_LATCH);
 	start_silencer = gi.cvar("start_silencer", "0", CVAR_LATCH);
@@ -600,7 +599,7 @@ void FakeDeath(edict_t* self)
 		self->client->enviro_framenum = 0;
 		self->client->jet_framenum = 0;
 
-		Shutoff_Flashlight(self);
+		ShutOff_Flashlight(self);
 
 		// start a death animation
 		self->client->anim_priority = ANIM_DEATH;
@@ -693,7 +692,6 @@ void FakeDeath(edict_t* self)
 	}
 }
 
-
 void T_RadiusDamage2(edict_t* attacker, vec3_t position, float damage, float radius, int mod)
 {
 	float	points;
@@ -778,7 +776,7 @@ void cprint_botsafe(edict_t* ent, int printlevel, char* fmt, ...)
 	va_list		argptr;
 	char	CPrint2Buff[0x2000];
 
-	if (!ent || !ent->client || ent->bot_player)// MrG{DRGN} 
+	if (!ent || !ent->client || ent->bot_player)// MrG{DRGN}
 		return;
 
 	va_start(argptr, fmt);
@@ -786,7 +784,7 @@ void cprint_botsafe(edict_t* ent, int printlevel, char* fmt, ...)
 	vsnprintf(CPrint2Buff, sizeof(CPrint2Buff), fmt, argptr);
 	va_end(argptr);
 
-	if (ent->inuse) // MrG{DRGN} 
+	if (ent->inuse) // MrG{DRGN}
 	{
 		gi.cprintf(ent, printlevel, CPrint2Buff);
 	}
@@ -1097,9 +1095,6 @@ void Use_Class9(edict_t* ent)
 
 void Use_Class0(edict_t* ent)
 {
-	/* MrG{DRGN} no longer needed
-	it_lturret = FindItem("automatic defence turret");	//bugfix
-	*/
 	if (ent->client->pers.weapon == it_bfg)
 	{
 		if (ent->client->pers.inventory[ITEM_INDEX(it_vortex)] > 0)

@@ -24,7 +24,7 @@ _CrtMemState startup1;	// memory diagnostics
 // because we define the full size ones in this file
 #define	GAME_INCLUDE
 #include "game.h"
-// MrG{DRGN} 
+// MrG{DRGN}
 #include "classindex.h"
 
 //ZOID
@@ -207,7 +207,6 @@ typedef struct
 //ZOID
 #define IT_TECH			64
 //ZOID
-
 
 typedef struct gitem_s
 {
@@ -541,7 +540,7 @@ extern cvar_t* bob_roll;
 extern cvar_t* sv_cheats;
 extern cvar_t* maxclients;
 
-// MrG{DRGN} 
+// MrG{DRGN}
 extern cvar_t* flood_msgs;
 extern cvar_t* flood_persecond;
 extern cvar_t* flood_waitdelay;
@@ -644,7 +643,7 @@ void InitItems(void);
 void SetItemNames(void);
 gitem_t* FindItem(char* pickup_name);
 gitem_t* FindItemByClassname(char* classname);
-gitem_t* FindItemByClassindex(unsigned int classindex);// MrG{DRGN} 
+gitem_t* FindItemByClassindex(unsigned int classindex);// MrG{DRGN}
 #define	ITEM_INDEX(x) (int)((x)-itemlist)
 edict_t* Drop_Item(edict_t* ent, gitem_t* item);
 void SetRespawn(edict_t* ent, float delay);
@@ -850,6 +849,7 @@ qboolean SVCmd_FilterPacket(char* from);
 /* MrG{DRGN} include once here, rather than in multiple files */
 #include "c_base.h"
 #include "c_belt.h"
+#include "c_cam.h"
 #include "c_flashlight.h"
 #include "c_grapple.h"
 #include "c_item.h"
@@ -944,7 +944,6 @@ typedef struct client_respawn_s
 	vec3_t		cmd_angles;			// angles sent over in the last command
 	int			game_helpchanged;
 	int			helpchanged;
-	
 } client_respawn_t;
 
 // this structure is cleared on each PutClientInServer(),
@@ -991,7 +990,6 @@ struct gclient_s
 
 	weaponstate_t	weaponstate;
 
-	
 	float		b_respawntime;
 	float		b_nextshot;
 	float		b_nextwchange;
@@ -1030,7 +1028,7 @@ struct gclient_s
 	float		nextrandomsound;
 	float		nextheartbeat;
 	float		nextvomit;
-	int			grenadesactive;		
+	int			grenadesactive;
 	int			flashlightactive;
 	int			fakedeath;
 	int			swordstate;
@@ -1085,7 +1083,7 @@ struct gclient_s
 
 	float		respawn_time;		// can respawn when time > this
 
-	// MrG{DRGN} 
+	// MrG{DRGN}
 	float		flood_locktill;		// locked from talking
 	float		flood_when[10];		// when messages were said
 	int			flood_whenhead;		// head pointer for when said

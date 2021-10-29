@@ -145,7 +145,7 @@ void Bot_Create(int accuracy_level, int team, char* name, char* skin)
 		return;
 	}
 
-	G_InitEdict(bot); // create a bot edict 
+	G_InitEdict(bot); // create a bot edict
 
 	//InitClientResp(bot->client); // Initialize and assign to team if ctf.
 	InitClientPersistent(bot->client); // Initial inventory & select wep.
@@ -324,7 +324,7 @@ void PutBotInServer(edict_t* ent)
 
 	ent->s.effects = 0;
 	ent->s.skinnum = index;
-	ent->s.modelindex = (PLAYER_MODEL); // MrG{DRGN} 
+	ent->s.modelindex = (PLAYER_MODEL); // MrG{DRGN}
 
 	ent->s.frame = 0;
 	ent->enemy = NULL;
@@ -385,7 +385,7 @@ void bot_die(edict_t* self, edict_t* inflictor, edict_t* attacker, int damage, v
 
 	if (!self->deadflag)
 	{
-		self->client->respawn_time = level.time + 1.0F; 
+		self->client->respawn_time = level.time + 1.0F;
 		self->client->ps.pmove.pm_type = PM_DEAD;
 		ClientObituary(self, inflictor, attacker);
 
@@ -421,7 +421,7 @@ void bot_die(edict_t* self, edict_t* inflictor, edict_t* attacker, int damage, v
 	// clear inventory
 	memset(self->client->pers.inventory, 0, sizeof(self->client->pers.inventory));
 
-	self->client->b_respawntime = level.time + 1.5F; 
+	self->client->b_respawntime = level.time + 1.5F;
 
 	// check for gib
 	if (self->health < -40)
@@ -482,10 +482,10 @@ void bot_die(edict_t* self, edict_t* inflictor, edict_t* attacker, int damage, v
 	self->client->PoisonTime = 0;
 	self->client->invisible = 0;
 
-	Shutoff_Flashlight(self);
+	ShutOff_Flashlight(self);
 
 	if (self->client->teleporter)
-		Shutoff_teleporter(self);
+		ShutOff_teleporter(self);
 
 	gi.linkentity(self);
 	//DbgPrintf("%s %s index: %d\n", __func__, self->classname, self->classindex);
@@ -511,10 +511,6 @@ void BotClearGlobals(void)
 
 float Bot_Fire_Freq(edict_t* ent)
 {
-	/* MrG{DRGN} no longer needed
-	it_lturret = FindItem("automatic defence turret");	//bugfix
-	*/
-
 	if (ent->client->pers.weapon == it_ak42)
 		return AK42_FREQ;
 	else if (ent->client->pers.weapon == it_supershotgun
@@ -570,11 +566,6 @@ void Bot_BestMidWeapon(edict_t* self)
 
 	client = self->client;
 	oldweapon = client->pers.weapon;
-
-	/* MrG{DRGN} no longer needed
-	it_lturret = FindItem("automatic defence turret");	//bugfix
-	it_airfist = FindItem("airgun");	//bugfix
-	*/
 
 	// Is our enemy a turret ?
 	if (self->enemy
@@ -760,11 +751,6 @@ void Bot_BestCloseWeapon(edict_t* self)
 	client = self->client;
 	oldweapon = client->pers.weapon;
 
-	/* MrG{DRGN} no longer needed
-	it_lturret = FindItem("automatic defence turret");	//bugfix
-	it_airfist = FindItem("airgun");	//bugfix
-	*/
-
 	// Is our enemy a turret ?
 	if (self->enemy
 		&& self->enemy->inuse
@@ -948,11 +934,6 @@ void Bot_BestFarWeapon(edict_t* self)
 
 	client = self->client;
 	oldweapon = client->pers.weapon;
-
-	/* MrG{DRGN} no longer needed
-	it_lturret = FindItem("automatic defence turret");	//bugfix
-	it_airfist = FindItem("airgun");	//bugfix
-	*/
 
 	// Is our enemy a turret ?
 	if (self->enemy
@@ -1156,10 +1137,6 @@ qboolean Bot_CanPickupAmmo(edict_t* ent, edict_t* eitem)
 {
 	gitem_t* item;
 
-	/* MrG{DRGN} no longer needed
-	it_lturret = FindItem("automatic defence turret");	//bugfix
-	*/
-
 	item = eitem->item;
 
 	if (item->tag == AMMO_SHELLS
@@ -1232,16 +1209,11 @@ qboolean  Bot_NeedsHealth(edict_t* ent, edict_t* eitem)
 		return 0;
 
 	return 1;
-
 }
 
 qboolean Bot_CanPickupItem(edict_t* ent, edict_t* eitem)
 {
 	gitem_t* item;
-
-	/* MrG{DRGN} no longer needed
-	it_lturret = FindItem("automatic defence turret");	//bugfix
-	*/
 
 	item = eitem->item;
 
@@ -1321,9 +1293,9 @@ qboolean Bot_CanPickupItem(edict_t* ent, edict_t* eitem)
 		return 0;
 	if (item == it_chainsaw && ent->client->pers.inventory[ITEM_INDEX(it_chainsaw)])
 
-	//	MrG{DRGN} Tweak Havoc bot health hunting routine
-	if (!Bot_NeedsHealth(ent, eitem))
-		return 0;
+		//	MrG{DRGN} Tweak Havoc bot health hunting routine
+		if (!Bot_NeedsHealth(ent, eitem))
+			return 0;
 
 	if (item == it_tech2 ||
 		item == it_tech3 ||
@@ -1339,7 +1311,7 @@ qboolean Bot_CanPickupItem(edict_t* ent, edict_t* eitem)
 
 	if (!Bot_CanPickupAmmo(ent, eitem))
 		return 0;
-	// MrG{DRGN} 
+	// MrG{DRGN}
 	if (eitem->classindex == AR_BODY
 		|| eitem->classindex == AR_JACKET
 		|| eitem->classindex == AR_COMBAT)

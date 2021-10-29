@@ -18,8 +18,7 @@ void Use_Invisibility(edict_t* ent, gitem_t* item)
 	if (ent->client->invisible_framenum > level.framenum)
 		ent->client->invisible_framenum += 300;
 	else
-		ent->client->invisible_framenum = level.framenum + 300.0F; 
+		ent->client->invisible_framenum = level.framenum + 300.0F;
 
 	ent->s.event = EV_PLAYER_TELEPORT;
 }
-

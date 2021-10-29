@@ -46,7 +46,7 @@ cvar_t* bob_up;
 cvar_t* bob_pitch;
 cvar_t* bob_roll;
 
-// MrG{DRGN} 
+// MrG{DRGN}
 cvar_t* flood_msgs;
 cvar_t* flood_persecond;
 cvar_t* flood_waitdelay;

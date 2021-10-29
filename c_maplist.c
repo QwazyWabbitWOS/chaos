@@ -107,7 +107,6 @@ Choose next map in rotation based on current mode.
 */
 int MaplistNext(void)
 {
-
 	switch (maplist.mlflag)
 	{
 	case ML_ROTATE_SEQ:

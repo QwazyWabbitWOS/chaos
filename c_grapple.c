@@ -6,11 +6,11 @@ void GrappleInitVars(void)
 #ifdef	CHAOS_RETAIL
 	ban_grapple = gi.cvar("ban_grapple", "1", CVAR_LATCH);
 #else
-	ban_grapple = gi.cvar("ban_grapple", "0", CVAR_LATCH);	
+	ban_grapple = gi.cvar("ban_grapple", "0", CVAR_LATCH);
 #endif
 	start_grapple = gi.cvar("start_grapple", "0", CVAR_LATCH);
 }
-void Shutoff_Grapple(edict_t* ent)
+void ShutOff_Grapple(edict_t* ent)
 {
 	ent->client->grapple_state = GRAPPLE_OFF;
 	ent->client->grapple = NULL;
@@ -71,7 +71,7 @@ void Grapple_Touch(edict_t* ent, edict_t* other, cplane_t* plane, csurface_t* su
 	vec3_t	forward, right;
 	vec3_t	chainvec;		// chain's vector
 
-	// MrG{DRGN} 
+	// MrG{DRGN}
 	if (!ent || !other) /* plane is unused, surf can be NULL */
 	{
 		G_FreeEdict(ent);
@@ -233,8 +233,8 @@ void Grapple_Fire(edict_t* ent)
 	VectorClear(hook->mins);
 	VectorClear(hook->maxs);
 	hook->s.modelindex = gi.modelindex("models/objects/hook/tris.md2");
-	hook->classname = "hook"; // MrG{DRGN} 
-	hook->classindex = HOOK; // MrG{DRGN} 
+	hook->classname = "hook"; // MrG{DRGN}
+	hook->classindex = HOOK; // MrG{DRGN}
 	hook->owner = ent;
 	hook->sounds = 0;
 	hook->angle = 0;
@@ -312,7 +312,7 @@ void Cmd_Grapple_f(edict_t* ent)
 		Cmd_Hook_f(ent);
 	else
 	{
-		if (!ent->bot_player)// MrG{DRGN} 
+		if (!ent->bot_player)// MrG{DRGN}
 			gi.centerprintf(ent, "\nYou don't have a grappling hook!\n");//MATTHIAS
 
 		return;

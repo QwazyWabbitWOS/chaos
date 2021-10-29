@@ -1,7 +1,7 @@
 #include "g_local.h"
 #include "c_teleporter.h"
 
-void Shutoff_teleporter(edict_t* ent)
+void ShutOff_teleporter(edict_t* ent)
 {
 	G_FreeEdict(ent->client->teleporter);
 	ent->client->teleporter = NULL;
@@ -28,7 +28,7 @@ void Teleport(edict_t* ent)
 
 	if (ent->client->teleporter)	//teleport
 	{
-		int i; // MrG{DRGN} 
+		int i; // MrG{DRGN}
 		if (ctf->value)
 			CTFDeadDropFlag(ent);
 
@@ -112,5 +112,3 @@ void Cmd_Teleport_f(edict_t* ent)
 		}
 	}
 }
-
-

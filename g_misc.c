@@ -24,7 +24,7 @@ Usually enclosed in the middle of a door.
 */
 void SP_func_areaportal(edict_t* ent)
 {
-	ent->classindex = FUNC_AREAPORTAL; // MrG{DRGN} 
+	ent->classindex = FUNC_AREAPORTAL; // MrG{DRGN}
 	ent->use = Use_Areaportal;
 	ent->count = 0;		// allways start closed;
 }
@@ -38,9 +38,9 @@ Misc functions
 */
 void VelocityForDamage(int damage, vec3_t v)
 {
-	v[0] = 100.0F * crandom(); 
-	v[1] = 100.0F * crandom(); 
-	v[2] = 200.0F + 100.0F * random(); 
+	v[0] = 100.0F * crandom();
+	v[1] = 100.0F * crandom();
+	v[2] = 200.0F + 100.0F * random();
 
 	if (damage < 50)
 		VectorScale(v, 0.7F, v);  /* MrG{DRGN} added  F, as this was causing truncation from double to float.*/
@@ -72,7 +72,7 @@ gibs
 
 void gib_touch(edict_t* self, edict_t* other, cplane_t* plane, csurface_t* surf)
 {
-	// MrG{DRGN} 
+	// MrG{DRGN}
 	if (!self || !other) /* plane can be NULL, surf is unused */
 	{
 		G_FreeEdict(self);
@@ -113,9 +113,9 @@ void ThrowGib(edict_t* self, char* gibname, int damage, int type)
 
 	gi.setmodel(gib, gibname);
 	gib->classname = "gib";	//MATTHIAS
-	VectorSet(gib->mins, -4, -4, -4);// MrG{DRGN} 
-	VectorSet(gib->maxs, 4, 4, 4);// MrG{DRGN} 
-	gib->solid = SOLID_TRIGGER;// MrG{DRGN} 
+	VectorSet(gib->mins, -4, -4, -4);// MrG{DRGN}
+	VectorSet(gib->maxs, 4, 4, 4);// MrG{DRGN}
+	gib->solid = SOLID_TRIGGER;// MrG{DRGN}
 	gib->s.effects |= EF_GIB;
 	gib->flags |= FL_NO_KNOCKBACK;
 	gib->takedamage = DAMAGE_YES;
@@ -124,14 +124,14 @@ void ThrowGib(edict_t* self, char* gibname, int damage, int type)
 
 	if (type == GIB_ORGANIC)
 	{
-		gib->classindex = GIB; // MrG{DRGN} 
+		gib->classindex = GIB; // MrG{DRGN}
 		gib->movetype = MOVETYPE_TOSS;
 		gib->touch = gib_touch;
 		vscale = 1.0;
 	}
 	else
 	{
-		gib->classindex = GIB_METALLIC; // MrG{DRGN} 
+		gib->classindex = GIB_METALLIC; // MrG{DRGN}
 		gib->movetype = MOVETYPE_BOUNCE;
 		vscale = 1.0;
 	}
@@ -160,8 +160,8 @@ void ThrowClientHead(edict_t* self, int damage)
 	self->s.origin[2] += 32;
 	self->s.frame = 0;
 	gi.setmodel(self, gibname);
-	//self->classname = "gibhead"; // MrG{DRGN} 
-	self->classindex = GIBHEAD; // MrG{DRGN} 
+	//self->classname = "gibhead"; // MrG{DRGN}
+	self->classindex = GIBHEAD; // MrG{DRGN}
 	VectorSet(self->mins, -16, -16, 0);
 	VectorSet(self->maxs, 16, 16, 16);
 
@@ -220,7 +220,7 @@ void ThrowDebris(edict_t* self, char* modelname, float speed, vec3_t origin)
 	chunk->s.frame = 0;
 	chunk->flags = 0;
 	chunk->classname = "debris";
-	chunk->classindex = DEBRIS; // MrG{DRGN} 
+	chunk->classindex = DEBRIS; // MrG{DRGN}
 	chunk->takedamage = DAMAGE_YES;
 	chunk->health = 250; /* MrG DRGN} */
 	chunk->die = debris_die;
@@ -268,7 +268,7 @@ void BecomeExplosion1(edict_t* self)
 		DoRespawn(self); // this frees self!
 		return;
 	}
-	
+
 	G_FreeEdict(self);
 }
 
@@ -297,7 +297,7 @@ void path_corner_touch(edict_t* self, edict_t* other, cplane_t* plane, csurface_
 	vec3_t		v = { 0 };
 	edict_t* next;
 
-	// MrG{DRGN} 
+	// MrG{DRGN}
 	if (!self || !other) /* plane, & surf are unused */
 	{
 		G_FreeEdict(self);
@@ -365,7 +365,7 @@ void SP_path_corner(edict_t* self)
 	}
 
 	self->solid = SOLID_TRIGGER;
-	self->classindex = PATH_CORNER; // MrG{DRGN} 
+	self->classindex = PATH_CORNER; // MrG{DRGN}
 	self->touch = path_corner_touch;
 	VectorSet(self->mins, -8, -8, -8);
 	VectorSet(self->maxs, 8, 8, 8);
@@ -375,7 +375,7 @@ void SP_path_corner(edict_t* self)
 
 void SP_point_combat(edict_t* self)
 {
-	self->classindex = POINT_COMBAT; // MrG{DRGN} 
+	self->classindex = POINT_COMBAT; // MrG{DRGN}
 	G_FreeEdict(self);
 	return;
 }
@@ -413,7 +413,7 @@ void SP_viewthing(edict_t* ent)
 	VectorSet(ent->maxs, 16, 16, 32);
 	//	ent->s.modelindex = gi.modelindex ("models/player_y/tris.md2");
 	ent->s.modelindex = gi.modelindex("models/objects/banner/tris.md2");
-	ent->classindex = VIEWTHING; // MrG{DRGN} 
+	ent->classindex = VIEWTHING; // MrG{DRGN}
 	gi.linkentity(ent);
 	ent->nextthink = level.time + 0.5;
 	ent->think = TH_viewthing;
@@ -425,7 +425,7 @@ Used as a positional target for spotlights, etc.
 */
 void SP_info_null(edict_t* self)
 {
-	self->classindex = INFO_NULL; // MrG{DRGN} 
+	self->classindex = INFO_NULL; // MrG{DRGN}
 	G_FreeEdict(self);
 }
 
@@ -434,7 +434,7 @@ Used as a positional target for lightning.
 */
 void SP_info_notnull(edict_t* self)
 {
-	self->classindex = INFO_NOTNULL; // MrG{DRGN} 
+	self->classindex = INFO_NOTNULL; // MrG{DRGN}
 	VectorCopy(self->s.origin, self->absmin);
 	VectorCopy(self->s.origin, self->absmax);
 }
@@ -472,7 +472,7 @@ void SP_light(edict_t* self)
 		G_FreeEdict(self);
 		return;
 	}
-	self->classindex = LIGHT; // MrG{DRGN} 
+	self->classindex = LIGHT; // MrG{DRGN}
 	if (self->style >= 32)
 	{
 		self->use = light_use;
@@ -551,7 +551,7 @@ void SP_func_wall(edict_t* self)
 		}
 	}
 
-	self->classindex = FUNC_WALL; // MrG{DRGN} 
+	self->classindex = FUNC_WALL; // MrG{DRGN}
 	self->use = func_wall_use;
 	if (self->spawnflags & 4)
 	{
@@ -633,20 +633,20 @@ void SP_func_object(edict_t* self)
 		self->s.effects |= EF_ANIM_ALLFAST;
 
 	self->clipmask = MASK_MONSTERSOLID;
-	self->classindex = FUNC_OBJECT; // MrG{DRGN} 
+	self->classindex = FUNC_OBJECT; // MrG{DRGN}
 	gi.linkentity(self);
 }
 
 void SP_func_explosive(edict_t* self)
 {
-	self->classindex = FUNC_EXPLOSIVE; // MrG{DRGN} 
+	self->classindex = FUNC_EXPLOSIVE; // MrG{DRGN}
 	G_FreeEdict(self);
 	return;
 }
 
 void SP_misc_explobox(edict_t* self)
 {
-	self->classindex = MISC_EXPLOBOX; // MrG{DRGN} 
+	self->classindex = MISC_EXPLOBOX; // MrG{DRGN}
 	G_FreeEdict(self);
 	return;
 }
@@ -681,7 +681,7 @@ void SP_misc_blackhole(edict_t* ent)
 	VectorSet(ent->mins, -64, -64, 0);
 	VectorSet(ent->maxs, 64, 64, 8);
 	ent->s.modelindex = gi.modelindex("models/objects/black/tris.md2");
-	ent->classindex = MISC_BLACKHOLE; // MrG{DRGN} 
+	ent->classindex = MISC_BLACKHOLE; // MrG{DRGN}
 	ent->s.renderfx = RF_TRANSLUCENT;
 	ent->use = misc_blackhole_use;
 	ent->think = misc_blackhole_think;
@@ -710,7 +710,7 @@ void SP_misc_eastertank(edict_t* ent)
 	VectorSet(ent->mins, -32, -32, -16);
 	VectorSet(ent->maxs, 32, 32, 32);
 	ent->s.modelindex = gi.modelindex("models/monsters/tank/tris.md2");
-	ent->classindex = MISC_EASTERTANK; // MrG{DRGN} 
+	ent->classindex = MISC_EASTERTANK; // MrG{DRGN}
 	ent->s.frame = 254;
 	ent->think = misc_eastertank_think;
 	ent->nextthink = level.time + 2 * FRAMETIME;
@@ -738,7 +738,7 @@ void SP_misc_easterchick(edict_t* ent)
 	VectorSet(ent->mins, -32, -32, 0);
 	VectorSet(ent->maxs, 32, 32, 32);
 	ent->s.modelindex = gi.modelindex("models/monsters/bitch/tris.md2");
-	ent->classindex = MISC_EASTERCHICK; // MrG{DRGN} 
+	ent->classindex = MISC_EASTERCHICK; // MrG{DRGN}
 	ent->s.frame = 208;
 	ent->think = misc_easterchick_think;
 	ent->nextthink = level.time + 2 * FRAMETIME;
@@ -766,7 +766,7 @@ void SP_misc_easterchick2(edict_t* ent)
 	VectorSet(ent->mins, -32, -32, 0);
 	VectorSet(ent->maxs, 32, 32, 32);
 	ent->s.modelindex = gi.modelindex("models/monsters/bitch/tris.md2");
-	ent->classindex = MISC_EASTERCHICK2; // MrG{DRGN} 
+	ent->classindex = MISC_EASTERCHICK2; // MrG{DRGN}
 	ent->s.frame = 248;
 	ent->think = misc_easterchick2_think;
 	ent->nextthink = level.time + 2 * FRAMETIME;
@@ -807,7 +807,7 @@ void SP_monster_commander_body(edict_t* self)
 	self->movetype = MOVETYPE_NONE;
 	self->solid = SOLID_BBOX;
 	self->model = "models/monsters/commandr/tris.md2";
-	self->classindex = MONSTER_COMMANDER_BODY; // MrG{DRGN} 
+	self->classindex = MONSTER_COMMANDER_BODY; // MrG{DRGN}
 	self->s.modelindex = gi.modelindex(self->model);
 	VectorSet(self->mins, -32, -32, 0);
 	VectorSet(self->maxs, 32, 32, 48);
@@ -838,7 +838,7 @@ void SP_misc_banner(edict_t* ent)
 {
 	ent->movetype = MOVETYPE_NONE;
 	ent->solid = SOLID_NOT;
-	ent->classindex = MISC_BANNER; // MrG{DRGN} 
+	ent->classindex = MISC_BANNER; // MrG{DRGN}
 	ent->s.modelindex = gi.modelindex("models/objects/banner/tris.md2");
 	ent->s.frame = rand() % 16;
 	gi.linkentity(ent);
@@ -849,7 +849,7 @@ void SP_misc_banner(edict_t* ent)
 
 void SP_misc_deadsoldier(edict_t* ent)
 {
-	ent->classindex = MISC_DEADSOLDIER; // MrG{DRGN} 
+	ent->classindex = MISC_DEADSOLDIER; // MrG{DRGN}
 	G_FreeEdict(ent);
 	return;
 }
@@ -887,7 +887,7 @@ void SP_misc_viper(edict_t* ent)
 	ent->movetype = MOVETYPE_PUSH;
 	ent->solid = SOLID_NOT;
 	ent->s.modelindex = gi.modelindex("models/ships/viper/tris.md2");
-	ent->classindex = MISC_VIPER; // MrG{DRGN} 
+	ent->classindex = MISC_VIPER; // MrG{DRGN}
 	VectorSet(ent->mins, -16, -16, 0);
 	VectorSet(ent->maxs, 16, 16, 32);
 
@@ -910,7 +910,7 @@ void SP_misc_bigviper(edict_t* ent)
 	VectorSet(ent->mins, -176, -120, -24);
 	VectorSet(ent->maxs, 176, 120, 72);
 	ent->s.modelindex = gi.modelindex("models/ships/bigviper/tris.md2");
-	ent->classindex = MISC_BIGVIPER; // MrG{DRGN} 
+	ent->classindex = MISC_BIGVIPER; // MrG{DRGN}
 	gi.linkentity(ent);
 }
 
@@ -919,7 +919,7 @@ void SP_misc_bigviper(edict_t* ent)
 */
 void misc_viper_bomb_touch(edict_t* self, edict_t* other, cplane_t* plane, csurface_t* surf)
 {
-	// MrG{DRGN} 
+	// MrG{DRGN}
 	if (!self) /* other, plane, & surf are unused */
 	{
 		G_FreeEdict(self);
@@ -980,7 +980,7 @@ void SP_misc_viper_bomb(edict_t* self)
 	VectorSet(self->maxs, 8, 8, 8);
 
 	self->s.modelindex = gi.modelindex("models/objects/bomb/tris.md2");
-	self->classindex = MISC_VIPER_BOMB; // MrG{DRGN} 
+	self->classindex = MISC_VIPER_BOMB; // MrG{DRGN}
 	if (!self->dmg)
 		self->dmg = 1000;
 
@@ -1022,7 +1022,7 @@ void SP_misc_strogg_ship(edict_t* ent)
 
 	ent->movetype = MOVETYPE_PUSH;
 	ent->solid = SOLID_NOT;
-	ent->classindex = MISC_STROGG_SHIP; // MrG{DRGN} 
+	ent->classindex = MISC_STROGG_SHIP; // MrG{DRGN}
 	ent->s.modelindex = gi.modelindex("models/ships/strogg1/tris.md2");
 	VectorSet(ent->mins, -16, -16, 0);
 	VectorSet(ent->maxs, 16, 16, 32);
@@ -1058,7 +1058,7 @@ void SP_misc_satellite_dish(edict_t* ent)
 	ent->solid = SOLID_BBOX;
 	VectorSet(ent->mins, -64, -64, 0);
 	VectorSet(ent->maxs, 64, 64, 128);
-	ent->classindex = MISC_SATELLITE_DISH; // MrG{DRGN} 
+	ent->classindex = MISC_SATELLITE_DISH; // MrG{DRGN}
 	ent->s.modelindex = gi.modelindex("models/objects/satellite/tris.md2");
 	ent->use = misc_satellite_dish_use;
 	gi.linkentity(ent);
@@ -1070,7 +1070,7 @@ void SP_light_mine1(edict_t* ent)
 {
 	ent->movetype = MOVETYPE_NONE;
 	ent->solid = SOLID_BBOX;
-	ent->classindex = LIGHT_MINE1; // MrG{DRGN} 
+	ent->classindex = LIGHT_MINE1; // MrG{DRGN}
 	ent->s.modelindex = gi.modelindex("models/objects/minelite/light1/tris.md2");
 	gi.linkentity(ent);
 }
@@ -1081,7 +1081,7 @@ void SP_light_mine2(edict_t* ent)
 {
 	ent->movetype = MOVETYPE_NONE;
 	ent->solid = SOLID_BBOX;
-	ent->classindex = LIGHT_MINE2; // MrG{DRGN} 
+	ent->classindex = LIGHT_MINE2; // MrG{DRGN}
 	ent->s.modelindex = gi.modelindex("models/objects/minelite/light2/tris.md2");
 	gi.linkentity(ent);
 }
@@ -1092,7 +1092,7 @@ Intended for use with the target_spawner
 void SP_misc_gib_arm(edict_t* ent)
 {
 	gi.setmodel(ent, "models/objects/gibs/arm/tris.md2");
-	ent->classindex = MISC_GIB_ARM; // MrG{DRGN} 
+	ent->classindex = MISC_GIB_ARM; // MrG{DRGN}
 	ent->solid = SOLID_NOT;
 	ent->s.effects |= EF_GIB;
 	ent->takedamage = DAMAGE_YES;
@@ -1114,7 +1114,7 @@ Intended for use with the target_spawner
 void SP_misc_gib_leg(edict_t* ent)
 {
 	gi.setmodel(ent, "models/objects/gibs/leg/tris.md2");
-	ent->classindex = MISC_GIB_LEG; // MrG{DRGN} 
+	ent->classindex = MISC_GIB_LEG; // MrG{DRGN}
 	ent->solid = SOLID_NOT;
 	ent->s.effects |= EF_GIB;
 	ent->takedamage = DAMAGE_YES;
@@ -1136,7 +1136,7 @@ Intended for use with the target_spawner
 void SP_misc_gib_head(edict_t* ent)
 {
 	gi.setmodel(ent, "models/objects/gibs/head/tris.md2");
-	ent->classindex = MISC_GIB_HEAD; // MrG{DRGN} 
+	ent->classindex = MISC_GIB_HEAD; // MrG{DRGN}
 	ent->solid = SOLID_NOT;
 	ent->s.effects |= EF_GIB;
 	ent->takedamage = DAMAGE_YES;
@@ -1163,7 +1163,7 @@ void SP_target_character(edict_t* self)
 {
 	self->movetype = MOVETYPE_PUSH;
 	gi.setmodel(self, self->model);
-	self->classindex = TARGET_CHARACTER; // MrG{DRGN} 
+	self->classindex = TARGET_CHARACTER; // MrG{DRGN}
 	self->solid = SOLID_BSP;
 	self->s.frame = 12;
 	gi.linkentity(self);
@@ -1208,7 +1208,7 @@ void SP_target_string(edict_t* self)
 {
 	if (!self->message)
 		self->message = "";
-	self->classindex = TARGET_STRING; // MrG{DRGN} 
+	self->classindex = TARGET_STRING; // MrG{DRGN}
 	self->use = target_string_use;
 }
 
@@ -1362,7 +1362,7 @@ void SP_func_clock(edict_t* self)
 		G_FreeEdict(self);
 		return;
 	}
-	self->classindex = FUNC_CLOCK; // MrG{DRGN} 
+	self->classindex = FUNC_CLOCK; // MrG{DRGN}
 	if ((self->spawnflags & 1) && (!self->count))
 		self->count = 60 * 60;
 
@@ -1386,7 +1386,7 @@ void teleporter_touch(edict_t* self, edict_t* other, cplane_t* plane, csurface_t
 	int			i;
 	vec3_t		nodeo = { 0, 0, 0 };
 
-	// MrG{DRGN} 
+	// MrG{DRGN}
 	if (!self || !other) /* plane &, surf are unused */
 	{
 		return;
@@ -1478,7 +1478,7 @@ void SP_misc_teleporter(edict_t* ent)
 	}
 
 	gi.setmodel(ent, "models/objects/dmspot/tris.md2");
-	ent->classindex = MISC_TELEPORTER; // MrG{DRGN} 
+	ent->classindex = MISC_TELEPORTER; // MrG{DRGN}
 	ent->s.skinnum = 1;
 	ent->s.effects = EF_TELEPORTER;
 	ent->s.sound = gi.soundindex("world/amb10.wav");
@@ -1505,7 +1505,7 @@ Point teleporters at these.
 void SP_misc_teleporter_dest(edict_t* ent)
 {
 	gi.setmodel(ent, "models/objects/dmspot/tris.md2");
-	ent->classindex = MISC_TELEPORTER_DEST; // MrG{DRGN} 
+	ent->classindex = MISC_TELEPORTER_DEST; // MrG{DRGN}
 	ent->s.skinnum = 0;
 	ent->solid = SOLID_BBOX;
 	//	ent->s.effects |= EF_FLIES;

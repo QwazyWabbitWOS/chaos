@@ -14,12 +14,12 @@ void CreateCamera(edict_t* ent)
 	ent->size[0] = 32.0;
 	ent->size[1] = 32.0;
 	ent->size[2] = 56.0;
-	
+
 	bprint_botsafe(PRINT_HIGH, "%s has moved to the sidelines\n", ent->client->pers.netname);
-	
+
 	if (!ent->client->resp.spectator && ent->deadflag != DEAD_DEAD)	// MrG{DRGN} not coming from CTF Join or dead
 		gi.unlinkentity(ent);
-	
+
 	ent->groundentity = NULL;
 	ent->takedamage = DAMAGE_NO;
 	ent->movetype = MOVETYPE_FLY;
@@ -38,7 +38,7 @@ void CreateCamera(edict_t* ent)
 	ent->watertype = 0;
 	ent->flags = FL_FLY;
 	ent->client->ps.fov = 90;
-	ent->client->kamikazetime = 0;/* MrG{DRGN} no kami stuck screen! */		
+	ent->client->kamikazetime = 0;/* MrG{DRGN} no kami stuck screen! */
 	ent->client->grenade_blew_up = false;
 	ent->client->grenade_time = 0;
 	ent->client->ps.blend[3] = 0;
@@ -52,12 +52,12 @@ void CreateCamera(edict_t* ent)
 	ent->client->enviro_framenum = 0;
 	ent->client->jet_framenum = 0;
 
-	Shutoff_Flashlight(ent);
-	Shutoff_Grapple(ent);
-	Shutoff_Scanner(ent);
+	ShutOff_Flashlight(ent);
+	ShutOff_Grapple(ent);
+	ShutOff_Scanner(ent);
 
 	if (ent->client->teleporter)
-		Shutoff_teleporter(ent);
+		ShutOff_teleporter(ent);
 
 	if (ent->client->b_target)
 		G_FreeEdict(ent->client->b_target);

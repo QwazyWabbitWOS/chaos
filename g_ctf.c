@@ -359,7 +359,7 @@ int CTFOtherTeam(int team)
 
 /*--------------------------------------------------------------------------*/
 
-void CTFAssignSkin(edict_t* ent, char* s)	 // MrG{DRGN} R1Q2 redundant update in here 
+void CTFAssignSkin(edict_t* ent, char* s)	 // MrG{DRGN} R1Q2 redundant update in here
 {
 	int playernum = ent - g_edicts - 1;
 	char* p;
@@ -942,17 +942,17 @@ void CTFDeadDropFlag(edict_t* self)
 	if (!it_flag_red || !it_flag_blue)
 		CTFInit();
 
-	if (self->client->pers.inventory[ITEM_INDEX(it_flag_red)]) // MrG{DRGN} 
+	if (self->client->pers.inventory[ITEM_INDEX(it_flag_red)]) // MrG{DRGN}
 	{
 		dropped = Drop_Item(self, it_flag_red);
-		self->client->pers.inventory[ITEM_INDEX(it_flag_red)] = 0;// MrG{DRGN} 
+		self->client->pers.inventory[ITEM_INDEX(it_flag_red)] = 0;// MrG{DRGN}
 		bprint_botsafe(PRINT_HIGH, "%s lost the %s flag!\n",
 			self->client->pers.netname, CTFTeamName(CTF_TEAM1));
 	}
-	else if (self->client->pers.inventory[ITEM_INDEX(it_flag_blue)])// MrG{DRGN} 
+	else if (self->client->pers.inventory[ITEM_INDEX(it_flag_blue)])// MrG{DRGN}
 	{
 		dropped = Drop_Item(self, it_flag_blue);
-		self->client->pers.inventory[ITEM_INDEX(it_flag_blue)] = 0;// MrG{DRGN} 
+		self->client->pers.inventory[ITEM_INDEX(it_flag_blue)] = 0;// MrG{DRGN}
 		bprint_botsafe(PRINT_HIGH, "%s lost the %s flag!\n",
 			self->client->pers.netname, CTFTeamName(CTF_TEAM2));
 	}
@@ -980,17 +980,17 @@ void CTFDrop_Flag(edict_t* ent, gitem_t* item)
 
 		if (!it_flag_red || !it_flag_blue)
 			CTFInit();
-		if (ent->client->pers.inventory[ITEM_INDEX(it_flag_red)]) // MrG{DRGN} 
+		if (ent->client->pers.inventory[ITEM_INDEX(it_flag_red)]) // MrG{DRGN}
 		{
 			dropped = Drop_Item(ent, it_flag_red);
-			ent->client->pers.inventory[ITEM_INDEX(it_flag_red)] = 0;// MrG{DRGN} 
+			ent->client->pers.inventory[ITEM_INDEX(it_flag_red)] = 0;// MrG{DRGN}
 			bprint_botsafe(PRINT_HIGH, "%s dropped the %s flag!\n",
 				ent->client->pers.netname, CTFTeamName(CTF_TEAM1));
 		}
-		else if (ent->client->pers.inventory[ITEM_INDEX(it_flag_blue)])// MrG{DRGN} 
+		else if (ent->client->pers.inventory[ITEM_INDEX(it_flag_blue)])// MrG{DRGN}
 		{
 			dropped = Drop_Item(ent, it_flag_blue);
-			ent->client->pers.inventory[ITEM_INDEX(it_flag_blue)] = 0;// MrG{DRGN} 
+			ent->client->pers.inventory[ITEM_INDEX(it_flag_blue)] = 0;// MrG{DRGN}
 			bprint_botsafe(PRINT_HIGH, "%s dropped the %s flag!\n",
 				ent->client->pers.netname, CTFTeamName(CTF_TEAM2));
 		}
@@ -1052,11 +1052,11 @@ void CTFEffects(edict_t* player)
 {
 	player->s.effects &= (EF_FLAG1 | EF_FLAG2);
 	if (player->health > 0) {
-		if (player->client->pers.inventory[ITEM_INDEX(it_flag_red)]) // MrG{DRGN} 
+		if (player->client->pers.inventory[ITEM_INDEX(it_flag_red)]) // MrG{DRGN}
 		{
 			player->s.effects |= EF_FLAG1;
 		}
-		if (player->client->pers.inventory[ITEM_INDEX(it_flag_blue)]) // MrG{DRGN} 
+		if (player->client->pers.inventory[ITEM_INDEX(it_flag_blue)]) // MrG{DRGN}
 		{
 			player->s.effects |= EF_FLAG2;
 		}
@@ -1941,7 +1941,7 @@ void CTFApplyRegeneration(edict_t* ent)
 		return;
 
 	if (ent->client->silencer_shots)
-		volume = 0.2F; 
+		volume = 0.2F;
 
 	if (!tech)
 		tech = it_tech4;
@@ -2352,7 +2352,7 @@ void SP_misc_ctf_banner(edict_t* ent)
 	if (ent->spawnflags & 1) // team2
 		ent->s.skinnum = 1;
 
-	ent->classindex = MISC_CTF_BANNER; // MrG{DRGN} 
+	ent->classindex = MISC_CTF_BANNER; // MrG{DRGN}
 	ent->s.frame = rand() % 16;
 	gi.linkentity(ent);
 
@@ -2378,7 +2378,7 @@ void SP_misc_ctf_small_banner(edict_t* ent)
 	if (ent->spawnflags & 1) // team2
 		ent->s.skinnum = 1;
 
-	ent->classindex = MISC_CTF_SMALL_BANNER; // MrG{DRGN} 
+	ent->classindex = MISC_CTF_SMALL_BANNER; // MrG{DRGN}
 	ent->s.frame = rand() % 16;
 	gi.linkentity(ent);
 
@@ -2953,13 +2953,13 @@ void CTFShowScores(edict_t* ent, pmenu_t* p)
 }
 
 pmenu_t creditsmenu[] = {
-	{ "*Quake II ",	PMENU_ALIGN_CENTER, NULL },// MrG{DRGN} 
+	{ "*Quake II ",	PMENU_ALIGN_CENTER, NULL },// MrG{DRGN}
 	{ "Chaos DM Lives v3.2.9b*",				PMENU_ALIGN_CENTER, NULL},
 	{ NULL,					PMENU_ALIGN_CENTER, NULL},
-	{  "*Programming",								PMENU_ALIGN_CENTER, NULL },// MrG{DRGN} 
-	{ "Flash (flash@telefragged.com)",					PMENU_ALIGN_CENTER, NULL},// MrG{DRGN} 
-	{ "MrG{DRGN} (aggravationq2@hotmail.com)",	PMENU_ALIGN_CENTER, NULL },// MrG{DRGN} 
-	{ "QwazyWabbit (gandalf.2004@gmail.com)",	PMENU_ALIGN_CENTER, NULL },// MrG{DRGN} 
+	{  "*Programming",								PMENU_ALIGN_CENTER, NULL },// MrG{DRGN}
+	{ "Flash (flash@telefragged.com)",					PMENU_ALIGN_CENTER, NULL},// MrG{DRGN}
+	{ "MrG{DRGN} (aggravationq2@hotmail.com)",	PMENU_ALIGN_CENTER, NULL },// MrG{DRGN}
+	{ "QwazyWabbit (gandalf.2004@gmail.com)",	PMENU_ALIGN_CENTER, NULL },// MrG{DRGN}
 	{ "*Level Design", 					PMENU_ALIGN_CENTER, NULL },
 	{ "Nat (nnp@greennet.net)",			PMENU_ALIGN_CENTER, NULL },
 	{ "Craig (car188@psu.edu)",			PMENU_ALIGN_CENTER, NULL },
@@ -3230,14 +3230,13 @@ void CTFObserver(edict_t* ent)
 {
 	char		userinfo[MAX_INFO_STRING];
 
-
 	if (ent->client->resp.spectator == true)
 		return;
 
 	// start as 'observer'
 	if (ent->movetype == MOVETYPE_NOCLIP)
 		Grapple_Reset(ent);
-	
+
 	bprint_botsafe(PRINT_HIGH, "%s has moved to the sidelines\n", ent->client->pers.netname);
 	CTFDeadDropFlag(ent);
 	CTFDeadDropTech(ent);
@@ -3439,7 +3438,7 @@ static void old_teleporter_touch(edict_t* self, edict_t* other, cplane_t* plane,
 	int			i;
 	vec3_t		forward;
 
-	// MrG{DRGN} 
+	// MrG{DRGN}
 	if (!self || !other) /* plane & surf are unused */
 	{
 		G_FreeEdict(self);

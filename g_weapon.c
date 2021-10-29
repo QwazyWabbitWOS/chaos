@@ -270,7 +270,7 @@ void blaster_touch(edict_t* self, edict_t* other, cplane_t* plane, csurface_t* s
 {
 	int		mod;
 
-	// MrG{DRGN} 
+	// MrG{DRGN}
 	if (!self || !other) /* plane and surf can be NULL */
 	{
 		G_FreeEdict(self);
@@ -449,7 +449,7 @@ void Grenade_Explode(edict_t* ent)
 
 void Grenade_Touch(edict_t* ent, edict_t* other, cplane_t* plane, csurface_t* surf)
 {
-	// MrG{DRGN} 
+	// MrG{DRGN}
 	if (!ent || !other) /* plane is unused, surf can be NULL */
 	{
 		G_FreeEdict(ent);
@@ -502,8 +502,8 @@ void fire_grenade(edict_t* self, vec3_t start, vec3_t aimdir, int damage, int sp
 	grenade = G_Spawn();
 	VectorCopy(start, grenade->s.origin);
 	VectorScale(aimdir, speed, grenade->velocity);
-	VectorMA(grenade->velocity, 200 + crandom() * 10.0F, up, grenade->velocity); 
-	VectorMA(grenade->velocity, crandom() * 10.0F, right, grenade->velocity); 
+	VectorMA(grenade->velocity, 200 + crandom() * 10.0F, up, grenade->velocity);
+	VectorMA(grenade->velocity, crandom() * 10.0F, right, grenade->velocity);
 	VectorSet(grenade->avelocity, 300, 300, 300);
 	grenade->movetype = MOVETYPE_BOUNCE;
 	grenade->clipmask = MASK_SHOT;
@@ -583,7 +583,7 @@ void rocket_touch(edict_t* ent, edict_t* other, cplane_t* plane, csurface_t* sur
 {
 	vec3_t		origin;
 
-	// MrG{DRGN} 
+	// MrG{DRGN}
 	if (!ent || !other) /* plane ad surf can be NULL */
 	{
 		G_FreeEdict(ent);
@@ -646,7 +646,7 @@ void fire_rocket(edict_t* self, vec3_t start, vec3_t dir, int damage, int speed,
 	rocket->s.modelindex = gi.modelindex("models/objects/rocket/tris.md2");
 	rocket->owner = self;
 	rocket->touch = rocket_touch;
-	rocket->nextthink = level.time + 8000.0F / speed; 
+	rocket->nextthink = level.time + 8000.0F / speed;
 	rocket->think = G_FreeEdict;
 	rocket->dmg = damage;
 	rocket->radius_dmg = radius_damage;
@@ -786,7 +786,7 @@ void bfg_explode(edict_t* self)
 
 void bfg_touch(edict_t* self, edict_t* other, cplane_t* plane, csurface_t* surf)
 {
-	// MrG{DRGN} 
+	// MrG{DRGN}
 	if (!self || !other) /* plane and surf can be NULL */
 	{
 		G_FreeEdict(self);
@@ -831,7 +831,7 @@ void bfg_touch(edict_t* self, edict_t* other, cplane_t* plane, csurface_t* surf)
 
 void bfgball_touch(edict_t* self, edict_t* other, cplane_t* plane, csurface_t* surf)
 {
-	// MrG{DRGN} 
+	// MrG{DRGN}
 	if (!self || !other) /* plane & surf are unused */
 	{
 		G_FreeEdict(other);
@@ -919,7 +919,7 @@ void bfg_think(edict_t* self)
 				gi.WriteByte(4);
 				gi.WritePosition(tr.endpos);
 				gi.WriteDir(tr.plane.normal);
-				gi.WriteByte(self->s.skinnum & 255); 
+				gi.WriteByte(self->s.skinnum & 255);
 				gi.multicast(tr.endpos, MULTICAST_PVS);
 				break;
 			}
@@ -961,7 +961,7 @@ void fire_bfg(edict_t* self, vec3_t start, vec3_t dir, int damage, int speed, fl
 	bfg->s.modelindex = gi.modelindex("sprites/s_bfg1.sp2");
 	bfg->owner = self;
 	bfg->touch = bfg_touch;
-	bfg->nextthink = level.time + 8000.0F / speed; 
+	bfg->nextthink = level.time + 8000.0F / speed;
 	bfg->think = G_FreeEdict;
 	bfg->radius_dmg = damage;
 	bfg->dmg_radius = damage_radius;

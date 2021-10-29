@@ -132,7 +132,7 @@ void P_DamageFeedback(edict_t* player)
 		client->damage_alpha = 0;
 	client->damage_alpha += count * 0.01F;
 	if (client->damage_alpha < 0.2)
-		client->damage_alpha = 0.2F; 
+		client->damage_alpha = 0.2F;
 	if (client->damage_alpha > 0.6)
 		client->damage_alpha = 0.6F;
 
@@ -286,7 +286,7 @@ void SV_CalcViewOffset(edict_t* ent)
 	ratio = (ent->client->fall_time - level.time) / FALL_TIME;
 	if (ratio < 0)
 		ratio = 0;
-	v[2] -= ratio * ent->client->fall_value * 0.4F; 
+	v[2] -= ratio * ent->client->fall_value * 0.4F;
 
 	// add bob height
 
@@ -539,7 +539,7 @@ void SV_CalcBlend(edict_t* ent)
 		ent->client->jet_remaining = ent->client->jet_framenum - level.framenum;
 
 		if (ent->client->jet_remaining == 0)
-			ent->client->pers.inventory[ITEM_INDEX(it_jetpack)] = 0; // MrG{DRGN} 
+			ent->client->pers.inventory[ITEM_INDEX(it_jetpack)] = 0; // MrG{DRGN}
 
 		if (((int)ent->client->jet_remaining % 6) == 0)
 			gi.sound(ent, CHAN_AUTO, gi.soundindex("misc/jetpack.wav"), 0.9F, ATTN_NORM, 0); /* MrG{DRGN} added  F, as this was causing truncation from double to float.*/
@@ -891,7 +891,7 @@ void G_SetClientEffects(edict_t* ent)
 	}
 
 	//ZOID
-	if (ctf->value)// MrG{DRGN} 
+	if (ctf->value)// MrG{DRGN}
 		CTFEffects(ent);
 	//ZOID
 	if (ent->client->quad_framenum > level.framenum)

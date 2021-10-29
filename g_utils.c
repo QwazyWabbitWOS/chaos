@@ -160,7 +160,7 @@ void G_UseTargets(edict_t* ent, edict_t* activator)
 		// create a temp object to fire at a later time
 		t = G_Spawn();
 		t->classname = "DelayedUse";
-		t->classindex = DELAYEDUSE; // MrG{DRGN} 
+		t->classindex = DELAYEDUSE; // MrG{DRGN}
 		t->nextthink = level.time + ent->delay;
 		t->think = Think_Delay;
 		t->activator = activator;
@@ -366,7 +366,7 @@ char* G_CopyString(const char* in)
 void G_InitEdict(edict_t* e)
 {
 	e->inuse = true;
-	e->classindex = NOCLASS; // MrG{DRGN} 
+	e->classindex = NOCLASS; // MrG{DRGN}
 	e->classname = "noclass";
 	e->gravity = 1.0;
 	e->s.number = e - g_edicts;
@@ -445,7 +445,7 @@ void G_FreeEdict(edict_t* ed)
 
 	memset(ed, 0, sizeof(*ed));
 	ed->classname = "freed";
-	ed->classindex = FREED; // MrG{DRGN} 
+	ed->classindex = FREED; // MrG{DRGN}
 	ed->freetime = level.time;
 	ed->inuse = false;
 }

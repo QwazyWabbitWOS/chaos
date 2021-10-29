@@ -17,10 +17,6 @@ void FakeDeath(edict_t* self);
 void ClientCommand2(edict_t* ent); //Chaos commands
 void ThrowUpNow(edict_t* self);
 void ShowGun(edict_t* ent);	//vwep
-void CreateCamera(edict_t* ent);
-void CamNext(edict_t* ent);
-void CamPrev(edict_t* ent);
-void CameraThink(edict_t* ent, usercmd_t* ucmd);
 void PreCacheAll(void);	//MATTHIAS
 void GetSettings(void);
 void FakeDeath(edict_t* self);
@@ -38,7 +34,7 @@ cvar_t* ban_sword, * ban_chainsaw, * ban_supershotgun,
 
 // Item banning console variables
 
-cvar_t * ban_bodyarmor, * ban_combatarmor, * ban_jacketarmor,
+cvar_t* ban_bodyarmor, * ban_combatarmor, * ban_jacketarmor,
 * ban_armorshard, * ban_powerscreen, * ban_powershield,
 * ban_ammo_grenades, * ban_ammo_flashgrenades,
 * ban_ammo_lasergrenades, * ban_ammo_poisongrenades,

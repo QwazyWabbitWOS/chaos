@@ -148,7 +148,6 @@ void Bot_Think(edict_t* ent)
 	if (!ent || !ent->client || level.intermissiontime) // MrG{DRGN} stop searching at the end of the map
 		return;
 
-
 	// init usercmd variable
 	VectorCopy(ent->client->v_angle, angles);
 	VectorSet(ent->client->ps.pmove.delta_angles, 0, 0, 0);
@@ -216,7 +215,7 @@ void Bot_Think(edict_t* ent)
 	// FLASHLIGHT
 	if (lightsoff->value > 0 && ent->client->flashlightactive == 0 && ent->health > 30)
 	{
-		Cmd_Flashlight_f(ent); 		
+		Cmd_Flashlight_f(ent);
 		/*vec3_t  start, forward, right, end = {0};
 
 		ent->client->flashlightactive = 1;
@@ -242,7 +241,7 @@ void Bot_Think(edict_t* ent)
 	}
 	else if ((lightsoff->value == 0 && ent->client->flashlightactive == true) || (ent->health <= 30 && ent->client->flashlightactive == true))
 	{
-		Shutoff_Flashlight(ent);
+		ShutOff_Flashlight(ent);
 	}
 	// PAUSE (WAIT FOR SOMETHING LIKE WAVE ANIMATIONS)
 	else if (ent->client->b_pausetime > level.time)
@@ -495,9 +494,6 @@ void Bot_Think(edict_t* ent)
 		vec3_t	dvec = { 0 };
 		vec_t	dist;
 
-		/* MrG{DRGN} no longer needed
-		it_lturret = FindItem("automatic defence turret");	//bugfix
-		*/
 		// HAVE ROCKET TURRET
 		if ((numturrets < 3)
 			&& ent->client->pers.inventory[ITEM_INDEX(it_rturret)]
@@ -842,10 +838,6 @@ void Bot_Think(edict_t* ent)
 	{
 		vec3_t	forward, dir = { 0 }, oorigin = { 0 }, wallangles;
 		trace_t	tr;
-
-		/* MrG{DRGN} no longer needed
-		it_lturret = FindItem("automatic defence turret");	//bugfix
-		*/
 
 		// HAVE ROCKET TURRET
 		if ((numturrets < 3)
@@ -1476,7 +1468,7 @@ void Bot_Attack(edict_t* ent, usercmd_t* cmd, vec3_t angles, vec3_t target)
 {
 	vec3_t	dir = { 0 }, t_angles;
 	gitem_t* weapon;
-	int temp_level = (6 - ent->client->b_botlevel); // MrG{DRGN} Arithmetic overflow: shut up code analysis 
+	int temp_level = (6 - ent->client->b_botlevel); // MrG{DRGN} Arithmetic overflow: shut up code analysis
 
 	if (ent->enemy->deadflag == DEAD_DEAD)
 		ent->enemy = NULL;
