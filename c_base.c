@@ -1,6 +1,5 @@
 ﻿#include "g_local.h"
 #include "c_botnav.h"
-#include "c_cam.h"
 #include "m_player.h"
 
 ///------------------------------------------------------------------------------------------
@@ -121,7 +120,7 @@ void GetSettings(void)
 	blindtime = gi.cvar("blindtime", "20", CVAR_SERVERINFO);
 	poisontime = gi.cvar("poisontime", "15", CVAR_SERVERINFO);
 	lasertime = gi.cvar("lasertime", "60", CVAR_SERVERINFO);
-	proxytime = gi.cvar("proxytime", "60", CVAR_SERVERINFO); /* MrG{DRGN} this was mistakenly also controlled by lasertime.*/
+	proxytime = gi.cvar("proxytime", "60", CVAR_SERVERINFO); /* MrG{DRGN} this was also controlled by lasertime.*/
 	defence_turret_ammo = gi.cvar("defence_turret_ammo", "1000", CVAR_SERVERINFO);
 	rocket_turret_ammo = gi.cvar("rocket_turret_ammo", "90", CVAR_SERVERINFO);
 	lasermine_health = gi.cvar("lasermine_health", "150", CVAR_LATCH);
@@ -135,7 +134,7 @@ void GetSettings(void)
 	drop_tech = gi.cvar("drop_tech", "1", CVAR_LATCH); /* MrG{DRGN} tech drop prevention */
 	allow_flagdrop = gi.cvar("allow_flagdrop", "1", CVAR_LATCH); /* MrG{DRGN} allow flag dropping */
 	weapon_kick = gi.cvar("weapon_kick", "1", CVAR_LATCH); /* MrG{DRGN} kickable weapons toggle */
-	tele_fire = gi.cvar("tele_fire", "0", CVAR_LATCH); /* MrG{DRGN} allow certain non-client projectiles to pass through teleporters */
+	tele_fire = gi.cvar("tele_fire", "0", CVAR_LATCH); /* MrG{DRGN} allow certain projectiles through teleporters */
 	do_respawn = gi.cvar("do_respawn", "60", CVAR_LATCH); /* MrG{DRGN} base item respawn time default 60 */
 	do_respawn_rnd = gi.cvar("do_respawn_rnd", "80", CVAR_LATCH); /* MrG{DRGN} random item respawn time default 80 */
 
@@ -1519,7 +1518,8 @@ void Cmd_Kamikaze_f(edict_t* ent)
 		cprint_botsafe(ent, PRINT_MEDIUM, "You can't go kamikaze in god mode, cheater!\n");
 		return;
 	}
-	if (ent->client->pers.inventory[ITEM_INDEX(it_rockets)] + ent->client->pers.inventory[ITEM_INDEX(it_grenades)] + ent->client->pers.inventory[ITEM_INDEX(it_homings)] < 10)
+	if (ent->client->pers.inventory[ITEM_INDEX(it_rockets)] +ent->client->pers.inventory[ITEM_INDEX(it_grenades)]
+    +ent->client->pers.inventory[ITEM_INDEX(it_homings)] < 10)
 	{
 		cprint_botsafe(ent, PRINT_MEDIUM, "You need at least 10 rockets or grenades to go kamikaze!\n");
 		return;

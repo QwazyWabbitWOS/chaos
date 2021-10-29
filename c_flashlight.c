@@ -1,5 +1,4 @@
 #include "g_local.h"
-#include "c_flashlight.h"
 
 void ShutOff_Flashlight(edict_t* ent)
 {

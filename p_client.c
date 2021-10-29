@@ -225,7 +225,7 @@ qboolean IsNeutral(edict_t* ent)
 	return false;
 }
 
-void ClientObituary(edict_t* self, edict_t* inflictor, edict_t* attacker)
+void ClientObituary(edict_t* self, edict_t* inflicter, edict_t* attacker)
 {
 	int			mod;
 	char* message;
@@ -536,11 +536,11 @@ void ClientObituary(edict_t* self, edict_t* inflictor, edict_t* attacker)
 						if ((attacker->health > 20) && infront(self, attacker))
 						{
 							if (rn < 0.4)
-								Bot_Wave(attacker, 0, 1.1F); 
+								Bot_Wave(attacker, 0, 1.1F);
 							else if ((rn >= 0.4) && (rn < 0.8))
-								Bot_Wave(attacker, 1, 1.1F); 
+								Bot_Wave(attacker, 1, 1.1F);
 							else
-								Bot_Wave(attacker, 2, 1.7F); 
+								Bot_Wave(attacker, 2, 1.7F);
 						}
 
 						i = (int)(random() * (float)chat_linecount[BOTCHAT_KILL]);
@@ -763,7 +763,7 @@ void TossClientWeapon(edict_t* self)
 LookAtKiller
 ==================
 */
-void LookAtKiller(edict_t* self, edict_t* inflictor, edict_t* attacker)
+void LookAtKiller(edict_t* self, edict_t* inflicter, edict_t* attacker)
 {
 	vec3_t		dir = { 0 };
 
@@ -771,9 +771,9 @@ void LookAtKiller(edict_t* self, edict_t* inflictor, edict_t* attacker)
 	{
 		VectorSubtract(attacker->s.origin, self->s.origin, dir);
 	}
-	else if (inflictor && inflictor != world && inflictor != self)
+	else if (inflicter && inflicter != world && inflicter != self)
 	{
-		VectorSubtract(inflictor->s.origin, self->s.origin, dir);
+		VectorSubtract(inflicter->s.origin, self->s.origin, dir);
 	}
 	else
 	{
@@ -789,7 +789,7 @@ void LookAtKiller(edict_t* self, edict_t* inflictor, edict_t* attacker)
 player_die
 ==================
 */
-void player_die(edict_t* self, edict_t* inflictor, edict_t* attacker, int damage, vec3_t point)
+void player_die(edict_t* self, edict_t* inflicter, edict_t* attacker, int damage, vec3_t point)
 {
 	VectorClear(self->avelocity);
 
@@ -816,17 +816,17 @@ void player_die(edict_t* self, edict_t* inflictor, edict_t* attacker, int damage
 		self->client->fakedeath = 0;
 
 		self->client->respawn_time = level.time + 1.0;
-		LookAtKiller(self, inflictor, attacker);
+		LookAtKiller(self, inflicter, attacker);
 		self->client->ps.pmove.pm_type = PM_DEAD;
-		ClientObituary(self, inflictor, attacker);
+		ClientObituary(self, inflicter, attacker);
 
-		sl_WriteStdLogDeath(&gi, level, self, inflictor, attacker);	// StdLog - Mark Davies
+		sl_WriteStdLogDeath(&gi, level, self, inflicter, attacker);	// StdLog - Mark Davies
 
 		/* MrG{DRGN} move CTF specific stuff here */
 		if (ctf->value)
 		{	//ZOID
 			self->s.modelindex3 = REMOVED_MODEL;	// remove linked ctf flag
-			CTFFragBonuses(self, inflictor, attacker);
+			CTFFragBonuses(self, inflicter, attacker);
 			CTFDeadDropFlag(self);
 		}
 
@@ -1454,7 +1454,7 @@ void InitBodyQue(void)
 	}
 }
 
-void body_die(edict_t* self, edict_t* inflictor, edict_t* attacker, int damage, vec3_t point)
+void body_die(edict_t* self, edict_t* inflicter, edict_t* attacker, int damage, vec3_t point)
 {
 	if (self->health < -50)
 	{

@@ -1,8 +1,6 @@
 ﻿#include "g_local.h"
 #include "c_base.h"
-
 #include "c_botai.h"
-#include "c_cam.h"
 #include "m_player.h"
 #include "gslog.h"
 
@@ -364,7 +362,7 @@ void Bot_Respawn(edict_t* ent)
 	ent->client->ps.pmove.pm_time = 14;
 }
 
-void bot_die(edict_t* self, edict_t* inflictor, edict_t* attacker, int damage, vec3_t point)
+void bot_die(edict_t* self, edict_t* inflicter, edict_t* attacker, int damage, vec3_t point)
 {
 	VectorClear(self->avelocity);
 
@@ -387,15 +385,15 @@ void bot_die(edict_t* self, edict_t* inflictor, edict_t* attacker, int damage, v
 	{
 		self->client->respawn_time = level.time + 1.0F;
 		self->client->ps.pmove.pm_type = PM_DEAD;
-		ClientObituary(self, inflictor, attacker);
+		ClientObituary(self, inflicter, attacker);
 
-		sl_WriteStdLogDeath(&gi, level, self, inflictor, attacker);	// StdLog - Mark Davies
+		sl_WriteStdLogDeath(&gi, level, self, inflicter, attacker);	// StdLog - Mark Davies
 
 		/* MrG{DRGN} move CTF specific stuff here */
 		if (ctf->value)
 		{	//ZOID
 			self->s.modelindex3 = REMOVED_MODEL;	// remove linked ctf flag
-			CTFFragBonuses(self, inflictor, attacker);
+			CTFFragBonuses(self, inflicter, attacker);
 			CTFDeadDropFlag(self);
 		}
 		TossClientWeapon(self);

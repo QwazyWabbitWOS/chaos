@@ -25,5 +25,5 @@ void Weapon_Buzzsaw(edict_t* ent);
 void Weapon_Vortex(edict_t* ent);
 void Weapon_LaserTurret(edict_t* ent);
 void Weapon_RocketTurret(edict_t* ent);
-void Turret_Die(edict_t* ent, edict_t* inflictor, edict_t* attacker, int damage, vec3_t point);
-void Proxy_Die(edict_t* self, edict_t* inflictor, edict_t* attacker, int damage, vec3_t point);
+void Turret_Die(edict_t* ent, edict_t* inflicter, edict_t* attacker, int damage, vec3_t point);
+void Proxy_Die(edict_t* self, edict_t* inflicter, edict_t* attacker, int damage, vec3_t point);

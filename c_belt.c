@@ -1,5 +1,4 @@
 #include "g_local.h"
-#include "c_belt.h"
 
 void Cmd_Belt_f(edict_t* ent)
 {

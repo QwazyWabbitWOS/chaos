@@ -1,5 +1,4 @@
 #include "g_local.h"
-#include "c_scanner.h"
 
 void ShutOff_Scanner(edict_t* ent)
 {

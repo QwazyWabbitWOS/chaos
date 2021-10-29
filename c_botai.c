@@ -1,7 +1,6 @@
 ﻿#include "g_local.h"
 #include "c_botai.h"
 #include "c_botnav.h"
-#include "c_cam.h"
 #include "m_player.h"
 
 qboolean Bot_CanHearClient(edict_t* ent, edict_t* other)
@@ -239,7 +238,8 @@ void Bot_Think(edict_t* ent)
 		gi.linkentity(ent->client->flashlight);
 		*/
 	}
-	else if ((lightsoff->value == 0 && ent->client->flashlightactive == true) || (ent->health <= 30 && ent->client->flashlightactive == true))
+	else if ((lightsoff->value == 0 && ent->client->flashlightactive == true)
+    || (ent->health <= 30 && ent->client->flashlightactive == true))
 	{
 		ShutOff_Flashlight(ent);
 	}
@@ -251,7 +251,7 @@ void Bot_Think(edict_t* ent)
 	// ENEMY
 	else if (ent->enemy)
 	{
-		vec3_t		forward, right, dir = { 0 }, oorigin = { 0 }, target;
+		vec3_t		forward, right, dir = { 0 }, oorigin = { 0 }, targ;
 		vec_t		dist;
 		trace_t		tr;
 
@@ -261,7 +261,9 @@ void Bot_Think(edict_t* ent)
 			{
 				ent->enemy = NULL;
 			}
-			else if (ent->enemy->client && (ent->enemy->client->invisible_framenum > level.framenum) && random() < 0.1)	//invisible
+			else if (ent->enemy->client
+            && (ent->enemy->client->invisible_framenum > level.framenum)
+            && random() < 0.1)	//invisible
 			{
 				ent->enemy = NULL;
 			}
@@ -333,9 +335,9 @@ void Bot_Think(edict_t* ent)
 					}
 
 					//move to enemy or away
-					VectorScale(ent->enemy->velocity, FRAMETIME, target);
-					VectorAdd(ent->enemy->s.origin, target, target);
-					Bot_Aim(ent, target, angles);
+					VectorScale(ent->enemy->velocity, FRAMETIME, targ);
+					VectorAdd(ent->enemy->s.origin, targ, targ);
+					Bot_Aim(ent, targ, angles);
 
 					VectorSubtract(ent->enemy->s.origin, ent->s.origin, dir);
 					dist = VectorLength(dir);
@@ -415,8 +417,8 @@ void Bot_Think(edict_t* ent)
 						ent->client->b_nextrandjump = level.time + 4 + 6 * random();
 					}
 
-					if (visible2(ent->s.origin, target) && infront(ent, ent->enemy))
-						Bot_Attack(ent, &cmd, angles, target);
+					if (visible2(ent->s.origin, targ) && infront(ent, ent->enemy))
+						Bot_Attack(ent, &cmd, angles, targ);
 				}
 			}
 		}
@@ -1325,12 +1327,12 @@ edict_t* Bot_FindBestAmmo(edict_t* ent)
 	return best;
 }
 
-int Bot_CalcPath(edict_t* ent, vec3_t target, vec3_t source)
+int Bot_CalcPath(edict_t* ent, vec3_t targ, vec3_t source)
 {
 	int sn, tn, i;
 
-	// can't reach our current target
-	if ((tn = Bot_FindNodeAtEnt(target)) < 0)
+	// can't reach our current targ
+	if ((tn = Bot_FindNodeAtEnt(targ)) < 0)
 	{
 		ent->client->b_currentnode = -1;
 		return 0;
@@ -1348,7 +1350,7 @@ int Bot_CalcPath(edict_t* ent, vec3_t target, vec3_t source)
 
 			//nprintf(PRINT_HIGH,"Found path from %d to %d! %d is the first node!\n", sn, tn, path_buffer[first_pathnode]);
 		}
-		else // can't reach our current target
+		else // can't reach our current targ
 		{
 			ent->client->b_currentnode = -1;
 			return 0;
@@ -1357,12 +1359,12 @@ int Bot_CalcPath(edict_t* ent, vec3_t target, vec3_t source)
 	return 1;
 }
 
-int Bot_FindPath(edict_t* ent, vec3_t target, vec3_t source)
+int Bot_FindPath(edict_t* ent, vec3_t targ, vec3_t source)
 {
 	int sn, tn;
 
-	// can't reach our current target
-	if ((tn = Bot_FindNodeAtEnt(target)) < 0)
+	// can't reach our current targ
+	if ((tn = Bot_FindNodeAtEnt(targ)) < 0)
 		return 0;
 
 	if ((sn = Bot_FindNodeAtEnt(source)) < 0)
@@ -1373,7 +1375,7 @@ int Bot_FindPath(edict_t* ent, vec3_t target, vec3_t source)
 	return 0;
 }
 
-void Bot_Aim(edict_t* ent, vec3_t target, vec3_t angles)
+void Bot_Aim(edict_t* ent, vec3_t targ, vec3_t angles)
 {
 	vec3_t dir = { 0 }, ideala;
 	float	ideal;
@@ -1381,7 +1383,7 @@ void Bot_Aim(edict_t* ent, vec3_t target, vec3_t angles)
 	float	move;
 	float	speed;
 
-	VectorSubtract(target, ent->s.origin, dir);
+	VectorSubtract(targ, ent->s.origin, dir);
 
 	if (!ent->waterlevel)
 	{
@@ -1464,7 +1466,7 @@ void Bot_Aim(edict_t* ent, vec3_t target, vec3_t angles)
 	*/
 }
 
-void Bot_Attack(edict_t* ent, usercmd_t* cmd, vec3_t angles, vec3_t target)
+void Bot_Attack(edict_t* ent, usercmd_t* cmd, vec3_t angles, vec3_t targ)
 {
 	vec3_t	dir = { 0 }, t_angles;
 	gitem_t* weapon;
@@ -1483,15 +1485,15 @@ void Bot_Attack(edict_t* ent, usercmd_t* cmd, vec3_t angles, vec3_t target)
 				return;
 			/* MrG{DRGN} ty Paril! */
 			// if the enemy is above us, aim for their head
-			if (target[2] - ent->s.origin[2] > 8)
-				target[2] += ent->enemy->viewheight;
+			if (targ[2] - ent->s.origin[2] > 8)
+				targ[2] += ent->enemy->viewheight;
 			// aim explosives at feet
 
 			/* MrG{DRGN} classindex instead of classname */
 			else if ((weapon->classindex == W_ROCKETLAUNCHER) || (ent->enemy->client && (ent->enemy->client->ps.pmove.pm_flags & PMF_DUCKED)))
-				target[2] -= 12;
+				targ[2] -= 12;
 
-			VectorSubtract(target, ent->s.origin, dir);
+			VectorSubtract(targ, ent->s.origin, dir);
 			vectoangles(dir, t_angles);
 
 			angles[0] = t_angles[0];

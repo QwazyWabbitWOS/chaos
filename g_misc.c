@@ -43,9 +43,9 @@ void VelocityForDamage(int damage, vec3_t v)
 	v[2] = 200.0F + 100.0F * random();
 
 	if (damage < 50)
-		VectorScale(v, 0.7F, v);  
+		VectorScale(v, 0.7F, v);
 	else
-		VectorScale(v, 1.2F, v);  
+		VectorScale(v, 1.2F, v);
 }
 
 void ClipGibVelocity(edict_t* ent)
@@ -90,7 +90,7 @@ void gib_touch(edict_t* self, edict_t* other, cplane_t* plane, csurface_t* surf)
 	}
 }
 
-void gib_die(edict_t* self, edict_t* inflictor, edict_t* attacker, int damage, vec3_t point)
+void gib_die(edict_t* self, edict_t* inflicter, edict_t* attacker, int damage, vec3_t point)
 {
 	G_FreeEdict(self);
 }
@@ -194,7 +194,7 @@ void ThrowClientHead(edict_t* self, int damage)
 debris
 =================
 */
-void debris_die(edict_t* self, edict_t* inflictor, edict_t* attacker, int damage, vec3_t point)
+void debris_die(edict_t* self, edict_t* inflicter, edict_t* attacker, int damage, vec3_t point)
 {
 	G_FreeEdict(self);
 }

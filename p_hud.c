@@ -57,7 +57,7 @@ void MoveClientToIntermission(edict_t* ent)
 	}
 }
 
-void BeginIntermission(edict_t* targ)
+void BeginIntermission(edict_t* target)
 {
 	int		i, n;
 	edict_t* ent, * client;
@@ -95,7 +95,7 @@ void BeginIntermission(edict_t* targ)
 	}
 
 	level.intermissiontime = level.time;
-	level.changemap = targ->map;
+	level.changemap = target->map;
 
 	if (strstr(level.changemap, "*"))
 	{

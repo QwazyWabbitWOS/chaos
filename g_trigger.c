@@ -103,7 +103,7 @@ void SP_trigger_multiple(edict_t* ent)
 		ent->noise_index = gi.soundindex("misc/trigger1.wav");
 
 	if (!ent->wait)
-		ent->wait = 0.2F; 
+		ent->wait = 0.2F;
 	ent->touch = Touch_Multi;
 	ent->movetype = MOVETYPE_NONE;
 	ent->svflags |= SVF_NOCLIENT;
@@ -358,7 +358,7 @@ void SP_trigger_always(edict_t* ent)
 	ent->classindex = TRIGGER_ALWAYS; // MrG{DRGN}
 	// we must have some delay to make sure our use targets are present
 	if (ent->delay < 0.2)
-		ent->delay = 0.2F; 
+		ent->delay = 0.2F;
 	G_UseTargets(ent, ent);
 }
 

@@ -340,7 +340,7 @@ void Turret_Explode(edict_t* ent)
 	G_FreeEdict(ent);
 }
 
-void Turret_Die(edict_t* ent, edict_t* inflictor, edict_t* attacker, int damage, vec3_t point)
+void Turret_Die(edict_t* ent, edict_t* inflicter, edict_t* attacker, int damage, vec3_t point)
 {
 	if (!ent || !attacker)
 	{
@@ -2383,7 +2383,7 @@ void Arrow_Explode(edict_t* ent)
 		mod = MOD_EXARROW_SPLASH;
 	T_RadiusDamage(ent, ent->owner, ent->dmg, ent->enemy, ent->dmg_radius, mod);
 
-	VectorMA(ent->s.origin, -0.02F, ent->velocity, origin); 
+	VectorMA(ent->s.origin, -0.02F, ent->velocity, origin);
 	gi.WriteByte(svc_temp_entity);
 	if (ent->waterlevel)
 	{
@@ -3260,7 +3260,7 @@ void LaserMine_Explode(edict_t* ent)
 	G_FreeEdict(ent);
 }
 
-void LaserMine_Die(edict_t* ent, edict_t* inflictor, edict_t* attacker, int damage, vec3_t point)
+void LaserMine_Die(edict_t* ent, edict_t* inflicter, edict_t* attacker, int damage, vec3_t point)
 {
 	if (!ent)
 	{
@@ -3999,7 +3999,7 @@ void Proxy_Explode(edict_t* ent)
 	G_FreeEdict(ent);
 }
 
-void Proxy_Die(edict_t* self, edict_t* inflictor, edict_t* attacker, int damage, vec3_t point)
+void Proxy_Die(edict_t* self, edict_t* inflicter, edict_t* attacker, int damage, vec3_t point)
 {
 	if (!self)
 	{

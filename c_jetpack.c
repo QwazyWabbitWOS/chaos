@@ -1,5 +1,4 @@
 #include "g_local.h"
-#include "c_jetpack.h"
 
 void JetpackInitVars(void)
 {

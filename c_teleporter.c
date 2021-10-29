@@ -1,5 +1,4 @@
 #include "g_local.h"
-#include "c_teleporter.h"
 
 void ShutOff_teleporter(edict_t* ent)
 {

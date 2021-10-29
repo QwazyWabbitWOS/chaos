@@ -247,7 +247,7 @@ static void loc_buildboxpoints(vec3_t p[8], vec3_t org, vec3_t mins, vec3_t maxs
 	p[7][1] -= maxs[1];
 }
 
-static qboolean loc_CanSee(edict_t* targ, edict_t* inflictor)
+static qboolean loc_CanSee(edict_t* target, edict_t* inflicter)
 {
 	trace_t	trace;
 	vec3_t	targpoints[8];
@@ -255,16 +255,16 @@ static qboolean loc_CanSee(edict_t* targ, edict_t* inflictor)
 	vec3_t viewpoint = { 0 };
 
 	// bmodels need special checking because their origin is 0,0,0
-	if (targ->movetype == MOVETYPE_PUSH)
+	if (target->movetype == MOVETYPE_PUSH)
 		return false; // bmodels not supported
 
-	loc_buildboxpoints(targpoints, targ->s.origin, targ->mins, targ->maxs);
+	loc_buildboxpoints(targpoints, target->s.origin, target->mins, target->maxs);
 
-	VectorCopy(inflictor->s.origin, viewpoint);
-	viewpoint[2] += inflictor->viewheight;
+	VectorCopy(inflicter->s.origin, viewpoint);
+	viewpoint[2] += inflicter->viewheight;
 
 	for (i = 0; i < 8; i++) {
-		trace = gi.trace(viewpoint, vec3_origin, vec3_origin, targpoints[i], inflictor, MASK_SOLID);
+		trace = gi.trace(viewpoint, vec3_origin, vec3_origin, targpoints[i], inflicter, MASK_SOLID);
 		if (trace.fraction == 1.0)
 			return true;
 	}
@@ -517,7 +517,7 @@ Calculate the bonuses for flag defense, flag carrier defense, etc.
 Note that bonuses are not cumulative.  You get one, they are in importance
 order.
 */
-void CTFFragBonuses(edict_t* targ, edict_t* inflictor, edict_t* attacker)
+void CTFFragBonuses(edict_t* target, edict_t* inflicter, edict_t* attacker)
 {
 	int i;
 	edict_t* ent;
@@ -528,15 +528,15 @@ void CTFFragBonuses(edict_t* targ, edict_t* inflictor, edict_t* attacker)
 	vec3_t v1 = { 0 }, v2 = { 0 };
 
 	// no bonus for fragging yourself
-	if (!targ->client || !attacker->client || targ == attacker)
+	if (!target->client || !attacker->client || target == attacker)
 		return;
 
-	otherteam = CTFOtherTeam(targ->client->resp.ctf_team);
+	otherteam = CTFOtherTeam(target->client->resp.ctf_team);
 	if (otherteam < 0)
 		return; // whoever died isn't on a team
 
 	// same team, if the flag at base, check to he has the enemy flag
-	if (targ->client->resp.ctf_team == CTF_TEAM1) {
+	if (target->client->resp.ctf_team == CTF_TEAM1) {
 		flag_item = it_flag_red;
 		enemy_flag_item = it_flag_blue;
 	}
@@ -546,7 +546,7 @@ void CTFFragBonuses(edict_t* targ, edict_t* inflictor, edict_t* attacker)
 	}
 
 	// did the attacker frag the flag carrier?
-	if (targ->client->pers.inventory[ITEM_INDEX(enemy_flag_item)]) {
+	if (target->client->pers.inventory[ITEM_INDEX(enemy_flag_item)]) {
 		attacker->client->resp.ctf_lastfraggedcarrier = level.time;
 		attacker->client->resp.score += CTF_FRAG_CARRIER_BONUS;
 		cprint_botsafe(attacker, PRINT_MEDIUM, "BONUS: %d points for fragging enemy flag carrier.\n",
@@ -571,8 +571,8 @@ void CTFFragBonuses(edict_t* targ, edict_t* inflictor, edict_t* attacker)
 		return;
 	}
 
-	if (targ->client->resp.ctf_lasthurtcarrier &&
-		level.time - targ->client->resp.ctf_lasthurtcarrier < CTF_CARRIER_DANGER_PROTECT_TIMEOUT &&
+	if (target->client->resp.ctf_lasthurtcarrier &&
+		level.time - target->client->resp.ctf_lasthurtcarrier < CTF_CARRIER_DANGER_PROTECT_TIMEOUT &&
 		!attacker->client->pers.inventory[ITEM_INDEX(flag_item)]) {
 		// attacker is on the same team as the flag carrier and
 		// fragged a guy who hurt our flag carrier
@@ -632,12 +632,12 @@ void CTFFragBonuses(edict_t* targ, edict_t* inflictor, edict_t* attacker)
 	// ok we have the attackers flag and a pointer to the carrier
 
 	// check to see if we are defending the base's flag
-	VectorSubtract(targ->s.origin, flag->s.origin, v1);
+	VectorSubtract(target->s.origin, flag->s.origin, v1);
 	VectorSubtract(attacker->s.origin, flag->s.origin, v2);
 
 	if (VectorLength(v1) < CTF_TARGET_PROTECT_RADIUS ||
 		VectorLength(v2) < CTF_TARGET_PROTECT_RADIUS ||
-		loc_CanSee(flag, targ) || loc_CanSee(flag, attacker)) {
+		loc_CanSee(flag, target) || loc_CanSee(flag, attacker)) {
 		// we defended the base flag
 		attacker->client->resp.score += CTF_FLAG_DEFENSE_BONUS;
 		if (flag->solid == SOLID_NOT)
@@ -661,12 +661,12 @@ void CTFFragBonuses(edict_t* targ, edict_t* inflictor, edict_t* attacker)
 	}
 
 	if (carrier && carrier != attacker) {
-		VectorSubtract(targ->s.origin, carrier->s.origin, v1);
+		VectorSubtract(target->s.origin, carrier->s.origin, v1);
 		VectorSubtract(attacker->s.origin, carrier->s.origin, v1);
 
 		if (VectorLength(v1) < CTF_ATTACKER_PROTECT_RADIUS ||
 			VectorLength(v2) < CTF_ATTACKER_PROTECT_RADIUS ||
-			loc_CanSee(carrier, targ) || loc_CanSee(carrier, attacker)) {
+			loc_CanSee(carrier, target) || loc_CanSee(carrier, attacker)) {
 			attacker->client->resp.score += CTF_CARRIER_PROTECT_BONUS;
 			bprint_botsafe(PRINT_MEDIUM, "%s defends the %s's flag carrier.\n",
 				attacker->client->pers.netname,
@@ -686,23 +686,23 @@ void CTFFragBonuses(edict_t* targ, edict_t* inflictor, edict_t* attacker)
 	}
 }
 
-void CTFCheckHurtCarrier(edict_t* targ, edict_t* attacker)
+void CTFCheckHurtCarrier(edict_t* target, edict_t* attacker)
 {
 	gitem_t* flag_item;
 
-	if (!targ || !attacker)
+	if (!target || !attacker)
 		return;
 
-	if (!targ->client || !attacker->client)
+	if (!target->client || !attacker->client)
 		return;
 
-	if (targ->client->resp.ctf_team == CTF_TEAM1)
+	if (target->client->resp.ctf_team == CTF_TEAM1)
 		flag_item = it_flag_blue;
 	else
 		flag_item = it_flag_red;
 
-	if (targ->client->pers.inventory[ITEM_INDEX(flag_item)] &&
-		targ->client->resp.ctf_team != attacker->client->resp.ctf_team)
+	if (target->client->pers.inventory[ITEM_INDEX(flag_item)] &&
+		target->client->resp.ctf_team != attacker->client->resp.ctf_team)
 		attacker->client->resp.ctf_lasthurtcarrier = level.time;
 }
 
@@ -1851,7 +1851,7 @@ int CTFApplyResistance(edict_t* ent, int dmg)
 	float volume = 1.0F; /* MrG{DRGN} Explicit float. */
 
 	if (ent->client && ent->client->silencer_shots)
-		volume = 0.2F; 
+		volume = 0.2F;
 
 	if (!tech)
 		tech = (it_tech1);
@@ -1881,7 +1881,7 @@ qboolean CTFApplyStrengthSound(edict_t* ent)
 	float volume = 1.0F; /* MrG{DRGN} Explicit float. */
 
 	if (ent->client && ent->client->silencer_shots)
-		volume = 0.2F; 
+		volume = 0.2F;
 
 	if (!tech)
 		tech = it_tech2;
@@ -2194,17 +2194,17 @@ static void CTFSay_Team_Weapon(edict_t* who, char* buf)
 static void CTFSay_Team_Sight(edict_t* who, char* buf)
 {
 	int i;
-	edict_t* targ;
+	edict_t* target;
 	int n = 0;
 	char s[1024] = { 0 };
 	char s2[1024] = { 0 };
 
 	*s = *s2 = 0;
 	for (i = 1; i <= maxclients->value; i++) {
-		targ = g_edicts + i;
-		if (!targ->inuse ||
-			targ == who ||
-			!loc_CanSee(targ, who))
+		target = g_edicts + i;
+		if (!target->inuse ||
+			target == who ||
+			!loc_CanSee(target, who))
 			continue;
 		if (*s2) {
 			if (strlen(s) + strlen(s2) + 3 < sizeof(s)) {
@@ -2215,7 +2215,7 @@ static void CTFSay_Team_Sight(edict_t* who, char* buf)
 			}
 			n++;
 		}
-		strcpy(s2, targ->client->pers.netname);
+		strcpy(s2, target->client->pers.netname);
 	}
 	if (*s2) {
 		if (strlen(s) + strlen(s2) + 6 < sizeof(s)) {
@@ -4099,7 +4099,7 @@ void CTFWarp(edict_t* ent)
 void CTFBoot(edict_t* ent)
 {
 	int i;
-	edict_t* targ;
+	edict_t* target;
 	char text[80];
 
 	if (!ent->client->resp.admin) {
@@ -4123,8 +4123,8 @@ void CTFBoot(edict_t* ent)
 		return;
 	}
 
-	targ = g_edicts + i;
-	if (!targ->inuse) {
+	target = g_edicts + i;
+	if (!target->inuse) {
 		cprint_botsafe(ent, PRINT_HIGH, "That player number is not connected.\n");
 		return;
 	}
