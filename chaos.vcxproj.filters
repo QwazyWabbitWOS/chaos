@@ -27,9 +27,6 @@
     <ClInclude Include="c_botnav.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="c_item.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="c_weapon.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -93,6 +90,9 @@
     <ClInclude Include="c_cam.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="c_invisibility.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="game.def">
@@ -122,7 +122,7 @@
     <ClCompile Include="c_cam.c">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="c_item.c">
+    <ClCompile Include="c_invisibility.c">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="c_weapon.c">

@@ -852,7 +852,7 @@ qboolean SVCmd_FilterPacket(char* from);
 #include "c_cam.h"
 #include "c_flashlight.h"
 #include "c_grapple.h"
-#include "c_item.h"
+#include "c_invisibility.h"
 #include "c_jetpack.h"
 #include "c_maplist.h"
 #include "c_motd.h"

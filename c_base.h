@@ -122,3 +122,5 @@ cvar_t* weapon_kick; /* MrG{DRGN} kickable weapons toggle */
 cvar_t* tele_fire; /* MrG{DRGN} allow certain non-client projectiles to pass through teleporters */
 cvar_t* do_respawn;	/* MrG{DRGN} base item respawn time default 60 */
 cvar_t* do_respawn_rnd;	/* MrG{DRGN} random item respawn time default 80 */
+
+#define LAYOUT_MAX_LENGTH              1400
