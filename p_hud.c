@@ -191,7 +191,7 @@ void DeathmatchScoreboardMessage(edict_t* ent, edict_t* killer /* MrG{DRGN} can 
 		return;
 
 	if (ent->client->showscores || ent->client->showinventory)
-		ent->client->scanneractive = 0;
+		Shutoff_Scanner(ent);
 
 	if (ent->client->menu && ent->client->showscores)
 	{

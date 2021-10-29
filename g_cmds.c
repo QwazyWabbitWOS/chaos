@@ -560,7 +560,7 @@ void Cmd_Inven_f(edict_t* ent)
 	}
 	gi.unicast(ent, true);
 
-	cl->scanneractive = 0;	//MATTHIAS
+	Shutoff_Scanner(ent);
 }
 
 /*

@@ -20,6 +20,7 @@ void ShutOff(edict_t* ent)
 	{
 		Shutoff_Grapple(ent);
 	}
+	Shutoff_Scanner(ent);
 
 	if (ent->client->teleporter)
 		Shutoff_teleporter(ent);
@@ -38,9 +39,7 @@ void ShutOff(edict_t* ent)
 	ent->client->b_currentnode = -1;
 	ent->client->b_waittime = 0;
 	ent->client->fakedeath = 0;
-	ent->client->kamikazetime = 0;
-	ent->client->scanneractive = 0;
-	ent->client->nextscannercell = 0;
+	ent->client->kamikazetime = 0;	
 	ent->client->jet_framenum = 0;
 	ent->client->jet_remaining = 0;
 	ent->client->invisible = 0;

@@ -45,8 +45,6 @@ void CreateCamera(edict_t* ent)
 	ent->client->BlindTime = 0;
 	ent->client->PoisonTime = 0;
 	ent->client->invisible = 0;
-	ent->client->scanneractive = 0;
-	ent->client->nextscannercell = 0;
 	ent->client->quad_framenum = 0;
 	ent->client->invincible_framenum = 0;
 	ent->client->invisible_framenum = 0;
@@ -56,6 +54,7 @@ void CreateCamera(edict_t* ent)
 
 	Shutoff_Flashlight(ent);
 	Shutoff_Grapple(ent);
+	Shutoff_Scanner(ent);
 
 	if (ent->client->teleporter)
 		Shutoff_teleporter(ent);

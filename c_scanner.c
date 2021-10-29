@@ -1,6 +1,12 @@
 #include "g_local.h"
 #include "c_scanner.h"
 
+void ShutOff_Scanner(edict_t* ent)
+{
+	ent->client->scanneractive = 0;
+	ent->client->nextscannercell = level.time;
+}
+
 void ShowScanner(edict_t* ent, char* layout)
 {
 	edict_t* player = g_edicts;
