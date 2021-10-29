@@ -186,7 +186,6 @@ void GetSettings(void)
 
 	ban_quaddamage = gi.cvar("ban_quaddamage", "0", CVAR_LATCH);
 	ban_invulnerability = gi.cvar("ban_invulnerability", "0", CVAR_LATCH);
-	ban_invisibility = gi.cvar("ban_invisibility", "0", CVAR_LATCH);
 	ban_adrenaline = gi.cvar("ban_adrenaline", "0", CVAR_LATCH);
 	ban_silencer = gi.cvar("ban_silencer", "0", CVAR_LATCH);
 	ban_rebreather = gi.cvar("ban_rebreather", "0", CVAR_LATCH);
@@ -233,6 +232,7 @@ void GetSettings(void)
 	start_ammo_slugs = gi.cvar("start_ammo_slugs", "0", CVAR_LATCH);
 
 	GrappleInitVars();
+	InvisibilityInitVars();
 	JetpackInitVars();
 	/* Armor - 0|1|2 Initiate 0%, 100% or 200% of max allowed in each class */
 	start_bodyarmor = gi.cvar("start_bodyarmor", "0", CVAR_LATCH);
@@ -1518,8 +1518,8 @@ void Cmd_Kamikaze_f(edict_t* ent)
 		cprint_botsafe(ent, PRINT_MEDIUM, "You can't go kamikaze in god mode, cheater!\n");
 		return;
 	}
-	if (ent->client->pers.inventory[ITEM_INDEX(it_rockets)] +ent->client->pers.inventory[ITEM_INDEX(it_grenades)]
-    +ent->client->pers.inventory[ITEM_INDEX(it_homings)] < 10)
+	if (ent->client->pers.inventory[ITEM_INDEX(it_rockets)] + ent->client->pers.inventory[ITEM_INDEX(it_grenades)]
+		+ ent->client->pers.inventory[ITEM_INDEX(it_homings)] < 10)
 	{
 		cprint_botsafe(ent, PRINT_MEDIUM, "You need at least 10 rockets or grenades to go kamikaze!\n");
 		return;

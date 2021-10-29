@@ -43,7 +43,7 @@ cvar_t* ban_bodyarmor, * ban_combatarmor, * ban_jacketarmor,
 * ban_ammo_explosivearrows, * ban_ammo_poisonarrows,
 * ban_ammo_cells, * ban_ammo_rockets, * ban_ammo_homingmissiles,
 * ban_ammo_buzzes, * ban_ammo_slugs, * ban_quaddamage,
-* ban_jetpack, * ban_invulnerability, * ban_invisibility,
+* ban_jetpack, * ban_invulnerability,
 * ban_silencer, * ban_rebreather, * ban_environmentsuit,
 * ban_adrenaline, * ban_health, * ban_health_small,
 * ban_health_large, * ban_health_mega;

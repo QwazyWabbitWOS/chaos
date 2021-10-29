@@ -1,7 +1,7 @@
 #ifndef C_JETPACK_H
 #define C_JETPACK_H
 
-cvar_t* ban_hetpack, * start_jetpack;
+cvar_t* ban_jetpack, * start_jetpack;
 void JetpackInitVars(void);
 
 gitem_t* it_jetpack;

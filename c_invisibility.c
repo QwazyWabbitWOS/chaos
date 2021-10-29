@@ -1,5 +1,10 @@
 ﻿#include "g_local.h"
 
+void InvisibilityInitVars(void)
+{
+	ban_invisibility = gi.cvar("ban_invisibility", "0", CVAR_LATCH);
+}
+
 void Use_Invisibility(edict_t* ent, gitem_t* item)
 {
 	if (!ent || !item)
