@@ -849,7 +849,7 @@ void player_die(edict_t* self, edict_t* inflictor, edict_t* attacker, int damage
 		Jet_BecomeExplosion(self, damage);
 		self->client->jet_framenum = 0;
 	}
-	self->client->scanneractive = 0;	//MATTHIAS
+	Shutoff_Scanner(self);
 	self->client->beltactive = 0; /* MrG{DRGN} fix for being warned about not having enough cells to run belt, if you die with the belt active */
 	// clear inventory
 	memset(self->client->pers.inventory, 0, sizeof(self->client->pers.inventory));
