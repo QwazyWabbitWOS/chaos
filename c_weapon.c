@@ -2052,7 +2052,7 @@ void arrow_touch(edict_t* self, edict_t* other, cplane_t* plane, csurface_t* sur
 			G_FreeEdict(self);
 		}
 	}
-	else if ((Q_stricmp(other->classname, "func_door") == 0) || (Q_stricmp(other->classname, "func_plat") == 0)) //door or plat
+	else if ((other->classindex == FUNC_DOOR) || (other->classindex == FUNC_PLAT)) //door or plat
 	{
 		self->s.sound = 0;
 		self->movetype = MOVETYPE_BOUNCE;
@@ -2230,7 +2230,7 @@ void parrow_touch(edict_t* self, edict_t* other, cplane_t* plane, csurface_t* su
 			}
 		}
 	}
-	else if ((Q_stricmp(other->classname, "func_door") == 0) || (Q_stricmp(other->classname, "func_plat") == 0)) //door or plat
+	else if ((other->classindex == FUNC_DOOR) || (other->classindex == FUNC_PLAT)) //door or plat
 	{
 		self->s.sound = 0;
 		self->movetype = MOVETYPE_BOUNCE;
@@ -4595,25 +4595,25 @@ int Valid_Target(edict_t* ent, edict_t* blip)
 	if (blip == ent)
 		return false;
 
-	if ((Q_stricmp(ent->classname, "vortex") != 0))	 /* MrG{DRGN} so proxys don't hunt teammates.*/
+	if (ent->classindex == VORTEX_RINGS)	 /* MrG{DRGN} so vortexs don't activly hunt teammates.*/
 	{
 		if (TeamMembers(ent->owner, blip) ||
 			TeamMembers(ent->owner, blip->owner))
 			return false;
 	}
-	if (blip->solid == SOLID_NOT) /* MrG{DRGN} Don't let the vortex suck and kill Pre join game spectators */
+	if (blip->client && blip->client->resp.spectator == true) /* MrG{DRGN} Don't let the vortex suck and kill Pre join game spectators */
 		return false;
 	/*
 	 * The Vortex doesn't care who launched it or who is one what team,
 	 * it just eats everything in its path
 	 */
-	if (Q_stricmp(ent->classname, "vortex") /*== 0)*/)
+	if (ent->classindex == VORTEX_RINGS)
 		/*
 	  {
 		if (blip->item || blip->client)
 			return true;
 	  }
-	  else // These are the quick rules for Turret's, Proxies, ect...
+	  else // These are the quick rules for Turret's, Proxies, etc...
 	  */
 	{
 		/*
@@ -4622,7 +4622,7 @@ int Valid_Target(edict_t* ent, edict_t* blip)
 		 * sub-function that automatically handles infront, visible,
 		 * invisible, and darkness.  And of course, the vortex
 		 * shouldn't ever need to use it, but turrets, proxies, even
-		 * havok bot's should likely use the same function to decide
+		 * Havok bots should likely use the same function to decide
 		 * if a target is visible.
 		 */
 		 /*		if( !visible(ent,blip) ||
@@ -4660,13 +4660,13 @@ int Valid_Target(edict_t* ent, edict_t* blip)
 		 * if the roll fails then we fall back to the turret/proxy
 		 * rules, else we are an evil proxy and that's life. */
 
-		if (Q_stricmp(ent->classname, "proxymine") == 0)
+		if (ent->classindex == PROXYMINE)
 		{
-			if ((Q_stricmp(blip->classname, "rocket_turret") == 0) &&
+			if ((blip->classindex == RTURRET) &&
 				(blip->owner != ent->owner))
 				return true;
 
-			if ((Q_stricmp(blip->classname, "laser_turret") == 0) &&
+			if ((blip->classindex == LTURRET) &&
 				(blip->owner != ent->owner))
 				return true;
 
@@ -4675,11 +4675,11 @@ int Valid_Target(edict_t* ent, edict_t* blip)
 				(blip != ent->owner) && !TeamMembers(ent->owner, blip->owner))
 				return true;
 
-			if ((Q_stricmp(blip->classname, "bot") == 0) &&
+			if ((blip->classindex == BOT) &&
 				(blip != ent->owner) && !TeamMembers(ent->owner, blip->owner))
 				return true;
 
-			if (Q_stricmp(blip->classname, "proxymine") == 0)
+			if (blip->classindex == PROXYMINE)
 			{
 				if (blip->owner == ent->owner)
 				{
@@ -4694,7 +4694,7 @@ int Valid_Target(edict_t* ent, edict_t* blip)
 			/* Roll for an EvilProxy */
 			if (random() < 0.05 &&
 				ent->owner &&
-				(Q_stricmp(ent->owner->classname, "bot") != 0))
+				(ent->owner->classindex != BOT))
 			{
 				if (blip == ent->owner ||
 					blip->owner == ent->owner ||
@@ -4726,77 +4726,6 @@ int Valid_Target(edict_t* ent, edict_t* blip)
 		 * Note:  This currently has no support for Proxies and Turrets
 		 * 	  and I doubt it will ever really be needed for them.
 		 */
-		 /* MrG{DRGN} classindex instead of classname  avoids that overhead */
-		/*
-		switch (blip->classname[0])
-		{
-		case 'a':
-			if (Q_stricmp(blip->classname, "arrow") == 0)
-				return true;
-			break;
-		case 'b':
-			if (Q_stricmp(blip->classname, "bolt") == 0
-				|| Q_stricmp(blip->classname, "buzz") == 0
-				|| Q_stricmp(blip->classname, "bfg blast") == 0
-				|| Q_stricmp(blip->classname, "blackholestuff") == 0)
-				return true;
-			break;
-
-		case 'e':
-			if (Q_stricmp(blip->classname, "explosive_arrow") == 0)
-				return true;
-			break;
-
-		case 'f':
-			if (Q_stricmp(blip->classname, "flashgrenade") == 0)
-				return true;
-			break;
-
-		case 'g':
-			if (Q_stricmp(blip->classname, "grenade") == 0
-				|| Q_stricmp(blip->classname, "gib") == 0)
-				return true;
-			break;
-
-		case 'h':
-			if (Q_stricmp(blip->classname, "hgrenade") == 0
-				|| Q_stricmp(blip->classname, "homing") == 0)
-				return true;
-			break;
-		case 'i':
-			if (Q_stricmp(blip->classname, "item_flag_team1") == 0
-				|| Q_stricmp(blip->classname, "item_flag_team2") == 0
-				|| Q_stricmp(blip->classname, "item_tech1") == 0
-				|| Q_stricmp(blip->classname, "item_tech2") == 0
-				|| Q_stricmp(blip->classname, "item_tech3") == 0
-				|| Q_stricmp(blip->classname, "item_tech4") == 0)
-				return false;
-
-		case 'l':
-			if (Q_stricmp(blip->classname, "lasermine") == 0
-				|| Q_stricmp(blip->classname, "laser_turret") == 0)
-				return true;
-			break;
-
-		case 'p':
-			if (Q_stricmp(blip->classname, "poisongrenade") == 0
-				|| Q_stricmp(blip->classname, "poison_arrow") == 0
-				|| Q_stricmp(blip->classname, "proxymine") == 0)
-				return true;
-			break;
-		case 'r':
-			if (Q_stricmp(blip->classname, "rocket") == 0
-				|| Q_stricmp(blip->classname, "rocket_turret") == 0)
-				return true;
-			break;
-		case 't':
-			if (Q_stricmp(blip->classname, "turret_rocket") == 0)
-				return true;
-			break;
-		default:
-			return false;
-			break;
-		}  */
 
 		if (blip->classindex == ARROW
 			|| blip->classindex == BOLT
@@ -4840,7 +4769,7 @@ void Vortex_Think(edict_t* ent)
 	edict_t* stuff, * blip = NULL;
 	vec3_t	blipdir = { 0 };
 	vec_t	dist;
-	static	edict_t* black;
+	static edict_t* black = NULL;
 
 	if (!ent)
 	{
@@ -5053,7 +4982,7 @@ void fire_vortex(edict_t* self, vec3_t start, vec3_t dir, int speed)
 	vortex->nextthink = level.time + 30;
 	vortex->think = Vortex_Free;
 	vortex->classname = "vortex";
-
+	vortex->classindex = VORTEX_RINGS;
 	gi.linkentity(vortex);
 
 	vortex_pointer = vortex;
