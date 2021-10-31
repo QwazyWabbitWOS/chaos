@@ -346,7 +346,7 @@ void G_RunFrame(void)
 		if (i > 0 && i <= maxclients->value)
 		{
 			ClientBeginServerFrame(ent);
-			if (ent->classindex == BOT)
+			if (ent->classindex != BOT)
 				continue;							//MATTHIAS
 		}
 
