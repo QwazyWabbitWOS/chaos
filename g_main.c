@@ -346,7 +346,7 @@ void G_RunFrame(void)
 		if (i > 0 && i <= maxclients->value)
 		{
 			ClientBeginServerFrame(ent);
-			if ((Q_stricmp(ent->classname, "bot") != 0)) /* MrG{DRGN} simplify */
+			if (ent->classindex == BOT)
 				continue;							//MATTHIAS
 		}
 

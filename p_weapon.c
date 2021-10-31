@@ -327,7 +327,7 @@ void ChangeWeapon(edict_t* ent)
 
 	ShowGun(ent);
 
-	if (Q_stricmp(ent->classname, "bot") == 0)
+	if (ent->classindex == BOT)
 		ent->client->b_nextwchange = level.time + 5;
 }
 
