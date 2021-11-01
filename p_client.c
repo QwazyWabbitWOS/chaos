@@ -712,10 +712,10 @@ void TossClientWeapon(edict_t* self)
 		item = NULL;
 
 	// FWP Fix for fakedeath ammo cheat...if fakedeath, and ammo > default ammo for weapon, toss and
-		//     subtract default ammo, else dont toss
+		//     subtract default ammo, else don't toss
 	if ((item) && (self->health > 0))
 	{
-		// FWP decrease ammo unless weapon doesnt use ammo
+		// FWP decrease ammo unless weapon doesn't use ammo
 
 		if (item->ammo)
 		{
