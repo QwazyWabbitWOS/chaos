@@ -239,7 +239,7 @@ void Bot_Think(edict_t* ent)
 		*/
 	}
 	else if ((lightsoff->value == 0 && ent->client->flashlightactive == true)
-    || (ent->health <= 30 && ent->client->flashlightactive == true))
+		|| (ent->health <= 30 && ent->client->flashlightactive == true))
 	{
 		ShutOff_Flashlight(ent);
 	}
@@ -262,8 +262,8 @@ void Bot_Think(edict_t* ent)
 				ent->enemy = NULL;
 			}
 			else if (ent->enemy->client
-            && (ent->enemy->client->invisible_framenum > level.framenum)
-            && random() < 0.1)	//invisible
+				&& (ent->enemy->client->invisible_framenum > level.framenum)
+				&& random() < 0.1)	//invisible
 			{
 				ent->enemy = NULL;
 			}

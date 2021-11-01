@@ -156,7 +156,7 @@ void Jet_ApplySparks(edict_t* ent)
 
 void Jet_ApplyRolling(edict_t* ent, vec3_t right)
 {
-	float roll, value = 0.05F, sign = -1; 
+	float roll, value = 0.05F, sign = -1;
 
 	if (!ent)
 	{

@@ -252,8 +252,8 @@ void BecomeExplosion1(edict_t* self)
 	}
 	//ZOID
 
-	if (self->classindex == RTURRET
-		|| self->classindex == LTURRET)
+	if (Q_stricmp(self->classname, "rocket_turret") == 0
+		|| Q_stricmp(self->classname, "laser_turret") == 0)
 		numturrets--;
 
 	gi.WriteByte(svc_temp_entity);
@@ -274,8 +274,8 @@ void BecomeExplosion1(edict_t* self)
 
 void BecomeExplosion2(edict_t* self)
 {
-	if (self->classindex == RTURRET
-		|| self->classindex == LTURRET)
+	if (Q_stricmp(self->classname, "rocket_turret") == 0
+		|| Q_stricmp(self->classname, "laser_turret") == 0)
 		numturrets--;
 
 	gi.WriteByte(svc_temp_entity);
