@@ -3710,7 +3710,6 @@ gitem_t	itemlist[] =
 		NULL, 0,
 		NULL,
 		/* icon */		NULL,
-		/* icon */		NULL,
 		/* pickup */	"Machinegun",
 		0,
 		0,
@@ -3729,6 +3728,7 @@ gitem_t	itemlist[] =
 	*/
 	{
 		W_CHAINGUN,/* classindex */
+		"weapon_chaingun",
 		NULL,
 		NULL,
 		NULL,
