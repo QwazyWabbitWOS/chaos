@@ -811,7 +811,6 @@ qboolean	Pickup_Health(edict_t* ent, edict_t* other);
 qboolean	Pickup_Ammo(edict_t* ent, edict_t* other);
 void NoAmmoWeaponChange(edict_t* ent);
 void Blaster_Fire(edict_t* ent, vec3_t g_offset, int damage, qboolean hyper, int effect);
-void Weapon_Shotgun(edict_t* ent);
 void Weapon_SuperShotgun(edict_t* ent);
 void Weapon_HyperBlaster(edict_t* ent);
 void Weapon_RocketLauncher(edict_t* ent);

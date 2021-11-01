@@ -1514,7 +1514,7 @@ void Weapon_Chaingun(edict_t* ent)
 SHOTGUN / SUPERSHOTGUN
 
 ======================================================================
-*/
+
 
 void weapon_shotgun_fire(edict_t* ent)
 {
@@ -1540,7 +1540,7 @@ void weapon_shotgun_fire(edict_t* ent)
 	VectorScale(forward, -2, ent->client->kick_origin);
 	ent->client->kick_angles[0] = -2;
 
-	VectorSet(offset, 0, 8, ent->viewheight - 8.0F); /* MrG{DRGN} fix conversion from int to vec_t */
+	VectorSet(offset, 0, 8, ent->viewheight - 8.0F); 
 	P_ProjectSource(ent->client, ent->s.origin, offset, forward, right, start);
 
 	if (is_quad)
@@ -1573,7 +1573,7 @@ void Weapon_Shotgun(edict_t* ent)
 	static int	fire_frames[] = { 8, 9, 0 };
 
 	Weapon_Generic(ent, 7, 18, 36, 39, pause_frames, fire_frames, weapon_shotgun_fire);
-}
+}	*/
 
 void weapon_supershotgun_fire(edict_t* ent)
 {
