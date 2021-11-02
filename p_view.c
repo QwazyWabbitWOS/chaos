@@ -1021,7 +1021,7 @@ void G_SetClientFrame(edict_t* ent)
 		duck = false;
 
 	//HAVOC
-	if (Q_stricmp(ent->classname, "bot") == 0)
+	if (ent->classindex == BOT)
 		duck = ent->client->b_duck;
 
 	if (xyspeed)
@@ -1224,7 +1224,7 @@ void ClientEndServerFrame(edict_t* ent)
 	// should be determined by the client
 	SV_CalcBlend(ent);
 
-	if (Q_stricmp(ent->classname, "bot") != 0)
+	if (ent->classindex != BOT)
 		G_SetStats(ent);
 
 	G_SetClientEvent(ent);
@@ -1243,7 +1243,7 @@ void ClientEndServerFrame(edict_t* ent)
 	VectorClear(ent->client->kick_angles);
 
 	// if the scoreboard is up, update it
-	if (Q_stricmp(ent->classname, "bot") != 0)
+	if (ent->classindex != BOT)
 	{
 		if ((ent->client->showscores || ent->client->scanneractive > 0) &&
 			!(level.framenum & SCANNER_UPDATE_FREQ))

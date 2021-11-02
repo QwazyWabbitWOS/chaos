@@ -1007,7 +1007,7 @@ void Cmd_Say_f(edict_t* ent, qboolean team, qboolean arg0)
 			continue;
 		if (!other->client)
 			continue;
-		if (Q_stricmp(other->classname, "bot") == 0)
+		if (other->classindex == BOT)
 			continue;
 		if (team)
 		{

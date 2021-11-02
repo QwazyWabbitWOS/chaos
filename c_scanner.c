@@ -18,7 +18,6 @@ void ShowScanner(edict_t* ent, char* layout)
 		return;
 	}
 
-	/* MrG{DRGN this is probably faster than the long series of if else statemnts that was here */
 	switch (ent->client->scanneractive)
 	{
 	case 1:
