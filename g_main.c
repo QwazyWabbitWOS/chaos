@@ -346,7 +346,7 @@ void G_RunFrame(void)
 		if (i > 0 && i <= maxclients->value)
 		{
 			ClientBeginServerFrame(ent);
-			if (ent->classindex != BOT) 
+			if ((Q_stricmp(ent->classname, "bot") != 0)) /* MrG{DRGN} this line breaks bot respawn if we compare by classindex */
 				continue;							//MATTHIAS
 		}
 
