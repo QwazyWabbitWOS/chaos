@@ -1785,7 +1785,7 @@ void Bot_FindActivator(edict_t* ent)
 			continue;
 		if (activator->avoidtime > level.time)
 			continue;
-
+		/*
 		if (Q_stricmp(activator->classname, "misc_teleporter") == 0
 			&& visible(ent, activator))
 		{
@@ -1803,7 +1803,17 @@ void Bot_FindActivator(edict_t* ent)
 		{
 			ent->client->b_activator = activator;
 			break;
+		}*/
+
+		if (visible(ent, activator) &&
+			(activator->classindex == MISC_TELEPORTER ||
+				activator->classindex == FUNC_BUTTON ||
+				activator->classindex == FUNC_DOOR))
+		{
+			ent->client->b_activator = activator;
+			break;
 		}
+
 	}
 }
 

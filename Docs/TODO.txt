@@ -52,10 +52,6 @@ In progress:
 
 	* upgrade Havok Bots
 
-	* port code to quake2 3.20 source code - CTF still needs work. I did qshared.h, and game.h a while ago. 
-
-	* Bugs with CTF spectator modes - working through them
-
 	* Game occasionally sig11's in Linux and Segfaults in Win95, possibly memory
 	  leak somewhere (this will be painfull to fix)
 	  // FWP One segfault cause (turret crash) fixed.  May be others. 
@@ -71,6 +67,10 @@ Done:
 
 	* reduce strength of explosive tips on crossbows - already variable via the server cvar config
 
-	* Drop_Weapon and Pickup Weapon have been reworked so they function properly 
+	* Drop_Weapon and Pickup Weapon have been reworked so they function properly
+
+	* port code to quake2 3.20 source code 
+
+	* Bugs with CTF spectator modes 
 
 
