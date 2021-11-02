@@ -455,7 +455,8 @@ edict_t* SelectCTFSpawnPoint(edict_t* ent)
 
 	ent->client->resp.ctf_state = CTF_STATE_PLAYING;
 
-	switch (ent->client->resp.ctf_team) {
+	switch (ent->client->resp.ctf_team)
+	{
 	case CTF_TEAM1:
 		cname = "info_player_team1";
 		break;
@@ -496,7 +497,7 @@ edict_t* SelectCTFSpawnPoint(edict_t* ent)
 	else
 		count -= 2;
 
-	selection = rand() % count;
+	selection = count ? rand() % count : 0;
 
 	spot = NULL;
 	do
@@ -1427,7 +1428,7 @@ void CTFScoreboardMessage(edict_t* ent, edict_t* killer)
 		if (maxsize - len > strlen(entry)) {
 			strcat(string, entry);
 			len = strlen(string);
-		}
+	}
 #else
 		* entry = 0;
 #endif
@@ -1502,7 +1503,7 @@ void CTFScoreboardMessage(edict_t* ent, edict_t* killer)
 				last[1] = i;
 			}
 		}
-	}
+}
 
 	// put in spectators if we have enough room
 	if (last[0] > last[1])
@@ -4016,7 +4017,7 @@ void CTFPlayerList(edict_t* ent)
 					Q_strncatz(text, sizeof(text), string);
 			}
 		}
-	}
+}
 #endif
 
 	// number, name, connect time, ping, score, admin
