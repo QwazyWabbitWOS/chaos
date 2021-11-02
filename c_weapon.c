@@ -4595,127 +4595,127 @@ int Valid_Target(edict_t* ent, edict_t* blip)
 	if (blip == ent)
 		return false;
 
-	if (ent->classindex == VORTEX_RINGS)	 /* MrG{DRGN} so vortexs don't activly hunt teammates.*/
+	if ((Q_stricmp(ent->classname, "vortex") != 0))	 /* MrG{DRGN} so proxys don't hunt teammates.*/
 	{
 		if (TeamMembers(ent->owner, blip) ||
 			TeamMembers(ent->owner, blip->owner))
 			return false;
 	}
-	if (blip->client && blip->client->resp.spectator == true) /* MrG{DRGN} Don't let the vortex suck and kill Pre join game spectators */
+	if (blip->solid == SOLID_NOT) /* MrG{DRGN} Don't let the vortex suck and kill Pre join game spectators */
 		return false;
 	/*
 	 * The Vortex doesn't care who launched it or who is one what team,
 	 * it just eats everything in its path
 	 */
-	if (ent->classindex == VORTEX_RINGS)
-		/*
-	  {
-		if (blip->item || blip->client)
-			return true;
-	  }
-	  else // These are the quick rules for Turret's, Proxies, etc...
-	  */
-	{
-		/*
-		 * Can See
-		 * FIXME:  The whole "Can See" concept should be a
-		 * sub-function that automatically handles infront, visible,
-		 * invisible, and darkness.  And of course, the vortex
-		 * shouldn't ever need to use it, but turrets, proxies, even
-		 * Havok bots should likely use the same function to decide
-		 * if a target is visible.
-		 */
-		 /*		if( !visible(ent,blip) ||
-			   !infront(ent,blip) ||
-			   blip->health <= 0 )
-			 return false;
-
-		 */
-		if (blip->health <= 0)
-			return false;
-
-		/*
-		 * Turret's and Proxies should only be attacking other
-		 * Turrets, proxies, and other players, i.e. items that take
-		 * damage.
-		 */
-		if (!blip->takedamage)
-			return false;
-
-		/* Check for invisible?  */
-		if (blip->client && blip->client->invisible)
-			return false;
-
-		/*		if( blip == ent->owner ||
-			blip->owner == ent->owner ||
-			TeamMembers(ent->owner, blip) ||
-			TeamMembers(ent->owner, blip->owner) )
-		  return false;
-
-		*/
-
-		/*
-		 * Here we need to do a check to set up Evil Proxies
-		 * If we are a proxymine we roll the dice for an evil proxy,
-		 * if the roll fails then we fall back to the turret/proxy
-		 * rules, else we are an evil proxy and that's life. */
-
-		if (ent->classindex == PROXYMINE)
+		if (Q_stricmp(ent->classname, "vortex") /*== 0)*/)
+			/*
+		  {
+			if (blip->item || blip->client)
+				return true;
+		  }
+		  else // These are the quick rules for Turret's, Proxies, ect...
+		  */
 		{
-			if ((blip->classindex == RTURRET) &&
-				(blip->owner != ent->owner))
-				return true;
+			/*
+			 * Can See
+			 * FIXME:  The whole "Can See" concept should be a
+			 * sub-function that automatically handles infront, visible,
+			 * invisible, and darkness.  And of course, the vortex
+			 * shouldn't ever need to use it, but turrets, proxies, even
+			 * havok bot's should likely use the same function to decide
+			 * if a target is visible.
+			 */
+			 /*		if( !visible(ent,blip) ||
+				   !infront(ent,blip) ||
+				   blip->health <= 0 )
+				 return false;
 
-			if ((blip->classindex == LTURRET) &&
-				(blip->owner != ent->owner))
-				return true;
+			 */
+			if (blip->health <= 0)
+				return false;
 
-			/* MrG{DRGN} integer comparison vs string comparison.*/
-			if (/*(Q_stricmp(blip->classname, "player") == 0)*/ (blip->classindex == PLAYER) &&
-				(blip != ent->owner) && !TeamMembers(ent->owner, blip->owner))
-				return true;
+			/*
+			 * Turret's and Proxies should only be attacking other
+			 * Turrets, proxies, and other players, i.e. items that take
+			 * damage.
+			 */
+			if (!blip->takedamage)
+				return false;
 
-			if ((blip->classindex == BOT) &&
-				(blip != ent->owner) && !TeamMembers(ent->owner, blip->owner))
-				return true;
+			/* Check for invisible?  */
+			if (blip->client && blip->client->invisible)
+				return false;
 
-			if (blip->classindex == PROXYMINE)
+			/*		if( blip == ent->owner ||
+				blip->owner == ent->owner ||
+				TeamMembers(ent->owner, blip) ||
+				TeamMembers(ent->owner, blip->owner) )
+			  return false;
+
+			*/
+
+			/*
+			 * Here we need to do a check to set up Evil Proxies
+			 * If we are a proxymine we roll the dice for an evil proxy,
+			 * if the roll fails then we fall back to the turret/proxy
+			 * rules, else we are an evil proxy and that's life. */
+
+			if (Q_stricmp(ent->classname, "proxymine") == 0)
 			{
-				if (blip->owner == ent->owner)
-				{
-					return (false);
-				}
-				else
-				{
-					return (true);
-				}
-			}
-
-			/* Roll for an EvilProxy */
-			if (random() < 0.05 &&
-				ent->owner &&
-				(ent->owner->classindex != BOT))
-			{
-				if (blip == ent->owner ||
-					blip->owner == ent->owner ||
-					TeamMembers(ent->owner, blip) ||
-					TeamMembers(ent->owner, blip->owner))
+				if ((Q_stricmp(blip->classname, "rocket_turret") == 0) &&
+					(blip->owner != ent->owner))
 					return true;
+
+				if ((Q_stricmp(blip->classname, "laser_turret") == 0) &&
+					(blip->owner != ent->owner))
+					return true;
+
+				/* MrG{DRGN} integer comparison vs string comparison.*/
+				if (/*(Q_stricmp(blip->classname, "player") == 0)*/ (blip->classindex == PLAYER) &&
+					(blip != ent->owner) && !TeamMembers(ent->owner, blip->owner))
+					return true;
+
+				if ((Q_stricmp(blip->classname, "bot") == 0) &&
+					(blip != ent->owner) && !TeamMembers(ent->owner, blip->owner))
+					return true;
+
+				if (Q_stricmp(blip->classname, "proxymine") == 0)
+				{
+					if (blip->owner == ent->owner)
+					{
+						return (false);
+					}
+					else
+					{
+						return (true);
+					}
+				}
+
+				/* Roll for an EvilProxy */
+				if (random() < 0.05 &&
+					ent->owner &&
+					(Q_stricmp(ent->owner->classname, "bot") != 0))
+				{
+					if (blip == ent->owner ||
+						blip->owner == ent->owner ||
+						TeamMembers(ent->owner, blip) ||
+						TeamMembers(ent->owner, blip->owner))
+						return true;
+				}
 			}
-		}
 
-		//		else	// Something other than Evil Proxies, at the time of
-		//{ 	// this writing this was only Proxies and Turrets
-		// }
-		if (blip->client && blip->client->camera)
+			//		else	// Something other than Evil Proxies, at the time of
+			//{ 	// this writing this was only Proxies and Turrets
+			// }
+			if (blip->client && blip->client->camera)
+				return false;
+
 			return false;
-
-		return false;
-	}
-	else {
-		if (blip->client) {
-			return true;
 		}
+		else {
+			if (blip->client) {
+				return true;
+			}
 
 		/*
 		 * This part of the search takes up a lot of CPU time,
