@@ -221,7 +221,7 @@ void PutBotInServer(edict_t* ent)
 	}
 
 	SelectSpawnPoint(ent, origin, angles);
-
+	DbgPrintf("%s selected %f, %f, %f for %s time: %f\n", __func__, origin[0], origin[1], origin[2], ent->client->pers.netname, level.time);
 	index = ent - g_edicts - 1;
 
 	// deathmatch wipes most client data every spawn
