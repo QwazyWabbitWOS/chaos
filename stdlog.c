@@ -314,7 +314,7 @@ static int _sl_MaybeOpenFile(game_import_t* gi)
 
 			if (NULL == StdLogFile)
 			{
-				gi->error("Couldn't open %s", pName, strerror(errno));
+				gi->error("Couldn't open %s. %s", pName, strerror(errno));
 			}
 		}
 	}

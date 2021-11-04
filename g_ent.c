@@ -11,7 +11,7 @@ static char* ReadEntFile(char* filename)
 	{
 		if ((fp = fopen(filename, "r")) == NULL)
 		{
-			gi.cprintf(NULL, PRINT_HIGH, "Could not find file \"%s\".\n\n", filename, strerror(errno));
+			gi.cprintf(NULL, PRINT_HIGH, "Could not find file \"%s\". %s\n\n", filename, strerror(errno));
 			break;
 		}
 

@@ -424,7 +424,7 @@ qboolean Bot_SaveNodes(void)
 
 	if ((output = fopen(file, "wb")) == NULL)    /* MrG{DRGN} check the return */
 	{
-		gi.dprintf("Unable to open file! %s.\n", strerror(errno));
+		gi.dprintf("Unable to open file %s! %s.\n", file, strerror(errno));
 		return false;
 	}
 

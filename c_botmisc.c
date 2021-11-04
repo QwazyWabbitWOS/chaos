@@ -1621,7 +1621,7 @@ void Load_BotChat(void)
 	if (!fp)
 	{
 		//QwazyWabbit gracefully fail if file doesn't exist.
-		gi.dprintf("Unable to open file! %s.\n", strerror(errno));
+		gi.dprintf("Unable to open file %s! %s.\n", filename, strerror(errno));
 		gi.dprintf("Forcing botchat OFF\n");
 		gi.cvar_set("botchat", "0");
 		return;

@@ -499,7 +499,7 @@ vec_t VectorLength(vec3_t v)
 	length = 0;
 	for (i = 0; i < 3; i++)
 		length += v[i] * v[i];
-	length = sqrt(length);		// FIXME
+	length = sqrtf(length);
 
 	return length;
 }

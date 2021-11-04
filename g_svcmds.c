@@ -241,7 +241,7 @@ static void SVCmd_WriteIP_f(void)
 
 	if ((f = fopen(name, "wb")) == NULL)    /* MrG{DRGN} check the return */
 	{
-		gi.cprintf(NULL, PRINT_HIGH, "Couldn't open %s\n", name, strerror(errno));
+		gi.cprintf(NULL, PRINT_HIGH, "Couldn't open %s. %s\n", name, strerror(errno));
 		return;
 	}
 

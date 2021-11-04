@@ -13,7 +13,7 @@ void LoadMOTD(void)
 
 	if ((fp = fopen(file, "r")) == NULL)
 	{
-		gi.cprintf(NULL, PRINT_HIGH, "Could not find file \"%s\".\n\n", file, strerror(errno));
+		gi.cprintf(NULL, PRINT_HIGH, "Could not find file \"%s\" %s.\n\n", file, strerror(errno));
 		return;
 	}
 
