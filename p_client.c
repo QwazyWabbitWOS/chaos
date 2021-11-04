@@ -524,9 +524,12 @@ void ClientObituary(edict_t* self, edict_t* inflicter, edict_t* attacker)
 						attacker->client->resp.score--;
 					else
 						attacker->client->resp.score++;
+					//QW: bots can't score by telefragging other bots
+					if (mod == MOD_TELEFRAG && attacker->bot_player && self->bot_player)
+						attacker->client->resp.score--;
 				}
 
-				if ((strcmp(attacker->classname, "bot") == 0) && visible(self, attacker))
+				if (attacker->bot_player && visible(self, attacker))
 				{
 					float	rn = random();
 					int		i;
@@ -592,15 +595,7 @@ void ClientObituary(edict_t* self, edict_t* inflicter, edict_t* attacker)
 					if (message)
 					{
 						bprint_botsafe(PRINT_MEDIUM, "%s %s\n", self->client->pers.netname, message);
-
-						if (deathmatch->value)
-						{
-							/* MrG{DRGN} Duplicate branches!
-							if (ff)
-								attacker->owner->client->resp.score--;
-							else*/
-							attacker->owner->client->resp.score--;
-						}
+						attacker->owner->client->resp.score--; //QW self-frag always loses a point.
 					}
 				}
 				else
@@ -682,7 +677,6 @@ void ClientObituary(edict_t* self, edict_t* inflicter, edict_t* attacker)
 					}
 				}
 			}
-
 			return;
 		}
 	}

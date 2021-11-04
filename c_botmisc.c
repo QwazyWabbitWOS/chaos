@@ -221,7 +221,6 @@ void PutBotInServer(edict_t* ent)
 	}
 
 	SelectSpawnPoint(ent, origin, angles);
-	DbgPrintf("%s selected %f, %f, %f for %s time: %f\n", __func__, origin[0], origin[1], origin[2], ent->client->pers.netname, level.time);
 	index = ent - g_edicts - 1;
 
 	// deathmatch wipes most client data every spawn
@@ -259,6 +258,7 @@ void PutBotInServer(edict_t* ent)
 	ent->air_finished = level.time + 12;
 	ent->clipmask = MASK_PLAYERSOLID;
 	ent->think = Bot_Think;
+	ent->nextthink = level.time + FRAMETIME * 5;  //QW// chill for 1/2 second
 	ent->touch = NULL;
 	ent->pain = bot_pain;
 	ent->die = bot_die;
@@ -342,13 +342,14 @@ void PutBotInServer(edict_t* ent)
 	VectorCopy(ent->s.angles, ent->client->ps.viewangles);
 	VectorCopy(ent->s.angles, ent->client->v_angle);
 
-	//gi.unlinkentity(ent);
 	KillBox(ent);
-	gi.linkentity(ent);
+
+	DbgPrintf("%s spawned %s at %f, %f, %f time: %f\n", __func__, ent->client->pers.netname, origin[0], origin[1], origin[2], level.time);
 
 	ent->nextthink = level.time + FRAMETIME;
 	ent->client->newweapon = ent->client->pers.weapon;
 	ChangeWeapon(ent); // calls ShowGun
+	gi.linkentity(ent);
 }
 
 void Bot_Respawn(edict_t* ent)
