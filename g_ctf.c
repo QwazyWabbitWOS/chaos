@@ -2232,7 +2232,7 @@ static void CTFSay_Team_Sight(edict_t* who, char* buf)
 
 void CTFSay_Team(edict_t* who, char* msg)
 {
-	char outmsg[512];
+	char outmsg[512] = { 0 };
 	char buf[1024];
 	int i;
 	char* p;
@@ -2244,8 +2244,6 @@ void CTFSay_Team(edict_t* who, char* msg)
 	/* MrG{DRGN} Spectators don't have teams and shouldn't be spamming macros */
 	if (who->client->resp.spectator)
 		return;
-
-	outmsg[0] = 0;
 
 	if (*msg == '\"') {
 		msg[strlen(msg) - 1] = 0;
@@ -3928,10 +3926,9 @@ void CTFStats(edict_t* ent)
 	int i, e;
 	ghost_t* g;
 	char string[80];
-	char text[1024];
+	char text[1024] = { 0 };
 	edict_t* e2;
 
-	*text = 0;
 	if (ctfgame.match == MATCH_SETUP)
 	{
 		for (i = 1; i <= maxclients->value; i++)
@@ -3998,7 +3995,7 @@ void CTFPlayerList(edict_t* ent)
 {
 	int i;
 	char string[80];
-	char text[LAYOUT_MAX_LENGTH];
+	char text[LAYOUT_MAX_LENGTH] = { 0 };
 	edict_t* e2;
 
 #if 0
@@ -4022,7 +4019,6 @@ void CTFPlayerList(edict_t* ent)
 
 	// number, name, connect time, ping, score, admin
 
-	* text = 0;
 	for (i = 1; i <= maxclients->value; i++) {
 		e2 = g_edicts + i;
 		if (!e2->inuse)

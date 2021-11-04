@@ -46,7 +46,7 @@ void ShutOff(edict_t* ent)
 }
 
 //
-// Gross, ugly, disgustuing hack section
+// Gross, ugly, disgusting hack section
 //
 
 // this function is an ugly as hell hack to fix some map flaws
@@ -60,7 +60,7 @@ void ShutOff(edict_t* ent)
 static void SP_FixCoopSpots(edict_t* self)
 {
 	edict_t* spot;
-	vec3_t	d;
+	vec3_t	d = { 0 };
 
 	spot = NULL;
 
@@ -1957,6 +1957,7 @@ void ClientDisconnect(edict_t* ent)
 	if (!ent->client)
 		return;
 
+	bprint_botsafe(PRINT_HIGH, "%s disconnected\n", ent->client->pers.netname);
 	sl_LogPlayerDisconnect(&gi, level, ent);	// StdLog - Mark Davies
 
 	//MATTHIAS
@@ -2006,7 +2007,7 @@ void ClientDisconnect(edict_t* ent)
 	CTFDeadDropTech(ent);
 	//ZOID
 
-		// send effect
+	// send effect
 	gi.WriteByte(svc_muzzleflash);
 	gi.WriteShort(ent - g_edicts);
 	gi.WriteByte(MZ_LOGOUT);
@@ -2029,7 +2030,6 @@ void ClientDisconnect(edict_t* ent)
 
 	playernum = ent - g_edicts - 1;
 	gi.configstring(CS_PLAYERSKINS + playernum, "");
-	bprint_botsafe(PRINT_HIGH, "%s disconnected\n", ent->client->pers.netname);
 }
 
 //==============================================================

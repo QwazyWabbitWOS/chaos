@@ -13,13 +13,14 @@
 void SVCmd_addbots_f(void)
 {
 	int		i, num, bot_skill, team;
-	char	name[64], model[128];
+	char	name[MAX_INFO_VALUE];
+	char	model[MAX_INFO_VALUE];
 
 	num = atoi(gi.argv(2)); // quantity
 	bot_skill = atoi(gi.argv(3)); // skill
 	team = atoi(gi.argv(4)); // team number
 	Com_strcpy(name, sizeof name, gi.argv(5)); // name
-	int max_bots = ((int)maxclients->value - 2);  // reserve slots
+	int max_bots = ((int)maxclients->value - numplayers - 2);  // reserve slots
 
 	if (bot_skill == 0)
 		bot_skill = 3;
@@ -145,7 +146,7 @@ void Bot_Create(int accuracy_level, int team, char* name, char* skin)
 
 	G_InitEdict(bot); // create a bot edict
 
-	//InitClientResp(bot->client); // Initialize and assign to team if ctf.
+	InitClientResp(bot->client); // Initialize and assign to team if ctf.
 	InitClientPersistent(bot->client); // Initial inventory & select wep.
 	Info_SetValueForKey(bot->client->pers.userinfo, "name", name);
 	Info_SetValueForKey(bot->client->pers.userinfo, "skin", skin);
