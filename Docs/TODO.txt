@@ -14,7 +14,7 @@ No:
 
 	* increase cell consumption on scanner and anti-grav belt - let's not alienate our already reduced player-base. It works just fine as is. 
 
-	* make anti-grav belt act as some sort of minor protection against vortex (as a cvar)
+	* make anti-grav belt act as some sort of minor protection against vortex
  
 	* light saber upgrade for sword possibly - overdone in other mods and is really just an old Qdevels tutorial. 
 
@@ -72,5 +72,17 @@ Done:
 	* port code to quake2 3.20 source code 
 
 	* Bugs with CTF spectator modes 
+
+	* Map Rotation reworking - sv ml commands still work sv nextmap doesn't break rotation.
+	  At he bottom of your server.cfg use the new cvars g_maplistfile & g_maplistmode like so:
+	  	  
+	set g_maplistfile "chaosdm.txt"
+	gamemap intro
+	set g_maplistmode = "2" // 1 for sequential, 2 for random map selection
+	// EOF
+
+
+
+	* 
 
 

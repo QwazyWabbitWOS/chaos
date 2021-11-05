@@ -475,3 +475,8 @@ set turprox_fx "1"     // enable new turret & proxy effects                     
    Bugs with stat_xarmor resolved.  You only get one kind at startup
 
    Bot improvements so they no longer try to get more than one grapple, jetpack, or keys.
+
+   Fov issues when coming from cam/fakedeath
+
+   Map rotation up to 512 maps
+
