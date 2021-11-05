@@ -73,12 +73,12 @@ Done:
 
 	* Bugs with CTF spectator modes 
 
-	* Map Rotation reworking - sv ml commands still work sv nextmap doesn't break rotation.
+	* Map Rotation reworked - sv ml commands still work sv nextmap doesn't break rotation.
 	  At he bottom of your server.cfg use the new cvars g_maplistfile & g_maplistmode like so:
 	  	  
-	set g_maplistfile "chaosdm.txt"
-	gamemap intro
-	set g_maplistmode = "2" // 1 for sequential, 2 for random map selection
+	set g_maplistfile "chaosdm.txt" // file containing the maplist
+	gamemap intro // server's starting map
+	set g_maplistmode "2" // 1 for sequential, 2 for random map selection
 	// EOF
 
 
