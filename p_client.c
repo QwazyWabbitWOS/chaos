@@ -2291,7 +2291,7 @@ void ClientThink(edict_t* ent, usercmd_t* ucmd)
 		}
 	}
 	//HEARTBEAT
-	if (level.time > client->nextheartbeat && ent->health < 40 && ent->health > 0)
+	if (level.time > client->nextheartbeat && ent->health < 40 && ent->health > 0 && !ent->client->resp.spectator) // MrG{DRGN} prevent spectator noises)
 	{
 		gi.sound(ent, CHAN_VOICE, gi.soundindex("misc/heartbeat.wav"), 1, ATTN_IDLE, 0);
 
@@ -2301,7 +2301,7 @@ void ClientThink(edict_t* ent, usercmd_t* ucmd)
 			client->nextheartbeat = level.time + 0.6;
 	}
 	//RANDOM SNEZZE
-	if (level.time > client->nextrandomsound)
+	if (level.time > client->nextrandomsound && !ent->client->resp.spectator) // MrG{DRGN} prevent spectator noises
 	{
 		float rn = random();
 
