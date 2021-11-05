@@ -1,5 +1,4 @@
 ﻿#include "g_local.h"
-#include "c_cam.h"
 #include "gslog.h"
 
 game_locals_t	game;
