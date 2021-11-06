@@ -50,7 +50,7 @@ void SelectNextItem(edict_t* ent, int itflags)
 
 	cl = ent->client;
 
-	if (cl->camera)
+	if (cl->camera && !cl->menu)
 	{
 		CamNext(ent);
 		return;
@@ -61,6 +61,7 @@ void SelectNextItem(edict_t* ent, int itflags)
 		PMenu_Next(ent);
 		return;
 	}
+
 	// scan  for the next valid one
 	for (i = 1; i <= MAX_ITEMS; i++)
 	{
