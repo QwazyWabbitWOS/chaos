@@ -743,10 +743,10 @@ void fire_bfg(edict_t* self, vec3_t start, vec3_t dir, int damage, int speed, fl
 void rocket_touch(edict_t* ent, edict_t* other, cplane_t* plane, csurface_t* surf);
 void Grenade_Touch(edict_t* ent, edict_t* other, cplane_t* plane, csurface_t* surf);
 void Grenade_Explode(edict_t* ent);
+
 //
 // p_client.c
 //
-
 void ShutOff(edict_t* ent);
 void respawn(edict_t* self);
 void SelectSpawnPoint(edict_t* ent, vec3_t origin, vec3_t angles);
@@ -761,6 +761,7 @@ void ClientUserinfoChanged(edict_t* ent, char* userinfo);
 qboolean ClientConnect(edict_t* ent, char* userinfo);
 void CopyToBodyQue(edict_t* ent);
 void ClientThink(edict_t* ent, usercmd_t* ucmd);
+void AdjustPlayerList(edict_t* ent);
 void ClientDisconnect(edict_t* ent);
 void ClientObituary(edict_t* self, edict_t* inflicter, edict_t* attacker);
 void Use_Plat(edict_t* ent, edict_t* other, edict_t* activator);

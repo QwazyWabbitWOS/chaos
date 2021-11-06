@@ -1773,6 +1773,7 @@ void ClientBegin(edict_t* ent)
 	if (numplayers < 0)
 		numplayers = 0;
 
+	//QW the players array is a list of all connected clients
 	players[numplayers] = ent;	//MATTHIAS
 	numplayers++;
 
@@ -1942,23 +1943,10 @@ qboolean ClientConnect(edict_t* ent, char* userinfo)
 	return true;
 }
 
-/*
-===========
-ClientDisconnect
-
-Called when a player drops from the server.
-Will not be called between levels.
-============
-*/
-void ClientDisconnect(edict_t* ent)
+//QW adjust player list
+void AdjustPlayerList(edict_t* ent)
 {
-	int		playernum, i;
-
-	if (!ent->client)
-		return;
-
-	bprint_botsafe(PRINT_HIGH, "%s disconnected\n", ent->client->pers.netname);
-	sl_LogPlayerDisconnect(&gi, level, ent);	// StdLog - Mark Davies
+	int i;
 
 	//MATTHIAS
 	for (i = 0; i < numplayers; i++)
@@ -1969,15 +1957,33 @@ void ClientDisconnect(edict_t* ent)
 	for (; i < numplayers; i++)
 		players[i - 1] = players[i];
 
-	players[i - 1] = NULL;
+	players[i - 1] = NULL; //QW end of the list
 	//MATTHIAS
-
 	numplayers--;
+}
+
+/*
+===========
+ClientDisconnect
+
+Called when a player drops from the server.
+Will not be called between levels.
+============
+*/
+void ClientDisconnect(edict_t* ent)
+{
+	int		playernum;
+
+	if (!ent->client)
+		return;
+
+	bprint_botsafe(PRINT_HIGH, "%s disconnected\n", ent->client->pers.netname);
+	sl_LogPlayerDisconnect(&gi, level, ent);	// StdLog - Mark Davies
+
+	AdjustPlayerList(ent);
 
 	/* MrG{DRGN} shut things off when we leave */
-
 	ent->client->kamikazetime = 0;
-
 	ShutOff_Flashlight(ent);
 	ShutOff_Grapple(ent);
 	ent->client->grenade_blew_up = false;
@@ -1986,7 +1992,6 @@ void ClientDisconnect(edict_t* ent)
 	ent->client->BlindTime = 0;
 	ent->client->PoisonTime = 0;
 	ent->client->invisible = 0;
-
 	ent->client->quad_framenum = 0;
 	ent->client->invincible_framenum = 0;
 	ent->client->invisible_framenum = 0;
@@ -1999,7 +2004,7 @@ void ClientDisconnect(edict_t* ent)
 
 	if (ent->client->resp.ctf_team == 1)
 		numred--;
-	else if (ent->client->resp.ctf_team == 2)
+	if (ent->client->resp.ctf_team == 2)
 		numblue--;
 
 	//ZOID

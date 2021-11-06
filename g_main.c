@@ -315,7 +315,6 @@ void G_RunFrame(void)
 	level.time = level.framenum * FRAMETIME;
 
 	// exit intermissions
-
 	if (level.exitintermission)
 	{
 		ExitLevel();

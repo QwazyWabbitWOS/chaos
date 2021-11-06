@@ -20,7 +20,7 @@ void SVCmd_addbots_f(void)
 	bot_skill = atoi(gi.argv(3)); // skill
 	team = atoi(gi.argv(4)); // team number
 	Com_strcpy(name, sizeof name, gi.argv(5)); // name
-	int max_bots = ((int)maxclients->value - numplayers - 2);  // reserve slots
+	int max_bots = ((int)maxclients->value - CountClients() - 2);  // reserve slots
 
 	if (bot_skill == 0)
 		bot_skill = 3;
@@ -345,7 +345,7 @@ void PutBotInServer(edict_t* ent)
 
 	KillBox(ent);
 
-	DbgPrintf("%s spawned %s at %f, %f, %f time: %f\n", __func__, ent->client->pers.netname, origin[0], origin[1], origin[2], level.time);
+	//DbgPrintf("%s spawned %s at %f, %f, %f time: %f\n", __func__, ent->client->pers.netname, origin[0], origin[1], origin[2], level.time);
 
 	ent->nextthink = level.time + FRAMETIME;
 	ent->client->newweapon = ent->client->pers.weapon;
@@ -1731,4 +1731,20 @@ char* Get_RandomBotSkin(void)
 	case 27: return "cyborg/tyr574"; break;
 	default: return "male/major"; break;
 	}
+}
+
+//return number of players plus bots
+int CountClients(void)
+{
+	int i;
+	edict_t* ent;
+
+	int count = 0;
+	for (i = 0; i < maxclients->value; i++)
+	{
+		ent = g_edicts + 1 + i;
+		if (ent->inuse)
+			count++;
+	}
+	return count;
 }
