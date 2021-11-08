@@ -1,0 +1,30 @@
+;
+; Chaos Deathmatch maplist file
+;
+; Syntax: <mapname>-<ctf>-<lightsoff>
+; Do not delete the semicolon at the end of this file!
+;
+
+q2dm7h2o-00
+amuhn_dm-00
+aak!-00
+nandb_01-10
+q2ctf1-10
+chaosdm_scooby-00
+wos_temple-00
+chaosdm_xen-00
+chaosdm_hdlberg-00
+schaos1-00
+unrdm1-00
+chaosdm_doom-00
+Garden_0f_death-00
+littlman-01
+chaosdm1-02
+laser_x7-00
+Jsoup_bspk1-10
+nandb_04-10
+chaosdm_tnt-00
+doommap-00
+nandb_02-10
+adsadm3-00
+;

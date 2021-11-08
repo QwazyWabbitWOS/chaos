@@ -76,11 +76,23 @@ Done:
 	* Map Rotation reworked - sv ml commands still work sv nextmap doesn't break rotation.
 	  At he bottom of your server.cfg use the new cvars g_maplistfile & g_maplistmode like so:
 	  	  
-	set g_maplistfile "chaosdm.txt" // file containing the maplist
-	gamemap intro // server's starting map
-	set g_maplistmode "2" // 1 for sequential, 2 for random map selection
-	// EOF
+		set g_maplistfile "chaosdm.txt" // file containing the maplist
+		gamemap intro // server's starting map
+		set g_maplistmode "2" // 1 for sequential, 2 for random map selection
+		// EOF
+	
+	* Map rotation up to 512 maps and random rotation will not repeat a map until the list has run through. 
 
+	* Fixed bugs where the proxies were targeting teammates in ctf mode, or spectators before they'd join a team.
+
+	* Bugs with stat_xarmor resolved.  You only get one kind at startup
+
+	* Bot improvements so they no longer try to get more than one grapple, jetpack, or keys.
+	  The same goes for weapons with dmflags set so weapons stay.
+
+	* Fov issues when coming from cam/fakedeath
+
+	
 
 
 	* 

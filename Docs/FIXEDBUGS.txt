@@ -468,15 +468,4 @@ set turprox_fx "1"     // enable new turret & proxy effects                     
    ==============================================================================
    */
 
-   Fixed bugs where the proxies were targeting teammates in ctf mode, or spectators before they'd join a team.
-
-   Added some checks to prevent bots from fixating on keys, multiple grappling hooks, or multiple jetpacks. 
-
-   Bugs with stat_xarmor resolved.  You only get one kind at startup
-
-   Bot improvements so they no longer try to get more than one grapple, jetpack, or keys.
-
-   Fov issues when coming from cam/fakedeath
-
-   Map rotation up to 512 maps
 

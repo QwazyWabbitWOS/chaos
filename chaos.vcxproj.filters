@@ -87,10 +87,10 @@
     <ClInclude Include="c_motd.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="c_invisibility.h">
+    <ClInclude Include="c_cam.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="c_cam.h">
+    <ClInclude Include="c_invisibility.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
@@ -120,6 +120,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="c_cam.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="c_invisibility.c">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="c_weapon.c">
@@ -227,9 +230,6 @@
     <ClCompile Include="c_motd.c">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="c_invisibility.c">
-      <Filter>Source Files</Filter>
-    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Text Include="Docs\FIXEDBUGS.txt">
@@ -242,6 +242,9 @@
       <Filter>Docs</Filter>
     </Text>
     <Text Include="Docs\TODO.txt">
+      <Filter>Docs</Filter>
+    </Text>
+    <Text Include="example_maplist.txt">
       <Filter>Docs</Filter>
     </Text>
   </ItemGroup>
