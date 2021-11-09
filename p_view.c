@@ -437,8 +437,8 @@ void SV_CalcBlend(edict_t* ent)
 
 	//FLASHGRENADE
 	if (ent->client->BlindTime > 0)
-	{		/* MrG{DRGN} integer comparison vs string comparison.*/
-		if (ent->classindex == PLAYER)/*strcmp(ent->classname,"player") == 0)*/
+	{		
+		if (ent->classindex == PLAYER)
 		{
 			if (ent->client->BlindBase)
 				alpha = ent->client->BlindTime / ent->client->BlindBase;
@@ -462,8 +462,8 @@ void SV_CalcBlend(edict_t* ent)
 		static float blend = 0.4F;
 		static int updown = 1;
 
-		/* MrG{DRGN} integer comparison vs string comparison.*/
-		if (ent->classindex == PLAYER)/*strcmp(ent->classname,"player") == 0)*/
+	
+		if (ent->classindex == PLAYER)
 		{
 			if (updown == 1)
 			{
@@ -500,7 +500,7 @@ void SV_CalcBlend(edict_t* ent)
 	else if ((ent->client->PoisonTime && ent->client->PoisonTime > 0) || ent->client->pers.health <= 0)	   /* MrG{DRGN} or dead */
 	{
 		/* MrG{DRGN} integer comparison vs string comparison.*/
-		if (ent->classindex == PLAYER)/*strcmp(ent->classname,"player") == 0)*/
+		if (ent->classindex == PLAYER)
 		{
 			VectorClear(ent->velocity);
 		}
