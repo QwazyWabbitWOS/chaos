@@ -1701,10 +1701,6 @@ void PutClientInServer(edict_t* ent)
 			return;
 	//ZOID
 
-	if (!KillBox(ent))
-	{	// could't spawn in?
-	}
-
 	gi.linkentity(ent);
 
 	// force the current weapon up
