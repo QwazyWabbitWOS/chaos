@@ -705,22 +705,6 @@ void LaserTurret_Think(edict_t* ent)
 			blipdir[1] += crandom() * 20;
 			blipdir[2] += crandom() * 10;
 
-			/* MrG{DRGN}  reformat this to have only 1 bot check and use ent->enemy->classindex
-			if (Q_stricmp(ent->enemy->classname, "bot") == 0)
-				fire_lead3(ent, forigin, blipdir, 2, 0, TE_GUNSHOT, DEFAULT_BULLET_HSPREAD, DEFAULT_BULLET_VSPREAD, MOD_TURRET);
-			else
-				fire_lead3(ent, forigin, blipdir, 3, 3, TE_GUNSHOT, DEFAULT_BULLET_HSPREAD, DEFAULT_BULLET_VSPREAD, MOD_TURRET);
-
-			VectorScale(right, -18, side);
-			VectorAdd(forigin, side, forigin);
-			VectorSubtract(ent->enemy->s.origin, forigin, blipdir);
-
-			if (Q_stricmp(ent->enemy->classname, "bot") == 0)
-				fire_lead3(ent, forigin, blipdir, 2, 0, TE_GUNSHOT, DEFAULT_BULLET_HSPREAD, DEFAULT_BULLET_VSPREAD, MOD_TURRET);
-			else
-				fire_lead3(ent, forigin, blipdir, 3, 3, TE_GUNSHOT, DEFAULT_BULLET_HSPREAD, DEFAULT_BULLET_VSPREAD, MOD_TURRET);
-			 END */
-
 			if (ent->enemy->classindex == BOT)
 			{
 				fire_lead3(ent, forigin, blipdir, 2, 0, TE_GUNSHOT, DEFAULT_BULLET_HSPREAD, DEFAULT_BULLET_VSPREAD, MOD_TURRET);
@@ -1595,10 +1579,6 @@ void fire_air(edict_t* self, vec3_t start, vec3_t dir)
 				continue;
 			if (!infront(self, blip))
 				continue;
-			/* MrG{DRGN} classname to classindex
-			if (Q_stricmp(blip->classname, "item_flag_team1") == 0
-				|| Q_stricmp(blip->classname, "item_flag_team2") == 0)
-				continue;  */
 			if (blip->classindex == ITEM_FLAG_TEAM1
 				|| blip->classindex == ITEM_FLAG_TEAM2)
 				continue;

@@ -91,9 +91,7 @@ void SVCmd_killbot_f(char* name)
 					continue;
 				if (!players[k]->client)
 					continue;
-				/* MrG{DRGN}
-				if (Q_stricmp(players[k]->classname, "bot") == 0)
-				*/
+			
 				if (players[k]->bot_player)
 				{
 					ClientDisconnect(players[k]);
@@ -110,9 +108,7 @@ void SVCmd_killbot_f(char* name)
 				continue;
 			if (!players[i]->client)
 				continue;
-			/* MrG{DRGN}
-			if ((Q_stricmp(players[i]->classname, "bot") == 0) && (Q_stricmp(players[i]->client->pers.netname, name) == 0))
-			*/
+		
 			if ((players[i]->bot_player) && (Q_stricmp(players[i]->client->pers.netname, name) == 0))
 			{
 				ClientDisconnect(players[i]);
