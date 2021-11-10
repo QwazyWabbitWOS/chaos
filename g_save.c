@@ -154,6 +154,7 @@ void InitGame(void)
 	MaplistInitVars();
 	BotClearGlobals();
 	GetSettings();
+	BotClearQueue();
 
 	//clear path buffer
 	for (int j = 0; j < 100; j++)

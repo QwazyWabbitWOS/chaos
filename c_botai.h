@@ -1,3 +1,4 @@
+#pragma once
 #define	AK42_FREQ				0.6f
 #define	SHOTGUN_FREQ			1
 #define	SUPERSHOTGUN_FREQ		1
@@ -38,13 +39,19 @@
 #define	MAX_LINES_PER_SECTION		64
 
 char* chat_text[NUM_CHATSECTIONS][MAX_LINES_PER_SECTION];
-int		chat_linecount[NUM_CHATSECTIONS];
+int chat_linecount[NUM_CHATSECTIONS];
+int bots_queued;    // count of bots in queue
+int bots_index;     // index into the queue
 
 #define HEALTH_IGNORE_MAX	1
 #define HEALTH_TIMED		2
+
 //Bot functions
 void SVCmd_addbots_f(void);
 void SVCmd_killbot_f(char* name);
+void BotQueue(int skill, int team, char* name, char* skin);
+void BotClearQueue(void);
+void BotSpawnFromQue(void);
 
 int Riding_Plat(edict_t* ent);
 edict_t* Bot_FindBestWeapon(edict_t* ent);

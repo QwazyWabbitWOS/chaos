@@ -351,6 +351,9 @@ void G_RunFrame(void)
 		G_RunEntity(ent);
 	}
 
+	if (level.framenum % 10 == 0) // bot queue spawn rate: 1/sec.
+		BotSpawnFromQue();
+
 	// see if it is time to end a deathmatch
 	CheckDMRules();
 

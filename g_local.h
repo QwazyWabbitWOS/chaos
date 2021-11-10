@@ -197,6 +197,19 @@ typedef struct
 	int		armor;
 } gitem_armor_t;
 
+//QW for metering multiple bots into game
+typedef struct bot_queue_s
+{
+	int skill;
+	int team;
+	char* name;
+	char* model;
+} bot_queue_t;
+
+// the bot queue instance
+bot_queue_t bot_queue[MAX_CLIENTS];
+//QW end bot queue instance
+
 // gitem_t->flags
 #define	IT_WEAPON		1		// use makes active weapon
 #define	IT_AMMO			2

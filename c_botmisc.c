@@ -37,13 +37,17 @@ void SVCmd_addbots_f(void)
 		return;
 	}
 
+	if (bots_queued)
+	{
+		gi.cprintf(NULL, PRINT_HIGH, "Chaos is busy spawning %d bots!\n", bots_queued);
+		return;
+	}
+
 	else if (num == 1) //QW// adding single bot accepts optional name model/skin
 	{
 		// set the model
 		if (Q_stricmp(gi.argv(6), "") == 0)
-		{
 			Com_sprintf(model, sizeof model, Get_RandomBotSkin());
-		}
 		else
 			Com_sprintf(model, sizeof model, gi.argv(6)); // specific model
 
@@ -54,7 +58,7 @@ void SVCmd_addbots_f(void)
 			Com_strcpy(name, sizeof name, (strchr(model, '/') + 1));
 		}
 
-		Bot_Create(bot_skill, team, name, model);
+		BotQueue(bot_skill, team, name, model);
 	}
 	else // num > 1, accept only models, names will be placeholder.
 	{
@@ -62,15 +66,12 @@ void SVCmd_addbots_f(void)
 		{
 			// set the model, random if no argv
 			if (Q_stricmp(gi.argv(6), "") == 0)
-			{
 				Com_sprintf(model, sizeof model, Get_RandomBotSkin());
-			}
 			else
 				Com_sprintf(model, sizeof model, gi.argv(6));
 
 			Com_strcpy(name, sizeof name, (strchr(model, '/') + 1));
-
-			Bot_Create(bot_skill, team, name, model);
+			BotQueue(bot_skill, team, name, model);
 		}
 	}
 }
@@ -91,7 +92,7 @@ void SVCmd_killbot_f(char* name)
 					continue;
 				if (!players[k]->client)
 					continue;
-			
+
 				if (players[k]->bot_player)
 				{
 					ClientDisconnect(players[k]);
@@ -108,12 +109,48 @@ void SVCmd_killbot_f(char* name)
 				continue;
 			if (!players[i]->client)
 				continue;
-		
+
 			if ((players[i]->bot_player) && (Q_stricmp(players[i]->client->pers.netname, name) == 0))
 			{
 				ClientDisconnect(players[i]);
 				numbots--;
 			}
+		}
+	}
+}
+
+// Populate the bot queue
+void BotQueue(int skill, int team, char* name, char* skin)
+{
+	int i = bots_queued;
+	bot_queue[i].skill = skill;
+	bot_queue[i].team = team;
+	bot_queue[i].name = G_CopyString(name);  // note: allocates new strings
+	bot_queue[i].model = G_CopyString(skin); // that are freed in BotSpawnFromQue
+	bots_queued++;
+}
+
+void BotClearQueue(void)
+{
+	memset(bot_queue, 0, sizeof bot_queue);
+	bots_queued = 0;
+	bots_index = 0;
+}
+
+// Spawns bots at intervals from the bot_queue.
+void BotSpawnFromQue(void)
+{
+	if (bots_queued)
+	{
+		Bot_Create(bot_queue[bots_index].skill, bot_queue[bots_index].team,
+			bot_queue[bots_index].name, bot_queue[bots_index].model);
+
+		gi.TagFree(bot_queue[bots_index].name);  // strings allocated in BotQueue
+		gi.TagFree(bot_queue[bots_index].model); // we free them now.
+		bots_index++;
+		if (bots_index == bots_queued) {
+			BotClearQueue();
+			bprint_botsafe(PRINT_CHAT, "All bots spawned.\n");
 		}
 	}
 }
