@@ -211,6 +211,7 @@ void EndDMLevel(void)
 		}
 	}
 
+	BotClearQueue();
 	BeginIntermission(ent);
 }
 
@@ -291,6 +292,8 @@ void ExitLevel(void)
 		if (ent->health > ent->client->pers.max_health)
 			ent->health = ent->client->pers.max_health;
 	}
+
+	BotClearQueue();
 	SVCmd_killbot_f("all");
 	//ZOID
 	if (ctf->value)

@@ -634,6 +634,7 @@ void SpawnEntities(char* mapname, char* entities, char* spawnpoint)
 	if (skill->value != bot_skill)
 		gi.cvar_forceset("skill", va("%f", bot_skill));
 
+	BotClearQueue(); // Stop any bot spawns.
 	SaveClientData();
 
 	//MATTHIAS

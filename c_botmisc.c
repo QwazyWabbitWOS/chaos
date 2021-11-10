@@ -132,9 +132,15 @@ void BotQueue(int skill, int team, char* name, char* skin)
 
 void BotClearQueue(void)
 {
+	for (int i = 0; i < bots_queued; i++)
+	{
+		if (bot_queue[i].name)
+			gi.TagFree(bot_queue[i].name);
+		if (bot_queue[i].model)
+			gi.TagFree(bot_queue[i].model);
+	}
 	memset(bot_queue, 0, sizeof bot_queue);
-	bots_queued = 0;
-	bots_index = 0;
+	bots_index = bots_queued = 0;
 }
 
 // Spawns bots at intervals from the bot_queue.
@@ -146,7 +152,9 @@ void BotSpawnFromQue(void)
 			bot_queue[bots_index].name, bot_queue[bots_index].model);
 
 		gi.TagFree(bot_queue[bots_index].name);  // strings allocated in BotQueue
+		bot_queue[bots_index].name = NULL;
 		gi.TagFree(bot_queue[bots_index].model); // we free them now.
+		bot_queue[bots_index].model = NULL;
 		bots_index++;
 		if (bots_index == bots_queued) {
 			BotClearQueue();
