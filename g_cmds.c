@@ -823,7 +823,7 @@ void Cmd_Players_f(edict_t* ent)
 	int		count;
 	char	small[64];
 	char	large[1280] = { 0 };
-	int		index[256] = { 0 };
+	int		index[MAX_CLIENTS] = { 0 };
 
 	count = 0;
 	for (i = 0; i < maxclients->value; i++)
@@ -849,7 +849,6 @@ void Cmd_Players_f(edict_t* ent)
 			Com_strcat(large, sizeof(large), "...\n");
 			break;
 		}
-
 		Com_strcat(large, sizeof(large), small);
 	}
 

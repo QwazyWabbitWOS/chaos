@@ -60,7 +60,8 @@ void MoveClientToIntermission(edict_t* ent)
 void BeginIntermission(edict_t* target)
 {
 	int		i, n;
-	edict_t* ent, * client;
+	edict_t* ent;
+	edict_t* client;
 
 	if (level.intermissiontime)
 		return;		// already activated

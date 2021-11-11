@@ -52,6 +52,7 @@ void SVCmd_killbot_f(char* name);
 void BotQueue(int skill, int team, char* name, char* skin);
 void BotClearQueue(void);
 void BotSpawnFromQue(void);
+void BotDisconnectAll(void);
 
 int Riding_Plat(edict_t* ent);
 edict_t* Bot_FindBestWeapon(edict_t* ent);

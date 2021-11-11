@@ -293,8 +293,8 @@ void ExitLevel(void)
 			ent->health = ent->client->pers.max_health;
 	}
 
-	BotClearQueue();
-	SVCmd_killbot_f("all");
+	BotClearQueue(); // stop any queued bots.
+	BotDisconnectAll(); // kill'em all!
 	//ZOID
 	if (ctf->value)
 		CTFInit();

@@ -78,28 +78,13 @@ void SVCmd_addbots_f(void)
 
 void SVCmd_killbot_f(char* name)
 {
-	int i, k, count;
+	int i, count;
 
 	count = numplayers + 1;
 
 	if (Q_stricmp(name, "all") == 0)	//kill all bots
 	{
-		for (i = 0; i < count; i++)
-		{
-			for (k = 0; k < numplayers; k++)
-			{
-				if (!players[k])
-					continue;
-				if (!players[k]->client)
-					continue;
-
-				if (players[k]->bot_player)
-				{
-					ClientDisconnect(players[k]);
-					numbots--;
-				}
-			}
-		}
+		BotDisconnectAll();
 	}
 	else	//kill a specific bot
 	{
@@ -112,6 +97,7 @@ void SVCmd_killbot_f(char* name)
 
 			if ((players[i]->bot_player) && (Q_stricmp(players[i]->client->pers.netname, name) == 0))
 			{
+				players[i]->client->pers.connected = false;
 				ClientDisconnect(players[i]);
 				numbots--;
 			}
@@ -530,6 +516,20 @@ void bot_die(edict_t* self, edict_t* inflicter, edict_t* attacker, int damage, v
 
 	gi.linkentity(self);
 	//DbgPrintf("%s %s index: %d\n", __func__, self->classname, self->classindex);
+}
+
+//QW Disconnect all extant bots.
+// Called from ExitLevel & wherever we want them all gone.
+void BotDisconnectAll(void)
+{
+	edict_t* client;
+
+	for (int i = 0; i < maxclients->value; i++)
+	{
+		client = g_edicts + 1 + i;
+		if (client && client->bot_player)
+			ClientDisconnect(client);
+	}
 }
 
 void BotClearGlobals(void)
