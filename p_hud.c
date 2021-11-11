@@ -181,7 +181,7 @@ void DeathmatchScoreboardMessage(edict_t* ent, edict_t* killer /* MrG{DRGN} can 
 	int		sorted[MAX_CLIENTS] = { 0 };
 	int		sortedscores[MAX_CLIENTS] = { 0 };
 	int		score;
-	int		total = 0;
+	int		total = 0, total2 = 0;
 	int		x, y;
 	gclient_t* cl;
 	edict_t* cl_ent;
@@ -236,8 +236,10 @@ void DeathmatchScoreboardMessage(edict_t* ent, edict_t* killer /* MrG{DRGN} can 
 
 		// add the clients in sorted order
 		if (total > 12)
+		{
+			total2 = total;
 			total = 12;
-
+		}
 		for (i = 0; i < total; i++)
 		{
 			cl = &game.clients[sorted[i]];
@@ -323,6 +325,13 @@ void DeathmatchScoreboardMessage(edict_t* ent, edict_t* killer /* MrG{DRGN} can 
 			n++;
 		}
 	}
+
+	// more than we can fit
+	if (total2 - 11 > 1) // couldn't fit everyone
+		sprintf(string + strlen(string), "xv 278 yv %d string \"..and %d more\" ",
+			110 + (12 + 1) * 8, total2 - 12);
+
+
 	// Scanner active ?
 	if (ent->client->scanneractive > 0)
 		ShowScanner(ent, string);
