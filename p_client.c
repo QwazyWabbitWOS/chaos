@@ -1972,8 +1972,8 @@ void ClientDisconnect(edict_t* ent)
 
 	if (!ent->client)
 		return;
-
-	bprint_botsafe(PRINT_HIGH, "%s disconnected\n", ent->client->pers.netname);
+	// not here or we print to a disconnected client
+	//bprint_botsafe(PRINT_HIGH, "%s disconnected\n", ent->client->pers.netname);
 	sl_LogPlayerDisconnect(&gi, level, ent);	// StdLog - Mark Davies
 
 	AdjustPlayerList(ent);
@@ -2031,6 +2031,7 @@ void ClientDisconnect(edict_t* ent)
 
 	playernum = ent - g_edicts - 1;
 	gi.configstring(CS_PLAYERSKINS + playernum, "");
+	bprint_botsafe(PRINT_HIGH, "%s disconnected\n", ent->client->pers.netname);
 }
 
 //==============================================================
