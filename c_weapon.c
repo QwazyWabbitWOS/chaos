@@ -4654,7 +4654,6 @@ int Valid_Target(edict_t* ent, edict_t* blip)
 				(blip != ent->owner) && !TeamMembers(ent->owner, blip->owner))
 				return true;
 
-
 			if (Q_stricmp(blip->classname, "proxymine") == 0)
 			{
 				if (blip->owner == ent->owner)

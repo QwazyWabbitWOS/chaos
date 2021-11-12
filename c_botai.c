@@ -1813,7 +1813,6 @@ void Bot_FindActivator(edict_t* ent)
 			ent->client->b_activator = activator;
 			break;
 		}
-
 	}
 }
 

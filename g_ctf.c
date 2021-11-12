@@ -1428,7 +1428,7 @@ void CTFScoreboardMessage(edict_t* ent, edict_t* killer)
 		if (maxsize - len > strlen(entry)) {
 			strcat(string, entry);
 			len = strlen(string);
-	}
+		}
 #else
 		* entry = 0;
 #endif
@@ -1503,7 +1503,7 @@ void CTFScoreboardMessage(edict_t* ent, edict_t* killer)
 				last[1] = i;
 			}
 		}
-}
+	}
 
 	// put in spectators if we have enough room
 	if (last[0] > last[1])
@@ -4014,7 +4014,7 @@ void CTFPlayerList(edict_t* ent)
 					Q_strncatz(text, sizeof(text), string);
 			}
 		}
-}
+	}
 #endif
 
 	// number, name, connect time, ping, score, admin

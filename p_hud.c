@@ -332,7 +332,6 @@ void DeathmatchScoreboardMessage(edict_t* ent, edict_t* killer /* MrG{DRGN} can 
 		sprintf(string + strlen(string), "xv 278 yv %d string \"..and %d more\" ",
 			110 + (12 + 1) * 8, total2 - 12);
 
-
 	// Scanner active ?
 	if (ent->client->scanneractive > 0)
 		ShowScanner(ent, string);

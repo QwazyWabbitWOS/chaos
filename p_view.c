@@ -437,7 +437,7 @@ void SV_CalcBlend(edict_t* ent)
 
 	//FLASHGRENADE
 	if (ent->client->BlindTime > 0)
-	{		
+	{
 		if (ent->classindex == PLAYER)
 		{
 			if (ent->client->BlindBase)
@@ -462,7 +462,6 @@ void SV_CalcBlend(edict_t* ent)
 		static float blend = 0.4F;
 		static int updown = 1;
 
-	
 		if (ent->classindex == PLAYER)
 		{
 			if (updown == 1)
