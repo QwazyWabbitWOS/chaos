@@ -20,23 +20,23 @@
 static int fWasAlreadyOpen = 0;
 static char* pPatch = NULL;     /* PatchName - Should never change */
 
-int sl_Logging(game_import_t* gi,
+int sl_Logging(game_import_t* g_imp,
 	char* pPatchName)
 {
-	int fFileOpen = sl_OpenLogFile(gi);
+	int fFileOpen = sl_OpenLogFile(g_imp);
 
 	if (fFileOpen && !fWasAlreadyOpen)
 	{
-		cvar_t* deathflags = gi->cvar("dmflags", "0", CVAR_SERVERINFO);
+		cvar_t* deathflags = g_imp->cvar("dmflags", "0", CVAR_SERVERINFO);
 
-		sl_LogVers(gi);
+		sl_LogVers(g_imp);
 
 		pPatch = pPatchName;
-		sl_LogPatch(gi, pPatchName);
+		sl_LogPatch(g_imp, pPatchName);
 
-		sl_LogDate(gi);
-		sl_LogTime(gi);
-		sl_LogDeathFlags(gi, (unsigned long)deathflags->value);
+		sl_LogDate(g_imp);
+		sl_LogTime(g_imp);
+		sl_LogDeathFlags(g_imp, (unsigned long)deathflags->value);
 
 		fWasAlreadyOpen = fFileOpen;
 	}
@@ -44,32 +44,32 @@ int sl_Logging(game_import_t* gi,
 	return fFileOpen;
 }
 
-void sl_GameStart(game_import_t* gi,
+void sl_GameStart(game_import_t* g_imp,
 	level_locals_t    lvl)
 {
-	if (sl_Logging(gi, pPatch))
+	if (sl_Logging(g_imp, pPatch))
 	{
 		// log name of map
-		sl_LogMapName(gi, lvl.level_name);
+		sl_LogMapName(g_imp, lvl.level_name);
 
 		// start counting frags
-		sl_LogGameStart(gi, lvl.time);
+		sl_LogGameStart(g_imp, lvl.time);
 	}
 }
 
-void sl_GameEnd(game_import_t* gi,
+void sl_GameEnd(game_import_t* g_imp,
 	level_locals_t      lvl)
 {
-	if (sl_Logging(gi, pPatch))
+	if (sl_Logging(g_imp, pPatch))
 	{
-		sl_LogGameEnd(gi, lvl.time);
+		sl_LogGameEnd(g_imp, lvl.time);
 		sl_CloseLogFile();
 
 		fWasAlreadyOpen = 0;
 	}
 }
 
-void sl_WriteStdLogDeath(game_import_t* gi,
+void sl_WriteStdLogDeath(game_import_t* g_imp,
 	level_locals_t     lvl,
 	edict_t* self,
 	edict_t* inflicter,
@@ -78,7 +78,7 @@ void sl_WriteStdLogDeath(game_import_t* gi,
 	/* StdLogging for Deathmatch only */
 	/* MrG{DRGN} always DM  if( deathmatch->value ) */
 	{
-		if (sl_Logging(gi, pPatch))
+		if (sl_Logging(g_imp, pPatch))
 		{
 			int			mod = meansOfDeath & ~MOD_FRIENDLY_FIRE;
 			char* pKillerName = NULL;
@@ -358,7 +358,7 @@ void sl_WriteStdLogDeath(game_import_t* gi,
 			}
 
 			/* Log a score */
-			sl_LogScore(gi,
+			sl_LogScore(g_imp,
 				pKillerName,
 				pTargetName,
 				pScoreType,
@@ -372,7 +372,7 @@ void sl_WriteStdLogDeath(game_import_t* gi,
 
 	/* default - not multplayer */
 	/* Death - Not Logged */
-	sl_LogScore(gi,
+	sl_LogScore(g_imp,
 		"",
 		"",
 		"ERROR",
@@ -382,27 +382,27 @@ void sl_WriteStdLogDeath(game_import_t* gi,
 	return;
 }
 
-void sl_WriteStdLogPlayerEntered(game_import_t* gi,
+void sl_WriteStdLogPlayerEntered(game_import_t* g_imp,
 	level_locals_t     lvl,
 	edict_t* ent)
 {
-	if (sl_Logging(gi, pPatch))
+	if (sl_Logging(g_imp, pPatch))
 	{
-		sl_LogPlayerConnect(gi,
+		sl_LogPlayerConnect(g_imp,
 			ent->client->pers.netname,
 			NULL,
 			lvl.time);
 	}
 }
 
-void sl_LogPlayerDisconnect(game_import_t* gi,
+void sl_LogPlayerDisconnect(game_import_t* g_imp,
 	level_locals_t      lvl,
 	edict_t* ent)
 {
 	// GSLogMod Start: Player disconnected
-	if (sl_Logging(gi, pPatch))
+	if (sl_Logging(g_imp, pPatch))
 	{
-		sl_LogPlayerLeft(gi,
+		sl_LogPlayerLeft(g_imp,
 			ent->client->pers.netname,
 			lvl.time);
 	}

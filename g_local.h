@@ -200,7 +200,7 @@ typedef struct
 //QW for metering multiple bots into game
 typedef struct bot_queue_s
 {
-	int skill;
+	int bot_skill;
 	int team;
 	char* name;
 	char* model;

@@ -49,7 +49,7 @@ int bots_index;     // index into the queue
 //Bot functions
 void SVCmd_addbots_f(void);
 void SVCmd_killbot_f(char* name);
-void BotQueue(int skill, int team, char* name, char* skin);
+void BotQueue(int bot_skill, int team, char* name, char* skin);
 void BotClearQueue(void);
 void BotSpawnFromQue(void);
 void BotDisconnectAll(void);

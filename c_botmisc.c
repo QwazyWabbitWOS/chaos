@@ -106,10 +106,10 @@ void SVCmd_killbot_f(char* name)
 }
 
 // Populate the bot queue
-void BotQueue(int skill, int team, char* name, char* skin)
+void BotQueue(int bot_skill, int team, char* name, char* skin)
 {
 	int i = bots_queued;
-	bot_queue[i].skill = skill;
+	bot_queue[i].bot_skill = bot_skill;
 	bot_queue[i].team = team;
 	bot_queue[i].name = G_CopyString(name);  // note: allocates new strings
 	bot_queue[i].model = G_CopyString(skin); // that are freed in BotSpawnFromQue
@@ -134,7 +134,7 @@ void BotSpawnFromQue(void)
 {
 	if (bots_queued)
 	{
-		Bot_Create(bot_queue[bots_index].skill, bot_queue[bots_index].team,
+		Bot_Create(bot_queue[bots_index].bot_skill, bot_queue[bots_index].team,
 			bot_queue[bots_index].name, bot_queue[bots_index].model);
 
 		gi.TagFree(bot_queue[bots_index].name);  // strings allocated in BotQueue
