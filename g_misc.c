@@ -113,8 +113,8 @@ void ThrowGib(edict_t* self, char* gibname, int damage, int type)
 
 	gi.setmodel(gib, gibname);
 	gib->classname = "gib";	//MATTHIAS
-	VectorSet(gib->mins, -4, -4, -4);// MrG{DRGN}
-	VectorSet(gib->maxs, 4, 4, 4);// MrG{DRGN}
+	VectorSet(gib->mins, -8, -8, -8);// MrG{DRGN}
+	VectorSet(gib->maxs, 8, 8, 8);// MrG{DRGN}
 	gib->solid = SOLID_TRIGGER;// MrG{DRGN}
 	gib->s.effects |= EF_GIB;
 	gib->flags |= FL_NO_KNOCKBACK;

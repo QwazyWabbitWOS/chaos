@@ -609,8 +609,8 @@ void LaserTurret_Think(edict_t* ent)
 		base->solid = SOLID_BBOX;
 		VectorClear(base->mins);
 		VectorClear(base->maxs);
-		VectorSet(base->mins, -2, -2, 0);
-		VectorSet(base->maxs, 2, 2, 22);
+		VectorSet(base->mins, -8, -8, -8);
+		VectorSet(base->maxs, 8, 8, 24);
 		base->s.modelindex = gi.modelindex("models/objects/t_base/tris.md2");
 		base->classname = "turret_base";
 		base->classindex = TBASE;
@@ -625,8 +625,8 @@ void LaserTurret_Think(edict_t* ent)
 		gi.linkentity(base);
 
 		ent->other = base;
-		VectorSet(ent->mins, -16, -16, -22);
-		VectorSet(ent->maxs, 16, 16, 15);
+		VectorSet(ent->mins, -16, -16, -24);
+		VectorSet(ent->maxs, 16, 16, 16);
 		gi.setmodel(ent, "models/objects/lturret/tris.md2");
 
 		if (defence_turret_ammo->value > 0)
@@ -779,8 +779,8 @@ void RocketTurret_Think(edict_t* ent)
 		base->movetype = MOVETYPE_NONE;
 		base->clipmask = MASK_SHOT;
 		base->solid = SOLID_BBOX;
-		VectorSet(base->mins, -2, -2, 0);
-		VectorSet(base->maxs, 2, 2, 22);
+		VectorSet(base->mins, -8, -8, -8);
+		VectorSet(base->maxs, 8, 8, 24);
 		base->s.modelindex = gi.modelindex("models/objects/t_base/tris.md2");
 		base->classname = "turret_base";
 		base->classindex = TBASE;
@@ -795,8 +795,8 @@ void RocketTurret_Think(edict_t* ent)
 		gi.linkentity(base);
 
 		ent->other = base;
-		VectorSet(ent->mins, -16, -16, -22);
-		VectorSet(ent->maxs, 16, 16, 15);
+		VectorSet(ent->mins, -16, -16, -24);
+		VectorSet(ent->maxs, 16, 16, 16);
 		gi.setmodel(ent, "models/objects/rturret/tris.md2");
 
 		if (rocket_turret_ammo->value > 0)
@@ -957,8 +957,8 @@ void fire_lturret(edict_t* self, vec3_t start, vec3_t dir, int speed)
 	turret->movetype = MOVETYPE_STEP;
 	turret->clipmask = MASK_PLAYERSOLID;
 	turret->solid = SOLID_BBOX;
-	VectorSet(turret->mins, -19, -19, -22);
-	VectorSet(turret->maxs, 19, 19, 15);
+	VectorSet(turret->mins, -16, -16, -24);
+	VectorSet(turret->maxs, 16, 16, 16);
 	turret->s.modelindex = gi.modelindex("models/objects/ltrthrow/tris.md2");
 	turret->touch = Turret_Touch;
 	turret->nextthink = level.time + 30;
@@ -997,8 +997,8 @@ void fire_rturret(edict_t* self, vec3_t start, vec3_t dir, int speed)
 	turret->movetype = MOVETYPE_STEP;
 	turret->clipmask = MASK_SHOT;
 	turret->solid = SOLID_BBOX;
-	VectorSet(turret->mins, -19, -19, -22);
-	VectorSet(turret->maxs, 19, 19, 15);
+	VectorSet(turret->mins, -16, -16, -24);
+	VectorSet(turret->maxs, 16, 16, 16);
 	turret->s.modelindex = gi.modelindex("models/objects/rtrthrow/tris.md2");
 	turret->touch = Turret_Touch;
 	turret->nextthink = level.time + 30;
@@ -4315,8 +4315,8 @@ void fire_proxymine(edict_t* self, vec3_t start, vec3_t aimdir, int damage, int 
 	grenade->clipmask = MASK_SHOT;
 	grenade->solid = SOLID_BBOX;
 	grenade->s.effects = 0;
-	VectorSet(grenade->mins, -2, -2, -2);
-	VectorSet(grenade->maxs, 2, 2, 2);
+	VectorSet(grenade->mins, -8, -8, -8);
+	VectorSet(grenade->maxs, 8, 8, 8);
 	grenade->s.modelindex = gi.modelindex("models/objects/hgproxy/tris.md2");
 	grenade->owner = self;
 	grenade->touch = Proxy_Touch;
