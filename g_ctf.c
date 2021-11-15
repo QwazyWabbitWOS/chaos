@@ -2,21 +2,6 @@
 #include "stdlog.h"
 #include "m_player.h"
 
-typedef enum match_s {
-	MATCH_NONE,
-	MATCH_SETUP,
-	MATCH_PREGAME,
-	MATCH_GAME,
-	MATCH_POST
-} match_t;
-
-typedef enum {
-	ELECT_NONE,
-	ELECT_MATCH,
-	ELECT_ADMIN,
-	ELECT_MAP
-} elect_t;
-
 typedef struct ctfgame_s {
 	int team1, team2;
 	int total1, total2;	// these are only set when going into intermission!
@@ -39,11 +24,6 @@ typedef struct ctfgame_s {
 
 	ghost_t ghosts[MAX_CLIENTS];	// ghost codes
 } ctfgame_t;
-
-ctfgame_t ctfgame;
-
-cvar_t* ctf;
-cvar_t* ctf_forcejoin;
 
 cvar_t* competition;
 cvar_t* matchlock;

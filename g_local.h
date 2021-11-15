@@ -833,6 +833,12 @@ void Weapon_GrenadeLauncher(edict_t* ent);
 void Weapon_Railgun(edict_t* ent);
 void Weapon_BFG(edict_t* ent);
 void weapon_grenade_fire(edict_t* ent, qboolean held);
+
+// also used in c_weapon.c
+#define GRENADE_TIMER				3.0F
+#define GRENADE_MINSPEED			400
+#define GRENADE_MAXSPEED			800
+
 //
 // m_move.c
 //

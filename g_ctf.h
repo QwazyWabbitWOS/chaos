@@ -27,6 +27,20 @@ typedef enum {
 	CTF_TEAM2  // Blue Team
 } ctfteam_t;
 
+typedef enum match_s {
+	MATCH_NONE,
+	MATCH_SETUP,
+	MATCH_PREGAME,
+	MATCH_GAME,
+	MATCH_POST
+} match_t;
+
+typedef enum {
+	ELECT_NONE,
+	ELECT_MATCH,
+	ELECT_ADMIN,
+	ELECT_MAP
+} elect_t;
 typedef struct ghost_s {
 	char netname[16];
 	int number;

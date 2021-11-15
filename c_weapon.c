@@ -2,11 +2,7 @@
 #include "m_player.h"
 #include "c_botai.h"
 
-#define GRENADE_TIMER				3.0F /* MrG{DRGN} Explicit floats avoids casting warning */
-#define GRENADE_MINSPEED			400
-#define GRENADE_MAXSPEED			800
-
-/* MrG{DRGN} moved here, since it's a CHaos specific weapon.*/
+// MrG{DRGN} moved here, since it's a Chaos specific weapon.
 void Weapon_AK42_Fire(edict_t* ent)
 {
 	int		damage;
