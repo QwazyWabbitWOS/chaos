@@ -1136,7 +1136,7 @@ void ClientCommand(edict_t* ent)
 		CTFWarp(ent);
 	else if (Q_stricmp(cmd, "boot") == 0)
 		CTFBoot(ent);
-	else if ((Q_stricmp(cmd, "observer") == 0) || (Q_stricmp(cmd, "spec") == 0))
+	else if ((Q_stricmp(cmd, "observer") == 0) || (Q_stricmp(cmd, "spectate") == 0))
 	{
 		if (ctf->value)
 		{
