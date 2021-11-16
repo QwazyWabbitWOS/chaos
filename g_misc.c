@@ -735,7 +735,7 @@ void SP_misc_easterchick(edict_t* ent)
 {
 	ent->movetype = MOVETYPE_NONE;
 	ent->solid = SOLID_BBOX;
-	VectorSet(ent->mins, -32, -32, 0);
+	VectorSet(ent->mins, -32, -32, -8);
 	VectorSet(ent->maxs, 32, 32, 32);
 	ent->s.modelindex = gi.modelindex("models/monsters/bitch/tris.md2");
 	ent->classindex = MISC_EASTERCHICK; // MrG{DRGN}
@@ -763,7 +763,7 @@ void SP_misc_easterchick2(edict_t* ent)
 {
 	ent->movetype = MOVETYPE_NONE;
 	ent->solid = SOLID_BBOX;
-	VectorSet(ent->mins, -32, -32, 0);
+	VectorSet(ent->mins, -32, -32, -8);
 	VectorSet(ent->maxs, 32, 32, 32);
 	ent->s.modelindex = gi.modelindex("models/monsters/bitch/tris.md2");
 	ent->classindex = MISC_EASTERCHICK2; // MrG{DRGN}
@@ -809,7 +809,7 @@ void SP_monster_commander_body(edict_t* self)
 	self->model = "models/monsters/commandr/tris.md2";
 	self->classindex = MONSTER_COMMANDER_BODY; // MrG{DRGN}
 	self->s.modelindex = gi.modelindex(self->model);
-	VectorSet(self->mins, -32, -32, 0);
+	VectorSet(self->mins, -32, -32, -8);
 	VectorSet(self->maxs, 32, 32, 48);
 	self->use = commander_body_use;
 	self->takedamage = DAMAGE_YES;
