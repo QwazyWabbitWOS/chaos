@@ -1375,7 +1375,7 @@ int Bot_FindPath(edict_t* ent, vec3_t targ, vec3_t source)
 	return 0;
 }
 
-void Bot_Aim(edict_t* ent, vec3_t targ, vec3_t angles)
+void Bot_Aim(edict_t* ent, const vec3_t targ, vec3_t angles)
 {
 	vec3_t dir = { 0 }, ideala;
 	float	ideal;

@@ -3248,7 +3248,7 @@ void LaserMine_Die(edict_t* ent, edict_t* inflicter, edict_t* attacker, int dama
 
 void LaserMine_Touch(edict_t* ent, edict_t* other, cplane_t* plane, csurface_t* surf)
 {
-	int laser_colour[] = { 0xf2f2f0f0,             // red
+	const int laser_colour[] = { 0xf2f2f0f0,             // red
 						  0xd0d1d2d3,             // green
 						  0xf3f3f1f1,             // blue
 						  0xdcdddedf,             // yellow

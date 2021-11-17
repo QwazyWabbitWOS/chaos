@@ -355,7 +355,7 @@ void CamPrev(edict_t* ent)
 		cprint_botsafe(ent, PRINT_HIGH, "Target switching only works in cam modes 2, 3 and 4!\n");
 }
 
-void PointCamAtSpot(edict_t* ent, vec3_t spot)
+void PointCamAtSpot(edict_t* ent, const vec3_t spot)
 {
 	vec3_t	dir = { 0 }, angles;
 
