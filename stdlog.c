@@ -7,11 +7,7 @@
  *
  */
 
-#include <stdlib.h>
-#include <time.h>
-
 #include "g_local.h"
-
 #include "stdlog.h"
 
  /*

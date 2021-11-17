@@ -154,7 +154,7 @@ void Jet_ApplySparks(edict_t* ent)
 	gi.multicast(pack_pos, MULTICAST_PVS);
 }
 
-void Jet_ApplyRolling(edict_t* ent, vec3_t right)
+void Jet_ApplyRolling(edict_t* ent, const vec3_t right)
 {
 	float roll, value = 0.05F, sign = -1;
 
