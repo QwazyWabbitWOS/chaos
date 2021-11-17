@@ -851,8 +851,7 @@ void ThrowUpNow(edict_t* self)
 	gi.WriteDir(spew_vector);
 	gi.multicast(mouth_pos, MULTICAST_PVS);
 
-	gi.sound(self, CHAN_VOICE, gi.soundindex("misc/vomit1.wav"), 1, ATTN_NORM, 0);
-
+	
 	rn = random();
 	if (rn < 0.25)
 		gi.sound(self, CHAN_VOICE, gi.soundindex("misc/vomit1.wav"), 1, ATTN_NORM, 0);
