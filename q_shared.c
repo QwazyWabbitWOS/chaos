@@ -992,7 +992,7 @@ size_t Q_strncatz(char* dst, size_t dstSize, const char* src)
 	if (decSize == 0)
 		return (dLen + strlen(s));
 
-	if (decSize > 0) {
+	if (decSize > 0) { // Always true!
 		while (--decSize && *s)
 			*d++ = *s++;
 

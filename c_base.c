@@ -56,13 +56,13 @@ void ShowGun(edict_t* ent)	//QW from WOD:LOX for vwep
 	if (!ent->client->pers.weapon)
 	{
 		ent->client->ps.gunindex = 0;		// WI: seems to be missing?
-		ent->s.modelindex2 = REMOVED_MODEL;	 // MrG{DRGN}
+		ent->s.modelindex2 = REMOVED_MODEL;	 
 		if (!ent->client->resp.spectator) // MrG{DRGN} Don't complain about camera using players not having a gun
 			gi.dprintf("ShowGun: Oops! Weapon Index missing! %s\n", ent->client->pers.netname);
 		return;
 	}
 
-	ent->s.modelindex2 = VWEP_MODEL;   // MrG{DRGN}
+	ent->s.modelindex2 = VWEP_MODEL;  
 	strcpy(heldmodel, "#");	//safe, don't change
 	strcat(heldmodel, ent->client->pers.weapon->icon);
 	strcat(heldmodel, ".md2");
