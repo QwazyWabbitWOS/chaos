@@ -1502,7 +1502,7 @@ void CopyToBodyQue(edict_t* ent)
 
 void respawn(edict_t* self)
 {
-	if (strcmp(self->classname, "bot") == 0) //MATTHIAS
+	if (self->bot_player)
 	{
 		Bot_Respawn(self);
 		return;
@@ -1853,12 +1853,12 @@ void ClientUserinfoChanged(edict_t* ent, char* userinfo)
 	playernum = ent - g_edicts - 1;
 
 	// combine name and skin into a configstring
-//ZOID
+	//ZOID
 	if (ctf->value)
 		CTFAssignSkin(ent, s);
 	else
-		//ZOID
 		gi.configstring(CS_PLAYERSKINS + playernum, va("%s\\%s", ent->client->pers.netname, s));
+	//ZOID
 
 	// fov
 	if ((deathmatch->value) && ((int)dmflags->value & DF_FIXED_FOV))
