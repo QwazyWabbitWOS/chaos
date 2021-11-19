@@ -1388,16 +1388,16 @@ void Cmd_PlayerList_f(edict_t* ent)
 	/* connect time, ping, score, name */
 
 	// Start with a nice header.
-	//Com_sprintf(string, sizeof string, "%s\n", "entry ping score      name");
-	//Q_strncatz(text, sizeof text, string);
-	//Com_sprintf(string, sizeof string, "%s\n", "----- ---- -----  -------------");
-	//Q_strncatz(text, sizeof text, string);
+	Com_sprintf(string, sizeof string, "%s\n", "entry ping score      name");
+	Q_strncatz(text, sizeof text, string);
+	Com_sprintf(string, sizeof string, "%s\n", "----- ---- -----  -------------");
+	Q_strncatz(text, sizeof text, string);
 
 	for (i = 0, ed = g_edicts + 1; i < maxclients->value; i++, ed++) {
-		if (!ed->inuse)
+		if (!ed->inuse || ed->bot_player)
 			continue;
 
-		Com_sprintf(string, sizeof string, "TIME: %02d:%02d PING:%3d SCORE:%4d    NAME:%-s %-12s\n",
+		Com_sprintf(string, sizeof string, "%02d:%02d %3d %4d    %-s %-12s\n",
 			(level.framenum - ed->client->resp.enterframe) / 600,
 			((level.framenum - ed->client->resp.enterframe) % 600) / 10,
 			ed->client->ping,
@@ -1742,6 +1742,9 @@ void ClientCommand2(edict_t* ent)
 	}
 	else if (Q_stricmp(cmd, "playerlist") == 0)
 	{
+	if (ctf->value)
+		CTFPlayerList(ent);
+	else
 		Cmd_PlayerList_f(ent);
 	}
 	else if (Q_stricmp(cmd, "ctfplayerlist") == 0)

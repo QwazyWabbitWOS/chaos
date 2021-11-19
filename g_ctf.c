@@ -4001,11 +4001,11 @@ void CTFPlayerList(edict_t* ent)
 
 	for (i = 1; i <= maxclients->value; i++) {
 		e2 = g_edicts + i;
-		if (!e2->inuse)
+		if (!e2->inuse || e2->bot_player)
 			continue;
 
-		Com_sprintf(string, sizeof(string), "CLIENT:%3d NAME:%-16.16s TIME:%02d:%02d PING:%4d SCORE:%3d%s%s%s\n",
-			i - 1,
+		Com_sprintf(string, sizeof(string), "%3d %-16.16s %02d:%02d %4d %3d%s%s%s\n",
+			i,
 			e2->client->pers.netname,
 			(level.framenum - e2->client->resp.enterframe) / 600,
 			((level.framenum - e2->client->resp.enterframe) % 600) / 10,
