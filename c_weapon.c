@@ -919,6 +919,7 @@ void Turret_Touch(edict_t* ent, edict_t* other, cplane_t* plane, csurface_t* sur
 
 	if (surf && (surf->flags & SURF_SKY))
 	{
+		DbgPrintf("%s Turret touched the sky.\n", __func__);
 		G_FreeEdict(ent);
 		return;
 	}

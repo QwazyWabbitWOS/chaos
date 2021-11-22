@@ -439,7 +439,7 @@ void G_FreeEdict(edict_t* ed)
 	}
 
 	//don't report during worldspawn
-	if (level.time && (ed->classindex == PROXYMINE || ed->classindex == VORTEX_RINGS))
+	if (level.time && (ed->classindex == PROXYMINE || ed->classindex == VORTEX_RINGS || ed->classindex == RTURRET || ed->classindex == LTURRET))
 		DbgPrintf("%s num_edicts: %d ent number: %i classname %s classindex %d, time: %0.1f\n", __func__,
 			globals.num_edicts, ed->s.number, ed->classname, ed->classindex, level.time);
 
