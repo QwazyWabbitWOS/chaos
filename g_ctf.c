@@ -2086,7 +2086,7 @@ static void CTFSay_Team_Location(edict_t* who, char* buf)
 
 	// near or above
 	VectorSubtract(who->s.origin, hot->s.origin, v);
-	if (fabs(v[2]) > fabs(v[0]) && fabs(v[2]) > fabs(v[1]))
+	if (fabsf(v[2]) > fabsf(v[0]) && fabsf(v[2]) > fabsf(v[1]))
 		if (v[2] > 0)
 			strcat(buf, "above ");
 		else

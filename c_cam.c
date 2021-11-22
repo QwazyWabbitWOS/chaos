@@ -418,7 +418,7 @@ void PointCamAtPlayer(edict_t* ent)
 		ent->s.frame = (int)(na - 270) / 3;
 	}
 
-	while (fabs(diff) > 180.0F)
+	while (fabsf(diff) > 180.0F)
 	{
 		if (diff > 0)
 		{
@@ -430,7 +430,7 @@ void PointCamAtPlayer(edict_t* ent)
 		}
 	}
 
-	if (fabs(diff) > 12)
+	if (fabsf(diff) > 12)
 	{
 		if (diff > 0)
 		{
