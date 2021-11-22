@@ -26,7 +26,7 @@ void SP_func_areaportal(edict_t* ent)
 {
 	ent->classindex = FUNC_AREAPORTAL; // MrG{DRGN}
 	ent->use = Use_Areaportal;
-	ent->count = 0;		// allways start closed;
+	ent->count = 0;		// always start closed;
 }
 
 //=====================================================

@@ -109,7 +109,7 @@ void P_DamageFeedback(edict_t* player)
 
 	realcount = count;
 	if (count < 10)
-		count = 10;	// allways make a visible effect
+		count = 10;	// always make a visible effect
 
 	// play an apropriate pain sound
 	if ((level.time > player->pain_debounce_time) && !(player->flags & FL_GODMODE) && (client->invincible_framenum <= level.framenum))
@@ -127,7 +127,7 @@ void P_DamageFeedback(edict_t* player)
 		gi.sound(player, CHAN_VOICE, gi.soundindex(va("*pain%i_%i.wav", l, r)), 1, ATTN_NORM, 0);
 	}
 
-	// the total alpha of the blend is allways proportional to count
+	// the total alpha of the blend is always proportional to count
 	if (client->damage_alpha < 0)
 		client->damage_alpha = 0;
 	client->damage_alpha += count * 0.01F;

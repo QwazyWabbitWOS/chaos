@@ -555,10 +555,10 @@ typedef struct
 //ROGUE
 
 // entity_state_t->renderfx flags
-#define	RF_MINLIGHT			1		// allways have some light (viewmodel)
+#define	RF_MINLIGHT			1		// always have some light (viewmodel)
 #define	RF_VIEWERMODEL		2		// don't draw through eyes, only mirrors
 #define	RF_WEAPONMODEL		4		// only draw through eyes
-#define	RF_FULLBRIGHT		8		// allways draw full intensity
+#define	RF_FULLBRIGHT		8		// always draw full intensity
 #define	RF_DEPTHHACK		16		// for view weapon Z crunching
 #define	RF_TRANSLUCENT		32
 #define	RF_FRAMELERP		64
