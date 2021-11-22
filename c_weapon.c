@@ -3972,6 +3972,7 @@ void Proxy_Explode(edict_t* ent)
 	gi.WritePosition(ent->s.origin);
 	gi.multicast(ent->s.origin, MULTICAST_PHS);
 
+	DbgPrintf("%s Proxy Exploded\n", __func__);
 	G_FreeEdict(ent);
 }
 
@@ -4251,10 +4252,10 @@ void EvilProxy_Think(edict_t* ent)
 
 void Proxy_Touch(edict_t* ent, edict_t* other, cplane_t* plane, csurface_t* surf)
 {
-	// MrG{DRGN}
+	//// MrG{DRGN}
 	if (!ent || !other) /* plane is unused, surf can be NULL */
 	{
-		G_FreeEdict(ent);
+		gi.dprintf("Warning: NULL args passed to %s\n", __func__);
 		return;
 	}
 
@@ -4263,9 +4264,11 @@ void Proxy_Touch(edict_t* ent, edict_t* other, cplane_t* plane, csurface_t* surf
 
 	if (surf && (surf->flags & SURF_SKY))
 	{
+		DbgPrintf("%s Proxy touched the sky.\n", __func__);
 		G_FreeEdict(ent);
 		return;
 	}
+
 	ent->s.effects = EF_GREENGIB;
 
 	if (!other->takedamage)
@@ -4293,7 +4296,7 @@ void Proxy_Touch(edict_t* ent, edict_t* other, cplane_t* plane, csurface_t* surf
 
 void fire_proxymine(edict_t* self, vec3_t start, vec3_t aimdir, int damage, int speed, float timer, float damage_radius)
 {
-	edict_t* grenade;
+	edict_t* proxy;
 	vec3_t	dir;
 	vec3_t	forward, right, up;
 
@@ -4305,41 +4308,41 @@ void fire_proxymine(edict_t* self, vec3_t start, vec3_t aimdir, int damage, int 
 	vectoangles(aimdir, dir);
 	AngleVectors(dir, forward, right, up);
 
-	grenade = G_Spawn();
-	VectorCopy(start, grenade->s.origin);
-	VectorScale(aimdir, speed, grenade->velocity);
-	VectorMA(grenade->velocity, 200 + crandom() * 10.0F, up, grenade->velocity);
-	VectorMA(grenade->velocity, crandom() * 10.0F, right, grenade->velocity);
-	VectorSet(grenade->avelocity, 300, 300, 300);
-	grenade->movetype = MOVETYPE_STEP;
-	grenade->clipmask = MASK_SHOT;
-	grenade->solid = SOLID_BBOX;
-	grenade->s.effects = 0;
-	VectorSet(grenade->mins, -8, -8, -8);
-	VectorSet(grenade->maxs, 8, 8, 8);
-	grenade->s.modelindex = gi.modelindex("models/objects/hgproxy/tris.md2");
-	grenade->owner = self;
-	grenade->touch = Proxy_Touch;
-	grenade->viewheight = 40;
+	proxy = G_Spawn();
+	VectorCopy(start, proxy->s.origin);
+	VectorScale(aimdir, speed, proxy->velocity);
+	VectorMA(proxy->velocity, 200 + crandom() * 10.0F, up, proxy->velocity);
+	VectorMA(proxy->velocity, crandom() * 10.0F, right, proxy->velocity);
+	VectorSet(proxy->avelocity, 300, 300, 300);
+	proxy->movetype = MOVETYPE_STEP;
+	proxy->clipmask = MASK_SHOT;
+	proxy->solid = SOLID_BBOX;
+	proxy->s.effects = 0;
+	VectorSet(proxy->mins, -8, -8, -8);
+	VectorSet(proxy->maxs, 8, 8, 8);
+	proxy->s.modelindex = gi.modelindex("models/objects/hgproxy/tris.md2");
+	proxy->owner = self;
+	proxy->touch = Proxy_Touch;
+	proxy->viewheight = 40;
 
 	if (proxytime->value > 0)
-		grenade->delay = level.time + proxytime->value;
+		proxy->delay = level.time + proxytime->value;
 	else
-		grenade->delay = level.time + 100;
+		proxy->delay = level.time + 100;
 
-	grenade->nextthink = level.time + 30;
-	grenade->think = Grenade_Explode;
-	grenade->dmg = damage;
-	grenade->dmg_radius = damage_radius;
-	grenade->classname = "proxymine";
-	grenade->classindex = PROXYMINE;
-	grenade->mass = 10;
-	grenade->health = 120;
-	grenade->die = Proxy_Die;
-	grenade->flags |= FL_NO_KNOCKBACK;
-	grenade->takedamage = DAMAGE_YES;
+	proxy->nextthink = level.time + 30;
+	proxy->think = Proxy_Explode;
+	proxy->dmg = damage;
+	proxy->dmg_radius = damage_radius;
+	proxy->classname = "proxymine";
+	proxy->classindex = PROXYMINE;
+	proxy->mass = 10;
+	proxy->health = 120;
+	proxy->die = Proxy_Die;
+	proxy->flags |= FL_NO_KNOCKBACK;
+	proxy->takedamage = DAMAGE_YES;
 
-	gi.linkentity(grenade);
+	gi.linkentity(proxy);
 }
 
 //----------------------------------------------------------------------------------------------
@@ -4908,7 +4911,7 @@ void Vortex_Touch(edict_t* ent, edict_t* other, cplane_t* plane, csurface_t* sur
 	// MrG{DRGN}
 	if (!ent || !other) /* plane is unused, surf can be NULL */
 	{
-		G_FreeEdict(ent);
+		gi.dprintf("Warning: NULL args passed to %s\n", __func__);
 		return;
 	}
 
@@ -4918,6 +4921,7 @@ void Vortex_Touch(edict_t* ent, edict_t* other, cplane_t* plane, csurface_t* sur
 	if (surf && (surf->flags & SURF_SKY))
 	{
 		Vortex_Free(ent);
+		DbgPrintf("%s Vortex touched the sky\n", __func__);
 		return;
 	}
 
