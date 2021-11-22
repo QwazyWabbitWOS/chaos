@@ -852,6 +852,7 @@ void M_ChangeYaw(edict_t* ent);
 // g_phys.c
 //
 void G_RunEntity(edict_t* ent);
+void M_CheckGround(edict_t* ent);
 
 //
 // g_main.c

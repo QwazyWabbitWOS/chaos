@@ -837,6 +837,47 @@ void SV_AddRotationalFriction(edict_t* ent)
 	}
 }
 
+void M_CheckGround(edict_t* ent)
+{
+	vec3_t		point = { 0 };
+	trace_t		trace;
+
+	if (ent->flags & (FL_SWIM | FL_FLY))
+		return;
+
+	if (ent->velocity[2] > 100)
+	{
+		ent->groundentity = NULL;
+		return;
+	}
+
+	// if the hull point one-quarter unit down is solid the entity is on ground
+	point[0] = ent->s.origin[0];
+	point[1] = ent->s.origin[1];
+	point[2] = ent->s.origin[2] - 0.25f;
+
+	trace = gi.trace(ent->s.origin, ent->mins, ent->maxs, point, ent, MASK_MONSTERSOLID);
+
+	// check steepness
+	if (trace.plane.normal[2] < 0.7f && !trace.startsolid)
+	{
+		ent->groundentity = NULL;
+		return;
+	}
+
+	//	ent->groundentity = trace.ent;
+	//	ent->groundentity_linkcount = trace.ent->linkcount;
+	//	if (!trace.startsolid && !trace.allsolid)
+	//		VectorCopy (trace.endpos, ent->s.origin);
+	if (!trace.startsolid && !trace.allsolid)
+	{
+		VectorCopy(trace.endpos, ent->s.origin);
+		ent->groundentity = trace.ent;
+		ent->groundentity_linkcount = trace.ent->linkcount;
+		ent->velocity[2] = 0;
+	}
+}
+
 void SV_Physics_Step(edict_t* ent)
 {
 	qboolean	wasonground;
@@ -846,6 +887,10 @@ void SV_Physics_Step(edict_t* ent)
 	float		friction;
 	edict_t* groundentity;
 	int			mask;
+
+	// airborn monsters should always check for ground
+	if (!ent->groundentity)
+		M_CheckGround(ent);
 
 	groundentity = ent->groundentity;
 
@@ -875,7 +920,7 @@ void SV_Physics_Step(edict_t* ent)
 	// friction for flying monsters that have been given vertical velocity
 	if ((ent->flags & FL_FLY) && (ent->velocity[2] != 0))
 	{
-		speed = fabs(ent->velocity[2]);
+		speed = fabsf(ent->velocity[2]);
 		control = speed < sv_stopspeed ? sv_stopspeed : speed;
 		friction = sv_friction / 3;
 		newspeed = speed - (FRAMETIME * control * friction);
@@ -888,7 +933,7 @@ void SV_Physics_Step(edict_t* ent)
 	// friction for flying monsters that have been given vertical velocity
 	if ((ent->flags & FL_SWIM) && (ent->velocity[2] != 0))
 	{
-		speed = fabs(ent->velocity[2]);
+		speed = fabsf(ent->velocity[2]);
 		control = speed < sv_stopspeed ? sv_stopspeed : speed;
 		newspeed = speed - (FRAMETIME * control * sv_waterfriction * ent->waterlevel);
 		if (newspeed < 0)
@@ -926,10 +971,15 @@ void SV_Physics_Step(edict_t* ent)
 			mask = MASK_MONSTERSOLID;
 		else
 			mask = MASK_SOLID;
+
 		SV_FlyMove(ent, FRAMETIME, mask);
 
+		if (!ent->inuse)
+			return;
 		gi.linkentity(ent);
 		G_TouchTriggers(ent);
+		if (!ent->inuse)
+			return;
 
 		if (ent->groundentity)
 			if (!wasonground)
