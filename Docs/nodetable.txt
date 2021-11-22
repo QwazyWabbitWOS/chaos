@@ -23,7 +23,7 @@ To create a new node table file:
     Don't pickup items close to your way as you walk straight down a hallway
     the bots automatically go for close (2-3 meters) items.
 4)  Don't jump down to elevators, step on them.
-5)  Be very carefull when climbing laders, look straight towards the ladder
+5)  Be very careful when climbing ladders, look straight towards the ladder
     as you climb.
 6)  Don't use the grappling hook or Jetpack while you create nodes.
 7)  Try not to fall into lava/slime.
@@ -34,9 +34,9 @@ To create a new node table file:
 11) Jump only if you need to, don't jump around just for fun.
 12) Use 'cmd pathdebug' to visualize a path. The green line shows the path from you to
     little skull.
-13) Use 'cmd placenode' to place nodes by hand...this is usefull to cover holes in the
-    node system that cna somethimes be found using pathdebug.
-14) Use 'cmd save_nodes' to svae the nodes table to a file (same name as the current map)
+13) Use 'cmd placenode' to place nodes by hand...this is useful to cover holes in the
+    node system that can sometimes be found using pathdebug.
+14) Use 'cmd save_nodes' to save the nodes table to a file (same name as the current map)
     in the subdirectory 'nodes'.
 15) If you think that your node system is complete set dntg to 0 before you save the nodes.
     This settings will be saved together with the nodes to prevent the game from setting dntg

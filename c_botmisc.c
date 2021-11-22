@@ -1,6 +1,5 @@
 ﻿#include "g_local.h"
 #include "c_base.h"
-#include "c_botai.h"
 #include "m_player.h"
 #include "gslog.h"
 

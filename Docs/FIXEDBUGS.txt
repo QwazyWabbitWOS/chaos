@@ -55,11 +55,11 @@ These are bugs that have been fixed in Chaotic Dreams
   correctly monitor the dmflags, so now if instant powerups are set then the
   jetpack instantly turns on and you cannot turn it off. )
 
-* Somehow the "sv addbots" command seems to have vanished from beeing ussable
-  in the v1.13beta binaries for the Win32 enviroment .. likley an issue with
+* Somehow the "sv addbots" command seems to have vanished from being usable
+  in the v1.13beta binaries for the Win32 environment .. likely an issue with
   the project files
-  -Fixed Tue Jul 13 21:55:19 CDT 1999 (This never "trully" existed as a code
-  problem, this was likley an issue created by the early config of cvs and
+  -Fixed Tue Jul 13 21:55:19 CDT 1999 (This never "truly" existed as a code
+  problem, this was likely an issue created by the early config of cvs and
   it's handling of the binaries.)
 
 * If a player starts out with a grapple they can pick up a grapple once.
@@ -68,9 +68,9 @@ These are bugs that have been fixed in Chaotic Dreams
 * one of the mystery crashes that was killing the game "appears" to have been
   resolved.  It seems that "occasionally" a player would kill a turret, and IF
   they ran outa of ammo and let the game "autoselect" their new weapon, the
-  game would somehow manage to derefrence the it_aifirst pointer, at which
+  game would somehow manage to dereference the it_aifirst pointer, at which
   point the weapon autochanger would try to see if the player had the airfist
-  and the game would crash.  There is one other occurance of a similar issue
+  and the game would crash.  There is one other occurrence of a similar issue
   that appears to happen but has not yet been tracked down.
   -Fixed Sun Jul 18 16:04:25 CDT 1999
 
@@ -192,7 +192,7 @@ set turprox_fx "1"     // enable new turret & proxy effects
   temp_event_t in q_shared.h in case we want to add some other effects.
 - Fixed Sun Dec 14, 2003
 
-* Fixed a bug removed by mrg so these don't get exploited on older servers
+* Fixed a bug removed by MrG{DRGN} so these don't get exploited on older servers
 - Fixed Sun Dec 14, 2003
 
 * Fixed a bug created in 1.14 release where if you picked up a jetpack it would kill the further respawn of the items in rotation...  was handled.
@@ -204,11 +204,11 @@ set turprox_fx "1"     // enable new turret & proxy effects
 * Fixed a bug where a player disconnects, or goes to camera mode with a grappling hook active, the hook could be left behind.
 - Fixed Tue Dec 16, 2003
 
-* Added more options for the havoc bot skins/models. the moobul/moobull, cow/cow, moobull/warbull, pknight/dragon, pknight/pledge,
+* Added more options for the havoc bot skins/models. the moobull/moobull, cow/cow, moobull/warbull, pknight/dragon, pknight/pledge,
   and pknight/evil as choices in the random selection for them
 - Fixed Tue Dec 16, 2003
 
-* Fixed a bug where explosive arrow MODs where not implimented, and grenade MODs were being used, and added them to gslogs
+* Fixed a bug where explosive arrow MODs where not implemented, and grenade MODs were being used, and added them to gslogs
 - Fixed Wed Dec 17, 2003
 
 * Fixed a bug where only male/female deaths were recorded, (if you weren't a female model you were male) .
@@ -243,7 +243,7 @@ set turprox_fx "1"     // enable new turret & proxy effects
 * Updated CTFSay_Team so Chaos specific weapons, and items are now included in the locational macro (%L)
   - Fixed Fri Dec 26, 2003
 
-* Added glow & trail effect to proxies,and turrets when the owner has quad damage, and or invunlerability active, IF they are invisible they are translucent.
+* Added glow & trail effect to proxies,and turrets when the owner has quad damage, and or invulnerability active, IF they are invisible they are translucent.
   - Fixed Sat Dec 27, 2003
 
 * Fixed a bug in void SV_CalcBlend where one of the coders tried to force the client gl_polyblend cvar to 1 by doing gi.cvar_set("gl_polyblend", "1");
@@ -299,7 +299,7 @@ but the way bot safe chat was handled.
   for the vortex to affect the camera in free view mode. Now the vortex can be viewed in safety
 - Fixed Sun Jan 11, 2004
 
-* Added new command CAMLIST to see who is using the camera seperate from all players.
+* Added new command CAMLIST to see who is using the camera separate from all players.
 - Fixed Sun Jan 11, 2004
 
 * Added new cvars for all new chaos options, including telefrag_rail,turret & proxy effects, firing thru teleports,
@@ -439,7 +439,7 @@ set drop_tech "1"      // MrG{DRGN} enable/disable tech drops                   
 set bot_log_only "1"   // bot detection is only logged when set to 1                     - no
 set chaos_plus "0"     // enable some new chaos features.                                - todo - master cvar for the following
 set telefrag_rail "0"  // enable special railgun mode.                                   - may do
-set tele_fire "1"      // enable some items/weapon fire to pass through teleporters      - redone but needs to be controlled by chaos_plus cvar
+set tele_fire "1"      // enable some items/weapon fire to pass through teleporters      - redone but needs to be controlled by chaos_plus cvar or eliminated
 set turprox_fx "1"     // enable new turret & proxy effects                             - may do
 //========================================================
 

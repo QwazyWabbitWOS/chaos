@@ -1,5 +1,4 @@
 ﻿#include "g_local.h"
-#include "c_botai.h"
 #include "c_botnav.h"
 #include "m_player.h"
 

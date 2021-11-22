@@ -53,7 +53,7 @@ In progress:
 	* upgrade Havok Bots
 
 	* Game occasionally sig11's in Linux and Segfaults in Win95, possibly memory
-	  leak somewhere (this will be painfull to fix)
+	  leak somewhere (this will be painful to fix)
 	  // FWP One segfault cause (turret crash) fixed.  May be others. 
 	  MrG{DRGN} - Unsure if this is still an issue
 

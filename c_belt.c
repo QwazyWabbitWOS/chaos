@@ -2,7 +2,7 @@
 
 void Cmd_Belt_f(edict_t* ent)
 {
-	if (ent->client->resp.spectator)/* MrG{DRGN} if you haven't joined a team yet. you can't AG belt! */
+	if (ent->client->resp.spectator)/* MrG{DRGN} if you haven't joined a team yet or are a spectator, you can't use the AG belt! */
 		return;
 
 	if (ent->client->fakedeath > 0)

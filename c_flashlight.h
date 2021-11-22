@@ -1,7 +1,7 @@
 #ifndef C_FLASHLIGHT_H
 #define C_FLASHLIGHT_H
 
-// MrG{DRGN} never in game, but always posessed!
+// MrG{DRGN} never in game, but always possessed!
 gitem_t* it_flashlight;
 
 void ShutOff_Flashlight(edict_t* ent);

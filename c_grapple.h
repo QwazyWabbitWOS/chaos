@@ -9,7 +9,7 @@
 cvar_t* ban_grapple, * start_grapple;
 void GrappleInitVars(void);
 
-// MrG{DRGN} never in game, but always posessed!
+// MrG{DRGN} never in game, but always possessed!
 gitem_t* it_grapple;
 
 void ShutOff_Grapple(edict_t* ent);

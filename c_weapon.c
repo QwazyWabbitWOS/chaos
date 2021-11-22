@@ -1,6 +1,5 @@
 ﻿#include "g_local.h"
 #include "m_player.h"
-#include "c_botai.h"
 
 // MrG{DRGN} moved here, since it's a Chaos specific weapon.
 void Weapon_AK42_Fire(edict_t* ent)

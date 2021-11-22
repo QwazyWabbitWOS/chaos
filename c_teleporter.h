@@ -3,7 +3,7 @@
 
 void ShutOff_teleporter(edict_t* ent);
 
-// MrG{DRGN} never in game, but always posessed!
+// MrG{DRGN} never in game, but always possessed!
 gitem_t* it_teleporter;
 
 void Teleport_Think(edict_t* ent);

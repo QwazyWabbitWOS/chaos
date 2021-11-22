@@ -1,7 +1,7 @@
 ﻿/*
  *  - MrG{DRGN}, April 17th 2020
- *  This is a list of entities in game for the purpose of integer cpmparison/greatly subsituting classname comparisons.
- *  Tthe classindex system needs to be put into place to greatly reduce string comparisons.
+ *  This is a list of entities in game for the purpose of integer comparison/greatly substituting classname comparisons.
+ *  The classindex system needs to be put into place to greatly reduce string comparisons.
  *
  */
 
@@ -184,13 +184,13 @@ typedef enum classindex
 	PU_BANDOLIER,
 	PU_PACK,
 
-	// MrG{DRGN} These never spawn in game, but are always posessed!
+	// MrG{DRGN} These never spawn in game, but are always possessed!
 	PU_BELT,
 	PU_FLASHLIGHT,
 	PU_SCANNER,
 	PU_TELEPORTER,
 
-	// MrG{DRGM} we don't strickly need these to exist.
+	// MrG{DRGM} we don't strictly need these to exist.
 	KEY_DATACD,
 	KEY_POWERCUBE,
 	KEY_PYRAMID,

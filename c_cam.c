@@ -38,7 +38,7 @@ void CreateCamera(edict_t* ent)
 	ent->watertype = 0;
 	ent->flags = FL_FLY;
 	ent->client->ps.fov = 90;
-	ent->client->kamikazetime = 0;/* MrG{DRGN} no kami stuck screen! */
+	ent->client->kamikazetime = 0;/* MrG{DRGN} no kamikaze stuck screen! */
 	ent->client->grenade_blew_up = false;
 	ent->client->grenade_time = 0;
 	ent->client->ps.blend[3] = 0;

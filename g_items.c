@@ -1,6 +1,5 @@
 ﻿#include "g_local.h"
 #include "c_botnav.h"
-#include "c_botai.h"
 
 gitem_armor_t jacketarmor_info = { 25,  50, .30F, .00F, ARMOR_JACKET };
 gitem_armor_t combatarmor_info = { 50, 100, .60F, .30F, ARMOR_COMBAT };
