@@ -31,9 +31,9 @@ void SP_target_temp_entity(edict_t* ent)
 3 = ambient sound level
 "volume"	0.0 to 1.0
 
-Normal sounds play each time the target is used.  The reliable flag can be set for crucial voiceovers.
+Normal sounds play each time the target is used.  The reliable flag can be set for crucial voice overs.
 
-Looped sounds are allways atten 3 / vol 1, and the use function toggles it on/off.
+Looped sounds are always attenuation 3 / vol 1, and the use function toggles it on/off.
 Multiple identical looping sounds will just increase volume without any speed cost.
 */
 void Use_Target_Speaker(edict_t* ent, edict_t* other, edict_t* activator)
