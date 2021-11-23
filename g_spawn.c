@@ -805,7 +805,7 @@ char* dm_statusbar =
 // timer
 "if 9 "
 "xv 246 "
-"num 2 10 "
+"num 3 10 "
 "xv 296 "
 "pic 9 "
 "endif "
