@@ -5,7 +5,7 @@ While Havoc Bot v0.8 supports dynamic node table generation
 (generation while you play against the bots) building quality node
 table files needs more care and time.
 
-NOTE: v0.8 does not support CTF AI, yet. You can play with bot's in CTF games
+NOTE: v0.8 does not support CTF AI, yet. You can play with bots in CTF games
       but they won't go for the map.
 
 NOTE: The pathing system supports elevators, ladders, teleporters, water and jumps

@@ -67,7 +67,7 @@ These are bugs that have been fixed in Chaotic Dreams
 
 * one of the mystery crashes that was killing the game "appears" to have been
   resolved.  It seems that "occasionally" a player would kill a turret, and IF
-  they ran outa of ammo and let the game "autoselect" their new weapon, the
+  they ran out of ammo and let the game "autoselect" their new weapon, the
   game would somehow manage to dereference the it_aifirst pointer, at which
   point the weapon autochanger would try to see if the player had the airfist
   and the game would crash.  There is one other occurrence of a similar issue
@@ -105,7 +105,7 @@ These are bugs that have been fixed in Chaotic Dreams
 * Fixed the Vortex section of the Valid_Target routine so that Vortices again suck :)
   - Fixed Sat Oct 2, 1999
 
-* Made small changes in Valid_Target routine to make proxies more agressive
+* Made small changes in Valid_Target routine to make proxies more aggressive
   - Fixed Mon Oct 4, 1999
 
 * Fixed a problem in the map rotation code causing errors in sequential rotation
@@ -236,7 +236,7 @@ set turprox_fx "1"     // enable new turret & proxy effects
 - Fixed Mon Dec 22, 2003
 
 * Updated q_shared.h, and q_shared.c to 3.21 release versions Note that there is a sound called by the ak42 firing MZ_BOOMERGUN, which was later replaced by MZ_IONRIPPER from
-  the xatrix mission packin the quake2 engine . The sound is"sound/weapons/rippfire.wav". This is an Engine side function .
+  the xatrix mission pack in the quake2 engine . The sound is"sound/weapons/rippfire.wav". This is an Engine side function .
   For full effect we should add this ,  or an appropriate wav with the same name to the chaos pak0.pak.
 - Fixed Wed Dec 24, 2003
 
@@ -287,7 +287,7 @@ but the way bot safe chat was handled.
 * Added a new cammode "camera 6" freeview to player view for testing, added checks against functions being used in camera mode.
 - Fixed Thu Jan 08, 2004
 
-* Restored some code to the sv ml maplist function for skiping to a map # in the rotation. The usage is
+* Restored some code to the sv ml maplist function for skipping to a map # in the rotation. The usage is
   sv ml goto #.
 - Fixed Fri Jan 09, 2004
 
@@ -331,7 +331,7 @@ but the way bot safe chat was handled.
 * Added new shell effects for the SuperShotgun, and ExplosiveSuperShotgun
    - Fixed Wed Jan 28, 2004
 
-* Removed telekinetic proxy think function for the time being until furthur development warrants its return.
+* Removed telekinetic proxy think function for the time being until further development warrants its return.
    - Fixed Sat Feb 21, 2004
 
 * Fixed instagibing of turrets by railshots with telefrag_rail enabled, and tweaked the code a bit so hopefully the attacker will be teleported to the victim's location everytime now...still to be tested.
@@ -357,7 +357,7 @@ but the way bot safe chat was handled.
    Prints the current list of filters.
 
    writeip
-   Dumps "addip <ip>" commands to listip.cfg so it can be execed at a later date.  The filter lists are not saved and restored by default, because I beleive it would cause too much confusion.
+   Dumps "addip <ip>" commands to listip.cfg so it can be execed at a later date.  The filter lists are not saved and restored by default, because I believe it would cause too much confusion.
 
    filterban <0 or 1>
    If 1 (the default), then ip addresses matching the current list will be prohibited from entering the game.  This is the default setting.
