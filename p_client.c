@@ -2395,7 +2395,7 @@ void ClientThink(edict_t* ent, usercmd_t* ucmd)
 		ent->s.origin[i] = pm.s.origin[i] * 0.125;
 		*/
 		ent->s.origin[i] = SHORT2COORD(pm.s.origin[i]);
-		if (!Jet_Active(ent) || (Jet_Active(ent) && (fabsf((float)pm.s.velocity[i] * 0.125) < fabsf(ent->velocity[i]))))	//MATTHIAS
+		if (!Jet_Active(ent) || (Jet_Active(ent) && (fabsf((float)pm.s.velocity[i] * 0.125F) < fabsf(ent->velocity[i]))))	//MATTHIAS
 		/* MrG{DRGN}
 			ent->velocity[i] = pm.s.velocity[i] * 0.125;
 		*/
