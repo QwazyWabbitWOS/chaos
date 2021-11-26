@@ -805,7 +805,7 @@ void player_die(edict_t* self, edict_t* inflicter, edict_t* attacker, int damage
 
 	if (!self->deadflag || self->client->fakedeath)
 	{
-		// FWP Fix for neg frags on fakedeath in lava, once real death pccurs, unset fakedeath flag
+		// FWP Fix for neg frags on fakedeath in lava, once real death occurs, unset fakedeath flag
 		self->client->fakedeath = 0;
 
 		self->client->respawn_time = level.time + 1.0;
@@ -1607,7 +1607,7 @@ void PutClientInServer(edict_t* ent)
 	ent->movetype = MOVETYPE_WALK;
 	ent->viewheight = 22;
 	ent->inuse = true;
-	ent->bot_player = false;  /* MrG{DRGN} this is a lot easier than checking the classname to track if we're dealing wiith a bot or not! */
+	ent->bot_player = false;  /* MrG{DRGN} this is a lot easier than checking the classname to track if we're dealing with a bot or not! */
 	ent->classname = "player";
 	ent->classindex = PLAYER;
 	ent->mass = 200;
@@ -2300,7 +2300,7 @@ void ClientThink(edict_t* ent, usercmd_t* ucmd)
 		if (client->nextheartbeat < level.time + 0.6)
 			client->nextheartbeat = level.time + 0.6;
 	}
-	//RANDOM SNEZZE
+	//RANDOM SNEEZE
 	if (level.time > client->nextrandomsound && !ent->client->resp.spectator) // MrG{DRGN} prevent spectator noises
 	{
 		float rn = random();

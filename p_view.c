@@ -111,7 +111,7 @@ void P_DamageFeedback(edict_t* player)
 	if (count < 10)
 		count = 10;	// always make a visible effect
 
-	// play an apropriate pain sound
+	// play an appropriate pain sound
 	if ((level.time > player->pain_debounce_time) && !(player->flags & FL_GODMODE) && (client->invincible_framenum <= level.framenum))
 	{
 		r = 1 + (rand() & 1);
