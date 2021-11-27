@@ -4051,7 +4051,7 @@ void CTFWarp(edict_t* ent)
 	if (token == NULL) {
 		cprint_botsafe(ent, PRINT_HIGH, "Unknown CTF level.\n");
 		cprint_botsafe(ent, PRINT_HIGH, "Available levels are: %s\n", warp_list->string);
-		free(mlist);
+		gi.TagFree(mlist);
 		return;
 	}
 
