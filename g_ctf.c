@@ -298,7 +298,7 @@ void CTFInit(void)
 	matchstarttime = gi.cvar("matchstarttime", "20", 0);
 	admin_password = gi.cvar("admin_password", "", 0);
 	allow_admin = gi.cvar("allow_admin", "1", 0);
-	warp_list = gi.cvar("warp_list", "q2ctf1 q2ctf2 q2ctf3 q2ctf4 q2ctf5", 0);
+	warp_list = gi.cvar("warp_list", "q2ctf1 q2ctf2 q2ctf3 q2ctf4 q2ctf5 q2ctf6 q2ctf7 q2ctf8 q2ctf9", 0);
 	warn_unbalanced = gi.cvar("warn_unbalanced", "1", 0);
 }
 
