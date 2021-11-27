@@ -860,6 +860,7 @@ void M_CheckGround(edict_t* ent);
 void SaveClientData(void);
 void FetchClientEntData(edict_t* ent);
 void G_RunFrame(void);
+void ExitLevel(void);
 
 //
 // g_svcmds.c

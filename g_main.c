@@ -273,12 +273,24 @@ void ExitLevel(void)
 	edict_t* ent;
 	char	command[256];
 
-	Com_sprintf(command, sizeof(command), "gamemap \"%s\"\n", level.changemap);
-	gi.AddCommandString(command);
-	level.changemap = NULL;
-	level.exitintermission = 0;
-	level.intermissiontime = 0;
-	ClientEndServerFrames();
+	if (strlen(level.forcemap) != 0)
+	{
+		Com_sprintf(command, sizeof(command), "gamemap \"%s\"\n", level.forcemap);
+		gi.AddCommandString(command);
+		Q_strncpyz(level.forcemap, sizeof level.forcemap, "");
+		level.exitintermission = 0;
+		level.intermissiontime = 0;
+		ClientEndServerFrames();
+	}
+	else
+	{
+		Com_sprintf(command, sizeof(command), "gamemap \"%s\"\n", level.changemap);
+		gi.AddCommandString(command);
+		level.changemap = NULL;
+		level.exitintermission = 0;
+		level.intermissiontime = 0;
+		ClientEndServerFrames();
+	}
 
 	// clear some things before going to next level
 	for (i = 0; i < maxclients->value; i++)

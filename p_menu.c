@@ -3,7 +3,7 @@
 // Note that the pmenu entries are duplicated
 // this is so that a static set of pmenu entries can be used
 // for multiple clients and changed without interference
-// note that arg will be freed when the menu is closed, it must be allocated memory
+// note that arg will be freed when the menu is closed, it must use gi.TagMalloc'd memory
 pmenuhnd_t* PMenu_Open(edict_t* ent, pmenu_t* entries, int cur, int num, void* arg)
 {
 	pmenuhnd_t* hnd;

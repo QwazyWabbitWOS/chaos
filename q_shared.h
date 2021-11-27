@@ -249,10 +249,13 @@ int		Sys_Milliseconds(void);
 void	Sys_Mkdir(char* path);
 
 // large block stack allocation routines
-void* Hunk_Begin(size_t maxsize);/* MrG{DRGN} was int maxsize */
-void* Hunk_Alloc(size_t size);/* MrG{DRGN} was int size */
+//QW// These are used by gl_models.c and the 
+// game engine and must not be changed.
+// They are never used by the game mod directly.
+void* Hunk_Begin(int maxsize, int precommit);
+void* Hunk_Alloc(int size);
 void	Hunk_Free(void* buf);
-size_t		Hunk_End(void);/* MrG{DRGN} was int maxsize Hunk_End(void)*/
+int		Hunk_End(void);
 
 // directory searching
 #define SFF_ARCH    0x01
@@ -266,7 +269,7 @@ size_t		Hunk_End(void);/* MrG{DRGN} was int maxsize Hunk_End(void)*/
 */
 char* Sys_FindFirst(char* path, unsigned musthave, unsigned canthave);
 char* Sys_FindNext(unsigned musthave, unsigned canthave);
-void	Sys_FindClose(void);
+void  Sys_FindClose(void);
 
 // this is only here so the functions in q_shared.c and q_shwin.c can link
 void Sys_Error(const char* error, ...); /* MrG{DRGN} changed to const */
