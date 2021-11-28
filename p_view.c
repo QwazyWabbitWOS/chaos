@@ -909,11 +909,7 @@ void G_SetClientEffects(edict_t* ent)
 			CTFSetPowerUpEffect(ent, EF_PENT);
 	}
 
-	if (ent->client->invincible_framenum > level.framenum
-		//ZOID
-		&& (level.framenum & 8)
-		//ZOID
-		)
+	if (ent->client->invincible_framenum > level.framenum && (level.framenum & 8))
 	{
 		remaining = ent->client->invincible_framenum - level.framenum;
 		if (remaining > 30 || (remaining & 4))
@@ -1247,8 +1243,8 @@ void ClientEndServerFrame(edict_t* ent)
 		if ((ent->client->showscores || ent->client->scanneractive > 0) &&
 			!(level.framenum & SCANNER_UPDATE_FREQ))
 		{
-			//ZOID
-			if (ent->client->menu) {
+			if (ent->client->menu)
+			{
 				PMenu_Update(ent);
 			}
 			else

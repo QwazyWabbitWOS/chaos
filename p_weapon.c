@@ -797,9 +797,7 @@ static void Weapon_Generic2(edict_t* ent, int FRAME_ACTIVATE_LAST, int FRAME_FIR
 		{
 			if (ent->client->ps.gunframe == fire_frames[n])
 			{
-				//ZOID
 				if (!CTFApplyStrengthSound(ent))
-					//ZOID
 					if (ent->client->quad_framenum > level.framenum)
 						gi.sound(ent, CHAN_ITEM, gi.soundindex("items/damage3.wav"), 1, ATTN_NORM, 0);
 				//ZOID

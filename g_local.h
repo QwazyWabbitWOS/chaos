@@ -669,8 +669,8 @@ gitem_t* GetItemByIndex(int index);
 qboolean Add_Ammo(edict_t* ent, gitem_t* item, int count);
 void Touch_Item(edict_t* ent, edict_t* other, cplane_t* plane, csurface_t* surf);
 void DoRespawn(edict_t* ent); /* MrG{DRGN} added this prototype */
-void	Use_Weapon(edict_t* ent, gitem_t* item);
-void	Drop_Weapon(edict_t* ent, gitem_t* item);
+void Use_Weapon(edict_t* ent, gitem_t* item);
+void Drop_Weapon(edict_t* ent, gitem_t* item);
 
 //
 // g_utils.c
@@ -983,10 +983,10 @@ struct gclient_s
 	pmove_state_t		old_pmove;	// for detecting out-of-pmove changes
 
 	qboolean	showscores;			// set layout stat
-//ZOID
+	//ZOID
 	qboolean	inmenu;				// in menu
 	pmenuhnd_t* menu;				// current menu
-//ZOID
+	//ZOID
 	qboolean	showinventory;		// set layout stat
 	qboolean	showhelp;
 	qboolean	showhelpicon;

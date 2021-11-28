@@ -232,7 +232,7 @@ void CheckDMRules(void)
 	}
 	if (CTFInMatch())
 		return; // no checking in match mode
-//ZOID
+	//ZOID
 
 	if (timelimit->value)
 	{

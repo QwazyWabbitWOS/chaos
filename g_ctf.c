@@ -2415,7 +2415,7 @@ qboolean CTFBeginElection(edict_t* ent, elect_t type, char* msg)
 	ctfgame.etarget = ent;
 	ctfgame.election = type;
 	ctfgame.evotes = 0;
-	ctfgame.needvotes = (count * electpercentage->value) / 100;
+	ctfgame.needvotes = (CountPlayers() * electpercentage->value) / 100;
 	ctfgame.electtime = level.time + 20; // twenty seconds for election
 	strncpy(ctfgame.emsg, msg, sizeof(ctfgame.emsg) - 1);
 
@@ -2427,8 +2427,6 @@ qboolean CTFBeginElection(edict_t* ent, elect_t type, char* msg)
 
 	return true;
 }
-
-void DoRespawn(edict_t* ent);
 
 void CTFResetAllPlayers(void)
 {
@@ -2605,8 +2603,9 @@ void CTFWinElection(void)
 	case ELECT_MAP:
 		bprint_botsafe(PRINT_HIGH, "%s is warping to level %s.\n",
 			ctfgame.etarget->client->pers.netname, ctfgame.elevel);
-		strncpy(level.forcemap, ctfgame.elevel, sizeof(level.forcemap) - 1);
-		EndDMLevel();
+		Q_strncpyz(level.forcemap, sizeof level.forcemap, ctfgame.elevel);
+		gi.cvar_forceset("ctf", "1");
+		ExitLevel();
 		break;
 	default:
 		ctfgame.election = ELECT_NONE;
@@ -4033,6 +4032,12 @@ void CTFWarp(edict_t* ent)
 	char* token;
 	const char* seps = " \t\n\r";
 
+	if (ctf->value == 0)
+	{
+		cprint_botsafe(ent, PRINT_HIGH, "Warp is only available in CTF mode.\n");
+		return;
+	}
+
 	if (gi.argc() < 2) {
 		cprint_botsafe(ent, PRINT_HIGH, "Where do you want to warp to?\n");
 		cprint_botsafe(ent, PRINT_HIGH, "Available levels are: %s\n", warp_list->string);
@@ -4057,21 +4062,23 @@ void CTFWarp(edict_t* ent)
 		return;
 	}
 
-	//if (ent->client->resp.admin)
-	//{
-	bprint_botsafe(PRINT_HIGH, "%s is warping to level %s.\n",
-		ent->client->pers.netname, token);
-	Q_strncpyz(level.forcemap, sizeof level.forcemap, token);
-	gi.cvar_forceset("ctf", "1");
-	gi.TagFree(mlist); //QW// Not actually needed when changing levels.
-	ExitLevel();
-	return;
-	//	}
-
-		//Com_sprintf(text, sizeof(text), "%s has requested warping to level %s.",
-		//	ent->client->pers.netname, token);
-		//if (CTFBeginElection(ent, ELECT_MAP, text))
-		//	Q_strncpyz(ctfgame.elevel, sizeof(ctfgame.elevel), token);
+	if (ent->client->resp.admin || CountPlayers() < 2)
+	{
+		bprint_botsafe(PRINT_HIGH, "%s is warping to level %s.\n",
+			ent->client->pers.netname, token);
+		Q_strncpyz(level.forcemap, sizeof level.forcemap, token);
+		gi.cvar_forceset("ctf", "1");
+		gi.TagFree(mlist); //QW// Not actually needed when changing levels.
+		ExitLevel();
+		return;
+	}
+	else //QW// Put it up for vote.
+	{
+		Com_sprintf(text, sizeof(text), "%s has requested warping to level %s.",
+			ent->client->pers.netname, token);
+		if (CTFBeginElection(ent, ELECT_MAP, text))
+			Q_strncpyz(ctfgame.elevel, sizeof(ctfgame.elevel), token);
+	}
 }
 
 void CTFBoot(edict_t* ent)

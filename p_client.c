@@ -1389,11 +1389,9 @@ void	SelectSpawnPoint(edict_t* ent, vec3_t origin, vec3_t angles)
 	edict_t* spot = NULL;
 
 	if (deathmatch->value)
-		//ZOID
 		if (ctf->value)
 			spot = SelectCTFSpawnPoint(ent);
 		else
-			//ZOID
 			spot = SelectDeathmatchSpawnPoint();
 	else if (coop->value)
 		spot = SelectCoopSpawnPoint(ent);

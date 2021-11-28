@@ -12,6 +12,8 @@ int	power_screen_index;
 int	power_shield_index;
 
 void Use_Quad(edict_t* ent, gitem_t* item);
+void droptofloor(edict_t* ent);
+
 static int	quad_drop_timeout_hack;
 
 //======================================================================
@@ -97,9 +99,6 @@ gitem_t* FindItemByClassindex(unsigned int classindex)
 }
 
 //======================================================================
-
-//MATTHIAS
-void droptofloor(edict_t* ent);
 
 void DoRespawn(edict_t* ent)
 {
@@ -1818,7 +1817,7 @@ qboolean Pickup_Health(edict_t* ent, edict_t* other)
 	//ZOID
 	if (ent->style & HEALTH_TIMED)
 		// && !CTFHasRegeneration(other) )
-//ZOID
+	//ZOID
 	{
 		ent->think = MegaHealth_think;
 		ent->nextthink = level.time + 5;
