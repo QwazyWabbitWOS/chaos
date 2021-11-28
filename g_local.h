@@ -735,6 +735,8 @@ void ThrowClientHead(edict_t* self, int damage);
 void ThrowGib(edict_t* self, char* gibname, int damage, int type);
 void BecomeExplosion1(edict_t* self);
 void SP_misc_teleporter_dest(edict_t* ent);
+int CountPlayers(void); // Return number of players
+
 //
 // g_ai.c
 qboolean infront(edict_t* self, edict_t* other);

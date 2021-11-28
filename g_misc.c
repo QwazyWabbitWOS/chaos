@@ -1513,3 +1513,19 @@ void SP_misc_teleporter_dest(edict_t* ent)
 	VectorSet(ent->maxs, 32, 32, -16);
 	gi.linkentity(ent);
 }
+
+//Return number of players
+int CountPlayers(void)
+{
+	int i;
+	edict_t* ent;
+
+	int count = 0;
+	for (i = 0; i < maxclients->value; i++)
+	{
+		ent = g_edicts + 1 + i;
+		if (ent->inuse && !ent->bot_player)
+			count++;
+	}
+	return count;
+}
