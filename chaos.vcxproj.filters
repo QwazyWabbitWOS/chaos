@@ -244,8 +244,5 @@
     <Text Include="Docs\TODO.txt">
       <Filter>Docs</Filter>
     </Text>
-    <Text Include="example_maplist.txt">
-      <Filter>Docs</Filter>
-    </Text>
   </ItemGroup>
 </Project>
