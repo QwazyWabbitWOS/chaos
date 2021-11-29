@@ -647,6 +647,8 @@ void Cmd_Wave_f(edict_t* ent);
 void Cmd_Say_f(edict_t* ent, qboolean team, qboolean arg0);
 void Cmd_Help_f(edict_t* ent);
 void ClientCommand(edict_t* ent);
+qboolean CheckFlood(edict_t* ent);
+
 
 //
 // g_items.c
@@ -722,11 +724,6 @@ void T_RadiusDamage(edict_t* inflicter, edict_t* attacker, float damage, edict_t
 #define DEFAULT_DEATHMATCH_SHOTGUN_COUNT	12
 #define DEFAULT_SHOTGUN_COUNT	12
 #define DEFAULT_SSHOTGUN_COUNT	20
-
-/* MrG{DRGN
-* g_cmds.c
-*/
-qboolean CheckFlood(edict_t* ent);
 
 //
 // g_misc.c
