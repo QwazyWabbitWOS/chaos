@@ -292,7 +292,7 @@ void CTFInit(void)
 	ctf_forcejoin = gi.cvar("ctf_forcejoin", "1", 0);
 	competition = gi.cvar("competition", "0", CVAR_SERVERINFO);
 	matchlock = gi.cvar("matchlock", "1", CVAR_SERVERINFO);
-	electpercentage = gi.cvar("electpercentage", "50", 0);
+	electpercentage = gi.cvar("electpercentage", "67", 0);
 	matchtime = gi.cvar("matchtime", "20", CVAR_SERVERINFO);
 	matchsetuptime = gi.cvar("matchsetuptime", "10", 0);
 	matchstarttime = gi.cvar("matchstarttime", "20", 0);
