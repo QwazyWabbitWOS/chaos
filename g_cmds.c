@@ -914,7 +914,6 @@ void Cmd_Wave_f(edict_t* ent)
 qboolean CheckFlood(edict_t* ent)
 {
 	int	i;
-
 	gclient_t* cl;
 
 	if (flood_msgs->value) {

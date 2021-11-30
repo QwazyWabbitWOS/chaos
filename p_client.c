@@ -1563,25 +1563,26 @@ void PutClientInServer(edict_t* ent)
 		memcpy(userinfo, client->pers.userinfo, sizeof(userinfo));
 		InitClientPersistent(client);
 		ClientUserinfoChanged(ent, userinfo);
-	}/* MrG{DRGN}  Always DM	*/
-	else if (coop->value)
-	{
-		int			n;
-		char		userinfo[MAX_INFO_STRING];
-
-		resp = client->resp;
-		memcpy(userinfo, client->pers.userinfo, sizeof(userinfo));
-		// this is kind of ugly, but it's how we want to handle keys in coop
-		for (n = 0; n < MAX_ITEMS; n++)
-		{
-			if (itemlist[n].flags & IT_KEY)
-				resp.coop_respawn.inventory[n] = client->pers.inventory[n];
-		}
-		client->pers = resp.coop_respawn;
-		ClientUserinfoChanged(ent, userinfo);
-		if (resp.score > client->pers.score)
-			client->pers.score = resp.score;
 	}
+	// MrG{DRGN}  Always DM
+	//else if (coop->value)
+	//{
+	//	int			n;
+	//	char		userinfo[MAX_INFO_STRING];
+
+	//	resp = client->resp;
+	//	memcpy(userinfo, client->pers.userinfo, sizeof(userinfo));
+	//	// this is kind of ugly, but it's how we want to handle keys in coop
+	//	for (n = 0; n < MAX_ITEMS; n++)
+	//	{
+	//		if (itemlist[n].flags & IT_KEY)
+	//			resp.coop_respawn.inventory[n] = client->pers.inventory[n];
+	//	}
+	//	client->pers = resp.coop_respawn;
+	//	ClientUserinfoChanged(ent, userinfo);
+	//	if (resp.score > client->pers.score)
+	//		client->pers.score = resp.score;
+	//}
 	else
 	{
 		memset(&resp, 0, sizeof(resp));
