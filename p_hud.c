@@ -58,7 +58,7 @@ void MoveClientToIntermission(edict_t* ent)
 
 void BeginIntermission(edict_t* target)
 {
-	int		i, n;
+	int		i;
 	edict_t* ent;
 	edict_t* client;
 
@@ -99,21 +99,22 @@ void BeginIntermission(edict_t* target)
 
 	if (strstr(level.changemap, "*"))
 	{
-		if (coop->value)
-		{
-			for (i = 0; i < maxclients->value; i++)
-			{
-				client = g_edicts + 1 + i;
-				if (!client->inuse || !client->client)
-					continue;
-				// strip players of all keys between units
-				for (n = 0; n < MAX_ITEMS; n++)
-				{
-					if (itemlist[n].flags & IT_KEY)
-						client->client->pers.inventory[n] = 0;
-				}
-			}
-		}
+		// MrG{DRGN} Always DM
+	//	if (coop->value)
+	//	{
+	//		for (i = 0; i < maxclients->value; i++)
+	//		{
+	//			client = g_edicts + 1 + i;
+	//			if (!client->inuse || !client->client)
+	//				continue;
+	//			// strip players of all keys between units
+	//			for (n = 0; n < MAX_ITEMS; n++)
+	//			{
+	//				if (itemlist[n].flags & IT_KEY)
+	//					client->client->pers.inventory[n] = 0;
+	//			}
+	//		}
+	//	}
 	}
 	else
 	{

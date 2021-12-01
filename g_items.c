@@ -1080,10 +1080,10 @@ qboolean Pickup_Powerup(edict_t* ent, edict_t* other)
 	if ((skill->value == 1 && quantity >= 2) || (skill->value >= 2 && quantity >= 1))
 		return false;
 
-	/* MrG{DRGN}  Always DM
-	if ((coop->value) && (ent->item->flags & IT_STAY_COOP) && (quantity > 0))
-		return false;
-	*/
+	// MrG{DRGN}  Always DM
+	//if ((coop->value) && (ent->item->flags & IT_STAY_COOP) && (quantity > 0))
+	//	return false;
+	
 	// LETHAL : start
 	if (ent->item == it_grapple)
 	{
@@ -1579,24 +1579,24 @@ qboolean Pickup_Key(edict_t* ent, edict_t* other)
 	{
 		return false;
 	}
-
-	if (coop->value)
-	{
-		if (ent->classindex == KEY_POWERCUBE)
-		{
-			if (other->client->pers.power_cubes & ((ent->spawnflags & 0x0000ff00) >> 8))
-				return false;
-			other->client->pers.inventory[ITEM_INDEX(ent->item)]++;
-			other->client->pers.power_cubes |= ((ent->spawnflags & 0x0000ff00) >> 8);
-		}
-		else
-		{
-			if (other->client->pers.inventory[ITEM_INDEX(ent->item)])
-				return false;
-			other->client->pers.inventory[ITEM_INDEX(ent->item)] = 1;
-		}
-		return true;
-	}
+	// MrG{DRGN} always DM
+//	if (coop->value)
+//	{
+//		if (ent->classindex == KEY_POWERCUBE)
+//		{
+//			if (other->client->pers.power_cubes & ((ent->spawnflags & 0x0000ff00) >> 8))
+//				return false;
+//			other->client->pers.inventory[ITEM_INDEX(ent->item)]++;
+//			other->client->pers.power_cubes |= ((ent->spawnflags & 0x0000ff00) >> 8);
+//		}
+//		else
+//		{
+//			if (other->client->pers.inventory[ITEM_INDEX(ent->item)])
+//				return false;
+//			other->client->pers.inventory[ITEM_INDEX(ent->item)] = 1;
+//		}
+//		return true;
+//	}
 
 	other->client->pers.inventory[ITEM_INDEX(ent->item)]++;
 	return true;

@@ -1177,8 +1177,9 @@ void SaveClientData(void)
 		game.clients[i].pers.max_health = ent->max_health;
 		game.clients[i].pers.powerArmorActive = (ent->flags & FL_POWER_ARMOR);
 
-		if (coop->value)
-			game.clients[i].pers.score = ent->client->resp.score;
+		// MrG{DRGM} Always DM
+	//	if (coop->value)
+	//		game.clients[i].pers.score = ent->client->resp.score;
 	}
 }
 
@@ -1189,8 +1190,9 @@ void FetchClientEntData(edict_t* ent)
 	if (ent->client->pers.powerArmorActive)
 		ent->flags |= FL_POWER_ARMOR;
 
-	if (coop->value)
-		ent->client->resp.score = ent->client->pers.score;
+	// MrG{DRGN} Always DM
+	//if (coop->value)
+	//	ent->client->resp.score = ent->client->pers.score;
 }
 
 /*
@@ -1393,8 +1395,9 @@ void	SelectSpawnPoint(edict_t* ent, vec3_t origin, vec3_t angles)
 			spot = SelectCTFSpawnPoint(ent);
 		else
 			spot = SelectDeathmatchSpawnPoint();
-	else if (coop->value)
-		spot = SelectCoopSpawnPoint(ent);
+	// MrG{DRGN} always DM
+//	else if (coop->value)
+//		spot = SelectCoopSpawnPoint(ent);
 	// find a single player start spot
 	if (!spot)
 	{

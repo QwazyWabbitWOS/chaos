@@ -181,8 +181,9 @@ qboolean Pickup_Weapon(edict_t* ent, edict_t* other)
 				else
 					SetRespawn(ent, 30);
 			}
-			if (coop->value)
-				ent->flags |= FL_RESPAWN;
+			// MrG{DRGN} Always DM
+		//	if (coop->value)
+		//		ent->flags |= FL_RESPAWN;
 		}
 	}
 
@@ -250,9 +251,9 @@ qboolean Pickup_NoAmmoWeapon(edict_t* ent, edict_t* other)
 				else
 					SetRespawn(ent, 30);
 			}
-
-			if (coop->value)
-				ent->flags |= FL_RESPAWN;
+			// MrG{DRGN} Always DM
+		//	if (coop->value)
+		//		ent->flags |= FL_RESPAWN;
 		}
 	}
 
