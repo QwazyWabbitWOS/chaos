@@ -1737,6 +1737,7 @@ void Load_BotChat(void)
 	fclose(fp);
 }
 
+// MrG{DRGN} added moobull/moobull, cow/cow, moobull/warbull, pknight/dragon, pknight/pledge, and pknight/evil
 char* Get_RandomBotSkin(void)
 {
 	switch ((int)(random() * 28))
@@ -1769,6 +1770,12 @@ char* Get_RandomBotSkin(void)
 	case 25: return "cyborg/oni911"; break;
 	case 26: return "cyborg/ps9000"; break;
 	case 27: return "cyborg/tyr574"; break;
+	case 28: return "cow/cow"; break;
+	case 29: return "moobull/moobull"; break;
+	case 30: return "moobull/warbull"; break;
+	case 31: return "pknight/dragon"; break;
+	case 32: return "pknight/evil"; break;
+	case 33: return "pknight/pledge"; break;
 	default: return "male/major"; break;
 	}
 }
