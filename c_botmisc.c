@@ -1737,10 +1737,10 @@ void Load_BotChat(void)
 	fclose(fp);
 }
 
-// MrG{DRGN} added moobull/moobull, cow/cow, moobull/warbull, pknight/dragon, pknight/pledge, and pknight/evil
+// MrG{DRGN} added moobull/moobull, cow/cow, moobull/warbull, pknight/dragon, pknight/pledge, and pknight/evil	
 char* Get_RandomBotSkin(void)
 {
-	switch ((int)(random() * 28))
+	switch ((int)(random() * 34))
 	{
 	case  0: return "male/cipher"; break;
 	case  1: return "male/claymore"; break;
