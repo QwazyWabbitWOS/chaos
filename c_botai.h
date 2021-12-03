@@ -69,7 +69,7 @@ void PutBotInServer(edict_t* ent);
 void Bot_Respawn(edict_t* ent);
 void Bot_Wave(edict_t* ent, int i, float time);
 void Bot_Say(edict_t* ent, qboolean team, char* fmt, ...);
-void bot_die(edict_t* self, edict_t* inflicter, edict_t* attacker, int damage, vec3_t point);
+void bot_die(edict_t* self, edict_t* inflictor, edict_t* attacker, int damage, vec3_t point);
 void Bot_Think(edict_t* ent);
 void Bot_Aim(edict_t* ent, const vec3_t targ, vec3_t angles);
 void Bot_Attack(edict_t* ent, usercmd_t* cmd, vec3_t angles, vec3_t target);

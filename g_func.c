@@ -800,7 +800,7 @@ void button_touch(edict_t* self, edict_t* other, cplane_t* plane, csurface_t* su
 	button_fire(self);
 }
 
-void button_killed(edict_t* self, edict_t* inflicter, edict_t* attacker, int damage, vec3_t point)
+void button_killed(edict_t* self, edict_t* inflictor, edict_t* attacker, int damage, vec3_t point)
 {
 	self->activator = attacker;
 	self->health = self->max_health;
@@ -1158,7 +1158,7 @@ void door_blocked(edict_t* self, edict_t* other)
 	}
 }
 
-void door_killed(edict_t* self, edict_t* inflicter, edict_t* attacker, int damage, vec3_t point)
+void door_killed(edict_t* self, edict_t* inflictor, edict_t* attacker, int damage, vec3_t point)
 {
 	edict_t* ent;
 
@@ -2014,7 +2014,7 @@ void door_secret_blocked(edict_t* self, edict_t* other)
 	T_Damage(other, self, self, vec3_origin, other->s.origin, vec3_origin, self->dmg, 1, 0, MOD_CRUSH);
 }
 
-void door_secret_die(edict_t* self, edict_t* inflicter, edict_t* attacker, int damage, vec3_t point)
+void door_secret_die(edict_t* self, edict_t* inflictor, edict_t* attacker, int damage, vec3_t point)
 {
 	self->takedamage = DAMAGE_NO;
 	door_secret_use(self, attacker, attacker);

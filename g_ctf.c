@@ -227,7 +227,7 @@ static void loc_buildboxpoints(vec3_t p[8], vec3_t org, vec3_t mins, vec3_t maxs
 	p[7][1] -= maxs[1];
 }
 
-static qboolean loc_CanSee(edict_t* target, edict_t* inflicter)
+static qboolean loc_CanSee(edict_t* target, edict_t* inflictor)
 {
 	trace_t	trace;
 	vec3_t	targpoints[8];
@@ -240,11 +240,11 @@ static qboolean loc_CanSee(edict_t* target, edict_t* inflicter)
 
 	loc_buildboxpoints(targpoints, target->s.origin, target->mins, target->maxs);
 
-	VectorCopy(inflicter->s.origin, viewpoint);
-	viewpoint[2] += inflicter->viewheight;
+	VectorCopy(inflictor->s.origin, viewpoint);
+	viewpoint[2] += inflictor->viewheight;
 
 	for (i = 0; i < 8; i++) {
-		trace = gi.trace(viewpoint, vec3_origin, vec3_origin, targpoints[i], inflicter, MASK_SOLID);
+		trace = gi.trace(viewpoint, vec3_origin, vec3_origin, targpoints[i], inflictor, MASK_SOLID);
 		if (trace.fraction == 1.0)
 			return true;
 	}
@@ -485,7 +485,7 @@ Calculate the bonuses for flag defense, flag carrier defense, etc.
 Note that bonuses are not cumulative.  You get one, they are in importance
 order.
 */
-void CTFFragBonuses(edict_t* target, edict_t* inflicter, edict_t* attacker)
+void CTFFragBonuses(edict_t* target, edict_t* inflictor, edict_t* attacker)
 {
 	int i;
 	edict_t* ent;

@@ -90,7 +90,7 @@ void gib_touch(edict_t* self, edict_t* other, cplane_t* plane, csurface_t* surf)
 	}
 }
 
-void gib_die(edict_t* self, edict_t* inflicter, edict_t* attacker, int damage, vec3_t point)
+void gib_die(edict_t* self, edict_t* inflictor, edict_t* attacker, int damage, vec3_t point)
 {
 	G_FreeEdict(self);
 }
@@ -194,7 +194,7 @@ void ThrowClientHead(edict_t* self, int damage)
 debris
 =================
 */
-void debris_die(edict_t* self, edict_t* inflicter, edict_t* attacker, int damage, vec3_t point)
+void debris_die(edict_t* self, edict_t* inflictor, edict_t* attacker, int damage, vec3_t point)
 {
 	G_FreeEdict(self);
 }

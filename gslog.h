@@ -25,7 +25,7 @@ extern void sl_GameEnd(game_import_t* gi,
 extern void sl_WriteStdLogDeath(game_import_t* gi,
 	level_locals_t     level,
 	edict_t* self,
-	edict_t* inflicter,
+	edict_t* inflictor,
 	edict_t* attacker);
 
 extern void sl_WriteStdLogPlayerEntered(game_import_t* gi,

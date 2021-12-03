@@ -71,7 +71,7 @@ void sl_GameEnd(game_import_t* g_imp,
 void sl_WriteStdLogDeath(game_import_t* g_imp,
 	level_locals_t     lvl,
 	edict_t* self,
-	edict_t* inflicter,
+	edict_t* inflictor,
 	edict_t* attacker)
 {
 	/* StdLogging for Deathmatch only */

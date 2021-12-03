@@ -704,10 +704,10 @@ void vectoangles(vec3_t value1, vec3_t angles);/* MrG{DRGN} wrongly prototyped a
 // g_combat.c
 //
 qboolean OnSameTeam(edict_t* ent1, edict_t* ent2);
-qboolean CanDamage(edict_t* target, edict_t* inflicter);
+qboolean CanDamage(edict_t* target, edict_t* inflictor);
 qboolean CheckTeamDamage(edict_t* target, edict_t* attacker);
-void T_Damage(edict_t* target, edict_t* inflicter, edict_t* attacker, vec3_t dir, vec3_t point, vec3_t normal, int damage, int knockback, int dflags, int mod);
-void T_RadiusDamage(edict_t* inflicter, edict_t* attacker, float damage, edict_t* ignore, float radius, int mod);
+void T_Damage(edict_t* target, edict_t* inflictor, edict_t* attacker, vec3_t dir, vec3_t point, vec3_t normal, int damage, int knockback, int dflags, int mod);
+void T_RadiusDamage(edict_t* inflictor, edict_t* attacker, float damage, edict_t* ignore, float radius, int mod);
 
 // damage flags
 #define DAMAGE_RADIUS			0x00000001	// damage was indirect
@@ -775,7 +775,7 @@ void CopyToBodyQue(edict_t* ent);
 void ClientThink(edict_t* ent, usercmd_t* ucmd);
 void AdjustPlayerList(edict_t* ent);
 void ClientDisconnect(edict_t* ent);
-void ClientObituary(edict_t* self, edict_t* inflicter, edict_t* attacker);
+void ClientObituary(edict_t* self, edict_t* inflictor, edict_t* attacker);
 void Use_Plat(edict_t* ent, edict_t* other, edict_t* activator);
 void trigger_elevator_use(edict_t* self, edict_t* other, edict_t* activator);
 void door_use(edict_t* self, edict_t* other, edict_t* activator);
@@ -788,7 +788,7 @@ trace_t	PM_trace(vec3_t start, vec3_t mins, vec3_t maxs, vec3_t end);
 // g_player.c
 //
 void player_pain(edict_t* self, edict_t* other, float kick, int damage);
-void player_die(edict_t* self, edict_t* inflicter, edict_t* attacker, int damage, vec3_t point);
+void player_die(edict_t* self, edict_t* inflictor, edict_t* attacker, int damage, vec3_t point);
 
 //
 // g_svcmds.c
@@ -1207,7 +1207,7 @@ struct edict_s
 	void		(*touch)(edict_t* self, edict_t* other, cplane_t* plane, csurface_t* surf);
 	void		(*use)(edict_t* self, edict_t* other, edict_t* activator);
 	void		(*pain)(edict_t* self, edict_t* other, float kick, int damage);
-	void		(*die)(edict_t* self, edict_t* inflicter, edict_t* attacker, int damage, vec3_t point);
+	void		(*die)(edict_t* self, edict_t* inflictor, edict_t* attacker, int damage, vec3_t point);
 
 	float		touch_debounce_time;		// are all these legit?  do we need more/less of them?
 	float		pain_debounce_time;

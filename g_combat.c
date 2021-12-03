@@ -5,11 +5,11 @@
 ============
 CanDamage
 
-Returns true if the inflicter can directly damage the target.  Used for
+Returns true if the inflictor can directly damage the target.  Used for
 explosions and melee attacks.
 ============
 */
-qboolean CanDamage(edict_t* target, edict_t* inflicter)
+qboolean CanDamage(edict_t* target, edict_t* inflictor)
 {
 	vec3_t	dest = { 0 };
 	trace_t	trace;
@@ -19,7 +19,7 @@ qboolean CanDamage(edict_t* target, edict_t* inflicter)
 	{
 		VectorAdd(target->absmin, target->absmax, dest);
 		VectorScale(dest, 0.5, dest);
-		trace = gi.trace(inflicter->s.origin, vec3_origin, vec3_origin, dest, inflicter, MASK_SOLID);
+		trace = gi.trace(inflictor->s.origin, vec3_origin, vec3_origin, dest, inflictor, MASK_SOLID);
 		if (trace.fraction == 1.0)
 			return true;
 		if (trace.ent == target)
@@ -27,35 +27,35 @@ qboolean CanDamage(edict_t* target, edict_t* inflicter)
 		return false;
 	}
 
-	trace = gi.trace(inflicter->s.origin, vec3_origin, vec3_origin, target->s.origin, inflicter, MASK_SOLID);
+	trace = gi.trace(inflictor->s.origin, vec3_origin, vec3_origin, target->s.origin, inflictor, MASK_SOLID);
 	if (trace.fraction == 1.0)
 		return true;
 
 	VectorCopy(target->s.origin, dest);
 	dest[0] += 15.0;
 	dest[1] += 15.0;
-	trace = gi.trace(inflicter->s.origin, vec3_origin, vec3_origin, dest, inflicter, MASK_SOLID);
+	trace = gi.trace(inflictor->s.origin, vec3_origin, vec3_origin, dest, inflictor, MASK_SOLID);
 	if (trace.fraction == 1.0)
 		return true;
 
 	VectorCopy(target->s.origin, dest);
 	dest[0] += 15.0;
 	dest[1] -= 15.0;
-	trace = gi.trace(inflicter->s.origin, vec3_origin, vec3_origin, dest, inflicter, MASK_SOLID);
+	trace = gi.trace(inflictor->s.origin, vec3_origin, vec3_origin, dest, inflictor, MASK_SOLID);
 	if (trace.fraction == 1.0)
 		return true;
 
 	VectorCopy(target->s.origin, dest);
 	dest[0] -= 15.0;
 	dest[1] += 15.0;
-	trace = gi.trace(inflicter->s.origin, vec3_origin, vec3_origin, dest, inflicter, MASK_SOLID);
+	trace = gi.trace(inflictor->s.origin, vec3_origin, vec3_origin, dest, inflictor, MASK_SOLID);
 	if (trace.fraction == 1.0)
 		return true;
 
 	VectorCopy(target->s.origin, dest);
 	dest[0] -= 15.0;
 	dest[1] -= 15.0;
-	trace = gi.trace(inflicter->s.origin, vec3_origin, vec3_origin, dest, inflicter, MASK_SOLID);
+	trace = gi.trace(inflictor->s.origin, vec3_origin, vec3_origin, dest, inflictor, MASK_SOLID);
 	if (trace.fraction == 1.0)
 		return true;
 
@@ -67,7 +67,7 @@ qboolean CanDamage(edict_t* target, edict_t* inflicter)
 Killed
 ============
 */
-void Killed(edict_t* target, edict_t* inflicter, edict_t* attacker, int damage, vec3_t point)
+void Killed(edict_t* target, edict_t* inflictor, edict_t* attacker, int damage, vec3_t point)
 {
 	if (target->health < -999)
 		target->health = -999;
@@ -76,11 +76,11 @@ void Killed(edict_t* target, edict_t* inflicter, edict_t* attacker, int damage, 
 
 	if (target->movetype == MOVETYPE_PUSH || target->movetype == MOVETYPE_STOP || target->movetype == MOVETYPE_NONE)
 	{	// doors, triggers, etc
-		target->die(target, inflicter, attacker, damage, point);
+		target->die(target, inflictor, attacker, damage, point);
 		return;
 	}
 
-	target->die(target, inflicter, attacker, damage, point);
+	target->die(target, inflictor, attacker, damage, point);
 }
 
 /*
@@ -106,9 +106,9 @@ void SpawnDamage(int type, vec3_t origin, vec3_t normal, int damage)
 T_Damage
 
 target		entity that is being damaged
-inflicter	entity that is causing the damage
-attacker	entity that caused the inflicter to damage target
-	example: target=monster, inflicter=rocket, attacker=player
+inflictor	entity that is causing the damage
+attacker	entity that caused the inflictor to damage target
+	example: target=monster, inflictor=rocket, attacker=player
 
 dir			direction of the attack
 point		point at which the damage is being inflicted
@@ -257,7 +257,7 @@ qboolean CheckTeamDamage(edict_t* target, edict_t* attacker)
 	return false;
 }
 
-void T_Damage(edict_t* target, edict_t* inflicter, edict_t* attacker, vec3_t dir, vec3_t point, vec3_t normal, int damage, int knockback, int dflags, int mod)
+void T_Damage(edict_t* target, edict_t* inflictor, edict_t* attacker, vec3_t dir, vec3_t point, vec3_t normal, int damage, int knockback, int dflags, int mod)
 {
 	gclient_t* client;
 	int			take;
@@ -393,7 +393,7 @@ void T_Damage(edict_t* target, edict_t* inflicter, edict_t* attacker, vec3_t dir
 		{
 			if ((target->svflags & SVF_MONSTER) || (client))
 				target->flags |= FL_NO_KNOCKBACK;
-			Killed(target, inflicter, attacker, take, point);
+			Killed(target, inflictor, attacker, take, point);
 			return;
 		}
 	}
@@ -427,14 +427,14 @@ void T_Damage(edict_t* target, edict_t* inflicter, edict_t* attacker, vec3_t dir
 T_RadiusDamage
 ============
 */
-void T_RadiusDamage(edict_t* inflicter, edict_t* attacker, float damage, edict_t* ignore, float radius, int mod)
+void T_RadiusDamage(edict_t* inflictor, edict_t* attacker, float damage, edict_t* ignore, float radius, int mod)
 {
 	float	points;
 	edict_t* ent = NULL;
 	vec3_t	v = { 0 };
 	vec3_t	dir = { 0 };
 
-	while ((ent = findradius(ent, inflicter->s.origin, radius)) != NULL)
+	while ((ent = findradius(ent, inflictor->s.origin, radius)) != NULL)
 	{
 		if (ent == ignore)
 			continue;
@@ -443,16 +443,16 @@ void T_RadiusDamage(edict_t* inflicter, edict_t* attacker, float damage, edict_t
 
 		VectorAdd(ent->mins, ent->maxs, v);
 		VectorMA(ent->s.origin, 0.5, v, v);
-		VectorSubtract(inflicter->s.origin, v, v);
+		VectorSubtract(inflictor->s.origin, v, v);
 		points = damage - 0.5F * VectorLength(v);
 		if (ent == attacker)
 			points = points * 0.5F;
 		if (points > 0)
 		{
-			if (CanDamage(ent, inflicter))
+			if (CanDamage(ent, inflictor))
 			{
-				VectorSubtract(ent->s.origin, inflicter->s.origin, dir);
-				T_Damage(ent, inflicter, attacker, dir, inflicter->s.origin, vec3_origin, (int)points, (int)points, DAMAGE_RADIUS, mod);
+				VectorSubtract(ent->s.origin, inflictor->s.origin, dir);
+				T_Damage(ent, inflictor, attacker, dir, inflictor->s.origin, vec3_origin, (int)points, (int)points, DAMAGE_RADIUS, mod);
 			}
 		}
 	}
