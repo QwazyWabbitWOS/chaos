@@ -293,13 +293,13 @@ static void _sl_LogPlayerRename(char* pOldPlayerName,
 static int _sl_MaybeOpenFile(game_import_t* g_imp)
 {
 	if (NULL == logfile)
-		logfile = g_imp->cvar("stdlogfile", "0", CVAR_SERVERINFO);
+		logfile = g_imp->cvar("stdlogfile", "0", 0);
 
 	if ((NULL != logfile) && (logfile->value != 0))
 	{
 		if (NULL == StdLogFile)
 		{
-			cvar_t* filename = g_imp->cvar("stdlogname", "StdLog.log", CVAR_SERVERINFO);
+			cvar_t* filename = g_imp->cvar("stdlogname", "StdLog.log", 0);
 			char* pName = "StdLog.log";
 
 			// Open File
@@ -335,7 +335,7 @@ static __inline void _sl_SetStyle(game_import_t* g_imp)
 {
 	if (NULL == logstyle)
 	{
-		logstyle = g_imp->cvar("stdlogstyle", "0", CVAR_SERVERINFO);
+		logstyle = g_imp->cvar("stdlogstyle", "0", 0);
 		if (logstyle)
 		{
 			uiLogstyle = (unsigned int)logstyle->value;

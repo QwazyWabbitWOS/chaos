@@ -258,19 +258,6 @@ static gitem_t* it_flag1_item;
 static gitem_t* it_flag2_item;
 */
 
-void CTFInit_old(void)
-{
-	ctf = gi.cvar("ctf", "0", CVAR_SERVERINFO); //MATTHIAS
-	ctf_forcejoin = gi.cvar("ctf_forcejoin", "1", CVAR_LATCH);
-	/*
-	if (!it_flag_red)
-		it_flag_red = FindItemByClassindex(ITEM_FLAG_TEAM1);
-	if (!it_flag_blue)
-		it_flag_blue = FindItemByClassindex(ITEM_FLAG_TEAM1);
-	*/
-	memset(&ctfgame, 0, sizeof(ctfgame));
-	techspawn = false;
-}
 void CTFSpawn(void)
 {
 	//if (!flag1_item)
@@ -290,8 +277,8 @@ void CTFInit(void)
 {
 	ctf = gi.cvar("ctf", "0", CVAR_SERVERINFO);
 	ctf_forcejoin = gi.cvar("ctf_forcejoin", "1", 0);
-	competition = gi.cvar("competition", "0", CVAR_SERVERINFO);
-	matchlock = gi.cvar("matchlock", "1", CVAR_SERVERINFO);
+	competition = gi.cvar("competition", "0", CVAR_LATCH);
+	matchlock = gi.cvar("matchlock", "1", CVAR_LATCH);
 	electpercentage = gi.cvar("electpercentage", "67", 0);
 	matchtime = gi.cvar("matchtime", "20", CVAR_SERVERINFO);
 	matchsetuptime = gi.cvar("matchsetuptime", "10", 0);

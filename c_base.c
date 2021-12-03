@@ -117,20 +117,20 @@ void GetSettings(void)
 {
 	/* Server settings */
 	node_debug = gi.cvar("node_debug", "0", CVAR_USERINFO);
-	blindtime = gi.cvar("blindtime", "20", CVAR_SERVERINFO);
-	poisontime = gi.cvar("poisontime", "15", CVAR_SERVERINFO);
-	lasertime = gi.cvar("lasertime", "60", CVAR_SERVERINFO);
-	proxytime = gi.cvar("proxytime", "60", CVAR_SERVERINFO); /* MrG{DRGN} this was also controlled by lasertime.*/
-	defence_turret_ammo = gi.cvar("defence_turret_ammo", "1000", CVAR_SERVERINFO);
-	rocket_turret_ammo = gi.cvar("rocket_turret_ammo", "90", CVAR_SERVERINFO);
+	blindtime = gi.cvar("blindtime", "20", CVAR_USERINFO);
+	poisontime = gi.cvar("poisontime", "15", CVAR_USERINFO);
+	lasertime = gi.cvar("lasertime", "60", CVAR_USERINFO);
+	proxytime = gi.cvar("proxytime", "60", CVAR_USERINFO); /* MrG{DRGN} this was also controlled by lasertime.*/
+	defence_turret_ammo = gi.cvar("defence_turret_ammo", "1000", CVAR_USERINFO);
+	rocket_turret_ammo = gi.cvar("rocket_turret_ammo", "90", CVAR_USERINFO);
 	lasermine_health = gi.cvar("lasermine_health", "150", CVAR_LATCH);
 	// FWP Set ex arrow strength and radius from server var
 	ex_arrow_damage = gi.cvar("ex_arrow_damage", "80", CVAR_LATCH);
 	ex_arrow_radius = gi.cvar("ex_arrow_radius", "200", CVAR_LATCH);
 	dntg = gi.cvar("dntg", "0", CVAR_SERVERINFO);
-	start_invulnerable_time = gi.cvar("start_invulnerable_time", "3", CVAR_SERVERINFO);
-	lightsoff = gi.cvar("lightsoff", "0", CVAR_SERVERINFO);
-	botchat = gi.cvar("botchat", "1", CVAR_SERVERINFO);
+	start_invulnerable_time = gi.cvar("start_invulnerable_time", "3", CVAR_USERINFO);
+	lightsoff = gi.cvar("lightsoff", "0", CVAR_USERINFO);
+	botchat = gi.cvar("botchat", "1", CVAR_LATCH);
 	drop_tech = gi.cvar("drop_tech", "1", CVAR_LATCH); /* MrG{DRGN} tech drop prevention */
 	allow_flagdrop = gi.cvar("allow_flagdrop", "1", CVAR_LATCH); /* MrG{DRGN} allow flag dropping */
 	weapon_kick = gi.cvar("weapon_kick", "1", CVAR_LATCH); /* MrG{DRGN} kickable weapons toggle */
