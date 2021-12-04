@@ -116,8 +116,8 @@ void InitGame(void)
 
 	sl_Logging(&gi, "chaos");	// StdLog - Mark Davies (Only required to set patch name)
 
-	gi.dprintf("\n====               InitGame               ====\n");
-	gi.dprintf("%s %s built on %s, at %s\n\n", GAMEVERSION, BUILD, __DATE__, __TIME__);
+	gi.dprintf("==== InitGame %s %s ====\n", GAMEVERSION, BUILD);
+	gi.dprintf("==== Built on %s, at %s ====\n\n", __DATE__, __TIME__);
 
 	gun_x = gi.cvar("gun_x", "0", 0);
 	gun_y = gi.cvar("gun_y", "0", 0);
