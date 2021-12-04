@@ -1609,7 +1609,7 @@ void PutClientInServer(edict_t* ent)
 	ent->movetype = MOVETYPE_WALK;
 	ent->viewheight = 22;
 	ent->inuse = true;
-	ent->bot_player = false;  /* MrG{DRGN} this is a lot easier than checking the classname to track if we're dealing with a bot or not! */
+	ent->bot_player = false;  // MrG{DRGN} this is a lot easier than checking the classname to track if we're dealing with a bot or not!
 	ent->classname = "player";
 	ent->classindex = PLAYER;
 	ent->mass = 200;
@@ -1632,11 +1632,7 @@ void PutClientInServer(edict_t* ent)
 
 	// clear playerstate values
 	memset(&ent->client->ps, 0, sizeof(client->ps));
-	/* MrG{DRGN}
-	client->ps.pmove.origin[0] = spawn_origin[0] * 8;
-	client->ps.pmove.origin[1] = spawn_origin[1] * 8;
-	client->ps.pmove.origin[2] = spawn_origin[2] * 8;
-	*/
+
 	for (i = 0; i < 3; i++) {
 		client->ps.pmove.origin[i] = COORD2SHORT(spawn_origin[i]);
 	}
@@ -1736,7 +1732,6 @@ void ClientBeginDeathmatch(edict_t* ent)
 	bprint_botsafe(PRINT_HIGH, "%s entered the game\n", ent->client->pers.netname);
 	if (!ctf->value)
 	{
-		/* MrG{DRGN}if (strcmp(ent->classname, "bot") != 0) */
 		if (!ent->bot_player)
 			gi.centerprintf(ent, motd);//MATTHIAS
 	}
@@ -1978,7 +1973,7 @@ void ClientDisconnect(edict_t* ent)
 
 	AdjustPlayerList(ent);
 
-	/* MrG{DRGN} shut things off when we leave */
+	// MrG{DRGN} shut things off when we leave
 	ent->client->kamikazetime = 0;
 	ShutOff_Flashlight(ent);
 	ShutOff_Grapple(ent);
@@ -2097,9 +2092,8 @@ void ClientThink(edict_t* ent, usercmd_t* ucmd)
 		return;
 	}
 
-	//DYNAMIC NODE TABLE GENERATION
-							/* MrG{DRGN} integer comparison vs string comparison.*/
-	if (dntg->value > 0 && ent->classindex == PLAYER)/*strcmp(ent->classname, "player") == 0)*/
+	//DYNAMIC NODE TABLE GENERATION						
+	if (dntg->value > 0 && ent->classindex == PLAYER)
 	{
 		if (TouchingLadder(ent)
 			&& !Bot_FindNode(ent, 60, LADDER_NODE)
@@ -2249,12 +2243,12 @@ void ClientThink(edict_t* ent, usercmd_t* ucmd)
 
 		T_RadiusDamage(ent, ent, 300 + admg, NULL, 300 + admg, MOD_KAMIKAZE);
 
-		if (ent->client->invincible_framenum == 0)/* MrG{DRGN} Invulnerable kamis survive! */
+		if (ent->client->invincible_framenum == 0)// MrG{DRGN} Invulnerable kamis survive!
 		{
 			if (ent->health > 0)
 				T_Damage(ent, ent, ent, ent->velocity, ent->s.origin, ent->velocity, 500, 0, DAMAGE_NO_PROTECTION, MOD_KAMIKAZE);
 		}
-		/* MrG{DRGN} actually use the ammo required! */
+		// MrG{DRGN} actually use the ammo required!
 		ent->client->pers.inventory[ITEM_INDEX(it_rockets)] = 0;
 		ent->client->pers.inventory[ITEM_INDEX(it_grenades)] = 0;
 		ent->client->pers.inventory[ITEM_INDEX(it_homings)] = 0;
@@ -2297,7 +2291,7 @@ void ClientThink(edict_t* ent, usercmd_t* ucmd)
 	{
 		gi.sound(ent, CHAN_VOICE, gi.soundindex("misc/heartbeat.wav"), 1, ATTN_IDLE, 0);
 
-		client->nextheartbeat = level.time + (ent->health / 15.0F);/* MrG{DRGN} explicit float */
+		client->nextheartbeat = level.time + (ent->health / 15.0F);
 
 		if (client->nextheartbeat < level.time + 0.6)
 			client->nextheartbeat = level.time + 0.6;
@@ -2365,10 +2359,6 @@ void ClientThink(edict_t* ent, usercmd_t* ucmd)
 
 	for (i = 0; i < 3; i++)
 	{
-		/* MrG{DRGN}
-		pm.s.origin[i] = ent->s.origin[i] * 8;
-		pm.s.velocity[i] = ent->velocity[i] * 8;
-		*/
 		pm.s.origin[i] = COORD2SHORT(ent->s.origin[i]);
 		pm.s.velocity[i] = COORD2SHORT(ent->velocity[i]);
 	}
@@ -2393,14 +2383,9 @@ void ClientThink(edict_t* ent, usercmd_t* ucmd)
 
 	for (i = 0; i < 3; i++)
 	{
-		/* MrG{DRGN}
-		ent->s.origin[i] = pm.s.origin[i] * 0.125;
-		*/
 		ent->s.origin[i] = SHORT2COORD(pm.s.origin[i]);
+		
 		if (!Jet_Active(ent) || (Jet_Active(ent) && (fabsf((float)pm.s.velocity[i] * 0.125F) < fabsf(ent->velocity[i]))))	//MATTHIAS
-		/* MrG{DRGN}
-			ent->velocity[i] = pm.s.velocity[i] * 0.125;
-		*/
 			ent->velocity[i] = SHORT2COORD(pm.s.velocity[i]);
 	}
 
