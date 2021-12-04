@@ -2360,9 +2360,9 @@ static void SetLevelName(pmenu_t* p)
 
 	levelname[0] = '*';
 	if (g_edicts[0].message)
-		strncpy(levelname + 1, g_edicts[0].message, sizeof(levelname) - 2);
+		Q_strncpyz(levelname + 1, sizeof levelname - 2, g_edicts[0].message);
 	else
-		strncpy(levelname + 1, level.mapname, sizeof(levelname) - 2);
+		Q_strncpyz(levelname + 1, sizeof levelname - 2, level.mapname);
 	levelname[sizeof(levelname) - 1] = 0;
 	p->text = levelname;
 }
