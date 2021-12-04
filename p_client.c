@@ -799,9 +799,14 @@ void player_die(edict_t* self, edict_t* inflictor, edict_t* attacker, int damage
 
 	self->maxs[2] = -8;
 
+	// Note: This keeps non-gibbed bodies around as touchable objects
+	// so active players bump into them and must navigate around them.
+	// Expect warnings from r1q2 server when sv_gamedebug is set
+	// and the player respawns from this state. //QW// (SV_LinkEdict)
 	self->clipmask = MASK_PLAYERSOLID;
 	self->solid = SOLID_BBOX;
 	self->svflags &= SVF_DEADMONSTER;
+	//self->svflags |= SVF_DEADMONSTER; // Original game.
 
 	if (!self->deadflag || self->client->fakedeath)
 	{
