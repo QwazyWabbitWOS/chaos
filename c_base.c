@@ -115,7 +115,7 @@ qboolean TouchingLadder(edict_t* self)
 
 void GetSettings(void)
 {
-	/* Server settings */
+	// Server settings
 	node_debug = gi.cvar("node_debug", "0", CVAR_USERINFO);
 	blindtime = gi.cvar("blindtime", "20", CVAR_USERINFO);
 	poisontime = gi.cvar("poisontime", "15", CVAR_USERINFO);
@@ -138,7 +138,7 @@ void GetSettings(void)
 	do_respawn = gi.cvar("do_respawn", "60", CVAR_LATCH); /* MrG{DRGN} base item respawn time default 60 */
 	do_respawn_rnd = gi.cvar("do_respawn_rnd", "80", CVAR_LATCH); /* MrG{DRGN} random item respawn time default 80 */
 
-	/* Weapons */
+	// Weapons
 	ban_sword = gi.cvar("ban_sword", "0", CVAR_LATCH);
 	ban_chainsaw = gi.cvar("ban_chainsaw", "0", CVAR_LATCH);
 	ban_supershotgun = gi.cvar("ban_supershotgun", "0", CVAR_LATCH);
@@ -155,7 +155,7 @@ void GetSettings(void)
 	ban_vortex = gi.cvar("ban_vortex", "0", CVAR_LATCH);
 	ban_bfg = gi.cvar("ban_bfg", "0", CVAR_LATCH);
 
-	/* Ammo */
+	// Ammo
 	ban_ammo_grenades = gi.cvar("ban_ammo_grenades", "0", CVAR_LATCH);
 	ban_ammo_flashgrenades = gi.cvar("ban_ammo_flashgrenades", "0", CVAR_LATCH);
 	ban_ammo_lasergrenades = gi.cvar("ban_ammo_lasergrenades", "0", CVAR_LATCH);
@@ -172,18 +172,17 @@ void GetSettings(void)
 	ban_ammo_buzzes = gi.cvar("ban_ammo_buzzes", "0", CVAR_LATCH);
 	ban_ammo_slugs = gi.cvar("ban_ammo_slugs", "0", CVAR_LATCH);
 
-	/* Armor */
+	// Armor
 	ban_bodyarmor = gi.cvar("ban_bodyarmor", "0", CVAR_LATCH);
 	ban_combatarmor = gi.cvar("ban_combatarmor", "0", CVAR_LATCH);
 	ban_jacketarmor = gi.cvar("ban_jacketarmor", "0", CVAR_LATCH);
 	ban_armorshard = gi.cvar("ban_armorshard ", "0", CVAR_LATCH);
 
-	/* Power Armor */
+	// Power Armor
 	ban_powerscreen = gi.cvar("ban_powerscreen", "0", CVAR_LATCH);
 	ban_powershield = gi.cvar("ban_powershield", "0", CVAR_LATCH);
 
-	/* Powerups */
-
+	// Powerups
 	ban_quaddamage = gi.cvar("ban_quaddamage", "0", CVAR_LATCH);
 	ban_invulnerability = gi.cvar("ban_invulnerability", "0", CVAR_LATCH);
 	ban_adrenaline = gi.cvar("ban_adrenaline", "0", CVAR_LATCH);
@@ -191,13 +190,13 @@ void GetSettings(void)
 	ban_rebreather = gi.cvar("ban_rebreather", "0", CVAR_LATCH);
 	ban_environmentsuit = gi.cvar("ban_environmentsuit", "0", CVAR_LATCH);
 
-	/* Health */
+	// Health
 	ban_health = gi.cvar("ban_health", "0", CVAR_LATCH);
 	ban_health_small = gi.cvar("ban_health_small", "0", CVAR_LATCH);
 	ban_health_large = gi.cvar("ban_health_large", "0", CVAR_LATCH);
 	ban_health_mega = gi.cvar("ban_health_mega", "0", CVAR_LATCH);
 
-	/* Weapons */
+	// Weapons
 	start_sword = gi.cvar("start_sword", "0", CVAR_LATCH);
 	start_chainsaw = gi.cvar("start_chainsaw", "0", CVAR_LATCH);
 	start_supershotgun = gi.cvar("start_supershotgun", "0", CVAR_LATCH);
@@ -214,7 +213,7 @@ void GetSettings(void)
 	start_defenseturret = gi.cvar("start_defenseturret", "0", CVAR_LATCH);
 	start_rocketturret = gi.cvar("start_rocketturret", "0", CVAR_LATCH);
 
-	/* Ammo */
+	// Ammo
 	start_ammo_grenades = gi.cvar("start_ammo_grenades", "0", CVAR_LATCH);
 	start_ammo_flashgrenades = gi.cvar("start_ammo_flashgrenades", "0", CVAR_LATCH);
 	start_ammo_lasergrenades = gi.cvar("start_ammo_lasergrenades", "0", CVAR_LATCH);
@@ -257,11 +256,11 @@ void GetSettings(void)
 		gi.cvar_set("start_armorshard", "0");
 	}
 
-	/* Power Armor */
+	// Power Armor
 	start_powerscreen = gi.cvar("start_powerscreen", "0", CVAR_LATCH);
 	start_powershield = gi.cvar("start_powershield", "0", CVAR_LATCH);
 
-	/* Powerups */
+	// Powerups
 
 	start_quaddamage = gi.cvar("start_quaddamage", "0", CVAR_LATCH);
 	start_invulnerability = gi.cvar("start_invulnerability", "0", CVAR_LATCH);
@@ -377,7 +376,6 @@ void PreCacheAll(void)
 	gi.imageindex("w_grlauncher");
 	gi.imageindex("w_plauncher");
 	gi.imageindex("w_pbow");
-	gi.imageindex("w_xlauncher");
 	gi.imageindex("w_xlauncher"); //proxy mine launcher
 	gi.imageindex("w_sword");
 	gi.imageindex("w_chainsaw");
@@ -554,7 +552,7 @@ void FakeDeath(edict_t* self)
 	if (!self)
 		return;
 
-	if (self->client->resp.spectator)/* MrG{DRGN} if you haven't joined a team yet. you can't fakedeath! */
+	if (self->client->resp.spectator)/* MrG{DRGN} if you haven't joined a team yet or are a spectator, you can't fakedeath! */
 		return;
 
 	if (self->client->fakedeath == 0)	//fake
@@ -1109,7 +1107,7 @@ void Use_Class0(edict_t* ent)
 		else if (ent->client->pers.inventory[ITEM_INDEX(it_lturret)] > 0)
 			ent->client->newweapon = it_lturret;
 		else if (ent->client->pers.inventory[ITEM_INDEX(it_bfg)] > 0
-			&& ent->client->pers.inventory[ITEM_INDEX(it_cells)] > 49) /* MrG{DRGN} was 0 */
+			&& ent->client->pers.inventory[ITEM_INDEX(it_cells)] > 49) // MrG{DRGN} was 0
 			ent->client->newweapon = it_bfg;
 	}
 	else if (ent->client->pers.weapon == it_rturret)
@@ -1117,7 +1115,7 @@ void Use_Class0(edict_t* ent)
 		if (ent->client->pers.inventory[ITEM_INDEX(it_lturret)] > 0)
 			ent->client->newweapon = it_lturret;
 		else if (ent->client->pers.inventory[ITEM_INDEX(it_bfg)] > 0
-			&& ent->client->pers.inventory[ITEM_INDEX(it_cells)] > 49) /* MrG{DRGN} was 0 */
+			&& ent->client->pers.inventory[ITEM_INDEX(it_cells)] > 49) // MrG{DRGN} was 0
 			ent->client->newweapon = it_bfg;
 		else if (ent->client->pers.inventory[ITEM_INDEX(it_vortex)] > 0)
 			ent->client->newweapon = it_vortex;
@@ -1125,7 +1123,7 @@ void Use_Class0(edict_t* ent)
 	else if (ent->client->pers.weapon == it_lturret)
 	{
 		if (ent->client->pers.inventory[ITEM_INDEX(it_bfg)] > 0
-			&& ent->client->pers.inventory[ITEM_INDEX(it_cells)] > 49) /* MrG{DRGN} was 0 */
+			&& ent->client->pers.inventory[ITEM_INDEX(it_cells)] > 49) // MrG{DRGN} was 0
 			ent->client->newweapon = it_bfg;
 		else if (ent->client->pers.inventory[ITEM_INDEX(it_vortex)] > 0)
 			ent->client->newweapon = it_vortex;
@@ -1135,7 +1133,7 @@ void Use_Class0(edict_t* ent)
 	else
 	{
 		if (ent->client->pers.inventory[ITEM_INDEX(it_bfg)] > 0
-			&& ent->client->pers.inventory[ITEM_INDEX(it_cells)] > 49) /* MrG{DRGN} was 0 */
+			&& ent->client->pers.inventory[ITEM_INDEX(it_cells)] > 49) // MrG{DRGN} was 0
 			ent->client->newweapon = it_bfg;
 		else if (ent->client->pers.inventory[ITEM_INDEX(it_vortex)] > 0)
 			ent->client->newweapon = it_vortex;
