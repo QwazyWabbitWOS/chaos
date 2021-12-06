@@ -496,9 +496,9 @@ void SV_CalcBlend(edict_t* ent)
 		gi.cvar_set("gl_polyblend", "1");
 		ent->client->PoisonTime -= 0.1F;
 	}
-	else if ((ent->client->PoisonTime && ent->client->PoisonTime > 0) || ent->client->pers.health <= 0)	   /* MrG{DRGN} or dead */
+	else if ((ent->client->PoisonTime && ent->client->PoisonTime > 0) || ent->client->pers.health <= 0) // MrG{DRGN} or dead
 	{
-		/* MrG{DRGN} integer comparison vs string comparison.*/
+		
 		if (ent->classindex == PLAYER)
 		{
 			VectorClear(ent->velocity);
@@ -1132,10 +1132,6 @@ void ClientEndServerFrame(edict_t* ent)
 	//
 	for (i = 0; i < 3; i++)
 	{
-		/* MrG{DRGN}
-		current_client->ps.pmove.origin[i] = ent->s.origin[i] * 8.0;
-		current_client->ps.pmove.velocity[i] = ent->velocity[i] * 8.0;
-		*/
 		current_client->ps.pmove.origin[i] = COORD2SHORT(ent->s.origin[i]);
 		current_client->ps.pmove.velocity[i] = COORD2SHORT(ent->velocity[i]);
 	}

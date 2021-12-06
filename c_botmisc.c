@@ -1501,7 +1501,7 @@ void AddItemToList(edict_t* ent)
 		return;
 
 	// Don't add these to the list!
-	/* MrG{DRGN} classindex instead of classname */
+	
 	if (ent->classindex == AR_SHARD
 		|| ent->classindex == ITEM_FLAG_TEAM1
 		|| ent->classindex == ITEM_FLAG_TEAM2
@@ -1510,7 +1510,7 @@ void AddItemToList(edict_t* ent)
 		return;
 
 	//find the list head
-	/* MrG{DRGN} classindex instead of classname */
+	
 	if (ent->item->pickup == Pickup_Weapon
 		|| ent->item->pickup == Pickup_NoAmmoWeapon
 		|| ent->classindex == AM_VORTEX

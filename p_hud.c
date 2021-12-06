@@ -14,11 +14,7 @@ void MoveClientToIntermission(edict_t* ent)
 		ent->client->showscores = true;
 
 	VectorCopy(level.intermission_origin, ent->s.origin);
-	/* MrG{DRGN}
-	ent->client->ps.pmove.origin[0] = level.intermission_origin[0] * 8;
-	ent->client->ps.pmove.origin[1] = level.intermission_origin[1] * 8;
-	ent->client->ps.pmove.origin[2] = level.intermission_origin[2] * 8;
-	*/
+
 	ent->client->ps.pmove.origin[0] = COORD2SHORT(level.intermission_origin[0]);
 	ent->client->ps.pmove.origin[1] = COORD2SHORT(level.intermission_origin[1]);
 	ent->client->ps.pmove.origin[2] = COORD2SHORT(level.intermission_origin[2]);
@@ -169,7 +165,7 @@ Collect and sort the scores. Display top 12 players.
 Tag killee and killer with appropriate plaques.
 ==================
 */
-void DeathmatchScoreboardMessage(edict_t* ent, edict_t* killer /* MrG{DRGN} can be NULL */)
+void DeathmatchScoreboardMessage(edict_t* ent, edict_t* killer)
 {
 	char	entry[1024];
 	char	string[LAYOUT_MAX_LENGTH] = { 0 };
@@ -420,7 +416,7 @@ G_SetStats
 void G_SetStats(edict_t* ent)
 {
 	gitem_t* item;
-	int			index, cells = 0; /* MrG{DRGN} initialized */
+	int			index, cells = 0; // MrG{DRGN} initialized
 	int			power_armor_type;
 
 	//
@@ -432,7 +428,7 @@ void G_SetStats(edict_t* ent)
 	//
 	// ammo
 	//
-	if (!ent->client->ammo_index /* || !ent->client->pers.inventory[ent->client->ammo_index] */)
+	if (!ent->client->ammo_index /* || !ent->client->pers.inventory[ent->client->ammo_index] */) /* TODO: Why did I comment this out? */
 	{
 		ent->client->ps.stats[STAT_AMMO_ICON] = 0;
 		ent->client->ps.stats[STAT_AMMO] = 0;

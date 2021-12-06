@@ -1559,7 +1559,7 @@ void Cmd_Kick_f(edict_t* ent)
 	{
 		if ((blip->classindex >= W_BLASTER && blip->classindex <= W_BFG) && (!weapon_kick->value))
 			return;
-		/* MrG{DRGN} classindex instead of classname */
+		
 		if (blip->client
 			|| blip->item
 			|| blip->classindex == BOLT

@@ -132,7 +132,7 @@ qboolean Bot_StandingUnderPlat(edict_t* ent)
 
 	tr = gi.trace(ent->s.origin, NULL, NULL, end, NULL, MASK_SOLID);
 
-	/* MrG{DRGN} classindex instead of classname */
+	
 	if (tr.ent && (tr.ent->classindex == FUNC_PLAT))
 		return true;
 	return false;
@@ -352,7 +352,7 @@ void Bot_Think(edict_t* ent)
 						else
 							Bot_BestCloseWeapon(ent);
 					}
-					/* MrG{DRGN} classindex instead of classname */
+					
 					else if ((ent->client->pers.weapon->classindex == W_SWORD)
 						|| (ent->client->pers.weapon->classindex == W_CHAINSAW))
 					{
@@ -689,7 +689,7 @@ void Bot_Think(edict_t* ent)
 						//find the plat
 						while ((plat = findradius2(plat, nodes[ent->client->b_path[n]].origin, 300)) != NULL)
 						{
-							/* MrG{DRGN} classindex instead of classname */
+							
 							if (plat->classindex == FUNC_PLAT)
 							{
 								//nprintf(PRINT_HIGH,"Found plat!\n");
@@ -697,7 +697,7 @@ void Bot_Think(edict_t* ent)
 							}
 						}
 
-						/* MrG{DRGN} classindex instead of classname */
+						
 						if (plat && plat->classindex == FUNC_PLAT)
 						{
 							if (plat->moveinfo.state == STATE_BOTTOM)
@@ -1488,7 +1488,7 @@ void Bot_Attack(edict_t* ent, usercmd_t* cmd, vec3_t angles, vec3_t targ)
 				targ[2] += ent->enemy->viewheight;
 			// aim explosives at feet
 
-			/* MrG{DRGN} classindex instead of classname */
+			
 			else if ((weapon->classindex == W_ROCKETLAUNCHER) || (ent->enemy->client && (ent->enemy->client->ps.pmove.pm_flags & PMF_DUCKED)))
 				targ[2] -= 12;
 
@@ -1497,12 +1497,12 @@ void Bot_Attack(edict_t* ent, usercmd_t* cmd, vec3_t angles, vec3_t targ)
 
 			angles[0] = t_angles[0];
 
-			/* MrG{DRGN} classindex instead of classname */
+			
 			if (weapon->classindex == W_HYPERBLASTER)
 			{
 				angles[YAW] += crandom() * (ent->client->b_botlevel) / 2;
 				angles[PITCH] += crandom() * (ent->client->b_botlevel) / 2;
-			}/* MrG{DRGN} classindex instead of classname */
+			}
 			else if (weapon->classindex == W_ROCKETLAUNCHER
 				|| weapon->classindex == W_HOMINGLAUNCHER)
 			{
@@ -1820,7 +1820,7 @@ void Bot_ProjectileAvoidance(edict_t* self, usercmd_t* cmd, vec3_t angles)
 	edict_t* blip = NULL;
 
 	while ((blip = findradius(blip, self->s.origin, 150)) != NULL)
-	{		/* MrG{DRGN} classindex instead of classname */
+	{		
 		if (blip->classindex == ARROW
 			|| blip->classindex == PARROW
 			|| blip->classindex == EXARROW
@@ -1838,7 +1838,7 @@ void Bot_ProjectileAvoidance(edict_t* self, usercmd_t* cmd, vec3_t angles)
 			Bot_Strafe(self, cmd, self->client->b_strafedir, STRAFE_SPEED, angles);
 			self->client->b_strafechange = level.time + 0.5F;
 			break;
-		}	/* MrG{DRGN} classindex instead of classname */
+		}	
 		if (blip->classindex == ROCKET
 			|| blip->classindex == HOMING
 			|| blip->classindex == BUZZ
