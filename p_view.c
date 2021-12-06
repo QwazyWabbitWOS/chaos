@@ -522,7 +522,7 @@ void SV_CalcBlend(edict_t* ent)
 			r = 1;
 			updown = 0;
 		}
-		else /*if (r <= 0) always true if wwe got here MrG{DRGN} */
+		else if (r <= 0)
 		{
 			r = 0;
 			updown = 1;
