@@ -1396,13 +1396,13 @@ void	SelectSpawnPoint(edict_t* ent, vec3_t origin, vec3_t angles)
 	edict_t* spot = NULL;
 
 	if (deathmatch->value)
+	{
 		if (ctf->value)
 			spot = SelectCTFSpawnPoint(ent);
 		else
 			spot = SelectDeathmatchSpawnPoint();
-	// MrG{DRGN} always DM
-//	else if (coop->value)
-//		spot = SelectCoopSpawnPoint(ent);
+	}
+	
 	// find a single player start spot
 	if (!spot)
 	{
