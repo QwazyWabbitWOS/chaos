@@ -1780,7 +1780,7 @@ char* Get_RandomBotSkin(void)
 	}
 }
 
-//return number of players plus bots
+// return number of players plus bots
 int CountClients(void)
 {
 	int i;
@@ -1791,6 +1791,22 @@ int CountClients(void)
 	{
 		ent = g_edicts + 1 + i;
 		if (ent->inuse)
+			count++;
+	}
+	return count;
+}
+
+// return number of bots
+int CountBots(void)
+{
+	int i;
+	edict_t* ent;
+
+	int count = 0;
+	for (i = 0; i < maxclients->value; i++)
+	{
+		ent = g_edicts + 1 + i;
+		if (ent->inuse && ent->bot_player)
 			count++;
 	}
 	return count;

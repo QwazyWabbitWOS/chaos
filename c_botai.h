@@ -81,6 +81,8 @@ void Bot_FindEnemy(edict_t* self);
 qboolean Bot_CanReachSpotDirectly(edict_t* ent, vec3_t target);
 void BotClearGlobals(void);
 int CountClients(void); // return number of players plus bots
+int CountBots(void); // return number of bots
+#define BOTTHROTTLELEVEL 6
 
 edict_t* Bot_FindCloseItem(edict_t* ent);
 edict_t* Bot_FindItem(edict_t* ent);

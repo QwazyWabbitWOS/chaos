@@ -230,7 +230,7 @@ void ClientObituary(edict_t* self, edict_t* inflictor, edict_t* attacker)
 	char* message;
 	char* message2;
 	qboolean	ff;
-
+	
 	if (deathmatch->value)
 	{
 		ff = meansOfDeath & MOD_FRIENDLY_FIRE;
@@ -357,7 +357,7 @@ void ClientObituary(edict_t* self, edict_t* inflictor, edict_t* attacker)
 			if (strcmp(self->classname, "bot") == 0)
 			{
 				i = (int)(random() * (float)chat_linecount[BOTCHAT_SELFKILL]);
-				if (random() > .25)
+				if ((CountBots() > BOTTHROTTLELEVEL) && random() > .25)
 				{
 					return;
 				}
@@ -549,7 +549,7 @@ void ClientObituary(edict_t* self, edict_t* inflictor, edict_t* attacker)
 						}
 
 						i = (int)(random() * (float)chat_linecount[BOTCHAT_KILL]);
-						if (random() > .25)
+						if ((CountBots() > BOTTHROTTLELEVEL) && random() > .25)
 						{
 							return;
 						}
@@ -560,7 +560,7 @@ void ClientObituary(edict_t* self, edict_t* inflictor, edict_t* attacker)
 					else
 					{
 						i = (int)(random() * (float)chat_linecount[BOTCHAT_TEAMKILL]);
-						if (random() > .25)
+						if ((CountBots() > BOTTHROTTLELEVEL) && random() > .25)
 						{
 							return;
 						}
