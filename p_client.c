@@ -357,7 +357,10 @@ void ClientObituary(edict_t* self, edict_t* inflictor, edict_t* attacker)
 			if (strcmp(self->classname, "bot") == 0)
 			{
 				i = (int)(random() * (float)chat_linecount[BOTCHAT_SELFKILL]);
-
+				if (random() > .25)
+				{
+					return;
+				}
 				Bot_Say(attacker, 0, "%s: ", self->client->pers.netname);
 				Bot_Say(attacker, 0, chat_text[BOTCHAT_SELFKILL][i], self->client->pers.netname);
 				Bot_Say(attacker, 0, "\n");
@@ -546,7 +549,10 @@ void ClientObituary(edict_t* self, edict_t* inflictor, edict_t* attacker)
 						}
 
 						i = (int)(random() * (float)chat_linecount[BOTCHAT_KILL]);
-
+						if (random() > .25)
+						{
+							return;
+						}
 						Bot_Say(attacker, 0, "%s: ", attacker->client->pers.netname);
 						Bot_Say(attacker, 0, chat_text[BOTCHAT_KILL][i], self->client->pers.netname);
 						Bot_Say(attacker, 0, "\n");
@@ -554,7 +560,10 @@ void ClientObituary(edict_t* self, edict_t* inflictor, edict_t* attacker)
 					else
 					{
 						i = (int)(random() * (float)chat_linecount[BOTCHAT_TEAMKILL]);
-
+						if (random() > .25)
+						{
+							return;
+						}
 						Bot_Say(attacker, 0, "%s: ", attacker->client->pers.netname);
 						Bot_Say(attacker, 0, chat_text[BOTCHAT_TEAMKILL][i], self->client->pers.netname);
 						Bot_Say(attacker, 0, "\n");
