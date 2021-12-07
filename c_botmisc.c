@@ -19,7 +19,8 @@ void SVCmd_addbots_f(void)
 	bot_skill = atoi(gi.argv(3)); // skill
 	team = atoi(gi.argv(4)); // team number
 	Com_strcpy(name, sizeof name, gi.argv(5)); // name
-	int max_bots = ((int)maxclients->value - CountClients() - 2);  // reserve slots
+	// Reserve at least 2 slots for all loads.
+	int max_bots = (((int)maxclients->value - 2) - CountClients());
 
 	if (bot_skill == 0)
 		bot_skill = 3;
