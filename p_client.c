@@ -357,7 +357,7 @@ void ClientObituary(edict_t* self, edict_t* inflictor, edict_t* attacker)
 			if (strcmp(self->classname, "bot") == 0)
 			{
 				i = (int)(random() * (float)chat_linecount[BOTCHAT_SELFKILL]);
-				if ((CountBots() > BOTTHROTTLELEVEL) && random() > .25)
+				if ((CountBots() > BOTCHAT_THROTTLELVL) && random() > .25)
 				{
 					return;
 				}
@@ -549,7 +549,7 @@ void ClientObituary(edict_t* self, edict_t* inflictor, edict_t* attacker)
 						}
 
 						i = (int)(random() * (float)chat_linecount[BOTCHAT_KILL]);
-						if ((CountBots() > BOTTHROTTLELEVEL) && random() > .25)
+						if ((CountBots() > BOTCHAT_THROTTLELVL) && random() > .25)
 						{
 							return;
 						}
@@ -560,7 +560,7 @@ void ClientObituary(edict_t* self, edict_t* inflictor, edict_t* attacker)
 					else
 					{
 						i = (int)(random() * (float)chat_linecount[BOTCHAT_TEAMKILL]);
-						if ((CountBots() > BOTTHROTTLELEVEL) && random() > .25)
+						if ((CountBots() > BOTCHAT_THROTTLELVL) && random() > .25)
 						{
 							return;
 						}

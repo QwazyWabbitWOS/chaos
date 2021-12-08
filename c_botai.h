@@ -34,6 +34,7 @@
 #define	BOTCHAT_KILL			1
 #define	BOTCHAT_TEAMKILL		2
 #define	BOTCHAT_SELFKILL		3
+#define BOTCHAT_THROTTLELVL		6
 
 #define	NUM_CHATSECTIONS		4
 #define	MAX_LINES_PER_SECTION		64
@@ -82,7 +83,6 @@ qboolean Bot_CanReachSpotDirectly(edict_t* ent, vec3_t target);
 void BotClearGlobals(void);
 int CountClients(void); // return number of players plus bots
 int CountBots(void); // return number of bots
-#define BOTTHROTTLELEVEL 6
 
 edict_t* Bot_FindCloseItem(edict_t* ent);
 edict_t* Bot_FindItem(edict_t* ent);
