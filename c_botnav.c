@@ -516,12 +516,12 @@ qboolean Bot_LoadNodes(void)
 		return false;
 	}
 
-	if ((strcmp(id_buffer, nodetable_id) != 0)) /* MrG{DRGN} simplify */
+	if ((strcmp(id_buffer, nodetable_id) != 0)) 
 	{
 		fclose(input); /* MrG{DRGN} fixed resource leak! */
 		return false;
 	}
-	if ((strcmp(version_buffer, nodetable_version) != 0))/* MrG{DRGN} simplify */
+	if ((strcmp(version_buffer, nodetable_version) != 0))
 	{
 		fclose(input); /* MrG{DRGN} fixed resource leak! */
 		return false;
@@ -554,9 +554,9 @@ qboolean Bot_LoadNodes(void)
 	if (!num && !feof(input))
 		gi.dprintf("Chaos: %s error reading nodetable_version\n", __func__);
 
-	if ((strcmp(id_buffer, nodetable_id) != 0))/* MrG{DRGN} simplify */
+	if ((strcmp(id_buffer, nodetable_id) != 0))
 		return false;
-	if ((strcmp(version_buffer, nodetable_version) != 0)) /* MrG{DRGN} simplify */
+	if ((strcmp(version_buffer, nodetable_version) != 0)) 
 		return false;
 
 	fclose(input);

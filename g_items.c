@@ -1126,7 +1126,7 @@ qboolean Pickup_Powerup(edict_t* ent, edict_t* other)
 			quad_drop_timeout_hack = (ent->nextthink - level.time) / FRAMETIME;
 		{
 			if (ent->item->use)//MATTHIAS
-				if ((ent->item->use != Use_Jet)) /* MrG{DRGN} simplify */
+				if ((ent->item->use != Use_Jet)) 
 					ent->item->use(other, ent->item);
 		}
 	}
