@@ -13,8 +13,12 @@ void LoadMOTD(void)
 
 	if ((fp = fopen(file, "r")) == NULL)
 	{
-		gi.cprintf(NULL, PRINT_HIGH, "Could not find file \"%s\" %s.\n\n", file, strerror(errno));
+		gi.dprintf("Could not find file \"%s\" %s.\n\n", file, strerror(errno));
 		return;
+	}
+	else
+	{
+		gi.dprintf("Loading %s\n", file);
 	}
 
 	while ((!feof(fp)) && (i < sizeof motd))

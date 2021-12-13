@@ -5321,8 +5321,6 @@ void InitItems(void)
 
 /*
 ===============
-SetItemNames
-
 Called by worldspawn
 ===============
 */
