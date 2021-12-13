@@ -338,7 +338,8 @@ static void SVCmd_show_f(void)
 	{
 		gi.cprintf(NULL, PRINT_HIGH, "The maplist is empty!\n");
 	}
-	gi.cprintf(NULL, PRINT_HIGH, "Load a maplist with <sv ml maplistname|show>!\n");
+	gi.cprintf(NULL, PRINT_HIGH, "Load a maplist with <sv ml maplistname>!\n");
+	gi.cprintf(NULL, PRINT_HIGH, "Show current maplist with <sv ml> or <sv ml show>\n");
 	gi.cprintf(NULL, PRINT_HIGH, "Control maplist mode with <sv ml 0|1|2 off|sequential|random>!\n");
 	gi.cprintf(NULL, PRINT_HIGH, "Skip to a map in the maplist with with <sv ml goto mapnumber!\n\n");
 }
@@ -393,7 +394,7 @@ void ServerCommand(void)
 			gi.cprintf(NULL, PRINT_HIGH, "Shuffling the rotation of the random maplist!\n");
 			MaplistShuffle();
 		}
-		else if (Q_stricmp(gi.argv(2), "") == 0)	//print maplist
+		else if (Q_stricmp(gi.argv(2), "") == 0 || Q_stricmp(gi.argv(2), "show") == 0)	//print maplist
 		{
 			SVCmd_show_f();
 		}
