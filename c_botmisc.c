@@ -1711,7 +1711,7 @@ void Load_BotChat(void)
 			// allow for potential resizes of botchat files
 			int size = NUM_CHATSECTIONS * MAX_LINES_PER_SECTION;
 			// allocate memory
-			chat_text[section][line] = gi.TagMalloc(size, TAG_GAME);
+			chat_text[section][line] = gi.TagMalloc(size, TAG_LEVEL);
 			memset(chat_text[section][line], 0, size);
 
 			while (!feof(fp) && (buffer != '\n'))
