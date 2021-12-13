@@ -339,9 +339,9 @@ static void SVCmd_show_f(void)
 		gi.cprintf(NULL, PRINT_HIGH, "The maplist is empty!\n");
 	}
 	gi.cprintf(NULL, PRINT_HIGH, "Load a maplist with <sv ml maplistname>!\n");
-	gi.cprintf(NULL, PRINT_HIGH, "Show current maplist with <sv ml> or <sv ml show>\n");
-	gi.cprintf(NULL, PRINT_HIGH, "Control maplist mode with <sv ml 0|1|2 off|sequential|random>!\n");
-	gi.cprintf(NULL, PRINT_HIGH, "Skip to a map in the maplist with with <sv ml goto mapnumber!\n\n");
+	gi.cprintf(NULL, PRINT_HIGH, "Show current maplist with <sv ml> or <sv ml show>!\n");
+	gi.cprintf(NULL, PRINT_HIGH, "Skip to a map in the maplist with with <sv ml goto mapnumber>!\n");
+	gi.cprintf(NULL, PRINT_HIGH, "Shuffle maplist in random mode with <sv ml shuffle>!\n\n");
 }
 /*
 =================
