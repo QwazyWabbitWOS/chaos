@@ -422,6 +422,7 @@ void PreCacheAll(void)
 	gi.modelindex("models/objects/arrow/tris.md2");
 	gi.modelindex("models/objects/avortex/tris.md2");
 	gi.modelindex("models/objects/buzz/tris.md2");
+	gi.modelindex("models/objects/bfgball/tris.md2");
 	gi.modelindex("models/objects/earrow/tris.md2");
 	gi.modelindex("models/objects/gflash/tris.md2");
 	gi.modelindex("models/objects/gpoison/tris.md2");
