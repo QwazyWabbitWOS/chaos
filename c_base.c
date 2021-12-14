@@ -380,6 +380,7 @@ void PreCacheAll(void)
 	gi.imageindex("w_sword");
 	gi.imageindex("w_chainsaw");
 	//models
+	gi.modelindex("models/objects/shell1/tris.md2"); // ejceted shell casing
 	gi.modelindex("models/weapons/v_sword/tris.md2");
 	gi.modelindex("models/weapons/g_sword/tris.md2");
 	gi.modelindex("models/weapons/v_chsaw/tris.md2");
