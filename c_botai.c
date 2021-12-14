@@ -1784,26 +1784,7 @@ void Bot_FindActivator(edict_t* ent)
 			continue;
 		if (activator->avoidtime > level.time)
 			continue;
-		/*
-		if (Q_stricmp(activator->classname, "misc_teleporter") == 0
-			&& visible(ent, activator))
-		{
-			ent->client->b_activator = activator;
-			break;
-		}
-		if (Q_stricmp(activator->classname, "func_button") == 0
-			&& visible(ent, activator))
-		{
-			ent->client->b_activator = activator;
-			break;
-		}
-		if (Q_stricmp(activator->classname, "func_door") == 0
-			&& visible(ent, activator))
-		{
-			ent->client->b_activator = activator;
-			break;
-		}*/
-
+	
 		if (visible(ent, activator) &&
 			(activator->classindex == MISC_TELEPORTER ||
 				activator->classindex == FUNC_BUTTON ||
@@ -2040,7 +2021,7 @@ void Bot_Wave(edict_t* ent, int i, float time)
 	if (ent->client->anim_priority == (ANIM_DEATH || ANIM_PAIN))
 		return; */
 	if ((ent->client->anim_priority == ANIM_DEATH) || (ent->client->anim_priority == ANIM_PAIN))
-		return;	/* MrG{DRGN} fixed */
+		return;
 
 	ent->client->anim_priority = ANIM_WAVE;
 
