@@ -3504,7 +3504,7 @@ gitem_t	itemlist[] =
 		IT_WEAPON | IT_STAY_COOP,
 		NULL,
 		0,
-		/* precache */
+		/* precache */ "weapons/ak42.wav"
 	},
 
 	/*QUAKED weapon_sword (.3 .3 1) (-16 -16 -16) (16 16 16)
@@ -4511,7 +4511,7 @@ gitem_t	itemlist[] =
 		IT_POWERUP,
 		NULL,
 		0,
-		/* precache */
+		/* precache */"models/objects/hook/tris.md2 sound/misc/grapple/hit.wav sound/misc/grapple/shrink.wav sound/misc/grapple/reset.wav sound/misc/grapple/fire.wav"
 	},
 
 	/*QUAKED item_invulnerability (.3 .3 1) (-16 -16 -16) (16 16 16)
