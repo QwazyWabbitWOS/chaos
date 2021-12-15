@@ -31,14 +31,14 @@ void _STOP_PERFORMANCE_TIMER(char* str)
 	LARGE_INTEGER stop;
 	__int64 diff;
 	LARGE_INTEGER freq;
-	char string[64];
+	static char string[64];
 
 	QueryPerformanceCounter(&stop);
 	QueryPerformanceFrequency(&freq);
 	diff = stop.QuadPart - start.QuadPart;
 	res = ((double)((double)diff / (double)freq.QuadPart));
 	Com_sprintf(string, sizeof string,
-		"%s executed in %.9f secs.\n", str, res);
+		"%s executed in %.6f secs.\n", str, res);
 	OutputDebugString(string);
 	//	Com_Printf (string);
 	totalTime += res;

@@ -3,7 +3,6 @@
 #ifndef G_LOCAL_H
 #define G_LOCAL_H
 
-#include "q_shared.h"
 /* MrG{DRGN} ty QW! */
 //QW// Here's where I finally get smart and add some debugging stuff to the game.
 // Don't forget to add null definitions for stuff not useable in Linux.
@@ -17,6 +16,7 @@ _CrtMemState startup1;	// memory diagnostics
 #define OutputDebugString	//not doing Windows
 #endif
 
+#include "q_shared.h"
 #include "performance.h"
 
 // define GAME_INCLUDE so that game.h does not define the

@@ -1,5 +1,8 @@
 #include "g_local.h"
 
+///
+/// Initialize the grapple cvars
+///
 void GrappleInitVars(void)
 {
 #ifdef	CHAOS_RETAIL
@@ -9,17 +12,17 @@ void GrappleInitVars(void)
 #endif
 	start_grapple = gi.cvar("start_grapple", "0", CVAR_LATCH);
 }
+
 void ShutOff_Grapple(edict_t* ent)
 {
 	ent->client->grapple_state = GRAPPLE_OFF;
 	ent->client->grapple = NULL;
 }
+
 void Grapple_Reset(edict_t* ent)
 {
 	if (!ent || !ent->owner)
-	{
 		return;
-	}
 
 	ent->owner->client->grapple_state = GRAPPLE_OFF;
 	gi.sound(ent->owner, CHAN_AUTO, gi.soundindex("misc/grapple/reset.wav"), 1, ATTN_NORM, 0);

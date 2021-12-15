@@ -1100,8 +1100,6 @@ void Com_sprintf(char* dest, int size, char* fmt, ...)
 
 /*
 ===============
-Info_ValueForKey
-
 Searches the string for the given
 key and returns the associated value, or an empty string.
 ===============
