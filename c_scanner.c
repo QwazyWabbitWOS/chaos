@@ -10,7 +10,7 @@ void ShowScanner(edict_t* ent, char* layout)
 {
 	edict_t* player = g_edicts;
 	int     i;
-	char    stats[64] = { 0 }; /* MrG{DRGN} initialized */
+	char    stats[64] = { 0 };
 	vec3_t  v = { 0 };
 
 	if (!ent)
@@ -147,7 +147,6 @@ void ShowScanner(edict_t* ent, char* layout)
 	}
 }
 
-/* MrG{DRGN} moved here, since it's a Chaos Item! */
 void Toggle_Scanner(edict_t* ent)
 {
 	if (!ent->client)

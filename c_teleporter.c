@@ -25,9 +25,9 @@ void Teleport(edict_t* ent)
 		return;
 	}
 
-	if (ent->client->teleporter)	//teleport
+	if (ent->client->teleporter)	// already a teleport
 	{
-		int i; // MrG{DRGN}
+		int i; 
 		if (ctf->value)
 			CTFDeadDropFlag(ent);
 
@@ -68,7 +68,6 @@ void Teleport(edict_t* ent)
 		telep->clipmask = MASK_SHOT;
 		VectorClear(telep->mins);
 		VectorClear(telep->maxs);
-		/*	telep->owner = ent; redundant reassignment! */
 
 		telep->movetype = MOVETYPE_FLYMISSILE;
 		telep->model = "models/objects/selftp/tris.md2";
