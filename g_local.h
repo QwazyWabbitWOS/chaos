@@ -1327,7 +1327,6 @@ extern cvar_t* tele_fire; /* MrG{DRGN} allow certain non-client projectiles to p
 
 int		red_base, blue_base;	//node at red/blue flag
 
-//#define CHAOS_RETAIL
 // ZOID
 #include "g_ctf.h"
 // ZOID

@@ -2,21 +2,12 @@
 
 void JetpackInitVars(void)
 {
-#ifdef	CHAOS_RETAIL
-	ban_jetpack = gi.cvar("ban_jetpack", "1", CVAR_LATCH);
-#else
 	ban_jetpack = gi.cvar("ban_jetpack", "0", CVAR_LATCH);
-#endif
 	start_jetpack = gi.cvar("start_jetpack", "0", CVAR_LATCH);
 }
 
 void Use_Jet(edict_t* ent, gitem_t* item)
 {
-#ifdef	CHAOS_RETAIL
-	cprint_botsafe(ent, PRINT_HIGH, "The Jetpack has been deactivated in the retail version!\n");
-	return;
-#endif
-
 	if (!ent)
 	{
 		return;

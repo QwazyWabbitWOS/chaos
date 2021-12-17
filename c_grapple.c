@@ -5,11 +5,7 @@
 ///
 void GrappleInitVars(void)
 {
-#ifdef	CHAOS_RETAIL
-	ban_grapple = gi.cvar("ban_grapple", "1", CVAR_LATCH);
-#else
 	ban_grapple = gi.cvar("ban_grapple", "0", CVAR_LATCH);
-#endif
 	start_grapple = gi.cvar("start_grapple", "0", CVAR_LATCH);
 }
 
