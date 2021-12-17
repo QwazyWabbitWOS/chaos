@@ -1,4 +1,5 @@
 #pragma once
+
 #define	AK42_FREQ				0.6f
 #define	SHOTGUN_FREQ			1
 #define	SUPERSHOTGUN_FREQ		1

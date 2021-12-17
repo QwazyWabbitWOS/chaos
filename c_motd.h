@@ -1,6 +1,5 @@
-#ifndef C_MOTD_H
-#define C_MOTD_H
+#pragma once
 
 void LoadMOTD(void);
 
-#endif
+

@@ -1,5 +1,4 @@
-#ifndef C_MAPLIST_H
-#define C_MAPLIST_H
+#pragma once
 
 #define MAX_MAPS           512
 #define MAX_MAPNAME_LEN    32
@@ -34,4 +33,4 @@ void	MaplistLoad(char* filename); // load the maplist from the file
 int		MaplistNext(void); // Choose next map in rotation based on current mode.
 void	MaplistMapModeSetup(void);	// ctf and lightsoff flags
 
-#endif
+

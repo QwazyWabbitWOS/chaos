@@ -1,5 +1,4 @@
-#ifndef C_TELEPORTER_H
-#define C_TELEPORTER_H
+#pragma once
 
 void ShutOff_teleporter(edict_t* ent);
 
@@ -10,4 +9,3 @@ void Teleport_Think(edict_t* ent);
 void Teleport(edict_t* ent);
 void Cmd_Teleport_f(edict_t* ent);
 
-#endif

@@ -1,5 +1,4 @@
-#ifndef PERFORMANCE_H
-#define PERFORMANCE_H
+#pragma once
 
 // **********************************************
 //        Windows high performance counter
@@ -35,5 +34,4 @@ void _START_PERFORMANCE_TIMER(void);
 #endif
 #endif
 
-#endif /* PERFORMANCE_H */
 void DbgPrintf(char* msg, ...);

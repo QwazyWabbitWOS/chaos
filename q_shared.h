@@ -20,8 +20,6 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 // q_shared.h -- included first by ALL program modules
 #pragma once
-#ifndef Q_SHARED_H
-#define Q_SHARED_H
 
 #ifdef _WIN32
 #pragma warning(disable : 4244)	// C4244 conversion from 'type1' to 'type2', possible loss of data
@@ -42,10 +40,6 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 typedef unsigned char 		byte;
 typedef enum { false, true }	qboolean;
-
-#ifndef NULL
-#define NULL ((void *)0)
-#endif
 
 // angle indexes
 #define	PITCH				0		// up / down
@@ -1128,4 +1122,3 @@ typedef struct
 extern int vidref_val;
 // PGM
 // ==================
-#endif // !Q_SHARED_H

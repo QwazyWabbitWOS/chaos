@@ -1,5 +1,4 @@
-#ifndef C_GRAPPLE_H
-#define C_GRAPPLE_H
+#pragma once
 
 #define	GRAPPLE_OFF			0
 #define	GRAPPLE_INAIR		1
@@ -21,4 +20,3 @@ void Grapple_Fire(edict_t* ent);
 void Cmd_Hook_f(edict_t* ent);
 void Cmd_Grapple_f(edict_t* ent);
 
-#endif

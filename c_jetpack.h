@@ -1,5 +1,4 @@
-#ifndef C_JETPACK_H
-#define C_JETPACK_H
+#pragma once
 
 cvar_t* ban_jetpack, * start_jetpack;
 void JetpackInitVars(void);
@@ -15,4 +14,4 @@ void Jet_ApplySparks(edict_t* ent);
 void Jet_ApplyRolling(edict_t* ent, const vec3_t right);
 void Jet_ApplyJet(edict_t* ent, usercmd_t* ucmd);
 
-#endif
+
