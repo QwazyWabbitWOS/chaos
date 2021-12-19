@@ -306,7 +306,7 @@ static void SVCmd_goto_f(char* mapnum)
 			int num = atoi(mapnum) - 1;
 			if (num < maplist.nummaps && num >= 0) // range check
 			{
-				sprintf(command, "gamemap %s", maplist.mapnames[num]);
+				Com_sprintf(command, sizeof command, "gamemap %s", maplist.mapnames[num]);
 				gi.cprintf(NULL, PRINT_HIGH, "Map is changing to %d! %s\n\n", num + 1, maplist.mapnames[num]);
 				gi.AddCommandString(command);
 			}

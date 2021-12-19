@@ -358,7 +358,7 @@ char* G_CopyString(const char* in)
 {
 	char* out;
 
-	out = gi.TagMalloc((int)strlen(in) + 1, TAG_LEVEL); /* MrG{DRGN} cast to what TagMalloc is looking for */
+	out = gi.TagMalloc((int)strlen(in) + 1, TAG_LEVEL);
 	strcpy(out, in);
 	return out;
 }
@@ -414,11 +414,9 @@ edict_t* G_Spawn(void)
 
 	globals.num_edicts++;
 	G_InitEdict(e);
-
 	//don't report during worldspawn
 	//if (level.time)
 	//	DbgPrintf("%s entity count: %d/%d\n", __func__, globals.num_edicts, game.maxentities);
-
 	return e;
 }
 
