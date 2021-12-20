@@ -391,11 +391,11 @@ void ClientObituary(edict_t* self, edict_t* inflictor, edict_t* attacker)
 				message2 = "'s chaingun";
 				break;
 			case MOD_EXARROW:
-				message = "was blow to bits by";
+				message = "was blown to bits by";
 				message2 = "'s explosive crossbow";
 				break;
 			case MOD_EXARROW_SPLASH:
-				message = "was blow to bits by";
+				message = "was blown to bits by";
 				message2 = "'s explosive crossbow";
 				break;
 			case MOD_GRENADE:
