@@ -243,6 +243,9 @@ void ClientObituary(edict_t* self, edict_t* inflictor, edict_t* attacker)
 		case MOD_SUICIDE:
 			message = "suicides";
 			break;
+		case MOD_JETWATER:
+			message = "sucked water into their jetpack";
+			break;
 		case MOD_FALLING:
 			message = "cratered";
 			break;

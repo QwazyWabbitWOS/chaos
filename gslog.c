@@ -169,6 +169,7 @@ void sl_WriteStdLogDeath(game_import_t* g_imp,
 				case MOD_TRIGGER_HURT:
 				case MOD_EXIT:
 				case MOD_SUICIDE:
+				case MOD_JETWATER:
 				{
 					fSuicide = 1;
 					break;

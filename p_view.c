@@ -768,7 +768,7 @@ void P_WorldEffects(void)
 	if (waterlevel == 3)
 	{
 		if (Jet_Active(current_player))	//MATTHIAS
-			T_Damage(current_player, world, world, vec3_origin, current_player->s.origin, vec3_origin, current_player->health + 1, 0, DAMAGE_NO_ARMOR, MOD_SUICIDE);
+			T_Damage(current_player, world, world, vec3_origin, current_player->s.origin, vec3_origin, current_player->health + 1, 0, DAMAGE_NO_ARMOR, MOD_JETWATER);
 
 		// breather or envirosuit give air
 		if (breather || envirosuit)
