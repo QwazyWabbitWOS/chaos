@@ -451,7 +451,11 @@ extern gitem_armor_t bodyarmor_info;
 
 typedef enum {
 	MOD_UNKNOWN,
+	MOD_BLASTER,
+	MOD_SHOTGUN,
 	MOD_SSHOTGUN,
+	MOD_MACHINEGUN,
+	MOD_CHAINGUN,
 	MOD_GRENADE,
 	MOD_G_SPLASH,
 	MOD_ROCKET,
@@ -502,6 +506,8 @@ typedef enum {
 	MOD_EXARROW,
 	MOD_FRIENDLY_FIRE
 }mod_t;
+#define MOD_FRIENDLY_FIRE  0x8000000
+
 extern	int	meansOfDeath;
 
 extern	edict_t* g_edicts;
