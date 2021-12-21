@@ -493,7 +493,7 @@ typedef enum {
 	MOD_BUZZ,
 	MOD_VORTEX,
 	MOD_KAMIKAZE,
-	MOD_JETWATER,  // TODO enable this MOD for Jetpacks in water
+	MOD_JETWATER,
 	MOD_SWORD,
 	MOD_TURRET,
 	MOD_CHAINSAW,
