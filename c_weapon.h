@@ -1,3 +1,5 @@
+#pragma once
+
 #define		FLASH_RADIUS		400
 #define		POISON_RADIUS		400
 

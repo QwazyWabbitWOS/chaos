@@ -1,6 +1,9 @@
+#pragma once
+
 // basic definitions
+
 #define		MAX_NODES			512
-#define		BOT_INFINITY			65535 // MrG{DRGN} replaced INFINITY to avoid header collision error
+#define		BOT_INFINITY		65535 // MrG{DRGN} replaced INFINITY to avoid header collision error
 #define		noPredecessor		BOT_INFINITY
 
 #define		NO_PATH				0

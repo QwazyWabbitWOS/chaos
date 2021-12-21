@@ -681,8 +681,6 @@ void ClientObituary(edict_t* self, edict_t* inflictor, edict_t* attacker)
 		self->client->resp.score--;
 }
 
-void Touch_Item(edict_t* ent, edict_t* other, cplane_t* plane, csurface_t* surf);
-
 void TossClientWeapon(edict_t* self)
 {
 	gitem_t* item;

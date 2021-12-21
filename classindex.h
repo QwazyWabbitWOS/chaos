@@ -1,4 +1,6 @@
-﻿/*
+﻿#pragma once
+
+/*
  *  - MrG{DRGN}, April 17th 2020
  *  This is a list of entities in game for the purpose of integer comparison/greatly substituting classname comparisons.
  *  The classindex system needs to be put into place to greatly reduce string comparisons.

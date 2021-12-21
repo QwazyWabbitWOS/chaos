@@ -1,3 +1,5 @@
+#pragma once
+
 // Basic functions
 
 void T_RadiusDamage2(edict_t* attacker, vec3_t position, float damage, float radius, int mod);

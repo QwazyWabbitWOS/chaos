@@ -1,3 +1,5 @@
+#pragma once
+
 #define CTF_VERSION			1.52
 #define CTF_VSTRING2(x) #x
 #define CTF_VSTRING(x) CTF_VSTRING2(x)
