@@ -373,22 +373,9 @@ void ClientObituary(edict_t* self, edict_t* inflictor, edict_t* attacker)
 		{
 			switch (mod)
 			{
-			case MOD_BLASTER:
-				message = "was blasted by";
-				break;
-			case MOD_SHOTGUN:
-				message = "was gunned down by";
-				break;
 			case MOD_SSHOTGUN:
 				message = "was blown away by";
 				message2 = "'s super shotgun";
-				break;
-			case MOD_MACHINEGUN:
-				message = "was machinegunned by";
-				break;
-			case MOD_CHAINGUN:
-				message = "was cut in half by";
-				message2 = "'s chaingun";
 				break;
 			case MOD_EXARROW:
 				message = "was blown to bits by";

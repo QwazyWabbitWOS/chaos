@@ -268,8 +268,6 @@ Fires a single blaster bolt.  Used by the blaster and hyper blaster.
 */
 void blaster_touch(edict_t* self, edict_t* other, cplane_t* plane, csurface_t* surf)
 {
-	int		mod;
-
 	// MrG{DRGN}
 	if (!self || !other) /* plane and surf can be NULL */
 	{
@@ -291,11 +289,6 @@ void blaster_touch(edict_t* self, edict_t* other, cplane_t* plane, csurface_t* s
 
 	if (other->takedamage)
 	{
-		if (self->spawnflags & 1)
-			mod = MOD_HYPERBLASTER;
-		else
-			mod = MOD_BLASTER;
-
 		if (other->client && other->client->pers.weapon == it_sword && infront(self, other))
 		{
 			// 60% blocked
@@ -310,13 +303,13 @@ void blaster_touch(edict_t* self, edict_t* other, cplane_t* plane, csurface_t* s
 			}
 			else
 			{
-				T_Damage(other, self, self->owner, self->velocity, self->s.origin, plane->normal, self->dmg, 1, DAMAGE_ENERGY, mod);
+				T_Damage(other, self, self->owner, self->velocity, self->s.origin, plane->normal, self->dmg, 1, DAMAGE_ENERGY, MOD_HYPERBLASTER);
 				G_FreeEdict(self);
 			}
 		}
 		else
 		{
-			T_Damage(other, self, self->owner, self->velocity, self->s.origin, plane->normal, self->dmg, 1, DAMAGE_ENERGY, mod);
+			T_Damage(other, self, self->owner, self->velocity, self->s.origin, plane->normal, self->dmg, 1, DAMAGE_ENERGY, MOD_HYPERBLASTER);
 			G_FreeEdict(self);
 		}
 	}

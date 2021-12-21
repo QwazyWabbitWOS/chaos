@@ -448,62 +448,60 @@ extern gitem_armor_t combatarmor_info;
 extern gitem_armor_t bodyarmor_info;
 
 // means of death
-#define MOD_UNKNOWN			0
-#define MOD_BLASTER			1
-#define MOD_SHOTGUN			2
-#define MOD_SSHOTGUN		3
-#define MOD_MACHINEGUN		4
-#define MOD_CHAINGUN		5
-#define MOD_GRENADE			6
-#define MOD_G_SPLASH		7
-#define MOD_ROCKET			8
-#define MOD_R_SPLASH		9
-#define MOD_HYPERBLASTER	10
-#define MOD_RAILGUN			11
-#define MOD_BFG_LASER		12
-#define MOD_BFG_BLAST		13
-#define MOD_BFG_EFFECT		14
-#define MOD_HANDGRENADE		15
-#define MOD_HG_SPLASH		16
-#define MOD_WATER			17
-#define MOD_SLIME			18
-#define MOD_LAVA			19
-#define MOD_CRUSH			20
-#define MOD_TELEFRAG		21
-#define MOD_FALLING			22
-#define MOD_SUICIDE			23
-#define MOD_HELD_GRENADE	24
-#define MOD_EXPLOSIVE		25
-#define MOD_BARREL			26
-#define MOD_BOMB			27
-#define MOD_EXIT			28
-#define MOD_SPLASH			29
-#define MOD_TARGET_LASER	30
-#define MOD_TRIGGER_HURT	31
-#define MOD_HIT				32
-#define MOD_TARGET_BLASTER	33
-#define MOD_GRAPPLE			34
-#define MOD_ARROW			35
-#define MOD_ESSHOTGUN		36
-#define MOD_AIRFIST			37
-#define MOD_PROXYMINE		38
-#define MOD_HOMING			39
-#define MOD_BUZZ			41
-#define MOD_VORTEX			42
-#define MOD_KAMIKAZE		43
-#define MOD_JETWATER		44
-#define MOD_SWORD			45
-#define MOD_TURRET			46
-#define MOD_CHAINSAW		47
-#define MOD_PGRENADE		48
-#define MOD_FGRENADE		49
-#define MOD_PARROW			50
-#define MOD_AK42			51
-#define MOD_ESSHOT_SPLASH               52
-#define MOD_EXARROW_SPLASH               53
-#define MOD_EXARROW               54
-#define MOD_FRIENDLY_FIRE	0x8000000
 
+typedef enum {
+	MOD_UNKNOWN,
+	MOD_SSHOTGUN,
+	MOD_GRENADE,
+	MOD_G_SPLASH,
+	MOD_ROCKET,
+	MOD_R_SPLASH,
+	MOD_HYPERBLASTER,
+	MOD_RAILGUN,
+	MOD_BFG_LASER,
+	MOD_BFG_BLAST,
+	MOD_BFG_EFFECT,
+	MOD_HANDGRENADE,
+	MOD_HG_SPLASH,
+	MOD_WATER,
+	MOD_SLIME,
+	MOD_LAVA,
+	MOD_CRUSH,
+	MOD_TELEFRAG,
+	MOD_FALLING,
+	MOD_SUICIDE,
+	MOD_HELD_GRENADE,
+	MOD_EXPLOSIVE,
+	MOD_BARREL,
+	MOD_BOMB,
+	MOD_EXIT,
+	MOD_SPLASH,
+	MOD_TARGET_LASER,
+	MOD_TRIGGER_HURT,
+	MOD_HIT,
+	MOD_TARGET_BLASTER,
+	MOD_GRAPPLE,
+	MOD_ARROW,
+	MOD_ESSHOTGUN,
+	MOD_AIRFIST,
+	MOD_PROXYMINE,
+	MOD_HOMING,
+	MOD_BUZZ,
+	MOD_VORTEX,
+	MOD_KAMIKAZE,
+	MOD_JETWATER,  // TODO enable this MOD for Jetpacks in water
+	MOD_SWORD,
+	MOD_TURRET,
+	MOD_CHAINSAW,
+	MOD_PGRENADE,
+	MOD_FGRENADE,
+	MOD_PARROW,
+	MOD_AK42,
+	MOD_ESSHOT_SPLASH,
+	MOD_EXARROW_SPLASH,
+	MOD_EXARROW,
+	MOD_FRIENDLY_FIRE
+}mod_t;
 extern	int	meansOfDeath;
 
 extern	edict_t* g_edicts;
