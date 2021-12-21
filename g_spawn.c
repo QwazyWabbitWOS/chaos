@@ -1,7 +1,7 @@
 ﻿#include "g_local.h"
 #include "c_botnav.h"
 #include "gslog.h"
-#include "g_ent.h"
+
 typedef struct
 {
 	unsigned int classindex; // MrG{DRGN}

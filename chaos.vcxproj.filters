@@ -60,9 +60,6 @@
     <ClInclude Include="performance.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="g_ent.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="c_maplist.h">
       <Filter>Header Files</Filter>
     </ClInclude>

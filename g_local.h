@@ -620,6 +620,12 @@ void WriteLevel(char* filename);
 void InitGame(void);
 
 //
+// g_ent.c
+//
+
+char* LoadEntFile(char* mapname, char* entities);
+
+//
 // g_cmds.c
 //
 char* ClientTeam(edict_t* ent);
