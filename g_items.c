@@ -2568,7 +2568,7 @@ void SpawnItem(edict_t* ent, gitem_t* item)
 			ent->classname = "ammo_explosivearrows";
 		}
 	}
-	else if (ent->classindex == AMMO_GRENADES)
+	else if (ent->classindex == AM_GRENADES)
 	{
 		rn = random();
 
