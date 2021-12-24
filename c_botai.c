@@ -41,7 +41,7 @@ edict_t* Bot_FindBestItem(edict_t* ent)
 
 	// let's look if we need something very special first:
 
-		// we need health so go for a health pack
+	// we need health so go for a health pack
 	if (ent->health <= 40)
 	{
 		nprintf(PRINT_HIGH, "%s needs some health!\n", ent->client->pers.netname);
@@ -213,29 +213,7 @@ void Bot_Think(edict_t* ent)
 	// FLASHLIGHT
 	if (lightsoff->value > 0 && ent->client->flashlightactive == 0 && ent->health > 30)
 	{
-		Cmd_Flashlight_f(ent);
-		/*vec3_t  start, forward, right, end = {0};
-
-		ent->client->flashlightactive = 1;
-		AngleVectors(ent->client->v_angle, forward, right, NULL);
-		VectorSet(end, 100, 0, 0);
-		G_ProjectSource(ent->s.origin, end, forward, right, start);
-
-		ent->client->flashlight = G_Spawn();
-		ent->client->flashlight->think = FlashLightThink;
-		ent->client->flashlight->nextthink = level.time + FRAMETIME;
-		ent->client->flashlight->s.effects = EF_HYPERBLASTER;
-		ent->client->flashlight->s.modelindex = gi.modelindex("models/objects/dummy/tris.md2");
-		ent->client->flashlight->solid = SOLID_NOT;
-		ent->client->flashlight->owner = ent;
-		ent->client->flashlight->classname = "flashlight";
-		ent->client->flashlight->classindex = FLASHLIGHT;
-		ent->client->flashlight->movetype = MOVETYPE_NOCLIP;
-		ent->client->flashlight->clipmask = MASK_SHOT;
-		VectorCopy(end, ent->client->flashlight->s.origin);
-
-		gi.linkentity(ent->client->flashlight);
-		*/
+		Cmd_Flashlight_f(ent); 		
 	}
 	else if ((lightsoff->value == 0 && ent->client->flashlightactive == true)
 		|| (ent->health <= 30 && ent->client->flashlightactive == true))
@@ -383,7 +361,7 @@ void Bot_Think(edict_t* ent)
 							AngleVectors(ent->client->v_angle, forward, NULL, NULL);
 							VectorMA(ent->s.origin, -30, forward, forward);
 
-							// MrG{DRGN} operator has equivalent nested operands
+							// MrG{DRGN} operator had equivalent nested operands
 							// tr = gi.trace(oorigin, mins, maxs, dir, ent, MASK_SOLID | MASK_PLAYERSOLID);
 							tr = gi.trace(oorigin, mins, maxs, dir, ent, MASK_PLAYERSOLID);
 
@@ -618,13 +596,11 @@ void Bot_Think(edict_t* ent)
 			}
 		}
 		else
-		{
-			/* MrG{DRGN} assigned a value that is never used
+		{	  			
 			int	lastnodeflag = NORMAL_NODE;
 
 			if (n > 0)
-				lastnodeflag = nodes[ent->client->b_path[n - 1]].flag;
-			*/
+				lastnodeflag = nodes[ent->client->b_path[n - 1]].flag; 			
 
 			VectorSubtract(nodes[ent->client->b_path[n]].origin, ent->s.origin, dvec);
 			dist = VectorLength(dvec);
@@ -903,8 +879,7 @@ void Bot_Think(edict_t* ent)
 			{
 				ent->client->b_waittime = 0;
 				VectorSubtract(ent->client->b_nopathitem->s.origin, ent->s.origin, dir);
-				/* MrG{DRGN} assigned a value that is never used
-				dist = VectorLength(dir); */
+		
 				Bot_Aim(ent, ent->client->b_nopathitem->s.origin, angles);
 
 				if (SaveMoveDir(ent, RUN_SPEED, 0, angles))
@@ -948,7 +923,7 @@ void Bot_Think(edict_t* ent)
 			VectorCopy(ent->s.origin, oorigin);
 			oorigin[2] += 24;
 
-			// MrG{DRGN} operator has equivalent nested operands
+			// MrG{DRGN} operator had equivalent nested operands
 			// tr = gi.trace(oorigin, mins, maxs, dir, ent, MASK_SOLID | MASK_PLAYERSOLID);
 			tr = gi.trace(oorigin, mins, maxs, dir, ent, MASK_PLAYERSOLID);
 
@@ -1035,7 +1010,6 @@ edict_t* Bot_FindBestWeapon(edict_t* ent)
 		if (current->avoidtime > level.time)
 			goto next;
 
-		/* MrG{DRGN} reversed position of ! for clarity */
 		if (current->solid != SOLID_TRIGGER)	// is it currently there
 			goto next;
 
@@ -1196,7 +1170,7 @@ edict_t* Bot_FindBestPowerup(edict_t* ent)
 			&& current->item != it_tech4
 			&& current->item != it_invisibility
 			&& current->item != FindItemByClassindex(AR_POWER_SHIELD)
-			&& current->item != FindItemByClassindex(AR_POWER_SCREEN) /* MrG{DRGN} added */
+			&& current->item != FindItemByClassindex(AR_POWER_SCREEN)
 			&& current->item != FindItemByClassindex(AR_BODY)
 			&& current->item != FindItemByClassindex(AR_JACKET)
 			&& current->item != FindItemByClassindex(AR_COMBAT)
@@ -1236,7 +1210,7 @@ edict_t* Bot_FindBestPowerup(edict_t* ent)
 			// We really, really want these !!!
 			bonus = 6;
 		}
-		else if (current->item == FindItemByClassindex(AR_POWER_SHIELD) /* MrG{DRGN} added */
+		else if (current->item == FindItemByClassindex(AR_POWER_SHIELD)
 			|| current->item == FindItemByClassindex(AR_POWER_SCREEN)
 			|| current->item == FindItemByClassindex(AR_BODY)
 			|| current->item == FindItemByClassindex(AR_JACKET)
@@ -1299,9 +1273,6 @@ edict_t* Bot_FindBestAmmo(edict_t* ent)
 
 		if (current->item->classindex == AM_SHELLS	// some ammo isn't worth calculating a path it can be picked up as a closeitem
 			|| current->item->classindex == AM_EXPLOSIVESHELLS
-			/* MrG{DRGN} this should never be in game, but might be used by node creation if it looks at the entities in the mapfile, and not the substitue spawn replacements */
-			|| current->item->classindex == AM_BULLETS
-
 			|| current->item->classindex == AM_LASERGRENADES)
 			goto next;
 
@@ -1489,7 +1460,7 @@ void Bot_Attack(edict_t* ent, usercmd_t* cmd, vec3_t angles, vec3_t targ)
 			// aim explosives at feet
 
 			
-			else if ((weapon->classindex == W_ROCKETLAUNCHER) || (ent->enemy->client && (ent->enemy->client->ps.pmove.pm_flags & PMF_DUCKED)))
+			else if ((weapon->classindex == W_ROCKETLAUNCHER) || (weapon->classindex == W_HOMINGLAUNCHER) || (ent->enemy->client && (ent->enemy->client->ps.pmove.pm_flags & PMF_DUCKED)))
 				targ[2] -= 12;
 
 			VectorSubtract(targ, ent->s.origin, dir);

@@ -1316,14 +1316,12 @@ void Cmd_PlaceNode_f(edict_t* ent)
 		end[2] -= 40;
 
 		tr = gi.trace(ent->s.origin, ent->mins, ent->maxs, end, ent, MASK_SOLID);
-
-		/*
-		gi.WriteByte (svc_temp_entity);
-		gi.WriteByte (TE_BFG_LASER);
-		gi.WritePosition (nodes[nindex].origin);
-		gi.WritePosition (end);
-		gi.multicast (nodes[nindex].origin, MULTICAST_PHS);
-		*/
+		
+	//	gi.WriteByte (svc_temp_entity);
+	//	gi.WriteByte (TE_BFG_LASER);
+	//	gi.WritePosition (nodes[nindex].origin);
+	//	gi.WritePosition (end);
+	//	gi.multicast (nodes[nindex].origin, MULTICAST_PHS);		
 
 		if (!tr.startsolid && (tr.fraction == 1))
 		{
