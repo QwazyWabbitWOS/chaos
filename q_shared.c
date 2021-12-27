@@ -18,6 +18,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 */
 #include "q_shared.h"
+#include "performance.h"
 
 #define DEG2RAD( a ) ( a * M_PI ) / 180.0F
 
@@ -910,7 +911,7 @@ void Com_PageInMemory(byte* buffer, int size)
 #define Q_isspace(c)    (c == ' ' || c == '\f' || c == '\n' || \
                          c == '\r' || c == '\t' || c == '\v')
 
-int Q_tolower(int c)
+__inline int Q_tolower(int c)
 {
 	if (Q_isupper(c)) {
 		c += ('a' - 'A');
@@ -929,8 +930,9 @@ int Q_stricmp(const char* s1, const char* s2)
 		* uc2 = (const unsigned char*)s2;
 
 	while (Q_tolower(*uc1) == Q_tolower(*uc2++))
-		if (*uc1++ == '\0')
+		if (*uc1++ == '\0') {
 			return (0);
+		}
 	return (Q_tolower(*uc1) - Q_tolower(*--uc2));
 }
 
