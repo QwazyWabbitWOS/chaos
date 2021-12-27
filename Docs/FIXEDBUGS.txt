@@ -32,7 +32,7 @@ These are bugs that have been fixed in Chaotic Dreams
   makes it to 250, it never decreases again and makes their max health == 250
   -Fixed Sat May 29 16:51:07 CDT 1999
 
-* FOV gets stuck and 90 degrees if you fakedeath and then un-fakedeath ..
+* FOV gets stuck and 90 degrees if you fakedeath and then un-fakedeath...
   death or respawn fixes this. 
   -Fixed Fri Jun 18 12:13:03 CDT 1999
 
@@ -41,22 +41,22 @@ These are bugs that have been fixed in Chaotic Dreams
   -Fixed Fri Jun 18 12:13:20 CDT 1999
 
 * Fakedeath removes negative frags
-  -Fixed Fri Jun 18 12:13:33 CDT 1999 (No idea when this was fixed .. but we
+  -Fixed Fri Jun 18 12:13:33 CDT 1999 (No idea when this was fixed... but we
   have tested it on v1.12 and have found that it doesn't exist)
 
 * Occasionally a player will fakedeath and then not be able to change weapons
-  after the un-fakedeath .. possibly related to the fact that the player
+  after the un-fakedeath... possibly related to the fact that the player
   doesn't correctly drop their weapon when they fakedeath
   -Fixed Fri Jun 18 12:14:46 CDT 1999
 
-* If a player picks up a jetpack and uses it .. and while jetpack is in use,
-  they grab another .. their old jetpack stops working all together.
+* If a player picks up a jetpack and uses it... and while jetpack is in use,
+  they grab another... their old jetpack stops working all together.
   -Fixed Tue Jul 13 21:54:54 CDT 1999 ( This fix also makes the jetpack also
   correctly monitor the dmflags, so now if instant powerups are set then the
-  jetpack instantly turns on and you cannot turn it off. )
+  jetpack instantly turns on, and you cannot turn it off. )
 
 * Somehow the "sv addbots" command seems to have vanished from being usable
-  in the v1.13beta binaries for the Win32 environment .. likely an issue with
+  in the v1.13beta binaries for the Win32 environment... likely an issue with
   the project files
   -Fixed Tue Jul 13 21:55:19 CDT 1999 (This never "truly" existed as a code
   problem, this was likely an issue created by the early config of cvs and
@@ -160,7 +160,7 @@ set drop_tech "1"      // MrG{DRGN} enable/disable tech drops
 set bot_log_only "1"   // bot detection is only logged when set to 1
 set chaos_plus "0"     // enable some new chaos features.
 set telefrag_rail "0"  // enable special railgun mode.
-set tele_fire "1"      // enable some items/weapon fire to travel thru teleporters
+set tele_fire "1"      // enable some items/weapon fire to travel through teleporters
 set turprox_fx "1"     // enable new turret & proxy effects
 //========================================================
 

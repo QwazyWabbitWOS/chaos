@@ -368,3 +368,4 @@ MigrationBackup/
 FodyWeavers.xsd
 *.xml
 /.idea/.gitignore
+/.idea

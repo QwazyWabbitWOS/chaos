@@ -1682,7 +1682,7 @@ edict_t* Bot_FindCloseItem(edict_t* ent)
 			continue;
 		if (newitem->avoidtime > level.time)
 			continue;
-		if (!Bot_NeedsHealth(ent, newitem)) // MrG{DRGN} if we don't need it don't go for health
+		if (!Bot_NeedsHealth(ent, newitem)) // MrG{DRGN} if we don't need it, don't go for health!
 			continue;
 		//if (!Bot_CanReachSpotDirectly(ent, newitem->s.origin))
 		//	continue;
@@ -1724,7 +1724,7 @@ edict_t* Bot_FindItem(edict_t* ent)
 			continue;
 		if (newitem->avoidtime > level.time)
 			continue;
-		if (!Bot_NeedsHealth(ent, newitem)) // MrG{DRGN} if we don't need it don't go for health
+		if (!Bot_NeedsHealth(ent, newitem)) // MrG{DRGN} if we don't need it, don't go for health!
 			continue;
 		VectorSubtract(ent->s.origin, newitem->s.origin, dir);
 		dist = VectorLength(dir);

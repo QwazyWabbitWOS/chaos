@@ -1404,7 +1404,7 @@ void Cmd_PlayerList_f(edict_t* ent)
 			ed->client->resp.spectator ? "(spectator)" : "");
 
 		// While we might think we have the full frame to use
-		// we can't take all of it for a console message or it
+		// we can't take all of it for a console message, or it
 		// gets dropped. 1000 seems a hard limit here.
 		// The number of lines listed will depend on
 		// lengths of names and spectator status. //QW//
