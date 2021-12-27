@@ -597,10 +597,10 @@ void Bot_Think(edict_t* ent)
 		}
 		else
 		{	  			
-			int	lastnodeflag = NORMAL_NODE;
+			//int	lastnodeflag = NORMAL_NODE;
 
-			if (n > 0)
-				lastnodeflag = nodes[ent->client->b_path[n - 1]].flag; 			
+			//if (n > 0)
+			//	lastnodeflag = nodes[ent->client->b_path[n - 1]].flag; 			
 
 			VectorSubtract(nodes[ent->client->b_path[n]].origin, ent->s.origin, dvec);
 			dist = VectorLength(dvec);
