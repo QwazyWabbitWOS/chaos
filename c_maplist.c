@@ -117,7 +117,6 @@ int MaplistNext(void)
 		break;
 	default:
 		maplist.mlflag = ML_OFF;
-		maplist.currentmap = maplist.currentmap;
 		break;
 	}
 
