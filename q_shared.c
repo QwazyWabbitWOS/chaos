@@ -247,7 +247,7 @@ LerpAngle
 
 ===============
 */
-float LerpAngle(float a2, float a1, float frac)
+float LerpAngle(float a1, float a2, float frac)
 {
 	if (a1 - a2 > 180)
 		a1 -= 360;
@@ -1090,7 +1090,7 @@ key and returns the associated value, or an empty string.
 */
 char* Info_ValueForKey(char* s, char* key)
 {
-	char	pkey[512];
+	char	pkey[512] = { 0 };
 	static	char value[2][512];	// use two buffers so compares
 								// work without stomping on each other
 	static	int	valueindex;
@@ -1227,7 +1227,7 @@ void Info_SetValueForKey(char* s, char* key, char* value)
 	Info_RemoveKey(s, key);
 	if (!value || !strlen(value))
 		return;
-
+	
 	Com_sprintf(newi, sizeof(newi), "\\%s\\%s", key, value);
 
 	if (strlen(newi) + strlen(s) > maxsize)
