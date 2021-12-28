@@ -34,7 +34,7 @@ DEBUG_CFLAGS=$(BASE_CFLAGS) -g -Wreturn-type
 
 # flavors of Linux
 ifeq ($(shell uname), Linux)
-CFLAGS += -DLINUX
+BASE_CFLAGS += -DLINUX
 LIBTOOL = ldd
 LDFLAGS =-ldl -lm
 LDDFLAGS=-r
