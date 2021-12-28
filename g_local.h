@@ -684,6 +684,16 @@ void Drop_Weapon(edict_t* ent, gitem_t* item);
 //
 // g_utils.c
 //
+
+#if defined _WIN32
+//
+// Define a noreturn wrapper for gi.error
+//
+__declspec(noreturn) void GameError(char* fmt, ...);
+#else
+__attribute__((noreturn)) void GameError(char* fmt, ...);
+#endif
+
 qboolean	KillBox(edict_t* ent);
 void	G_ProjectSource(vec3_t point, vec3_t distance, vec3_t forward, vec3_t right, vec3_t result);
 edict_t* G_Find(edict_t* from, int fieldofs, char* match);

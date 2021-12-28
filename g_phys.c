@@ -83,10 +83,8 @@ qboolean SV_RunThink(edict_t* ent)
 		return true;
 
 	ent->nextthink = 0;
-	if (!ent->think) {
-		gi.error("NULL ent->think");
-		return false;
-	}
+	if (!ent->think)
+		GameError("NULL ent->think");
 
 	//int set = 0;
 
@@ -580,12 +578,9 @@ void SV_Physics_Pusher(edict_t* ent)
 				break;	// move was blocked
 		}
 	}
-	/* MrG{DRGN} fix the 'memory corrupted' check and printf format error
+
 	if (pushed_p > &pushed[MAX_EDICTS])
-		gi.error (ERR_FATAL, "pushed_p > &pushed[MAX_EDICTS], memory corrupted");
-	*/
-	if (pushed_p > &pushed[MAX_EDICTS - 1])
-		gi.error("pushed_p > &pushed[MAX_EDICTS - 1], memory corrupted");
+		GameError("pushed_p > &pushed[MAX_EDICTS], memory corrupted");
 
 	if (part)
 	{
@@ -1029,7 +1024,7 @@ void G_RunEntity(edict_t* ent)
 		SV_Physics_Toss(ent);
 		break;
 	default:
-		gi.error("SV_Physics: entity #%i, bad movetype %i",
+		GameError("SV_Physics: entity #%i, bad movetype %i",
 			(int)(ent - g_edicts), (int)ent->movetype);
 	}
 }
