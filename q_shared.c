@@ -900,7 +900,13 @@ void Com_PageInMemory(byte* buffer, int size)
 ============================================================================
 */
 
-
+int Q_tolower(int c)
+{
+	if (Q_isupper(c)) {
+		c += ('a' - 'A');
+	}
+	return c;
+}
 /** Case independent string compare.
  If s1 is contained within s2 then return 0, they are "equal".
  else return the lexicographic difference between them.

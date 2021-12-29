@@ -205,13 +205,8 @@ void Com_PageInMemory(byte* buffer, int size);
 #define Q_isspace(c)    (c == ' ' || c == '\f' || c == '\n' || \
                          c == '\r' || c == '\t' || c == '\v')
 
-__inline int Q_tolower(int c)
-{
-	if (Q_isupper(c)) {
-		c += ('a' - 'A');
-	}
-	return c;
-}
+int Q_tolower(int c);
+
 
 // portable case insensitive compare
 int Q_stricmp(const char* s1, const char* s2);

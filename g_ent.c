@@ -1,5 +1,5 @@
 #include "g_local.h"
-extern __inline int Q_tolower(int c);  // MrG{DRGN} so Linux debug build compiles.
+
 static char* ReadEntFile(char* filename)
 {
 	FILE* fp;
