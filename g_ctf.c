@@ -3410,7 +3410,7 @@ static void old_teleporter_touch(edict_t* self, edict_t* other, cplane_t* plane,
 		return;
 	}
 
-	if (!other->client && !tele_fire->value)
+	if (!other->client)
 		return;
 	dest = G_Find(NULL, FOFS(targetname), self->target);
 	if (!dest)
@@ -3426,34 +3426,28 @@ static void old_teleporter_touch(edict_t* self, edict_t* other, cplane_t* plane,
 	VectorCopy(dest->s.origin, other->s.old_origin);
 	//	other->s.origin[2] += 10;
 
-		// clear the velocity and hold them in place briefly
+	// clear the velocity and hold them in place briefly
 	VectorClear(other->velocity);
-	if (other->client)
-	{
-		other->client->ps.pmove.pm_time = 160 >> 3;		// hold time
-		other->client->ps.pmove.pm_flags |= PMF_TIME_TELEPORT;
-	}
+	other->client->ps.pmove.pm_time = 160 >> 3;		// hold time
+	other->client->ps.pmove.pm_flags |= PMF_TIME_TELEPORT;
+
 	// draw the teleport splash at source and on the player
 	self->enemy->s.event = EV_PLAYER_TELEPORT;
 	other->s.event = EV_PLAYER_TELEPORT;
 
 	// set angles
-	if (other->client)
-	{
-		for (i = 0; i < 3; i++)
-			other->client->ps.pmove.delta_angles[i] = ANGLE2SHORT(dest->s.angles[i] - other->client->resp.cmd_angles[i]);
-	}
+	for (i = 0; i < 3; i++)
+		other->client->ps.pmove.delta_angles[i] = ANGLE2SHORT(dest->s.angles[i] - other->client->resp.cmd_angles[i]);
+
 	other->s.angles[PITCH] = 0;
 	other->s.angles[YAW] = dest->s.angles[YAW];
 	other->s.angles[ROLL] = 0;
-	if (other->client)
-	{
-		VectorCopy(dest->s.angles, other->client->ps.viewangles);
-		VectorCopy(dest->s.angles, other->client->v_angle);
+	
+	VectorCopy(dest->s.angles, other->client->ps.viewangles);
+	VectorCopy(dest->s.angles, other->client->v_angle);
 
-		// give a little forward velocity
-		AngleVectors(other->client->v_angle, forward, NULL, NULL);
-	}
+	// give a little forward velocity
+	AngleVectors(other->client->v_angle, forward, NULL, NULL);
 	VectorScale(forward, 200, other->velocity);
 
 	// kill anything at the destination

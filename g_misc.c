@@ -1392,7 +1392,7 @@ void teleporter_touch(edict_t* self, edict_t* other, cplane_t* plane, csurface_t
 		return;
 	}
 
-	if (!other->client && !tele_fire->value)
+	if (!other->client)
 		return;
 	dest = G_Find(NULL, FOFS(targetname), self->target);
 	if (!dest)
@@ -1400,35 +1400,33 @@ void teleporter_touch(edict_t* self, edict_t* other, cplane_t* plane, csurface_t
 		gi.dprintf("Couldn't find destination\n");
 		return;
 	}
-	if (other->client)
+	
+	if (!Bot_FindNode(self, 120, TELEPORT_NODE)
+		&& dntg->value)
 	{
-		if (!Bot_FindNode(self, 120, TELEPORT_NODE)
-			&& dntg->value)
+		//start node
+		VectorCopy(other->s.origin, nodeo);
+
+		if (!(other->client->ps.pmove.pm_flags & PMF_DUCKED))
 		{
-			//start node
-			VectorCopy(other->s.origin, nodeo);
-
-			if (!(other->client->ps.pmove.pm_flags & PMF_DUCKED))
-			{
-				nodeo[2] += 5;
-				Bot_PlaceNode(nodeo, TELEPORT_NODE, 0);
-			}
-			else
-				Bot_PlaceNode(nodeo, TELEPORT_NODE, 1);
-
-			Bot_CalcNode(other, numnodes);
-
-			//dest node
-			VectorCopy(dest->s.origin, nodeo);
-			nodeo[2] += 20;
-			Bot_PlaceNode(nodeo, NORMAL_NODE, 0);
-			Bot_CalcNode(other, numnodes);
-
-			//connection
-			nodes[numnodes - 1].dist[numnodes] = 1;
-
-			nprintf(PRINT_HIGH, "Teleporter nodes placed and connected!\n");
+			nodeo[2] += 5;
+			Bot_PlaceNode(nodeo, TELEPORT_NODE, 0);
 		}
+		else
+			Bot_PlaceNode(nodeo, TELEPORT_NODE, 1);
+
+		Bot_CalcNode(other, numnodes);
+
+		//dest node
+		VectorCopy(dest->s.origin, nodeo);
+		nodeo[2] += 20;
+		Bot_PlaceNode(nodeo, NORMAL_NODE, 0);
+		Bot_CalcNode(other, numnodes);
+
+		//connection
+		nodes[numnodes - 1].dist[numnodes] = 1;
+
+		nprintf(PRINT_HIGH, "Teleporter nodes placed and connected!\n");
 	}
 	// unlink to make sure it can't possibly interfere with KillBox
 	gi.unlinkentity(other);
@@ -1438,24 +1436,21 @@ void teleporter_touch(edict_t* self, edict_t* other, cplane_t* plane, csurface_t
 	other->s.origin[2] += 10;
 
 	// clear the velocity and hold them in place briefly
-	if (other->client)
-	{
-		VectorClear(other->velocity);
-		// set angles
-		other->client->ps.pmove.pm_time = 160 >> 3;		// hold time
-		other->client->ps.pmove.pm_flags |= PMF_TIME_TELEPORT;
-	}
+	VectorClear(other->velocity);
+
+	// set angles
+	other->client->ps.pmove.pm_time = 160 >> 3;		// hold time
+	other->client->ps.pmove.pm_flags |= PMF_TIME_TELEPORT;
+
 	// draw the teleport splash at source and on the player
 	self->owner->s.event = EV_PLAYER_TELEPORT;
 	other->s.event = EV_PLAYER_TELEPORT;
-	if (other->client)
-	{
-		for (i = 0; i < 3; i++)
-			other->client->ps.pmove.delta_angles[i] = ANGLE2SHORT(dest->s.angles[i] - other->client->resp.cmd_angles[i]);
 
-		VectorClear(other->client->ps.viewangles);
-		VectorClear(other->client->v_angle);
-	}
+	for (i = 0; i < 3; i++)
+		other->client->ps.pmove.delta_angles[i] = ANGLE2SHORT(dest->s.angles[i] - other->client->resp.cmd_angles[i]);
+
+	VectorClear(other->client->ps.viewangles);
+	VectorClear(other->client->v_angle);
 	VectorClear(other->s.angles);
 	// kill anything at the destination
 	KillBox(other);

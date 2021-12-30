@@ -1340,7 +1340,6 @@ extern cvar_t* developer;
 extern cvar_t* drop_tech;	/* MrG{DRGN} tech drop prevention */
 extern cvar_t* allow_flagdrop;	/* MrG{DRGN} allow flag dropping */
 extern cvar_t* weapon_kick; /* MrG{DRGN} kickable weapons toggle */
-extern cvar_t* tele_fire; /* MrG{DRGN} allow certain non-client projectiles to pass through teleporters */
 
 int		red_base, blue_base;	//node at red/blue flag
 

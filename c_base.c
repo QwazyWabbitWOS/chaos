@@ -134,7 +134,6 @@ void GetSettings(void)
 	drop_tech = gi.cvar("drop_tech", "1", CVAR_LATCH); /* MrG{DRGN} tech drop prevention */
 	allow_flagdrop = gi.cvar("allow_flagdrop", "1", CVAR_LATCH); /* MrG{DRGN} allow flag dropping */
 	weapon_kick = gi.cvar("weapon_kick", "1", CVAR_LATCH); /* MrG{DRGN} kickable weapons toggle */
-	tele_fire = gi.cvar("tele_fire", "0", CVAR_LATCH); /* MrG{DRGN} allow certain projectiles through teleporters */
 	do_respawn = gi.cvar("do_respawn", "60", CVAR_LATCH); /* MrG{DRGN} base item respawn time default 60 */
 	do_respawn_rnd = gi.cvar("do_respawn_rnd", "80", CVAR_LATCH); /* MrG{DRGN} random item respawn time default 80 */
 
