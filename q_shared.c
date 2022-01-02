@@ -778,9 +778,7 @@ char* va(char* format, ...)
 
 	va_start(argptr, format);
 	vsnprintf(string, sizeof(string), format, argptr);
-
 	va_end(argptr);
-
 	return string;
 }
 
@@ -907,6 +905,7 @@ int Q_tolower(int c)
 	}
 	return c;
 }
+
 /** Case independent string compare.
  If s1 is contained within s2 then return 0, they are "equal".
  else return the lexicographic difference between them.
