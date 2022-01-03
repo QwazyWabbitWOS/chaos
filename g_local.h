@@ -607,9 +607,15 @@ extern	field_t fields[];
 extern	gitem_t	itemlist[];
 
 //
+// c_motd.c
+//
+void LoadMOTD(void);
+
+//
 // g_spawn.c
 //
 void SpawnEntities(char* mapname, char* entities, char* spawnpoint);
+
 //
 // g_save.c
 //
@@ -892,7 +898,6 @@ qboolean SVCmd_FilterPacket(char* from);
 #include "c_invisibility.h"
 #include "c_jetpack.h"
 #include "c_maplist.h"
-#include "c_motd.h"
 #include "c_scanner.h"
 #include "c_teleporter.h"
 #include "c_weapon.h"

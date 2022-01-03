@@ -81,9 +81,6 @@
     <ClInclude Include="c_teleporter.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="c_motd.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="c_cam.h">
       <Filter>Header Files</Filter>
     </ClInclude>

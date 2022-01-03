@@ -74,33 +74,31 @@ cvar_t* start_defenseturret, * start_rocketturret,
 * start_rebreather, * start_environmentsuit;
 
 // Item definitions
-
 gitem_t
-/* MrG{DRGN}  Items converted by Chaos not in game */
-* it_shotgun, * it_machinegun, * it_chaingun, * it_bullets,
-/* MrG{DRGN} Weapons */
+// Items converted by Chaos not in game 
+* it_shotgun, * it_machinegun, * it_chaingun, * it_bullets,	
+// Weapons
 * it_ak42, * it_sword, * it_chainsaw, * it_supershotgun,
 * it_esupershotgun, * it_crossbow, * it_poisoncrossbow,
 * it_explosivecrossbow, * it_airfist, * it_grenadelauncher,
 * it_flashgrenadelauncher, * it_poisongrenadelauncher,
 * it_proxyminelauncher, * it_rocketlauncher, * it_hominglauncher,
 * it_hyperblaster, * it_railgun, * it_buzzsaw, * it_bfg, * it_vortex, * it_rturret, * it_lturret,
-/* MrG{DRGN} Ammo */
+// MrG{DRGN} Ammo
 * it_shells, * it_eshells, * it_arrows, * it_poisonarrows,
 * it_explosivearrows, * it_grenades, * it_flashgrenades,
 * it_poisongrenades, * it_proxymines, * it_lasermines, * it_rockets,
 * it_homings, * it_cells, * it_slugs, * it_buzzes,
-/* MrG{DRGN} Health */
+// MrG{DRGN} Health
 * it_health_generic, * it_health, * it_health_small,
 * it_health_large, * it_health_mega,
-/* MrG{DRGN} CTF items */
+// MrG{DRGN} CTF items
 * it_tech1, * it_tech2, * it_tech3, * it_tech4, * it_flag_red, * it_flag_blue,
-/* MrG{DRGN} Powerups */
+// MrG{DRGN} Powerups
 * it_ancient_head, * it_quaddamage, * it_silencer, * it_adrenaline,
 * it_invulnerability, * it_breather, * it_enviro, * it_bandolier,
 * it_pack, * it_invisibility;
 
-/* MrG{DRGN} TODO: Missing? */
 
 cvar_t* node_debug;
 cvar_t* lightsoff;
@@ -117,11 +115,11 @@ cvar_t* ex_arrow_damage;
 cvar_t* ex_arrow_radius;
 cvar_t* start_invulnerable_time;
 
-/* MrG{DRGN} Chaos DM Lives cvars */
-cvar_t* drop_tech;	/* MrG{DRGN} tech drop prevention */
-cvar_t* allow_flagdrop;	/* MrG{DRGN} allow flag dropping */
-cvar_t* weapon_kick; /* MrG{DRGN} kickable weapons toggle */
-cvar_t* do_respawn;	/* MrG{DRGN} base item respawn time default 60 */
-cvar_t* do_respawn_rnd;	/* MrG{DRGN} random item respawn time default 80 */
+// MrG{DRGN} Chaos DM Lives cvars
+cvar_t* drop_tech;	// MrG{DRGN} tech drop prevention
+cvar_t* allow_flagdrop;	// MrG{DRGN} allow flag dropping
+cvar_t* weapon_kick; // MrG{DRGN} kickable weapons toggle 
+cvar_t* do_respawn;	// MrG{DRGN} base item respawn time default 60
+cvar_t* do_respawn_rnd;	// MrG{DRGN} random item respawn time default 80
 
 #define LAYOUT_MAX_LENGTH              1400
