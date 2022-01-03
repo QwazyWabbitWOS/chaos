@@ -683,7 +683,7 @@ int PowerArmorType(edict_t* ent);
 gitem_t* GetItemByIndex(int index);
 qboolean Add_Ammo(edict_t* ent, gitem_t* item, int count);
 void Touch_Item(edict_t* ent, edict_t* other, cplane_t* plane, csurface_t* surf);
-void DoRespawn(edict_t* ent); /* MrG{DRGN} added this prototype */
+void DoRespawn(edict_t* ent); 
 void Use_Weapon(edict_t* ent, gitem_t* item);
 void Drop_Weapon(edict_t* ent, gitem_t* item);
 
@@ -721,7 +721,7 @@ float* tv(float x, float y, float z);
 char* vtos(vec3_t v);
 
 float vectoyaw(vec3_t vec);
-void vectoangles(vec3_t value1, vec3_t angles);/* MrG{DRGN} wrongly prototyped as vec */
+void vectoangles(vec3_t value1, vec3_t angles);
 
 //
 // g_combat.c
@@ -1052,7 +1052,7 @@ struct gclient_s
 	float		b_waittime;
 	float		b_pausetime;
 
-	float		b_nodetime;  /* MrG{DRGN} now a float */
+	float		b_nodetime;  
 	int			b_botlevel;
 	edict_t* b_target;
 	float		b_lastdpath;
@@ -1294,7 +1294,7 @@ struct edict_s
 	//MATTHIAS
 	float		avoidtime;
 	vec3_t      spawnorigin;
-	qboolean	bot_player;  /* MrG{DRGN} this is a lot easier than checking the classname to track if we're dealing wiith a bot or not! */
+	qboolean	bot_player;  // MrG{DRGN} this is a lot easier than checking the classname to track if we're dealing wiith a bot or not!
 };
 
 //MATTHIAS
@@ -1342,10 +1342,12 @@ extern cvar_t* ex_arrow_radius;
 extern cvar_t* start_invulnerable_time;
 extern cvar_t* developer;
 
-/* MrG{DRGN} Chaos DM Lives cvars */
-extern cvar_t* drop_tech;	/* MrG{DRGN} tech drop prevention */
-extern cvar_t* allow_flagdrop;	/* MrG{DRGN} allow flag dropping */
-extern cvar_t* weapon_kick; /* MrG{DRGN} kickable weapons toggle */
+/* 
+* MrG{DRGN} Chaos DM Lives cvars
+*/
+extern cvar_t* drop_tech;	// MrG{DRGN} tech drop prevention
+extern cvar_t* allow_flagdrop;	// MrG{DRGN} allow flag dropping
+extern cvar_t* weapon_kick; // MrG{DRGN} kickable weapons toggle
 
 int		red_base, blue_base;	//node at red/blue flag
 

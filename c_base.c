@@ -131,9 +131,9 @@ void GetSettings(void)
 	start_invulnerable_time = gi.cvar("start_invulnerable_time", "3", CVAR_USERINFO);
 	lightsoff = gi.cvar("lightsoff", "0", CVAR_USERINFO);
 	botchat = gi.cvar("botchat", "1", CVAR_LATCH);
-	drop_tech = gi.cvar("drop_tech", "1", CVAR_LATCH); /* MrG{DRGN} tech drop prevention */
-	allow_flagdrop = gi.cvar("allow_flagdrop", "1", CVAR_LATCH); /* MrG{DRGN} allow flag dropping */
-	weapon_kick = gi.cvar("weapon_kick", "1", CVAR_LATCH); /* MrG{DRGN} kickable weapons toggle */
+	drop_tech = gi.cvar("drop_tech", "1", CVAR_LATCH); // MrG{DRGN} tech drop prevention
+	allow_flagdrop = gi.cvar("allow_flagdrop", "1", CVAR_LATCH); // MrG{DRGN} allow flag dropping
+	weapon_kick = gi.cvar("weapon_kick", "1", CVAR_LATCH); // MrG{DRGN} kickable weapons toggle
 	do_respawn = gi.cvar("do_respawn", "60", CVAR_LATCH); /* MrG{DRGN} base item respawn time default 60 */
 	do_respawn_rnd = gi.cvar("do_respawn_rnd", "80", CVAR_LATCH); /* MrG{DRGN} random item respawn time default 80 */
 
