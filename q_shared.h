@@ -213,7 +213,7 @@ int Q_strnicmp(const char* s1, const char* s2, size_t count);
 size_t Q_strncpyz(char* dst, size_t dstSize, const char* src);
 size_t Q_strncatz(char* dst, size_t dstSize, const char* src);
 void Com_sprintf(char* dest, int size, char* fmt, ...);
-size_t Com_strcpy(char* dest, size_t destSize, const char* src);/* MrG{DRGN} Function Replacements TY Knightmare! */
+size_t Com_strcpy(char* dest, size_t destSize, const char* src);// MrG{DRGN} Function Replacements TY Knightmare!
 size_t Com_strcat(char* dest, size_t destSize, const char* src);
 
 //=============================================
@@ -278,7 +278,7 @@ char* Sys_FindNext(unsigned musthave, unsigned canthave);
 void  Sys_FindClose(void);
 
 // this is only here so the functions in q_shared.c and q_shwin.c can link
-void Sys_Error(const char* error, ...); /* MrG{DRGN} changed to const */
+void Sys_Error(const char* error, ...); // MrG{DRGN} changed to const
 void Com_Printf(char* msg, ...);
 
 /*
@@ -612,7 +612,7 @@ typedef struct
 #define	MZ_SSHOTGUN			13
 #define	MZ_HYPERBLASTER		14
 #define	MZ_ITEMRESPAWN		15
-#define MZ_BOOMERGUN		16 /* MrG{DRGN} Chaos DM */
+#define MZ_BOOMERGUN		16 // MrG{DRGN} Chaos DM
 
 // RAFAEL
 #define MZ_IONRIPPER		16

@@ -38,4 +38,4 @@ extern void sl_LogPlayerDisconnect(game_import_t* gi,
 
 #endif
 
-/* end of file */
+// EOF

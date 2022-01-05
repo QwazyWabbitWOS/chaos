@@ -73,4 +73,4 @@ extern void sl_LogPlayerRename(game_import_t* gi,
 
 #endif
 
-/* end of file */
+// EOF
