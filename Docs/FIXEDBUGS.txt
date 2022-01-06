@@ -439,7 +439,7 @@ set drop_tech "1"      // MrG{DRGN} enable/disable tech drops                   
 set bot_log_only "1"   // bot detection is only logged when set to 1                     - no
 set chaos_plus "0"     // enable some new chaos features.                                - no
 set telefrag_rail "0"  // enable special railgun mode.                                   - no
-set turprox_fx "1"     // enable new turret & proxy effects                             - may do
+set turprox_fx "1"     // enable new turret & proxy effects                             - no
 //========================================================
 
 * Added updated codebase server commands to g_svcmds.c as follows
@@ -466,5 +466,37 @@ set turprox_fx "1"     // enable new turret & proxy effects                     
    If 0, then only addresses matching the list will be allowed.  This lets you easily set up a private game, or a game that only allows players from your local network.
    ==============================================================================
    */
+   
+	* triggers for proximity grenades so that they can be remotely triggered - togglegrenades command. (Hate the name, but it's long standing)
+	
+	* proximity grenades that attach to the walls. They do if you put them to sleep via togglegrenades
 
+	* reduce strength of explosive tips on crossbows - already variable via the server cvar config
+
+	* Drop_Weapon and Pickup Weapon have been reworked so they function properly
+
+	* port code to quake2 3.20 source code 
+
+	* Bugs with CTF spectator modes 
+
+	* Map Rotation reworked - sv ml commands still work sv nextmap doesn't break rotation.
+	  At he bottom of your server.cfg use the new cvars g_maplistfile & g_maplistmode like so:
+	  	  
+		set g_maplistfile "chaosdm.txt" // file containing the maplist
+		gamemap intro // server's starting map
+		set g_maplistmode "2" // 1 for sequential, 2 for random map selection
+		// EOF
+	
+	* Map rotation up to 512 maps and random rotation will not repeat a map until the list has run through. 
+	
+	* ability to shuffle random map rotation with "sv ml shuffle" command.
+
+	* Fixed bugs where the proxies were targeting teammates in ctf mode, or spectators before they'd join a team.
+
+	* Bugs with stat_xarmor resolved.  You only get one kind at startup
+
+	* Bot improvements so they no longer try to get more than one grapple, jetpack, or keys.
+	  The same goes for weapons with dmflags set so weapons stay.
+
+	* Fov issues when coming from cam/fakedeath
 
