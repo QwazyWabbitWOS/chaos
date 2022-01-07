@@ -83,24 +83,21 @@ qboolean SV_RunThink(edict_t* ent)
 		return true;
 
 	ent->nextthink = 0;
-	if (!ent->think)
-		GameError("NULL ent->think");
+	//if (!ent->think)
+	//	GameError("NULL ent->think");
 
-	//int set = 0;
+	if (!ent->think || !ent->inuse) // Report error but keep on truckin'
+	{
+		if (ent->classname && ent->model)
+			gi.dprintf("NULL ent->think (classname %s, model %s mapname %s)\n", ent->classname, ent->model, level.mapname);
+		else if (ent->classname)
+			gi.dprintf("NULL ent->think (classname %s mapname %s)\n", ent->classname, level.mapname);
+		else
+			gi.dprintf("NULL ent->think (mapname %s)\n", level.mapname);
+		return false;
+	}
 
-	//if (developer->value && (ent->classindex == SHELL || ent->classindex == GIB))
-	//{
-	//	gi.dprintf("%s 1 movetype %d inuse: %d classname: %s classindex: %d time: %.1f\n",
-	//		__func__, ent->movetype, ent->inuse, ent->classname, ent->classindex, level.time);
-	//	set = 1;
-	//}
 	ent->think(ent);
-
-	//if (developer->value && set)
-	//{
-	//	gi.dprintf("%s 2 movetype %d inuse: %d classname: %s classindex: %d time: %.1f\n",
-	//		__func__, ent->movetype, ent->inuse, ent->classname, ent->classindex, level.time);
-	//}
 	return false;
 }
 
