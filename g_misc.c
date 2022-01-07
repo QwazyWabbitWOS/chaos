@@ -1400,7 +1400,7 @@ void teleporter_touch(edict_t* self, edict_t* other, cplane_t* plane, csurface_t
 		gi.dprintf("Couldn't find destination\n");
 		return;
 	}
-	
+
 	if (!Bot_FindNode(self, 120, TELEPORT_NODE)
 		&& dntg->value)
 	{

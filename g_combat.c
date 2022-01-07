@@ -198,7 +198,7 @@ static int CheckPowerArmor(edict_t* ent, vec3_t point, vec3_t normal, int damage
 	power_used = save / damagePerCell;
 
 	//if (client) MrG{DRGN} if there isn't a client we returned 0 above
-		client->pers.inventory[index] -= power_used;
+	client->pers.inventory[index] -= power_used;
 
 	return save;
 }

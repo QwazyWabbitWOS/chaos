@@ -19,4 +19,3 @@ void Grapple_Think(edict_t* ent);
 void Grapple_Fire(edict_t* ent);
 void Cmd_Hook_f(edict_t* ent);
 void Cmd_Grapple_f(edict_t* ent);
-

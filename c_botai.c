@@ -132,7 +132,6 @@ qboolean Bot_StandingUnderPlat(edict_t* ent)
 
 	tr = gi.trace(ent->s.origin, NULL, NULL, end, NULL, MASK_SOLID);
 
-	
 	if (tr.ent && (tr.ent->classindex == FUNC_PLAT))
 		return true;
 	return false;
@@ -213,7 +212,7 @@ void Bot_Think(edict_t* ent)
 	// FLASHLIGHT
 	if (lightsoff->value > 0 && ent->client->flashlightactive == 0 && ent->health > 30)
 	{
-		Cmd_Flashlight_f(ent); 		
+		Cmd_Flashlight_f(ent);
 	}
 	else if ((lightsoff->value == 0 && ent->client->flashlightactive == true)
 		|| (ent->health <= 30 && ent->client->flashlightactive == true))
@@ -330,7 +329,7 @@ void Bot_Think(edict_t* ent)
 						else
 							Bot_BestCloseWeapon(ent);
 					}
-					
+
 					else if ((ent->client->pers.weapon->classindex == W_SWORD)
 						|| (ent->client->pers.weapon->classindex == W_CHAINSAW))
 					{
@@ -596,11 +595,11 @@ void Bot_Think(edict_t* ent)
 			}
 		}
 		else
-		{	  			
+		{
 			//int	lastnodeflag = NORMAL_NODE;
 
 			//if (n > 0)
-			//	lastnodeflag = nodes[ent->client->b_path[n - 1]].flag; 			
+			//	lastnodeflag = nodes[ent->client->b_path[n - 1]].flag;
 
 			VectorSubtract(nodes[ent->client->b_path[n]].origin, ent->s.origin, dvec);
 			dist = VectorLength(dvec);
@@ -665,7 +664,6 @@ void Bot_Think(edict_t* ent)
 						//find the plat
 						while ((plat = findradius2(plat, nodes[ent->client->b_path[n]].origin, 300)) != NULL)
 						{
-							
 							if (plat->classindex == FUNC_PLAT)
 							{
 								//nprintf(PRINT_HIGH,"Found plat!\n");
@@ -673,7 +671,6 @@ void Bot_Think(edict_t* ent)
 							}
 						}
 
-						
 						if (plat && plat->classindex == FUNC_PLAT)
 						{
 							if (plat->moveinfo.state == STATE_BOTTOM)
@@ -879,7 +876,7 @@ void Bot_Think(edict_t* ent)
 			{
 				ent->client->b_waittime = 0;
 				VectorSubtract(ent->client->b_nopathitem->s.origin, ent->s.origin, dir);
-		
+
 				Bot_Aim(ent, ent->client->b_nopathitem->s.origin, angles);
 
 				if (SaveMoveDir(ent, RUN_SPEED, 0, angles))
@@ -1459,7 +1456,6 @@ void Bot_Attack(edict_t* ent, usercmd_t* cmd, vec3_t angles, vec3_t targ)
 				targ[2] += ent->enemy->viewheight;
 			// aim explosives at feet
 
-			
 			else if ((weapon->classindex == W_ROCKETLAUNCHER) || (weapon->classindex == W_HOMINGLAUNCHER) || (ent->enemy->client && (ent->enemy->client->ps.pmove.pm_flags & PMF_DUCKED)))
 				targ[2] -= 12;
 
@@ -1468,7 +1464,6 @@ void Bot_Attack(edict_t* ent, usercmd_t* cmd, vec3_t angles, vec3_t targ)
 
 			angles[0] = t_angles[0];
 
-			
 			if (weapon->classindex == W_HYPERBLASTER)
 			{
 				angles[YAW] += crandom() * (ent->client->b_botlevel) / 2;
@@ -1755,7 +1750,7 @@ void Bot_FindActivator(edict_t* ent)
 			continue;
 		if (activator->avoidtime > level.time)
 			continue;
-	
+
 		if (visible(ent, activator) &&
 			(activator->classindex == MISC_TELEPORTER ||
 				activator->classindex == FUNC_BUTTON ||
@@ -1772,7 +1767,7 @@ void Bot_ProjectileAvoidance(edict_t* self, usercmd_t* cmd, vec3_t angles)
 	edict_t* blip = NULL;
 
 	while ((blip = findradius(blip, self->s.origin, 150)) != NULL)
-	{		
+	{
 		if (blip->classindex == ARROW
 			|| blip->classindex == PARROW
 			|| blip->classindex == EXARROW
@@ -1790,7 +1785,7 @@ void Bot_ProjectileAvoidance(edict_t* self, usercmd_t* cmd, vec3_t angles)
 			Bot_Strafe(self, cmd, self->client->b_strafedir, STRAFE_SPEED, angles);
 			self->client->b_strafechange = level.time + 0.5F;
 			break;
-		}	
+		}
 		if (blip->classindex == ROCKET
 			|| blip->classindex == HOMING
 			|| blip->classindex == BUZZ

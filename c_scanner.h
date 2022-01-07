@@ -12,4 +12,3 @@ void ShutOff_Scanner(edict_t* ent);
 void ShowScanner(edict_t* ent, char* layout);
 void Toggle_Scanner(edict_t* ent);
 void Scanner_Think(edict_t* ent);
-

@@ -498,7 +498,6 @@ void SV_CalcBlend(edict_t* ent)
 	}
 	else if ((ent->client->PoisonTime && ent->client->PoisonTime > 0) || ent->client->pers.health <= 0) // MrG{DRGN} or dead
 	{
-		
 		if (ent->classindex == PLAYER)
 		{
 			VectorClear(ent->velocity);

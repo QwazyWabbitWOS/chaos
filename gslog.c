@@ -224,7 +224,7 @@ void sl_WriteStdLogDeath(game_import_t* g_imp,
 						iScore = 1;
 						pWeaponName = "Kamikaze";
 						break;
-					} 					
+					}
 					case MOD_SSHOTGUN:
 					case MOD_GRENADE:
 					case MOD_G_SPLASH:

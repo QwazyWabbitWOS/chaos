@@ -580,7 +580,7 @@ void FindNewTVSpot(edict_t* ent)
 			continue;
 		if (dummy->client
 			|| dummy->item
-			
+
 			|| dummy->classindex == BOLT
 			|| dummy->classindex == ARROW
 			|| dummy->classindex == GRENADE

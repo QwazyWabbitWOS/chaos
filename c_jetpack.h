@@ -13,5 +13,3 @@ void Jet_ApplyLifting(edict_t* ent);
 void Jet_ApplySparks(edict_t* ent);
 void Jet_ApplyRolling(edict_t* ent, const vec3_t right);
 void Jet_ApplyJet(edict_t* ent, usercmd_t* ucmd);
-
-

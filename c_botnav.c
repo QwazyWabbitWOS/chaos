@@ -177,22 +177,22 @@ void Bot_PlaceNode(vec3_t spot, int flag, int duckflag)
 			nprintf(PRINT_HIGH, "Train node %d placed!\n", numnodes);
 		else if (flag == LADDER_NODE)
 		{
-		//	edict_t	*arrow;
+			//	edict_t	*arrow;
 
 			nprintf(PRINT_HIGH, "Ladder node %d placed!\n", numnodes);
 
-		//	arrow = G_Spawn();
-		//	VectorCopy (spot, arrow->s.origin);
+			//	arrow = G_Spawn();
+			//	VectorCopy (spot, arrow->s.origin);
 
-		//	arrow->movetype = MOVETYPE_NONE;
-		//	arrow->clipmask = MASK_SHOT;
-		//	arrow->solid = SOLID_NOT;
-		//	arrow->s.effects = 0;
-		//	VectorClear (arrow->mins);
-		//	VectorClear (arrow->maxs);
-		//	arrow->s.modelindex = gi.modelindex ("models/objects/gibs/skull/tris.md2");
-		//	arrow->classname = "debugarrow";
-		//	gi.linkentity (arrow);
+			//	arrow->movetype = MOVETYPE_NONE;
+			//	arrow->clipmask = MASK_SHOT;
+			//	arrow->solid = SOLID_NOT;
+			//	arrow->s.effects = 0;
+			//	VectorClear (arrow->mins);
+			//	VectorClear (arrow->maxs);
+			//	arrow->s.modelindex = gi.modelindex ("models/objects/gibs/skull/tris.md2");
+			//	arrow->classname = "debugarrow";
+			//	gi.linkentity (arrow);
 		}
 	}
 }
@@ -516,7 +516,7 @@ qboolean Bot_LoadNodes(void)
 		return false;
 	}
 
-	if ((strcmp(id_buffer, nodetable_id) != 0)) 
+	if ((strcmp(id_buffer, nodetable_id) != 0))
 	{
 		fclose(input); /* MrG{DRGN} fixed resource leak! */
 		return false;
@@ -556,7 +556,7 @@ qboolean Bot_LoadNodes(void)
 
 	if ((strcmp(id_buffer, nodetable_id) != 0))
 		return false;
-	if ((strcmp(version_buffer, nodetable_version) != 0)) 
+	if ((strcmp(version_buffer, nodetable_version) != 0))
 		return false;
 
 	fclose(input);

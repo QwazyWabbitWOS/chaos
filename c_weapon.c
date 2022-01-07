@@ -641,7 +641,6 @@ void LaserTurret_Think(edict_t* ent)
 		//search enemy
 		while ((blip = findradius(blip, ent->s.origin, 1000)) != NULL)
 		{
-			
 			if (blip->client
 				|| (blip->classindex == PROXYMINE)
 				|| (blip->classindex == LTURRET)
@@ -811,7 +810,6 @@ void RocketTurret_Think(edict_t* ent)
 		//search enemy
 		while ((blip = findradius(blip, ent->s.origin, 1000)) != NULL)
 		{
-			
 			if (blip->client
 				|| (blip->classindex == PROXYMINE)
 				|| (blip->classindex == LTURRET)
@@ -930,7 +928,6 @@ void Turret_Touch(edict_t* ent, edict_t* other, cplane_t* plane, csurface_t* sur
 		ent->count = -1;	//state
 		ent->nextthink = level.time + 1;
 
-		
 		if (ent->classindex == LTURRET)
 			ent->think = LaserTurret_Think;
 		else if (ent->classindex == RTURRET)
@@ -1549,7 +1546,7 @@ void fire_air(edict_t* self, vec3_t start, vec3_t dir)
 	{
 		if ((blip->client && !blip->client->camera)
 			|| blip->item
-			
+
 			|| blip->classindex == BOLT
 			|| blip->classindex == ARROW
 			|| blip->classindex == PARROW

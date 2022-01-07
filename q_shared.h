@@ -248,7 +248,7 @@ int		Sys_Milliseconds(void);
 void	Sys_Mkdir(char* path);
 
 // large block stack allocation routines
-//QW// These are used by gl_models.c and the 
+//QW// These are used by gl_models.c and the
 // game engine and must not be changed.
 // They are never used by the game mod directly.
 void* Hunk_Begin(int maxsize, int precommit);

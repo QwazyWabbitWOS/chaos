@@ -3442,7 +3442,7 @@ static void old_teleporter_touch(edict_t* self, edict_t* other, cplane_t* plane,
 	other->s.angles[PITCH] = 0;
 	other->s.angles[YAW] = dest->s.angles[YAW];
 	other->s.angles[ROLL] = 0;
-	
+
 	VectorCopy(dest->s.angles, other->client->ps.viewangles);
 	VectorCopy(dest->s.angles, other->client->v_angle);
 

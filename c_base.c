@@ -56,13 +56,13 @@ void ShowGun(edict_t* ent)	//QW from WOD:LOX for vwep
 	if (!ent->client->pers.weapon)
 	{
 		ent->client->ps.gunindex = 0;		// WI: seems to be missing?
-		ent->s.modelindex2 = REMOVED_MODEL;	 
+		ent->s.modelindex2 = REMOVED_MODEL;
 		if (!ent->client->resp.spectator) // MrG{DRGN} Don't complain about camera using players not having a gun
 			gi.dprintf("ShowGun: Oops! Weapon Index missing! %s\n", ent->client->pers.netname);
 		return;
 	}
 
-	ent->s.modelindex2 = VWEP_MODEL;  
+	ent->s.modelindex2 = VWEP_MODEL;
 	strcpy(heldmodel, "#");	//safe, don't change
 	strcat(heldmodel, ent->client->pers.weapon->icon);
 	strcat(heldmodel, ".md2");
@@ -850,7 +850,6 @@ void ThrowUpNow(edict_t* self)
 	gi.WriteDir(spew_vector);
 	gi.multicast(mouth_pos, MULTICAST_PVS);
 
-	
 	rn = random();
 	if (rn < 0.25)
 		gi.sound(self, CHAN_VOICE, gi.soundindex("misc/vomit1.wav"), 1, ATTN_NORM, 0);
@@ -1315,12 +1314,12 @@ void Cmd_PlaceNode_f(edict_t* ent)
 		end[2] -= 40;
 
 		tr = gi.trace(ent->s.origin, ent->mins, ent->maxs, end, ent, MASK_SOLID);
-		
-	//	gi.WriteByte (svc_temp_entity);
-	//	gi.WriteByte (TE_BFG_LASER);
-	//	gi.WritePosition (nodes[nindex].origin);
-	//	gi.WritePosition (end);
-	//	gi.multicast (nodes[nindex].origin, MULTICAST_PHS);		
+
+		//	gi.WriteByte (svc_temp_entity);
+		//	gi.WriteByte (TE_BFG_LASER);
+		//	gi.WritePosition (nodes[nindex].origin);
+		//	gi.WritePosition (end);
+		//	gi.multicast (nodes[nindex].origin, MULTICAST_PHS);
 
 		if (!tr.startsolid && (tr.fraction == 1))
 		{
@@ -1558,7 +1557,7 @@ void Cmd_Kick_f(edict_t* ent)
 	{
 		if ((blip->classindex >= W_BLASTER && blip->classindex <= W_BFG) && (!weapon_kick->value))
 			return;
-		
+
 		if (blip->client
 			|| blip->item
 			|| blip->classindex == BOLT
@@ -1739,10 +1738,10 @@ void ClientCommand2(edict_t* ent)
 	}
 	else if (Q_stricmp(cmd, "playerlist") == 0)
 	{
-	if (ctf->value)
-		CTFPlayerList(ent);
-	else
-		Cmd_PlayerList_f(ent);
+		if (ctf->value)
+			CTFPlayerList(ent);
+		else
+			Cmd_PlayerList_f(ent);
 	}
 	else if (Q_stricmp(cmd, "ctfplayerlist") == 0)
 	{

@@ -27,7 +27,7 @@ void Teleport(edict_t* ent)
 
 	if (ent->client->teleporter)	// already a teleport
 	{
-		int i; 
+		int i;
 		if (ctf->value)
 			CTFDeadDropFlag(ent);
 

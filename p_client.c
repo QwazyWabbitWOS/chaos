@@ -230,7 +230,7 @@ void ClientObituary(edict_t* self, edict_t* inflictor, edict_t* attacker)
 	char* message;
 	char* message2;
 	qboolean	ff;
-	
+
 	if (deathmatch->value)
 	{
 		ff = meansOfDeath & MOD_FRIENDLY_FIRE;
@@ -1399,7 +1399,7 @@ void	SelectSpawnPoint(edict_t* ent, vec3_t origin, vec3_t angles)
 		else
 			spot = SelectDeathmatchSpawnPoint();
 	}
-	
+
 	// find a single player start spot
 	if (!spot)
 	{
@@ -2091,7 +2091,7 @@ void ClientThink(edict_t* ent, usercmd_t* ucmd)
 		return;
 	}
 
-	//DYNAMIC NODE TABLE GENERATION						
+	//DYNAMIC NODE TABLE GENERATION
 	if (dntg->value > 0 && ent->classindex == PLAYER)
 	{
 		if (TouchingLadder(ent)
@@ -2383,7 +2383,7 @@ void ClientThink(edict_t* ent, usercmd_t* ucmd)
 	for (i = 0; i < 3; i++)
 	{
 		ent->s.origin[i] = SHORT2COORD(pm.s.origin[i]);
-		
+
 		if (!Jet_Active(ent) || (Jet_Active(ent) && (fabsf((float)pm.s.velocity[i] * 0.125F) < fabsf(ent->velocity[i]))))	//MATTHIAS
 			ent->velocity[i] = SHORT2COORD(pm.s.velocity[i]);
 	}

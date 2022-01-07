@@ -662,7 +662,6 @@ void Cmd_Help_f(edict_t* ent);
 void ClientCommand(edict_t* ent);
 qboolean CheckFlood(edict_t* ent);
 
-
 //
 // g_items.c
 //
@@ -683,7 +682,7 @@ int PowerArmorType(edict_t* ent);
 gitem_t* GetItemByIndex(int index);
 qboolean Add_Ammo(edict_t* ent, gitem_t* item, int count);
 void Touch_Item(edict_t* ent, edict_t* other, cplane_t* plane, csurface_t* surf);
-void DoRespawn(edict_t* ent); 
+void DoRespawn(edict_t* ent);
 void Use_Weapon(edict_t* ent, gitem_t* item);
 void Drop_Weapon(edict_t* ent, gitem_t* item);
 
@@ -1052,7 +1051,7 @@ struct gclient_s
 	float		b_waittime;
 	float		b_pausetime;
 
-	float		b_nodetime;  
+	float		b_nodetime;
 	int			b_botlevel;
 	edict_t* b_target;
 	float		b_lastdpath;
@@ -1342,7 +1341,7 @@ extern cvar_t* ex_arrow_radius;
 extern cvar_t* start_invulnerable_time;
 extern cvar_t* developer;
 
-/* 
+/*
 * MrG{DRGN} Chaos DM Lives cvars
 */
 extern cvar_t* drop_tech;	// MrG{DRGN} tech drop prevention

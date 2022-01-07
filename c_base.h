@@ -75,8 +75,8 @@ cvar_t* start_defenseturret, * start_rocketturret,
 
 // Item definitions
 gitem_t
-// Items converted by Chaos not in game 
-* it_shotgun, * it_machinegun, * it_chaingun, * it_bullets,	
+// Items converted by Chaos not in game
+* it_shotgun, * it_machinegun, * it_chaingun, * it_bullets,
 // Weapons
 * it_ak42, * it_sword, * it_chainsaw, * it_supershotgun,
 * it_esupershotgun, * it_crossbow, * it_poisoncrossbow,
@@ -99,7 +99,6 @@ gitem_t
 * it_invulnerability, * it_breather, * it_enviro, * it_bandolier,
 * it_pack, * it_invisibility;
 
-
 cvar_t* node_debug;
 cvar_t* lightsoff;
 cvar_t* botchat;
@@ -118,7 +117,7 @@ cvar_t* start_invulnerable_time;
 // MrG{DRGN} Chaos DM Lives cvars
 cvar_t* drop_tech;	// MrG{DRGN} tech drop prevention
 cvar_t* allow_flagdrop;	// MrG{DRGN} allow flag dropping
-cvar_t* weapon_kick; // MrG{DRGN} kickable weapons toggle 
+cvar_t* weapon_kick; // MrG{DRGN} kickable weapons toggle
 cvar_t* do_respawn;	// MrG{DRGN} base item respawn time default 60
 cvar_t* do_respawn_rnd;	// MrG{DRGN} random item respawn time default 80
 
