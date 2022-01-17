@@ -2048,8 +2048,6 @@ void Bot_Say(edict_t* ent, qboolean team, char* fmt, ...)
 	{
 		cl_ent = g_edicts + 1 + i;
 
-		/* MrG{DRGN}
-		if (!cl_ent->inuse || (Q_stricmp(cl_ent->classname, "bot") == 0)) */
 		if (!cl_ent->inuse || cl_ent->bot_player)
 			continue;
 
