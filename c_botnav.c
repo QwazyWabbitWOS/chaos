@@ -104,7 +104,7 @@ int RecalculateCurrentNode(edict_t* ent)
 			dvec[1] = nodes[ent->client->b_path[i]].origin[1] - ent->s.origin[1];
 			dvec[2] = nodes[ent->client->b_path[i]].origin[2] - ent->s.origin[2];
 
-			dist = (int)VectorLength(dvec); /* MrG{DRGN} result is discarded*/
+			dist = (int)VectorLength(dvec);
 			if ((dist < bestdist) && Bot_CanReachSpotDirectly(ent, nodes[ent->client->b_path[i]].origin))
 			{
 				bestdist = dist;
@@ -412,9 +412,9 @@ qboolean Bot_SaveNodes(void)
 	float	dist;
 	FILE* output;
 	char	file[256];
-	const char	nodetable_version[] = "v02";  /* MrG{DRGN} let the compiler figure out the size */
-	const char	nodetable_id[] = "CHAOSDM NODE TABLE";	/* MrG{DRGN} let the compiler figure out the size */
-	int	dntgvalue = (int)dntg->value; /* MrG{DRGN} safe cast */
+	const char	nodetable_version[] = "v02";  // MrG{DRGN} let the compiler figure out the size
+	const char	nodetable_id[] = "CHAOSDM NODE TABLE";	// MrG{DRGN} let the compiler figure out the size
+	int	dntgvalue = (int)dntg->value; // MrG{DRGN} safe cast
 
 	Com_strcpy(file, sizeof file, "./");
 	Com_strcat(file, sizeof file, game_dir->string);
@@ -422,7 +422,7 @@ qboolean Bot_SaveNodes(void)
 	Com_strcat(file, sizeof file, level.mapname);
 	Com_strcat(file, sizeof file, ".ntb");
 
-	if ((output = fopen(file, "wb")) == NULL)    /* MrG{DRGN} check the return */
+	if ((output = fopen(file, "wb")) == NULL)    // MrG{DRGN} check the return
 	{
 		gi.dprintf("Unable to open file %s! %s.\n", file, strerror(errno));
 		return false;
@@ -495,7 +495,7 @@ qboolean Bot_LoadNodes(void)
 	if (!num && !feof(input))
 		gi.dprintf("Chaos: %s error reading numnodes\n", __func__);
 
-	//dynamic node table generation on/off
+	// dynamic node table generation on/off
 	num = fread(&dntgvalue, sizeof(int), 1, input);
 
 	if (dntgvalue == 1)
@@ -512,18 +512,18 @@ qboolean Bot_LoadNodes(void)
 	if (numnodes > MAX_NODES)
 	{
 		numnodes = 0;
-		fclose(input); /* MrG{DRGN} fixed resource leak! */
+		fclose(input); // MrG{DRGN} fixed resource leak!
 		return false;
 	}
 
 	if ((strcmp(id_buffer, nodetable_id) != 0))
 	{
-		fclose(input); /* MrG{DRGN} fixed resource leak! */
+		fclose(input); // MrG{DRGN} fixed resource leak!
 		return false;
 	}
 	if ((strcmp(version_buffer, nodetable_version) != 0))
 	{
-		fclose(input); /* MrG{DRGN} fixed resource leak! */
+		fclose(input); // MrG{DRGN} fixed resource leak!
 		return false;
 	}
 
