@@ -521,18 +521,22 @@ void plat_spawn_inside_trigger(edict_t* ent)
 	gi.linkentity(trigger);
 }
 
-/*QUAKED func_plat (0 .5 .8) ? PLAT_LOW_TRIGGER
+/*
+QUAKED func_plat (0 .5 .8) ? PLAT_LOW_TRIGGER
 speed	default 150
 
 Plats are always drawn in the extended position, so they will light correctly.
 
-If the plat is the target of another trigger or button, it will start out disabled in the extended position until it is trigger, when it will lower and become a normal plat.
+If the plat is the target of another trigger or button,
+it will start out disabled in the extended position until it is triggered, 
+then it will lower and become a normal plat.
 
 "speed"	overrides default 200.
 "accel" overrides default 500
 "lip"	overrides default 8 pixel lip
 
-If the "height" key is set, that will determine the amount the plat moves, instead of being implicitly determoveinfoned by the model's height.
+If the "height" key is set, that will determine the amount the plat moves
+instead of being implicitly determoveinfoned by the model's height.
 
 Set "sounds" to one of the following:
 1) base fast
@@ -608,18 +612,6 @@ void SP_func_plat(edict_t* ent)
 
 //====================================================================
 
-/*QUAKED func_rotating (0 .5 .8) ? START_ON REVERSE X_AXIS Y_AXIS TOUCH_PAIN STOP ANIMATED ANIMATED_FAST
-You need to have an origin brush as part of this entity.  The center of that brush will be
-the point around which it is rotated. It will rotate around the Z axis by default.  You can
-check either the X_AXIS or Y_AXIS box to change that.
-
-"speed" determines how fast it moves; default value is 100.
-"dmg"	damage to inflict when blocked (2 default)
-
-REVERSE will cause it to rotate in the opposite direction.
-STOP mean it will stop moving instead of pushing entities
-*/
-
 void rotating_blocked(edict_t* self, edict_t* other)
 {
 	T_Damage(other, self, self, vec3_origin, other->s.origin, vec3_origin, self->dmg, 1, 0, MOD_CRUSH);
@@ -661,6 +653,18 @@ void rotating_use(edict_t* self, edict_t* other, edict_t* activator)
 	}
 }
 
+/*
+QUAKED SP_func_rotating (0 .5 .8) ? START_ON REVERSE X_AXIS Y_AXIS TOUCH_PAIN STOP ANIMATED ANIMATED_FAST
+You need to have an origin brush as part of this entity.  The center of that brush will be
+the point around which it is rotated. It will rotate around the Z axis by default.  You can
+check either the X_AXIS or Y_AXIS box to change that.
+
+"speed" determines how fast it moves; default value is 100.
+"dmg"	damage to inflict when blocked (2 default)
+
+REVERSE will cause it to rotate in the opposite direction.
+STOP means it will stop moving instead of pushing entities
+*/
 void SP_func_rotating(edict_t* ent)
 {
 	ent->solid = SOLID_BSP;
@@ -1313,7 +1317,6 @@ REVERSE will cause the door to rotate in the opposite direction.
 3)	medium
 4)	heavy
 */
-
 void SP_func_door_rotating(edict_t* ent)
 {
 	VectorClear(ent->s.angles);
@@ -1417,7 +1420,8 @@ void SP_func_door_rotating(edict_t* ent)
 		ent->think = Think_SpawnDoorTrigger;
 }
 
-/*QUAKED func_water (0 .5 .8) ? START_OPEN
+/*
+QUAKED SP_func_water (0 .5 .8) ? START_OPEN
 func_water is a moveable water brush.  It must be targeted to operate.  Use a non-water texture at your own risk.
 
 START_OPEN causes the water to move to its destination when spawned and operate in reverse.
@@ -1431,7 +1435,6 @@ START_OPEN causes the water to move to its destination when spawned and operate 
 1)	water
 2)	lava
 */
-
 void SP_func_water(edict_t* self)
 {
 	vec3_t	abs_movedir;
@@ -1502,16 +1505,6 @@ void SP_func_water(edict_t* self)
 #define TRAIN_TOGGLE		2
 #define TRAIN_BLOCK_STOPS	4
 
-/*QUAKED func_train (0 .5 .8) ? START_ON TOGGLE BLOCK_STOPS
-Trains are moving platforms that players can ride.
-The targets origin specifies the min point of the train at each corner.
-The train spawns at the first target it is pointing at.
-If the train is the target of a button or trigger, it will not begin moving until activated.
-speed	default 100
-dmg		default	2
-noise	looping sound to play when the train is in motion
-
-*/
 void train_next(edict_t* self);
 
 void train_blocked(edict_t* self, edict_t* other)
@@ -1708,6 +1701,16 @@ void train_use(edict_t* self, edict_t* other, edict_t* activator)
 	}
 }
 
+/*QUAKED func_train (0 .5 .8) ? START_ON TOGGLE BLOCK_STOPS
+Trains are moving platforms that players can ride.
+The targets origin specifies the min point of the train at each corner.
+The train spawns at the first target it is pointing at.
+If the train is the target of a button or trigger, it will not begin moving until activated.
+speed	default 100
+dmg		default	2
+noise	looping sound to play when the train is in motion
+
+*/
 void SP_func_train(edict_t* self)
 {
 	self->movetype = MOVETYPE_PUSH;

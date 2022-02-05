@@ -61,7 +61,7 @@ _CrtMemState startup1;	// memory diagnostics
 
 // edict->flags
 #define	FL_FLY					0x00000001
-#define	FL_SWIM					0x00000002	// implied immunity to drowining
+#define	FL_SWIM					0x00000002	// implied immunity to drowning
 #define FL_IMMUNE_LASER			0x00000004
 #define	FL_INWATER				0x00000008
 #define	FL_GODMODE				0x00000010
