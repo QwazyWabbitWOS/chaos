@@ -1,6 +1,6 @@
 #pragma once
 
-#define CTF_VERSION			1.52
+#define CTF_VERSION			1.53
 #define CTF_VSTRING2(x) #x
 #define CTF_VSTRING(x) CTF_VSTRING2(x)
 #define CTF_STRING_VERSION  CTF_VSTRING(CTF_VERSION)
@@ -94,7 +94,6 @@ extern cvar_t* ctf;
 
 void CTFInit(void);
 void CTFSpawn(void);
-void CTFPrecache(void);
 
 void SP_info_player_team1(edict_t* self);
 void SP_info_player_team2(edict_t* self);

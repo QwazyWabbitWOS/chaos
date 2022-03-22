@@ -238,4 +238,4 @@ typedef struct
 	int			max_edicts;
 } game_export_t;
 
-game_export_t* GetGameAPI(game_import_t* import); /* MrG{DRGN} fixed a typo here. it was *GetGameApi */
+game_export_t* GetGameAPI(game_import_t* import); // MrG{DRGN} fixed a typo here. it was *GetGameApi
