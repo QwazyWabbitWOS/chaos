@@ -82,7 +82,7 @@ void sl_WriteStdLogDeath(game_import_t* g_imp,
 			int			mod = meansOfDeath & ~MOD_FRIENDLY_FIRE;
 			char* pKillerName = NULL;
 			char* pTargetName = NULL;
-			char* pScoreType = NULL; /* Kill, Suicde */
+			char* pScoreType = NULL; /* Kill, Suicide */
 			char* pWeaponName = NULL;
 			int        iScore = 0;    /* 1,    -1 */
 

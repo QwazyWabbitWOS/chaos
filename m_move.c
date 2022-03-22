@@ -73,7 +73,7 @@ qboolean SV_movestep(edict_t* ent, vec3_t move, qboolean relink)
 	// check point traces down for dangling corners
 	VectorCopy(trace.endpos, ent->s.origin);
 
-	if (!M_CheckBottom(ent))
+	if (!M_CheckBottom(ent)) // MrG{DRGN} Condition is always false! Revise?
 	{
 		if (ent->flags & FL_PARTIALGROUND)
 		{	// entity had floor mostly pulled out from underneath it

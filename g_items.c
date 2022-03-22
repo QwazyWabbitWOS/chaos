@@ -5462,7 +5462,7 @@ void SetItemNames(void)
 	it_grapple = FindItemByClassindex(PU_GRAPPLE);
 	it_jetpack = FindItemByClassindex(PU_JETPACK);
 	it_invisibility = FindItemByClassindex(PU_INVISIBILITY);
-	/* MrG{DRGN} never in game, but always posessed! */
+	/* MrG{DRGN} never in game, but always possessed! */
 	it_belt = FindItemByClassindex(PU_BELT);
 	it_flashlight = FindItemByClassindex(PU_FLASHLIGHT);
 	it_scanner = FindItemByClassindex(PU_SCANNER);
