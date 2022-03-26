@@ -242,7 +242,7 @@ void BecomeExplosion1(edict_t* self)
 	{
 		CTFResetFlag(CTF_TEAM2); // this will free self!
 		bprint_botsafe(PRINT_HIGH, "The %s flag has returned!\n",
-			CTFTeamName(CTF_TEAM1));
+			CTFTeamName(CTF_TEAM2));
 		return;
 	}
 	// techs are important too
