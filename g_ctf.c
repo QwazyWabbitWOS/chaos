@@ -1953,7 +1953,7 @@ SAY_TEAM
 
 // This array is in 'importance order', it indicates what items are
 // more important when reporting their names.
-struct {
+struct locs_s {
 	char* classname;
 	int priority;
 } loc_names[] =

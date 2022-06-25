@@ -39,7 +39,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 // edict->solid values
 
-typedef enum
+typedef enum solid_e
 {
 	SOLID_NOT,			// no interaction with other objects
 	SOLID_TRIGGER,		// only touch when inside, after moving
@@ -105,7 +105,7 @@ struct edict_s
 //
 // functions provided by the main engine
 //
-typedef struct
+typedef struct game_import_s
 {
 	// special messages
 	void	(*bprintf) (int printlevel, char* fmt, ...); // broadcast print
@@ -184,7 +184,7 @@ typedef struct
 //
 // functions exported by the game subsystem
 //
-typedef struct
+typedef struct game_export_s
 {
 	int			apiversion;
 

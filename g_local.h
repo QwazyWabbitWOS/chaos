@@ -85,14 +85,14 @@ _CrtMemState startup1;	// memory diagnostics
 
 #define BODY_QUEUE_SIZE		8
 
-typedef enum
+typedef enum damage_e
 {
 	DAMAGE_NO,
 	DAMAGE_YES,			// will take damage if hit
 	DAMAGE_AIM			// auto targeting recognizes this
 } damage_t;
 
-typedef enum
+typedef enum weaponstate_e
 {
 	WEAPON_READY,
 	WEAPON_ACTIVATING,
@@ -102,7 +102,7 @@ typedef enum
 	WEAPON_ENDFIRE
 } weaponstate_t;
 
-typedef enum
+typedef enum ammo_e
 {
 	AMMO_BULLETS,
 	AMMO_SHELLS,
@@ -169,7 +169,7 @@ typedef enum
 #define PNOISE_IMPACT			2
 
 // edict->movetype values
-typedef enum
+typedef enum movetype_e
 {
 	MOVETYPE_NONE,			// never moves
 	MOVETYPE_NOCLIP,		// origin and angles change with no interaction
@@ -186,7 +186,7 @@ typedef enum
 	MOVETYPE_BOT			// MATTHIAS
 } movetype_t;
 
-typedef struct
+typedef struct gitem_armor_s
 {
 	int		base_count;
 	int		max_count;
@@ -252,7 +252,7 @@ typedef struct gitem_s
 // it should be initialized at dll load time, and read/written to
 // the server.ssv file for savegames
 //
-typedef struct
+typedef struct game_locals_s
 {
 	char		helpmessage1[512];
 	char		helpmessage2[512];
@@ -282,7 +282,7 @@ typedef struct
 // this structure is cleared as each map is entered
 // it is read/written to the level.sav file for savegames
 //
-typedef struct
+typedef struct level_locals_s
 {
 	int			framenum;
 	float		time;
@@ -328,7 +328,7 @@ typedef struct
 // spawn_temp_t is only used to hold entity field values that
 // can be set from the editor, but aren't actualy present
 // in edict_t during gameplay
-typedef struct
+typedef struct spawn_temp_s
 {
 	// world vars
 	char* sky;
@@ -350,7 +350,7 @@ typedef struct
 	float		maxpitch;
 } spawn_temp_t;
 
-typedef struct
+typedef struct move_info_s
 {
 	// fixed data
 	vec3_t		start_origin;
@@ -380,14 +380,14 @@ typedef struct
 	void		(*endfunc)(edict_t*);
 } moveinfo_t;
 
-typedef struct
+typedef struct mframe_s
 {
 	void	(*aifunc)(edict_t* self, float dist);
 	float	dist;
 	void	(*thinkfunc)(edict_t* self);
 } mframe_t;
 
-typedef struct
+typedef struct mmove_s
 {
 	int			firstframe;
 	int			lastframe;
@@ -449,7 +449,7 @@ extern gitem_armor_t bodyarmor_info;
 
 // means of death
 
-typedef enum {
+typedef enum mod_e {
 	MOD_UNKNOWN,
 	MOD_BLASTER,
 	MOD_SHOTGUN,
@@ -581,7 +581,7 @@ byte		is_silenced;
 #define FFL_SPAWNTEMP		1
 #define FFL_NOSPAWN		2
 
-typedef enum {
+typedef enum fieldtype_e {
 	F_INT,
 	F_FLOAT,
 	F_LSTRING,			/* string on disk, pointer in memory, TAG_LEVEL */
@@ -595,7 +595,7 @@ typedef enum {
 	F_IGNORE
 } fieldtype_t;
 
-typedef struct
+typedef struct field_s
 {
 	char* name;
 	int		ofs;

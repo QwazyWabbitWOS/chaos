@@ -26,7 +26,7 @@ enum nodestate { permanent, tentative };
 typedef enum	nodestate	nodestate_t;
 
 // nodeinfo structure
-typedef struct
+typedef struct nodeinfo_s
 {
 	int				predecessor;
 	double			dist;
@@ -34,7 +34,7 @@ typedef struct
 } nodeinfo_t;
 
 // node structure
-typedef struct
+typedef struct nodes_s
 {
 	vec3_t		origin;				//Node location
 	int			flag;				//Flags for special nodes

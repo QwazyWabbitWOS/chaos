@@ -82,7 +82,7 @@ static void  _sl_MaybeCloseFile(void);
  */
 
 #if 1
-typedef struct
+typedef struct log_funcs_s
 {
 	void (*pLogVers)(void);
 	void (*pLogPatch)(char* pPatchName);

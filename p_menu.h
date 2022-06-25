@@ -1,4 +1,4 @@
-enum {
+enum pmenu_e {
 	PMENU_ALIGN_LEFT,
 	PMENU_ALIGN_CENTER,
 	PMENU_ALIGN_RIGHT

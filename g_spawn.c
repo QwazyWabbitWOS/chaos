@@ -2,7 +2,7 @@
 #include "c_botnav.h"
 #include "gslog.h"
 
-typedef struct
+typedef struct spawn_s
 {
 	unsigned int classindex; // MrG{DRGN}
 	char* name;

@@ -23,13 +23,13 @@
 #define CONFIG_CTF_MATCH (CS_AIRACCEL-1)
 #define CONFIG_CTF_TEAMINFO	(CS_AIRACCEL-2)
 
-typedef enum {
+typedef enum ctfteam_e {
 	CTF_NOTEAM,
 	CTF_TEAM1, // Red Team
 	CTF_TEAM2  // Blue Team
 } ctfteam_t;
 
-typedef enum match_s {
+typedef enum match_e {
 	MATCH_NONE,
 	MATCH_SETUP,
 	MATCH_PREGAME,
@@ -37,12 +37,13 @@ typedef enum match_s {
 	MATCH_POST
 } match_t;
 
-typedef enum {
+typedef enum elect_e {
 	ELECT_NONE,
 	ELECT_MATCH,
 	ELECT_ADMIN,
 	ELECT_MAP
 } elect_t;
+
 typedef struct ghost_s {
 	char netname[16];
 	int number;
@@ -169,7 +170,7 @@ void CTFSetPowerUpEffect(edict_t* ent, int def);
 void CTFAdmin_UpdateSettings(edict_t* ent, pmenuhnd_t* setmenu);
 void CTFOpenAdminMenu(edict_t* ent);
 
-typedef enum {
+typedef enum ctfstate_e {
 	CTF_STATE_START,
 	CTF_STATE_PLAYING
 } ctfstate_t;
