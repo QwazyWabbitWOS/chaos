@@ -1056,7 +1056,7 @@ void SP_misc_satellite_dish(edict_t* ent)
 {
 	ent->movetype = MOVETYPE_NONE;
 	ent->solid = SOLID_BBOX;
-	VectorSet(ent->mins, -64, -64, 0);
+	VectorSet(ent->mins, -64, -64, -8); //QW// fix "not on quantization boundary" from r1q2ded (was 0)
 	VectorSet(ent->maxs, 64, 64, 128);
 	ent->classindex = MISC_SATELLITE_DISH; // MrG{DRGN}
 	ent->s.modelindex = gi.modelindex("models/objects/satellite/tris.md2");
