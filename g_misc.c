@@ -1467,7 +1467,7 @@ void SP_misc_teleporter(edict_t* ent)
 
 	if (!ent->target)
 	{
-		gi.dprintf("teleporter without a target.\n");
+		gi.dprintf("In %s: teleporter without a target.\n", __func__);
 		G_FreeEdict(ent);
 		return;
 	}
