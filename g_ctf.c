@@ -2919,7 +2919,7 @@ void CTFShowScores(edict_t* ent, pmenu_t* p)
 
 pmenu_t creditsmenu[] = {
 	{ "*Quake II ",	PMENU_ALIGN_CENTER, NULL },// MrG{DRGN}
-	{ "Chaos DM Lives v3.2.9b*",				PMENU_ALIGN_CENTER, NULL},
+	{ "*"GAMEVERSION,				PMENU_ALIGN_CENTER, NULL},
 	{ NULL,					PMENU_ALIGN_CENTER, NULL},
 	{  "*Programming",								PMENU_ALIGN_CENTER, NULL },// MrG{DRGN}
 	{ "Flash (flash@telefragged.com)",					PMENU_ALIGN_CENTER, NULL},// MrG{DRGN}
@@ -2946,7 +2946,7 @@ static const int jmenu_reqmatch = 11;
 
 pmenu_t joinmenu[] = {
 	{ "*Quake II",			PMENU_ALIGN_CENTER, NULL},
-	{ "*Chaos DM Lives v3.2.9b",	PMENU_ALIGN_CENTER, NULL },
+	{ "*" GAMEVERSION,	PMENU_ALIGN_CENTER, NULL },
 	{ NULL,					PMENU_ALIGN_CENTER, NULL },
 	{ NULL,					PMENU_ALIGN_CENTER, NULL },
 	{ NULL,					PMENU_ALIGN_CENTER, NULL },
@@ -2967,7 +2967,7 @@ pmenu_t joinmenu[] = {
 
 pmenu_t nochasemenu[] = {
 	{ "*Quake II",			PMENU_ALIGN_CENTER, NULL},
-	{ "*Chaos DM Lives v3.2.9b",	PMENU_ALIGN_CENTER,  NULL },
+	{ "*" GAMEVERSION,	PMENU_ALIGN_CENTER,  NULL },
 	{ NULL,					PMENU_ALIGN_CENTER, NULL },
 	{ NULL,					PMENU_ALIGN_CENTER, NULL },
 	{ "No one to chase",	PMENU_ALIGN_LEFT, NULL },

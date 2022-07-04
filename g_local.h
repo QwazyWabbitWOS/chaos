@@ -30,7 +30,7 @@ _CrtMemState startup1;	// memory diagnostics
 //ZOID
 
 // the "gameversion" client command will print this plus compile date
-#define	GAMEVERSION	"Chaos DM Lives v3.2.9b"
+#define	GAMEVERSION	"Chaos DM Lives v3.2c"
 
 #ifndef _DEBUG
 #define BUILD	"Release"
